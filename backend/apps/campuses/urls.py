@@ -1,11 +1,11 @@
 from django.urls import path
-from campuses.views import CampusDetailView, CampusListCreateView, NeighborhoodDetailView, NeighborhoodListCreateView
+from campuses.views import CampusViewSet, NeighborhoodViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('campuses/', CampusListCreateView.as_view()),
-    path('campuses/<pk>/', CampusDetailView.as_view()),
-    path('neighborhoods/', NeighborhoodListCreateView.as_view()),
-    path('neighborhoods/<pk>/', NeighborhoodDetailView.as_view()),
-]
+# Create a router and register our viewsets with it
+router = DefaultRouter()
+router.register(r'campuses', CampusViewSet, basename='campus')
+router.register(r'neighborhoods', NeighborhoodViewSet, basename='neighborhood')
 
+urlpatterns = router.urls
 # This file defines the URL patterns for the campuses app, mapping URLs to views.

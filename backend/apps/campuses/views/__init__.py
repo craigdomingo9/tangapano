@@ -1,3 +1,2 @@
-from .campus_views import CampusListCreateView, CampusDetailView
-from .neighborhood_views import NeighborhoodListCreateView, NeighborhoodDetailView
-
+from .campus_views import CampusViewSet
+from .neighborhood_views import NeighborhoodViewSet

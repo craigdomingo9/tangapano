@@ -1,12 +1,12 @@
-from rest_framework import generics
+from rest_framework import viewsets
 from campuses.serializers import NeighborhoodSerializer
 from campuses.models import Neighborhood
 
 
-class NeighborhoodListCreateView(generics.ListCreateAPIView):
-    serializer_class = NeighborhoodSerializer
+class NeighborhoodViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing neighborhood instances.
+    """
     queryset = Neighborhood.objects.all()
-
-class NeighborhoodDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = NeighborhoodSerializer
-    queryset = Neighborhood.objects.all()
+    
