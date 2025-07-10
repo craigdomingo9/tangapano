@@ -1,0 +1,29 @@
+from rest_framework import generics, permissions
+from django.contrib.auth import get_user_model
+from users.serializers import UserSerializer, UserRegistrationSerializer
+
+User = get_user_model()
+
+
+# 🔐 1. Register new user
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = UserRegistrationSerializer
+
+
+# 👤 2. Get current logged-in user
+class UserProfileView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+
+# 👥 3. List all users (admin-only or staff)
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = UserSerializer
+
