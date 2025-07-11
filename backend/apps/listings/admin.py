@@ -4,7 +4,7 @@ from listings.models import Listing, Amenity, Room, ListingAmenity, ListingImage
 # Register your models here.
 @admin.register(Listing)
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'landlord', 'rent_per_month', 'is_active')
+    list_display = ('title', 'landlord', 'rent_per_month', 'neighborhood', 'rent_per_month', 'is_active')
     search_fields = ('title', 'description')
     list_filter = ('is_active', 'campus', 'neighborhood')
 
@@ -21,9 +21,8 @@ class RoomAdmin(admin.ModelAdmin):
 
 @admin.register(ListingAmenity)
 class ListingAmenityAdmin(admin.ModelAdmin):
-    list_display = ('listing', 'amenity', 'value')
+    list_display = ('listing', 'amenity')
     search_fields = ('listing__title', 'amenity__name')
-    list_filter = ('value',)
 
 @admin.register(ListingImage)
 class ListingImageAdmin(admin.ModelAdmin):

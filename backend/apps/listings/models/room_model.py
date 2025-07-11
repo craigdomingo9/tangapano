@@ -30,4 +30,4 @@ class Room(models.Model):
         verbose_name_plural = "Rooms"
 
     def __str__(self):
-        return self.name
+        return f"{self.listing.title} - {self.room_type} Room"

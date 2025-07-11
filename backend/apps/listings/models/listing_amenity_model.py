@@ -11,11 +11,11 @@ class ListingAmenity(models.Model):
         "listings.Amenity",
         on_delete=models.CASCADE,
     )
-    value = models.BooleanField(default=False)
     
     class Meta:
         unique_together = ("listing", "amenity")
         verbose_name_plural = "Listing Amenities"
-        
+    
     def __str__(self):
-        return f"{self.listing} - {self.amenity} ({'Yes' if self.value else 'No'})"
+        return f"{self.listing} - {self.amenity}"
+    
