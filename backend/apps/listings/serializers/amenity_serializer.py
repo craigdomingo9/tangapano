@@ -4,4 +4,4 @@ from listings.models import Amenity
 class AmenitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenity
-        fields = '__all__'
+        fields = ['id', 'name']

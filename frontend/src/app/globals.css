@@ -120,3 +120,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+:root {
+  --primary-bg: oklch(0.51 0.20 17);
+  --secondary-bg: oklch(0.87 0.00 0);
+}
+
+

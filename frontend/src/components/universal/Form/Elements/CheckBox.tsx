@@ -7,7 +7,8 @@ function CheckBox({
   onChange,
   fieldName,
   label,
-  className
+  className,
+  ...inputProps
 }: {
   state: boolean,
   onChange: () => void,

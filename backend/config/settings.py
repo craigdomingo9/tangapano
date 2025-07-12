@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-amm7pt%1%hiap=0&7exn)*89+9x^0+ez65_a2+--4---x3kfg_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -35,6 +35,17 @@ import sys
 
 # Add the apps directory to the Python path
 sys.path.append(os.path.join(BASE_DIR, 'apps'))
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',  
+    'http://192.168.43.242:3000',
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.43.242:3000",
+]
 
 
 
@@ -57,9 +68,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

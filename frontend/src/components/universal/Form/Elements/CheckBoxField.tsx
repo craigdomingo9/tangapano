@@ -41,7 +41,7 @@ function CheckBoxField({
   return (
     <FormField
       control={form.control}
-      name="on_sale"
+      name={fieldName}
       render={() => (
         <FormItem>
           <FormControl>
