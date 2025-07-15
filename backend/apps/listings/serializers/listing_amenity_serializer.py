@@ -3,6 +3,8 @@ from listings.models import ListingAmenity
 
 
 class ListingAmenitySerializer(serializers.ModelSerializer):
+    amenity = serializers.StringRelatedField(read_only=True)
+    
     class Meta:
         model = ListingAmenity
         fields = '__all__'

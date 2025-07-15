@@ -1,10 +1,10 @@
 from django.db import models
-
+from campuses.models import Campus, Neighborhood
 
 
 class Listing(models.Model):
     landlord = models.ForeignKey(
-        "users.User",
+        "users.Landlord",
         on_delete=models.CASCADE,
         related_name="listings"
     )
@@ -12,14 +12,14 @@ class Listing(models.Model):
     description = models.TextField()
     rent_per_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     campus = models.ForeignKey(
-        "campuses.Campus",
-        on_delete=models.SET_NULL,
-        null=True,
+        Campus,
+        on_delete=models.CASCADE,
+        related_name="campus_listings"
     )
     neighborhood = models.ForeignKey(
-        "campuses.Neighborhood",
-        on_delete=models.SET_NULL,
-        null=True,
+        Neighborhood,
+        on_delete=models.CASCADE,
+        related_name="neighborhood_listings"
     )
     distance_from_campus = models.FloatField(null=True, blank=True)
     is_active = models.BooleanField(default=True)

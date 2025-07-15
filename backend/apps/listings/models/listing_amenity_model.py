@@ -10,6 +10,7 @@ class ListingAmenity(models.Model):
     amenity = models.ForeignKey(
         "listings.Amenity",
         on_delete=models.CASCADE,
+        related_name="listings"
     )
     
     class Meta:

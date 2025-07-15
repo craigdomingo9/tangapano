@@ -13,6 +13,7 @@ import GenderSelector from "./GenderSelector";
 import AmenitiesSelector from "./AmenitiesSelector";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import buildDynamicSearchParams from "@/lib/services/buildDynamicSearchParams";
 
 
 function SearchForm() {
@@ -33,18 +34,12 @@ function SearchForm() {
   const form = createSearchForm();
 
   function onSubmit(data: z.infer<typeof searchFormSchema>) {
-    const params = new URLSearchParams();
+    const params = buildDynamicSearchParams(data);
 
-    if (data.campus) params.append("campus", data.campus);
-    if (data.neighborhood) params.append("neighborhood", data.neighborhood);
-    if (data.price_min) params.append("price_range_min", data.price_min.toString());
-    if (data.price_max) params.append("price_range_max", data.price_max.toString());
-    if (data.gender) params.append("gender", data.gender);
-    if (data.max_occupants) params.append("max_occupants", data.max_occupants.toString());
-
-    // Append amenities as repeated param
+    // Append amenities as a comma-separated string
     if (data?.amenities && data.amenities.length > 0) {
-      data.amenities.forEach((id) => params.append("amenity", id));
+      const amenitiesParams = data.amenities.join(',');
+      params.append("amenities", amenitiesParams)
     }
 
     router.push(`/listings?${params.toString()}`);
@@ -58,11 +53,11 @@ function SearchForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CampusSelector
             form={form}
-            campuses={campuses?.map((campus: Campus) => campus?.name) || []}
+            campuses={campuses}
           />
           <NeighborhoodSelector
             form={form}
-            campuses={campuses || []}
+            campuses={campuses}
           />
           <PriceRangeSelector 
             form={form}

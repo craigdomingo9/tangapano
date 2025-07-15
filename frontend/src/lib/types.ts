@@ -18,6 +18,7 @@ interface Neighborhood {
 interface Amenity {
   id: string;
   name: string;
+  display_name: string;
 }
 
 

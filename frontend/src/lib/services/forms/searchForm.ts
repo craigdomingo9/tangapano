@@ -24,7 +24,6 @@ export const createSearchForm = () => {
   return useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
-    campus: "",
     price_min: undefined,
     price_max: undefined,
     max_occupants: undefined,

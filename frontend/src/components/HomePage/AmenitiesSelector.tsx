@@ -13,12 +13,12 @@ function AmenitiesSelector({amenities, form}: Props) {
       {amenities?.map((amenity) => (
         <div key={amenity.id} className="flex items-center justify-between gap-2 text-white w-36 py-2">
           <Label htmlFor={`amenity-${amenity.name}`} className="text-sm">
-            {amenity.name}
+            {amenity.display_name}
           </Label>
           <div className="relative inline-block">
             <input
               type="checkbox"
-              value={amenity.name.toLowerCase().split(" ").join("_")}
+              value={amenity.name}
               id={`amenity-${amenity.name}`}
               {...form.register("amenities")}
               className="ml-2 outline-none peer h-6 w-10 cursor-pointer appearance-none rounded-full border border-gray-300 bg-gary-400 checked:border-sky-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"

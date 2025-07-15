@@ -1,23 +1,29 @@
 import { UseFormReturn } from "react-hook-form"
-import SelectField from "../universal/Form/Elements/SelectField"
+import SelectField from "./SelectField"
 
 
 type Props = {
     form: UseFormReturn<any, any, any>,
-    campuses: string[]
+    campuses: Campus[]
 }
 
 function CampusSelector({form, campuses}: Props) {
+
+  const campusSelectionList = campuses?.map((campus: Campus) => ({
+    id: campus.id,
+    name: campus.name
+  }))
+
+
   return (
     <SelectField 
       form={form}
-      defaultValue={campuses[0]}
       fieldName="campus"
       label="Select your campus"
       labelClassName="text-white"
-      selectionList={campuses}
-      placeholder="Select your campus" 
-      selectClassName="w-80 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      placeholder={campusSelectionList ? campusSelectionList[0].name : "Select neighborhood"}
+      selectionList={campusSelectionList}
+      defaultValue={campusSelectionList ? campusSelectionList[0].id : undefined}
     />
   )
 }
