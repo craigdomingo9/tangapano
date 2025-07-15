@@ -5,8 +5,8 @@ from django.db.models import Q, Count, Prefetch, OuterRef, Exists
 
 
 class ListingFilter(filters.FilterSet):
-    campus = filters.CharFilter(field_name='campus__id')
-    neighborhood = filters.CharFilter(field_name='neighborhood__id')
+    campus = filters.CharFilter(field_name='campus')
+    neighborhood = filters.CharFilter(field_name='neighborhood')
     price_min = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='gte')
     price_max = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='lte')
     gender = filters.CharFilter(method='filter_gender', label='Gender')
@@ -23,7 +23,7 @@ class ListingFilter(filters.FilterSet):
             return queryset
         return queryset.filter(rooms__gender_preference=value)
     
-            
+    
     def filter_amenities(self, queryset, name, value):
         amenity_names = [a.strip() for a in value.split(',') if a.strip()]
     

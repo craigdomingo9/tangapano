@@ -16,6 +16,10 @@ class ListingAmenity(models.Model):
     class Meta:
         unique_together = ("listing", "amenity")
         verbose_name_plural = "Listing Amenities"
+        indexes = [
+            models.Index(fields=['amenity']),
+            models.Index(fields=['listing']),
+        ]
     
     def __str__(self):
         return f"{self.listing} - {self.amenity}"

@@ -4,9 +4,12 @@ from django.db.models import Count
 from tqdm import tqdm
 from faker import Faker
 import random
+import os
+from django.core.files import File
 
-from listings.models import Listing, ListingAmenity, Amenity, Room
-from campuses.models import Campus, Neighborhood
+
+from listings.models import Listing, ListingAmenity, Amenity, Room, ListingImage
+from campuses.models import Campus
 from users.models import Landlord, User
 
 fake = Faker()
@@ -16,7 +19,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--landlords', type=int, default=50, help='Number of landlords to create'
+            '--landlords', type=int, default=500, help='Number of landlords to create'
         )
         parser.add_argument(
             '--listings', type=int, default=10, help='Listings per landlord'
@@ -33,7 +36,7 @@ class Command(BaseCommand):
         Landlord.objects.all().delete()
         ListingAmenity.objects.all().delete()
         Amenity.objects.all().delete()
-        User.objects.filter(role='landlord').delete()
+        User.objects.all().delete()
 
         self.stdout.write("🧱 Creating amenities...")
         amenities_data = [
@@ -48,6 +51,7 @@ class Command(BaseCommand):
             {"name": "washing_machine", "display_name": "Washing Machine"},
             {"name": "refrigerator", "display_name": "Refrigerator"},
         ]
+        
         for amenity in amenities_data:
             Amenity.objects.create(**amenity)
 
@@ -99,6 +103,20 @@ class Command(BaseCommand):
                     landlord=landlord,
                     distance_from_campus=random.choice([10, 15, 25, 30, 45, 60])
                 )
+                
+                # Assign random image
+            fake_image_dir = os.path.join(os.getcwd(), 'fake-images')
+            image_files = [f for f in os.listdir(fake_image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.avif', '.webp'))]
+
+            if image_files:
+                selected_image = random.choice(image_files)
+                image_path = os.path.join(fake_image_dir, selected_image)
+                
+                with open(image_path, 'rb') as f:
+                    ListingImage.objects.create(
+                        listing=listing,
+                        image=File(f, name=selected_image)
+                    )
 
                 selected_amenities = random.sample(amenities, k=random.randint(5, 8))
                 ListingAmenity.objects.bulk_create([
