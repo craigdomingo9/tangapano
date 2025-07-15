@@ -105,18 +105,18 @@ class Command(BaseCommand):
                 )
                 
                 # Assign random image
-            fake_image_dir = os.path.join(os.getcwd(), 'fake-images')
-            image_files = [f for f in os.listdir(fake_image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.avif', '.webp'))]
+                fake_image_dir = os.path.join(os.getcwd(), 'fake-images')
+                image_files = [f for f in os.listdir(fake_image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.avif', '.webp'))]
 
-            if image_files:
-                selected_image = random.choice(image_files)
-                image_path = os.path.join(fake_image_dir, selected_image)
-                
-                with open(image_path, 'rb') as f:
-                    ListingImage.objects.create(
-                        listing=listing,
-                        image=File(f, name=selected_image)
-                    )
+                if image_files:
+                    selected_image = random.choice(image_files)
+                    image_path = os.path.join(fake_image_dir, selected_image)
+                    
+                    with open(image_path, 'rb') as f:
+                        ListingImage.objects.create(
+                            listing=listing,
+                            image=File(f, name=selected_image)
+                        )
 
                 selected_amenities = random.sample(amenities, k=random.randint(5, 8))
                 ListingAmenity.objects.bulk_create([
