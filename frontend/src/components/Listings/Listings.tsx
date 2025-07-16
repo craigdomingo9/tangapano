@@ -2,6 +2,9 @@
 import { useInView } from 'react-intersection-observer';
 import useListings from "@/lib/services/api/useListings";
 import React, { useEffect } from 'react';
+import { PulseLoader } from "react-spinners";
+import ListingsList from './ListingsList';
+
 
 type Props = {
   filterParamsURL: string,
@@ -18,8 +21,6 @@ function Listings({filterParamsURL}: Props) {
     status 
   } = useListings(filterParamsURL);
 
-  console.log(data);
-  
   const { ref, inView } = useInView();
   
   useEffect(() => {
@@ -29,27 +30,34 @@ function Listings({filterParamsURL}: Props) {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="max-w-3xl border flex-1">
+    <div className="max-w-3xl flex-1">
       <div className="space-y-6">
-        {status === 'pending' && <p>Loading properties...</p>}
+        {status === 'pending' && (
+          <div className='flex justify-center mt-5'>
+            <PulseLoader color='var(--primary-bg)' />
+          </div>
+        )}
         {status === 'error' && <p>Error: {error.message}</p>}
         
         {status === 'success' && (
           <>
-            {data.pages.map((page, i) => (
-              <React.Fragment key={i}>
-                {page.results.map(property => (
-                  <div key={property.id} className='h-24 w-24 border flex justify-center items-center' >
-                    {property.name}
-                  </div>
-                ))}
-              </React.Fragment>
-            ))}
-            
+            <div>
+              <ListingsList 
+                listings={data} 
+              />
+            </div>
+
             <div ref={ref} className="py-4 text-center">
-              {isFetchingNextPage && <p>Loading more properties...</p>}
+              {isFetchingNextPage && (
+                <div className='flex justify-center'>
+                  <PulseLoader color='var(--primary-bg)' />
+                </div>
+              )}
               {!hasNextPage && !isFetchingNextPage && (
-                <p>No more properties to load</p>
+                <div className="col-span-full text-center py-2 text-gray-500 text-sm bg-white rounded-xl shadow-lg">
+                  <p className="mb-2">😔 No accommodations found matching your filters.</p>
+                  <p>Try adjusting your search criteria or listing your own!</p>
+                </div>
               )}
             </div>
           </>

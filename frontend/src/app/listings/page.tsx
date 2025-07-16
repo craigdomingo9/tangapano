@@ -12,15 +12,10 @@ async function page({searchParams}: Props) {
   const amenities = params.amenity;
   delete params.amenity;
 
-  // console.log(params, amenities);
-
   const filters = new URLSearchParams(params);
-
   amenities?.map((amenity: string) => {
     filters.append("amenity", amenity);
   });
-
-  // console.log(filters.toString());
 
   return (
     <div className="flex justify-center min-h-dvh flex-col items-center [&>div]:w-full">

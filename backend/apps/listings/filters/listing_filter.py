@@ -10,7 +10,7 @@ class ListingFilter(filters.FilterSet):
     price_min = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='gte')
     price_max = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='lte')
     gender = filters.CharFilter(method='filter_gender', label='Gender')
-    max_occupants = filters.NumberFilter(field_name='rooms__max_occupancy', lookup_expr='lte')
+    max_occupants = filters.NumberFilter(field_name='rooms__max_occupancy')
     is_available = filters.BooleanFilter(field_name='rooms__is_available')
     amenities = filters.CharFilter(method='filter_amenities')
     
@@ -62,7 +62,7 @@ class ListingFilter(filters.FilterSet):
             room_filter &= Q(max_occupancy__lte=max_occupants)
         if is_available:
             room_filter &= Q(is_available=True)
-            
+
         # ✅ Only include listings where such rooms exist
         matching_rooms = Room.objects.filter(
             listing=OuterRef("pk")
@@ -74,7 +74,7 @@ class ListingFilter(filters.FilterSet):
 
         # Apply filtered prefetch
         queryset = queryset.prefetch_related(
-            Prefetch('rooms', queryset=Room.objects.filter(room_filter))
+            Prefetch('rooms', queryset=Room.objects.filter(room_filter).order_by('rent_per_month'))
         )
 
         # ✅ Exclude listings that will have zero rooms after filtering

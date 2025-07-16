@@ -22,7 +22,7 @@ class ListingViewSet(viewsets.ModelViewSet):
     Supports filtering, pagination, and ordering by room price, distance, etc.
     """
     
-    queryset = Listing.objects.all()
+    queryset = Listing.objects.all().distinct()
     serializer_class = ListingSerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = StandardResultsSetPagination
@@ -34,20 +34,11 @@ class ListingViewSet(viewsets.ModelViewSet):
     ]
 
     ordering_fields = ['price', 'distance']
-    ordering = ['price']  # default sort
     
-    def get_cache_decorators(self):
-        """Return cache decorators only in production."""
-        if not settings.DEBUG:
-            return [
-                vary_on_headers('Cookie'),
-                cache_page(60 * 60 * 2),  # 2 hours
-                vary_on_cookie,
-            ]
-        return []
-
-    def dispatch(self, *args, **kwargs):
-        for decorator in self.get_cache_decorators():
-            self.list = method_decorator(decorator)(self.list)
-        return super().dispatch(*args, **kwargs)
+    
+    # @method_decorator(cache_page(settings.CACHE_TTL))
+    # @method_decorator(vary_on_headers('Cookie'))
+    # @method_decorator(vary_on_cookie)
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 

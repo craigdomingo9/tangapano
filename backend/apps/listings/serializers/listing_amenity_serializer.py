@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from listings.models import ListingAmenity
-
+from listings.serializers import AmenitySerializer
 
 class ListingAmenitySerializer(serializers.ModelSerializer):
-    amenity = serializers.StringRelatedField(read_only=True)
+    amenity = AmenitySerializer(read_only=True)
     
     class Meta:
         model = ListingAmenity

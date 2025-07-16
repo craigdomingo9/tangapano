@@ -95,6 +95,9 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.User'
 
 
+CACHE_TTL = 60 * 60 * 2
+
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
