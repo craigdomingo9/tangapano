@@ -1,2 +1,2 @@
-from .auth_views import LoginView, LogoutView
+from .auth_views import LoginView, LogoutView, VerifyTokenView
 from .user_views import UserRegistrationView, UserProfileView, UserListView

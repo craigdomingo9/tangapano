@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from listings.serializers import RoomSerializer
 from listings.models import Room
 
@@ -9,6 +9,7 @@ class RoomViewSet(viewsets.ModelViewSet):
     """
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
         # Custom logic before saving a new room can be added here

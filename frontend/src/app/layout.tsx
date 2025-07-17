@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import Header from "@/components/HomePage/Header";
+import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "@/components/Sonner";
 
 export const metadata: Metadata = {
   title: "TangaPano",
@@ -15,7 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

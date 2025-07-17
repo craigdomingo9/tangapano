@@ -1,4 +1,3 @@
-import Header from "@/components/HomePage/Header";
 import Listings from "@/components/Listings/Listings";
 
 type Props = {
@@ -19,7 +18,7 @@ async function page({searchParams}: Props) {
 
   return (
     <div className="flex justify-center min-h-dvh flex-col items-center [&>div]:w-full">
-      <Header />
+      <div />
       <Listings 
         filterParamsURL={filters.toString()} 
       />

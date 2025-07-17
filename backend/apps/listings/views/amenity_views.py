@@ -1,6 +1,7 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from listings.serializers import AmenitySerializer
 from listings.models import Amenity
+
 
 class AmenityViewSet(viewsets.ModelViewSet):
     """
@@ -8,4 +9,4 @@ class AmenityViewSet(viewsets.ModelViewSet):
     """
     queryset = Amenity.objects.all()
     serializer_class = AmenitySerializer
-
+    permission_classes = [permissions.AllowAny]

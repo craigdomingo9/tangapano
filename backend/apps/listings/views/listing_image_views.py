@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from listings.serializers import ListingImageSerializer
 from listings.models import ListingImage
 
@@ -8,3 +8,4 @@ class ListingImageViewSet(viewsets.ModelViewSet):
     """
     queryset = ListingImage.objects.all()
     serializer_class = ListingImageSerializer
+    permission_classes = [permissions.AllowAny]
