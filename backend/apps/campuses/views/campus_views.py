@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from campuses.models import Campus
 from campuses.serializers import CampusSerializer
+from rest_framework import permissions
 
 
 class CampusViewSet(viewsets.ModelViewSet):
@@ -9,3 +10,4 @@ class CampusViewSet(viewsets.ModelViewSet):
     """
     queryset = Campus.objects.all()
     serializer_class = CampusSerializer
+    permission_classes = [permissions.AllowAny]
