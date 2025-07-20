@@ -1,20 +1,29 @@
 import { Button } from "@/components/ui/button"
 import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
-import { useState } from "react";
 import { MoonLoader } from "react-spinners";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useSelectedListing } from "../CardButtons";
 
 
 function DeleteExistingRoom() {
-
-  const { entities: operation, setEntities: setOperation } = useRoomsDialogOperation();
+  
+  const { entities: selectedListing } = useSelectedListing();
+  const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedRoom } = useSelectedRoom();
-  const [isDeleting, setIsDeleting] = useState(false);
+  
+  const queryClient = useQueryClient(); 
+  const mutation = useMutation({
+    mutationFn: () => axios.delete(`/api/landlord-listings/rooms/${selectedRoom?.id}`),
+    onSuccess: () => {
+      setOperation("list");
+      queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
+      queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
+    },
+  })
 
   async function handleDeleteRoom() {
-    setIsDeleting(true);
-    console.log("Deleting room...", selectedRoom);
-    // setOperation("list");
-
+    await mutation.mutateAsync();    
   }
 
   return (
@@ -26,7 +35,7 @@ function DeleteExistingRoom() {
           variant={"destructive"}
           onClick={handleDeleteRoom}
         >
-          {isDeleting ? (
+          {mutation.isPending ? (
             <MoonLoader
               color="white"
               size={15}
