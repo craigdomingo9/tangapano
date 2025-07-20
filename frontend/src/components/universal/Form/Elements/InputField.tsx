@@ -64,6 +64,7 @@ function InputField({
               className={cn("text-sm", inputClassName)}
               placeholder={placeholder}
               value={fieldValue}
+              name={fieldName}
               onChange={(e) => {
                 const value = e.target.value;
                 form.setValue(fieldName, value);
