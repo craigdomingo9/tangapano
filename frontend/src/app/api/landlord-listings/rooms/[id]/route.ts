@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function PATCH( request: Request, { params }: { params: { id: string } } ) {
   const token = await getAuthToken();
   const roomId = await params.id;
-  const { room } = await request.json();
+  const room = await request.json();
 
   const res = await axiosInstance.patch(`/listings/rooms/${roomId}/`, room, {
     headers: {

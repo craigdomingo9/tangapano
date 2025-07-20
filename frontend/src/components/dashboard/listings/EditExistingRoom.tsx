@@ -9,18 +9,30 @@ import SelectField from "@/components/HomePage/SelectField";
 import { createEditExitingRoomForm, editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listings/editExisitingRoomForm";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useSelectedListing } from "../CardButtons";
 
 
 function EditExistingRoom() {
 
   const form = createEditExitingRoomForm();
-  const { entities: operation, setEntities: setOperation } = useRoomsDialogOperation();
-  const [isSaving, setIsSaving] = useState(false);
+  const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedRoom } = useSelectedRoom();
+  const { entities: selectedListing } = useSelectedListing();
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (data: z.infer<typeof editExitingRoomFormSchema>) => axios.patch(`/api/landlord-listings/rooms/${selectedRoom?.id}`, data),
+    onSuccess: () => {
+      setOperation("list");
+      queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
+      queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
+    },
+  })
 
   async function onSubmit(data: z.infer<typeof editExitingRoomFormSchema>) {
-    setIsSaving(true);
-    console.log(data);
+    await mutation.mutateAsync(data);
   }
 
   return (
@@ -44,7 +56,7 @@ function EditExistingRoom() {
               
               <SelectField 
                 form={form}
-                fieldName="gender"
+                fieldName="gender_preference"
                 label="Gender Preference"
                 defaultValue={selectedRoom.gender_preference}
                 selectionList={[
@@ -65,7 +77,7 @@ function EditExistingRoom() {
             <div className="flex justify-end gap-3 mt-5">
               <Button onClick={() => setOperation("list")} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium">Cancel</Button>
               <Button type="submit" className="px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg text-white font-medium">
-                {isSaving ? (
+                {mutation.isPending ? (
                   <MoonLoader
                     color="white"
                     size={15}
