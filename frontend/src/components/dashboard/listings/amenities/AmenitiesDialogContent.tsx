@@ -3,7 +3,7 @@ import { useAmenitiesDialogState, useSelectedAmenities } from './AmenitiesDialog
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import fetchAmenities from '@/lib/services/api/fetchAmenities';
 import axios from 'axios';
-import { useSelectedListing } from '../CardButtons';
+import { useSelectedListing } from '../../CardButtons';
 import { MoonLoader } from 'react-spinners';
 import { Button } from '@/components/ui/button';
 

@@ -3,7 +3,7 @@ import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
 import { MoonLoader } from "react-spinners";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useSelectedListing } from "../CardButtons";
+import { useSelectedListing } from "../../CardButtons";
 
 
 function DeleteExistingRoom() {

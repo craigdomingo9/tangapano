@@ -1,7 +1,7 @@
 import { Bed, Edit, ImageIcon, List, Trash2 } from "lucide-react";
-import { useAmenitiesDialogState, useSelectedAmenities } from "./listings/AmenitiesDialog";
 import createEntityStore from "@/lib/store/entityStore";
-import { useRoomsDialogState } from "./listings/RoomsDialog";
+import { useRoomsDialogState } from "./listings/rooms/RoomsDialog";
+import { useAmenitiesDialogState, useSelectedAmenities } from "./listings/amenities/AmenitiesDialog";
 
 
 type Props = {

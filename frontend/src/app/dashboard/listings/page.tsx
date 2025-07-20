@@ -6,9 +6,9 @@ import MainContentArea from "@/components/dashboard/MainContentArea"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios";
 import ListingsList from "@/components/dashboard/listings/ListingsList";
-import AmenitiesDialog from "@/components/dashboard/listings/AmenitiesDialog";
 import { PulseLoader } from "react-spinners";
-import RoomsDialog from "@/components/dashboard/listings/RoomsDialog";
+import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
+import AmenitiesDialog from "@/components/dashboard/listings/amenities/AmenitiesDialog";
 
 function page() {
 
