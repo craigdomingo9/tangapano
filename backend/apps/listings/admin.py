@@ -15,14 +15,15 @@ class AmenityAdmin(admin.ModelAdmin):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ('listing', 'max_occupancy', 'current_occupancy', 'rent_per_month', 'is_available', 'is_active')
+    list_display = ('listing', 'max_occupants', 'current_occupants', 'rent_per_month', 'is_available', 'is_active')
     search_fields = ('listing__title', 'room_type')
-    list_filter = ('is_available', 'is_active', 'max_occupancy')
+    list_filter = ('is_available', 'is_active', 'max_occupants')
 
 @admin.register(ListingAmenity)
 class ListingAmenityAdmin(admin.ModelAdmin):
     list_display = ('listing', 'amenity')
     search_fields = ('listing__title', 'amenity__name')
+    list_filter = ('listing', 'amenity')
 
 @admin.register(ListingImage)
 class ListingImageAdmin(admin.ModelAdmin):

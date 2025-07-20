@@ -36,7 +36,7 @@ export function LoginForm({
       const _ = await axios.post('/api/login', data);
       
       toast.success("Logged in successfully")
-      router.push('/dashboard')
+      router.push('/dashboard/listings')
     } catch (error) {
       toast.error("Invalid username or password")
       

@@ -1,0 +1,18 @@
+import { Button } from '../ui/button'
+import { PlusCircle } from 'lucide-react'
+
+type Props = {
+  children: React.ReactNode
+}
+
+function HeaderButton({
+  children
+}: Props) {
+  return (
+    <Button className="rounded-xs shadow-md h-10 flex items-center gap-2 transition-all duration-200 transform hover:scale-105"> 
+      {children}
+    </Button>
+  )
+}
+
+export default HeaderButton

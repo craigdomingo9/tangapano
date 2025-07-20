@@ -8,18 +8,13 @@ class Room(models.Model):
         on_delete=models.CASCADE,
         related_name="rooms"
     )
-    room_type = models.CharField(max_length=50, choices=[
-        ('single', 'Single'),
-        ('double', 'Double'),
-        ('shared', 'Shared'),
-    ], default='single')
-    max_occupancy = models.PositiveIntegerField(default=1)
-    current_occupancy = models.PositiveIntegerField(default=0)
+    max_occupants = models.PositiveIntegerField(default=1)
+    current_occupants = models.PositiveIntegerField(default=0)
     rent_per_month = models.DecimalField(max_digits=10, decimal_places=2)
     gender_preference = models.CharField(max_length=50, choices=[
         ('male', 'Male'),
         ('female', 'Female'),
-        ('none', 'None'),
+        ('any', 'Any'),
     ])
     is_available = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)

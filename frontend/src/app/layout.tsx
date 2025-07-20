@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import Header from "@/components/HomePage/Header";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "@/components/Sonner";
+import ClientLayout from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
   title: "TangaPano",
@@ -20,8 +21,9 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <Providers>
           <AuthProvider>
-            <Header />
-            {children}
+            <ClientLayout>
+              {children}
+            </ClientLayout>
             <Toaster />
           </AuthProvider>
         </Providers>

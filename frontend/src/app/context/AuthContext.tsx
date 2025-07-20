@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch {}
     setUser(null)
     setIsAuthenticated(false)
-    router.push('/login')
+    router.push('/')
   }
 
   return (

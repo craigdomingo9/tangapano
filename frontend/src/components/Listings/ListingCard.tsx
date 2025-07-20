@@ -36,7 +36,7 @@ function ListingCard({ listing }: Props) {
             <DollarSign size={16} className="mr-2 text-green-600" /> From ${room.rent_per_month}/month | ${listing.campus.agents.agent_fee} agent fee
           </p>
           <p className="text-gray-700 flex items-center mb-1">
-            <Users size={16} className="mr-2 text-purple-500" /> Max {room.max_occupancy} student(s) per room
+            <Users size={16} className="mr-2 text-purple-500" /> Max {room.max_occupants} student(s) per room
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Ruler size={16} className="mr-2 text-orange-500" /> {listing.distance_from_campus} mins from campus

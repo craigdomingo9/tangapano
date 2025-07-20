@@ -53,7 +53,7 @@ function SelectField({
           <FormLabel className={cn("font-semibold", labelClassName)}>{label}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
               <FormControl>
-                <SelectTrigger className={cn( selectClassName, "w-80 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500")}>
+                <SelectTrigger className={cn("w-80 min-h-12 rounded-sm bg-white text-black border ", selectClassName)}>
                   <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
               </FormControl>

@@ -3,6 +3,7 @@ import SelectField from '@/components/universal/Form/Elements/SelectField'
 
 type Props = {
   form: UseFormReturn<any, any, any>,
+  fieldName?: string,
 }
 
 const genders = [
@@ -11,12 +12,12 @@ const genders = [
     "female",
 ]
 
-function GenderSelector({form}: Props) {
+function GenderSelector({form, fieldName = "gender"}: Props) {
   return (
     <SelectField 
       form={form}
       defaultValue={genders[0]}
-      fieldName="gender"
+      fieldName={fieldName}
       label="Gender"
       selectionList={genders}
       description=""

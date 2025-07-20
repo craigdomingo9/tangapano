@@ -57,7 +57,7 @@ interface Image {
 interface Room {
   id: string;
   listing: number;
-  max_occupancy: number;
+  max_occupants: number;
   rent_per_month: string;
   gender_preference: string;
   is_available: boolean;

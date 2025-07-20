@@ -131,7 +131,7 @@ class Command(BaseCommand):
                     Room.objects.create(
                         listing=listing,
                         rent_per_month=rent,
-                        max_occupancy=occupants,
+                        max_occupants=occupants,
                         gender_preference=random.choice(["male", "female", "any"]),
                         is_available=fake.boolean(chance_of_getting_true=80)
                     )

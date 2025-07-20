@@ -10,7 +10,7 @@ class ListingFilter(filters.FilterSet):
     price_min = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='gte')
     price_max = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='lte')
     gender = filters.CharFilter(method='filter_gender', label='Gender')
-    max_occupants = filters.NumberFilter(field_name='rooms__max_occupancy')
+    max_occupants = filters.NumberFilter(field_name='rooms__max_occupants')
     is_available = filters.BooleanFilter(field_name='rooms__is_available')
     amenities = filters.CharFilter(method='filter_amenities')
     
@@ -59,7 +59,7 @@ class ListingFilter(filters.FilterSet):
         if gender and gender != 'any':
             room_filter &= Q(gender_preference=gender)
         if max_occupants:
-            room_filter &= Q(max_occupancy__lte=max_occupants)
+            room_filter &= Q(max_occupants__lte=max_occupants)
         if is_available:
             room_filter &= Q(is_available=True)
 

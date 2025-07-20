@@ -1,5 +1,5 @@
 # Standard Library
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
@@ -16,9 +16,9 @@ from listings.filters import ListingFilter
 from listings.filters import AliasedOrderingFilter
 
 
-class ListingViewSet(viewsets.ModelViewSet):
+class ListingAPIView(generics.ListAPIView):
     """
-    A viewset for viewing and editing Listing instances.
+    A viewset for viewing
     Supports filtering, pagination, and ordering by room price, distance, etc.
     """
     
