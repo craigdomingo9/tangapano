@@ -1,8 +1,10 @@
 from rest_framework import viewsets, permissions
+import rest_framework.exceptions as exceptions
+from django_filters.rest_framework import DjangoFilterBackend
 from listings.serializers import RoomSerializer
 from listings.models import Room
 from listings.permissions import IsRoomOwnedByLandlord
-import rest_framework.exceptions as exceptions
+from listings.filters import RoomFilter
 
 class RoomViewSet(viewsets.ModelViewSet):
     """
@@ -10,6 +12,10 @@ class RoomViewSet(viewsets.ModelViewSet):
     """
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    filterset_class = RoomFilter
+    filter_backends = [
+        DjangoFilterBackend, 
+    ]
     
     def get_permissions(self):
         """

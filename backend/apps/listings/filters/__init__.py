@@ -1,2 +1,3 @@
 from .listing_filter import ListingFilter
 from .listing_ordering_filter import AliasedOrderingFilter
+from .room_filter import RoomFilter

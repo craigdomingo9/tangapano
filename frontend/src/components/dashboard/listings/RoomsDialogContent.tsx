@@ -1,19 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Edit, PlusCircle, Trash2 } from "lucide-react";
 import { useSelectedListing } from "../CardButtons";
-import { useIsMobile } from "@/hooks/use-mobile";
 import AddNewRoom from "./AddNewRoom";
 import EditExistingRoom from "./EditExistingRoom";
 import DeleteExistingRoom from "./DeleteExistingRoom";
 import createEntityStore from "@/lib/store/entityStore";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+
 
 export const useRoomsDialogOperation = createEntityStore<"list" | "add" | "edit" | "delete">("list");
 export const useSelectedRoom = createEntityStore<Room>({} as Room);
+
 
 function RoomsDialogContent() {
   const { entities: selectedListing } = useSelectedListing();
   const { entities: operation, setEntities: setOperation } = useRoomsDialogOperation();
   const { setEntities: setSelectedRoom } = useSelectedRoom();
+
+  const {
+    data: rooms,
+    status,
+  } = useQuery({
+    queryKey: ["rooms", selectedListing?.id],
+    queryFn: () => axios.get(`/api/landlord-listings/${selectedListing?.id}/rooms`),
+    enabled: !!selectedListing?.id
+  });
+  
+  const roomsData: Room[] = rooms?.data;
 
   const renderRoomList = () => (
     <>
@@ -22,11 +37,12 @@ function RoomsDialogContent() {
         Add New Room
       </Button>
 
-      {selectedListing?.rooms?.length === 0 ? (
+
+      {roomsData?.length === 0 ? (
         <p className="text-center text-gray-500 mt-4">No rooms added for this listing yet.</p>
       ) : (
         <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4">
-          {selectedListing?.rooms.map((room, index) => (
+          {roomsData?.map((room, index) => (
             <div
               key={room.id}
               className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-white shadow-sm"

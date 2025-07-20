@@ -27,8 +27,9 @@ function AddNewRoom() {
     retry: 3,
     onSuccess: () => {
       setOperation("list");
-      form.reset(); // optionally clear the form
+      form.reset();
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
+      queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
     },
     onError: (err) => {
       console.error("Failed to add room:", err);

@@ -28,7 +28,7 @@ function page() {
     console.log(error);
   }
 
-  const listings = data?.data.data
+  const listings = data?.data
 
   return (
     <>
