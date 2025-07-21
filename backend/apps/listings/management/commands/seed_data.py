@@ -7,19 +7,19 @@ import random
 import os
 from django.core.files import File
 
-
-from listings.models import Listing, ListingAmenity, Amenity, Room, ListingImage
+from listings.models import Listing, Amenity, Room, ListingImage
 from campuses.models import Campus
 from users.models import Landlord, User
 
 fake = Faker()
+
 
 class Command(BaseCommand):
     help = "Seed the database with landlords, listings, rooms, and amenities"
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--landlords', type=int, default=500, help='Number of landlords to create'
+            '--landlords', type=int, default=200, help='Number of landlords to create'
         )
         parser.add_argument(
             '--listings', type=int, default=10, help='Listings per landlord'
@@ -34,24 +34,22 @@ class Command(BaseCommand):
         Room.objects.all().delete()
         Listing.objects.all().delete()
         Landlord.objects.all().delete()
-        ListingAmenity.objects.all().delete()
         Amenity.objects.all().delete()
-        User.objects.all().delete()
 
         self.stdout.write("🧱 Creating amenities...")
         amenities_data = [
-            {"name": "wifi", "display_name": "WiFi"},
-            {"name": "geyser", "display_name": "Geyser"},
-            {"name": "study_room", "display_name": "Study Room"},
-            {"name": "study_desk", "display_name": "Study Desk"},
-            {"name": "parking", "display_name": "Parking"},
-            {"name": "security", "display_name": "Security"},
-            {"name": "solar_power", "display_name": "Solar Power"},
-            {"name": "mixed_gender", "display_name": "Mixed Gender"},
-            {"name": "washing_machine", "display_name": "Washing Machine"},
-            {"name": "refrigerator", "display_name": "Refrigerator"},
+            {"name": "wifi"},
+            {"name": "geyser"},
+            {"name": "study_room"},
+            {"name": "study_desk"},
+            {"name": "parking"},
+            {"name": "security"},
+            {"name": "solar_power"},
+            {"name": "mixed_gender"},
+            {"name": "washing_machine"},
+            {"name": "refrigerator"},
         ]
-        
+
         for amenity in amenities_data:
             Amenity.objects.create(**amenity)
 
@@ -63,8 +61,8 @@ class Command(BaseCommand):
         if not campuses:
             self.stdout.write(self.style.ERROR("🚫 No campuses with neighborhoods found. Seed campuses first."))
             return
-        
-        # create admin user
+
+        # Create admin user
         self.stdout.write(f"👨‍💼 Creating admin user...")
         _ = User.objects.create_superuser(
             username="admin",
@@ -101,9 +99,9 @@ class Command(BaseCommand):
                     campus=campus,
                     neighborhood=neighborhood,
                     landlord=landlord,
-                    distance_from_campus=random.choice([10, 15, 25, 30, 45, 60])
+                    distance_from_campus=random.choice([10, 15, 25, 30, 45, 60]),
                 )
-                
+
                 # Assign random image
                 fake_image_dir = os.path.join(os.getcwd(), 'fake-images')
                 image_files = [f for f in os.listdir(fake_image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.avif', '.webp'))]
@@ -111,22 +109,21 @@ class Command(BaseCommand):
                 if image_files:
                     selected_image = random.choice(image_files)
                     image_path = os.path.join(fake_image_dir, selected_image)
-                    
+
                     with open(image_path, 'rb') as f:
                         ListingImage.objects.create(
                             listing=listing,
                             image=File(f, name=selected_image)
                         )
 
+                # Add amenities directly using ManyToMany field
                 selected_amenities = random.sample(amenities, k=random.randint(5, 8))
-                ListingAmenity.objects.bulk_create([
-                    ListingAmenity(listing=listing, amenity=a) for a in selected_amenities
-                ])
+                listing.amenities.set(selected_amenities)
 
                 for _ in range(random.randint(3, 7)):
                     occupants = random.choice([1, 2, 3])
                     base_price = 50 + (4 - occupants) * 20
-                    rent = base_price + random.choice([-10, -5, 0, 5, 10]) # +/- 10%
+                    rent = base_price + random.choice([-10, -5, 0, 5, 10])  # +/- 10%
 
                     Room.objects.create(
                         listing=listing,

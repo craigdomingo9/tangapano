@@ -1,5 +1,5 @@
 from django.contrib import admin
-from listings.models import Listing, Amenity, Room, ListingAmenity, ListingImage
+from listings.models import Listing, Amenity, Room, ListingImage
 
 # Register your models here.
 @admin.register(Listing)
@@ -19,11 +19,6 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ('listing__title', 'room_type')
     list_filter = ('is_available', 'is_active', 'max_occupants')
 
-@admin.register(ListingAmenity)
-class ListingAmenityAdmin(admin.ModelAdmin):
-    list_display = ('listing', 'amenity')
-    search_fields = ('listing__title', 'amenity__name')
-    list_filter = ('listing', 'amenity')
 
 @admin.register(ListingImage)
 class ListingImageAdmin(admin.ModelAdmin):

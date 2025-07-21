@@ -66,11 +66,7 @@ interface Room {
   updated_at: string;
 }
 
-interface ListingAmenity {
-  id: string;
-  listing: number;
-  amenity: Amenity;
-}
+
 
 interface Listing {
   id: string;
@@ -78,7 +74,7 @@ interface Listing {
   landlord: Landlord;
   description: string;
   images: Image[];
-  amenities: ListingAmenity[];
+  amenities: Amenity[];
   campus: Campus;
   neighborhood: Neighborhood;
   distance_from_campus: string;

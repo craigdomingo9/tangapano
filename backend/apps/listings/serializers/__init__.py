@@ -2,4 +2,3 @@ from .amenity_serializer import AmenitySerializer
 from .room_serializer import RoomSerializer
 from .listing_serializer import ListingSerializer, ListingCreateSerializer
 from .listing_image_serializer import ListingImageSerializer
-from .listing_amenity_serializer import ListingAmenitySerializer

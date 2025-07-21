@@ -14,11 +14,11 @@ class LandlordListingViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerLandlord]
     
+    
     def get_serializer_class(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in ['create', 'update', 'partial_update']:
             return ListingCreateSerializer
-        else:
-            return ListingSerializer
+        return ListingSerializer
 
     def get_queryset(self):
         # Ensure landlord exists for this user

@@ -27,7 +27,7 @@ function ListingCard({listing}: Props) {
               <Ruler size={16} className="mr-2 text-orange-500" /> {listing.distance_from_campus} mins from campus
             </p>
             <div className="flex flex-wrap gap-1 my-2">
-              {listing.amenities.map(({amenity}) => (
+              {listing.amenities.map((amenity) => (
                 <span key={amenity.id} className="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-0.5 rounded-full">
                   {amenity.display_name}
                 </span>

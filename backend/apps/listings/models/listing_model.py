@@ -1,5 +1,6 @@
 from django.db import models
 from campuses.models import Campus, Neighborhood
+from .amenity_model import Amenity
 
 
 class Listing(models.Model):
@@ -20,6 +21,11 @@ class Listing(models.Model):
         on_delete=models.CASCADE,
         related_name="neighborhood_listings"
     )
+    amenities = models.ManyToManyField(
+        Amenity, 
+        related_name="listings", 
+        blank=True
+    )
     distance_from_campus = models.FloatField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,6 +33,7 @@ class Listing(models.Model):
 
     class Meta:
         verbose_name_plural = "Listings"
+        ordering = ["-created_at"]
 
     def __str__(self):
         return self.title

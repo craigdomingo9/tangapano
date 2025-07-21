@@ -48,7 +48,7 @@ function CardButtons({listing}: Props) {
       <button
         className="h-10 text-sm font-medium bg-purple-500 hover:bg-purple-600 text-white flex items-center justify-center gap-1 transition-colors duration-200"
         onClick={() => {
-          setSelectedAmenities(listing.amenities.map(({amenity}) => amenity));
+          setSelectedAmenities(listing.amenities.map((amenity) => amenity));
           setSelectedListing(listing);
           setAmenitiesDialog(true);
         }}

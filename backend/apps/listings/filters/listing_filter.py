@@ -31,7 +31,7 @@ class ListingFilter(filters.FilterSet):
         if amenity_names:
             q_objects = Q()
             for name in amenity_names:
-                q_objects |= Q(amenities__amenity__name__exact=name)
+                q_objects |= Q(amenities__name__exact=name)
             
             min_match_count = len(amenity_names) // 2
             queryset = queryset.annotate(

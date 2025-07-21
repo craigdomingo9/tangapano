@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAmenitiesDialogState, useSelectedAmenities } from './AmenitiesDialog';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import fetchAmenities from '@/lib/services/api/fetchAmenities';
@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 function AmenitiesDialogContent() {
   const { entities: selectedAmenities } = useSelectedAmenities();
-  const [currentSelectedAmenities, setCurrentSelectedAmenities] = useState<Amenity[]>(selectedAmenities);
+  const [currentSelectedAmenities, setCurrentSelectedAmenities] = useState<Amenity[]>();
   const { entities: selectedListing } = useSelectedListing();
   const { setEntities: setDialog } = useAmenitiesDialogState();
   const [isSaving, setIsSaving] = useState(false);
@@ -23,11 +23,15 @@ function AmenitiesDialogContent() {
     queryKey: ['amenities'], 
     queryFn: fetchAmenities
   })
+
+  useEffect(() => {
+    setCurrentSelectedAmenities(selectedAmenities);
+  }, [selectedAmenities]);
   
   async function handleSave() {
     setIsSaving(true);
     const payload = {
-      amenities: currentSelectedAmenities.map((a) => a.id)
+      amenities: currentSelectedAmenities?.map((a) => a.id)
     };
 
     const response = await axios.patch(`/api/landlord-listings/${selectedListing?.id}/amenities`, payload);
@@ -42,12 +46,12 @@ function AmenitiesDialogContent() {
     setDialog(false);
   }
 
-  const handleToggleAmenity = (amenityName: string) => {
+  const handleToggleAmenity = (amenityId: string) => {
     setCurrentSelectedAmenities((prev) => {
-      const isSelected = prev.some(item => item.display_name === amenityName);
+      const isSelected = prev?.some(item => item.id === amenityId);
       return isSelected
-        ? prev.filter(item => item.display_name !== amenityName)
-        : [...prev, allAvailableAmenities?.find((item: Amenity) => item.display_name === amenityName)!];
+        ? prev?.filter(item => item.id !== amenityId)
+        : [...prev as Amenity[], allAvailableAmenities?.find((item: Amenity) => item.id === amenityId)!];
     });
   };
 
@@ -59,9 +63,9 @@ function AmenitiesDialogContent() {
           <button
             key={amenity.display_name}
             type="button"
-            onClick={() => handleToggleAmenity(amenity.display_name)}
+            onClick={() => handleToggleAmenity(amenity.id)}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
-              ${currentSelectedAmenities.find(item => item.display_name === amenity.display_name) || currentSelectedAmenities.includes(amenity)
+              ${currentSelectedAmenities?.some(item => item?.id === amenity?.id)
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
