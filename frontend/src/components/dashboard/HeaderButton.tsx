@@ -6,10 +6,11 @@ type Props = {
 }
 
 function HeaderButton({
-  children
-}: Props) {
+  children,
+  ...props
+}: React.ComponentProps<"button"> & Props) {
   return (
-    <Button className="rounded-xs shadow-md h-10 flex items-center gap-2 transition-all duration-200 transform hover:scale-105"> 
+    <Button {...props}  className="rounded-xs shadow-md h-10 flex items-center gap-2 transition-all duration-200 transform hover:scale-105"> 
       {children}
     </Button>
   )

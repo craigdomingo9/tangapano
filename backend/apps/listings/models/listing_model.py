@@ -9,8 +9,7 @@ class Listing(models.Model):
         related_name="listings"
     )
     title = models.CharField(max_length=255)
-    description = models.TextField()
-    rent_per_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    description = models.TextField(null=True, blank=True)
     campus = models.ForeignKey(
         Campus,
         on_delete=models.CASCADE,

@@ -9,6 +9,7 @@ import ListingsList from "@/components/dashboard/listings/ListingsList";
 import { PulseLoader } from "react-spinners";
 import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
 import AmenitiesDialog from "@/components/dashboard/listings/amenities/AmenitiesDialog";
+import ListingDialog, { useListingDialogOperation, useListingDialogState } from "@/components/dashboard/listings/listing/ListingDialog";
 
 function page() {
 
@@ -16,13 +17,14 @@ function page() {
     data,
     error,
     status,
-    isFetching
   } = useQuery({
     queryKey: ['landlord-listings'],
     queryFn: () => {
       return axios.get('/api/landlord-listings/', );
     }
   })
+  const { setEntities: setDialog } = useListingDialogState();
+  const { setEntities: setListingDialogOperation } = useListingDialogOperation();
 
   if (error) {
     console.log(error);
@@ -37,7 +39,12 @@ function page() {
           <DashboardHeader 
             HeaderText={{ title: "Listings", description: "Manage your listings here" }}
             Action={
-              <HeaderButton>
+              <HeaderButton 
+                onClick={() => {
+                  setDialog(true);
+                  setListingDialogOperation('add');
+                }}
+              >
                 <PlusCircle size={20} /> Add New Listing
               </HeaderButton>
             }
@@ -58,6 +65,7 @@ function page() {
       </div>
       <AmenitiesDialog />
       <RoomsDialog />
+      <ListingDialog />
     </>
   )
 }

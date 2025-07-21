@@ -2,6 +2,7 @@ import { Bed, Edit, ImageIcon, List, Trash2 } from "lucide-react";
 import createEntityStore from "@/lib/store/entityStore";
 import { useRoomsDialogState } from "./listings/rooms/RoomsDialog";
 import { useAmenitiesDialogState, useSelectedAmenities } from "./listings/amenities/AmenitiesDialog";
+import { useListingDialogOperation, useListingDialogState } from "./listings/listing/ListingDialog";
 
 
 type Props = {
@@ -15,11 +16,18 @@ function CardButtons({listing}: Props) {
   const { setEntities: setSelectedAmenities } = useSelectedAmenities();
   const { setEntities: setSelectedListing } = useSelectedListing();
   const { setEntities: setRoomsDialog } = useRoomsDialogState();
+  const { setEntities: setListingDialog } = useListingDialogState();
+  const { setEntities: setListingDialogOperation } = useListingDialogOperation();
   
   return (
     <div className="grid grid-cols-2">
       <button
         className="h-10 text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center gap-1 transition-colors duration-200"
+        onClick={() => {
+          setSelectedListing(listing);
+          setListingDialog(true);
+          setListingDialogOperation("edit");
+        }}
       >
         <Edit size={16} /> Edit
       </button>
@@ -49,6 +57,11 @@ function CardButtons({listing}: Props) {
       </button>
       <button
         className="col-span-2 rounded-b-lg h-10 text-sm font-medium bg-rose-500 hover:bg-red-600 text-white flex items-center justify-center gap-1 transition-colors duration-200"
+        onClick={() => {
+          setSelectedListing(listing);
+          setListingDialog(true);
+          setListingDialogOperation("delete");
+        }}
       >
         <Trash2 size={16} /> Delete Listing
       </button>

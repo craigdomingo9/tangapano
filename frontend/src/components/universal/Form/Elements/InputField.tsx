@@ -65,6 +65,7 @@ function InputField({
               placeholder={placeholder}
               value={fieldValue}
               name={fieldName}
+              id={fieldName}
               onChange={(e) => {
                 const value = e.target.value;
                 form.setValue(fieldName, value);

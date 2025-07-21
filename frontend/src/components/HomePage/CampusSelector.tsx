@@ -3,11 +3,13 @@ import SelectField from "./SelectField"
 
 
 type Props = {
-    form: UseFormReturn<any, any, any>,
-    campuses: Campus[]
+  form: UseFormReturn<any, any, any>,
+  campuses: Campus[],
+  labelClassName?: string,
+  selectClassName?: string
 }
 
-function CampusSelector({form, campuses}: Props) {
+function CampusSelector({form, campuses, selectClassName, labelClassName = "text-white"}: Props) {
 
   const campusSelectionList = campuses?.map((campus: Campus) => ({
     id: campus.id,
@@ -20,10 +22,11 @@ function CampusSelector({form, campuses}: Props) {
       form={form}
       fieldName="campus"
       label="Select your campus"
-      labelClassName="text-white"
+      labelClassName={labelClassName}
       placeholder={campusSelectionList ? campusSelectionList[0].name : "Select neighborhood"}
       selectionList={campusSelectionList}
       defaultValue={campusSelectionList ? campusSelectionList[0].id : undefined}
+      selectClassName={selectClassName}
     />
   )
 }

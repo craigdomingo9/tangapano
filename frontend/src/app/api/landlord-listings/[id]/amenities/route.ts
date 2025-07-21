@@ -6,9 +6,9 @@ export async function PATCH( request: Request, { params }: { params: { id: strin
 
   const token = await getAuthToken();
   const listingId = await params.id;
-  const { amenities } = await request.json();
+  const amenities = await request.json();
 
-  const res = await axiosInstance.patch(`/listings/landlord-listings/${listingId}/`, { amenity_ids: amenities }, {
+  const res = await axiosInstance.patch(`/listings/landlord-listings/${listingId}/`, amenities, {
     headers: {
       Authorization: `Token ${token}`,
     },
