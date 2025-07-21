@@ -1,5 +1,6 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Image } from "lucide-react"
 
 
 type Props = {
@@ -19,6 +20,10 @@ function ListingImages({listing}: Props) {
             </Avatar>
           </CarouselItem>
         ))}
+        {listing.images.length === 0 && 
+        <Avatar className="w-full rounded-none h-56 flex justify-center items-center">
+          <Image strokeWidth={1.25} />
+        </Avatar>}
       </CarouselContent>
     </Carousel>
   )

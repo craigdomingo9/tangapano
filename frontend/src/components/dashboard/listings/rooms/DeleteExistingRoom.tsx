@@ -28,7 +28,7 @@ function DeleteExistingRoom() {
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <p className="text-gray-800">Are you sure you want to delete this room?</p>
+      <p className="text-gray-800 font-semibold text-center">Are you sure you want to delete this room?</p>
       <div className="flex gap-2">
         <Button onClick={() => setOperation("list")}>Cancel</Button>
         <Button 
