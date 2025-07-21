@@ -9,7 +9,7 @@ type Props = {
   listing: Listing
 }
 
-export const useSelectedListing = createEntityStore<Listing | null>(null);
+export const useSelectedListing = createEntityStore<Listing>({} as Listing);
 
 function CardButtons({listing}: Props) {
   const { setEntities: setAmenitiesDialog } = useAmenitiesDialogState();

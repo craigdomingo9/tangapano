@@ -6,10 +6,12 @@ type Props = {
   form: UseFormReturn<any, any, any>,
   campuses: Campus[],
   labelClassName?: string,
-  selectClassName?: string
+  selectClassName?: string,
+  defaultValue?: string,
+  placeholder?: string
 }
 
-function CampusSelector({form, campuses, selectClassName, labelClassName = "text-white"}: Props) {
+function CampusSelector({form, campuses, selectClassName, placeholder = "", defaultValue = undefined, labelClassName = "text-white"}: Props) {
 
   const campusSelectionList = campuses?.map((campus: Campus) => ({
     id: campus.id,
@@ -23,9 +25,10 @@ function CampusSelector({form, campuses, selectClassName, labelClassName = "text
       fieldName="campus"
       label="Select your campus"
       labelClassName={labelClassName}
-      placeholder={campusSelectionList ? campusSelectionList[0].name : "Select neighborhood"}
       selectionList={campusSelectionList}
-      defaultValue={campusSelectionList ? campusSelectionList[0].id : undefined}
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+      disabled={campuses?.length === 0}
       selectClassName={selectClassName}
     />
   )

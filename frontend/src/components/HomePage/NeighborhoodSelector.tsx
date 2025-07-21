@@ -7,10 +7,12 @@ type Props = {
   form: UseFormReturn<any, any, any>;
   campuses: Campus[];
   labelClassName?: string,
-  selectClassName?: string
+  selectClassName?: string,
+  defaultValue?: string,
+  placeholder?: string
 };
 
-function NeighborhoodSelector({ form, campuses, selectClassName, labelClassName = "text-white" }: Props) {
+function NeighborhoodSelector({ form, campuses, selectClassName, placeholder = "", defaultValue = undefined, labelClassName = "text-white" }: Props) {
   const selectedCampusId = useWatch({ control: form.control, name: "campus" });
   
   // State to hold the neighborhoods relevant to the currently selected campus
@@ -30,7 +32,7 @@ function NeighborhoodSelector({ form, campuses, selectClassName, labelClassName 
       // Set the default neighborhood for the form based on the selected campus.
       // If the campus has neighborhoods, default to the first one. Otherwise, clear the field.
       if (campus.neighborhoods && campus.neighborhoods.length > 0) {
-        form.setValue("neighborhood", campus.neighborhoods[0].id);
+        form.setValue("neighborhood", defaultValue || campus.neighborhoods[0].id.toString());
       } else {
         // If no neighborhoods for the selected campus, clear the neighborhood field.
         form.setValue("neighborhood", "");
@@ -40,7 +42,7 @@ function NeighborhoodSelector({ form, campuses, selectClassName, labelClassName 
       setNeighborhoods([]);
       form.setValue("neighborhood", "");
     }
-  }, [selectedCampusId, campuses, form]); // 'form' is included as a dependency because form.setValue is used.
+  }, [selectedCampusId, campuses, form]);
 
   return (
     <SelectField
@@ -48,11 +50,10 @@ function NeighborhoodSelector({ form, campuses, selectClassName, labelClassName 
       fieldName="neighborhood"
       label="Select neighborhood"
       labelClassName={labelClassName}
-      // Map the neighborhoods to the {id: string, name: string} format expected by SelectField.
-      // Ensure it's always an array, even if 'neighborhoods' is empty.
       selectionList={neighborhoods.map((n: Neighborhood) => ({ id: n.id, name: n.name }))}
-      placeholder="Select a neighborhood" // Added a placeholder for better UX
-      disabled={neighborhoods.length === 0} // Disable the selector if no neighborhoods are available
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+      disabled={neighborhoods?.length === 0}
       selectClassName={selectClassName}
     />
   );

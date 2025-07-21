@@ -1,7 +1,6 @@
 import SelectField from "@/components/HomePage/SelectField";
 import InputField from "@/components/universal/Form/Elements/InputField";
 import { createEditExistingListingForm, editExistingListingFormSchema } from "@/lib/services/forms/dashboard/listings/editExistingListingForm";
-import { Form } from "react-hook-form";
 import { useSelectedListing } from "../../CardButtons";
 import z from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,6 +12,7 @@ import { useListingDialogState } from "./ListingDialog";
 import axios from "axios";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { MoonLoader } from "react-spinners";
+import { Form } from "@/components/ui/form";
 
 
 function EditExistingListing() {
@@ -36,20 +36,20 @@ function EditExistingListing() {
   })
 
   async function onSubmit(data: z.infer<typeof editExistingListingFormSchema>) {
-
+    await mutation.mutateAsync(data);
   }
 
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
-          <div className="grid grid-cols-2 space-y-2 space-x-2">
-            {/* <InputField 
+          <div className="grid space-y-4">
+            <InputField 
               form={form} 
               fieldName="title" 
               label="Title" 
               placeholder="eg. Malvin Residence" 
-              defaultValue={""}
+              defaultValue={selectedListing.title}
               inputClassName="w-64"
             />
             <CampusSelector
@@ -57,27 +57,32 @@ function EditExistingListing() {
               campuses={campuses}
               labelClassName="text-black"
               selectClassName="w-64"
+              defaultValue={selectedListing.campus.id.toString()}
+              placeholder={selectedListing.campus.name}
             />
             <NeighborhoodSelector
               form={form}
               campuses={campuses}
               labelClassName="text-black"
               selectClassName="w-64"
+              defaultValue={selectedListing.neighborhood.id.toString()}
+              placeholder={selectedListing.neighborhood.name}
             />
             <InputField 
               form={form} 
               fieldName="distance_from_campus" 
               label="Distance From Campus (in minutes)" 
               placeholder="eg. 15" 
-              defaultValue={""}
+              defaultValue={selectedListing.distance_from_campus}
               inputClassName="w-64"
             />
             <CheckBoxField 
               form={form} 
               fieldName="is_available"
               label="Is Available"
-              defaultChecked
-            /> */}
+              defaultChecked={selectedListing.is_active}
+              className="w-64"
+            />
           </div>
           <div className="flex justify-end gap-3 mt-5">
             <Button onClick={() => setDialog(false)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium">Cancel</Button>
