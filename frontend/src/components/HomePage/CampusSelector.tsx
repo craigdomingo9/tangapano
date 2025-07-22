@@ -23,7 +23,7 @@ function CampusSelector({form, campuses, selectClassName, placeholder = "", defa
     <SelectField 
       form={form}
       fieldName="campus"
-      label="Select your campus"
+      label="Select campus"
       labelClassName={labelClassName}
       selectionList={campusSelectionList}
       defaultValue={defaultValue}

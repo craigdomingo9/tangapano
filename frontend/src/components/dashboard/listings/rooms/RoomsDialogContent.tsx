@@ -7,6 +7,7 @@ import createEntityStore from "@/lib/store/entityStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EditExistingRoom from "./EditExistingRoom";
+import { MoonLoader } from "react-spinners";
 
 
 
@@ -37,9 +38,15 @@ function RoomsDialogContent() {
         Add New Room
       </Button>
 
-
+      {status === "pending" && (
+        <div className="w-full flex justify-center items-center mt-4">
+          <MoonLoader
+            size={15}
+          />
+        </div>
+      )}
       {roomsData?.length === 0 ? (
-        <p className="text-center text-gray-500 mt-4">No rooms added for this listing yet.</p>
+        <p className="text-center text-gray-500 mt-4 text-sm">No rooms added for this listing yet.</p>
       ) : (
         <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4">
           {roomsData?.map((room, index) => (

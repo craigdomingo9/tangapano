@@ -8,7 +8,7 @@ export const editExistingListingFormSchema = z.object({
   campus: z.string().optional(),
   neighborhood: z.string().optional(),
   distance_from_campus: z.string().transform(val => Number(val)),
-  is_available: z.boolean(),
+  is_active: z.boolean(),
 });
 
 export const createEditExistingListingForm = () => useForm({ resolver: zodResolver(editExistingListingFormSchema) })

@@ -42,7 +42,7 @@ function AddNewListing() {
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
-            <div className="grid space-y-4">
+            <div className="grid space-y-4 items-center place-items-center">
               <InputField 
                 form={form} 
                 fieldName="title" 

@@ -10,7 +10,9 @@ type Props = {
 function ListingImages({listing}: Props) {
 
   return (
-    <Carousel>
+    <Carousel opts={{
+      loop: true,
+    }}>
       <CarouselContent>
         {listing.images.map((image) => (
           <CarouselItem key={image.id}>
@@ -25,6 +27,9 @@ function ListingImages({listing}: Props) {
           <Image strokeWidth={1.25} />
         </Avatar>}
       </CarouselContent>
+      {listing.images.length > 1 && (
+        <CarouselNext className="right-1" />
+      )}
     </Carousel>
   )
 }

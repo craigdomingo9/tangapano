@@ -25,7 +25,7 @@ function DeleteExistingListing() {
   
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <p className="text-gray-800 font-semibold text-center">Are you sure you want to delete this listing?</p>
+      <p className="text-gray-800 font-semibold text-center text-sm">Are you sure you want to delete this listing?</p>
       <div className="flex gap-2">
         <Button onClick={() => setDialog(false)}>Cancel</Button>
         <Button 

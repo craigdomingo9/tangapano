@@ -43,7 +43,7 @@ function EditExistingListing() {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
-          <div className="grid space-y-4">
+          <div className="grid space-y-4 place-items-center">
             <InputField 
               form={form} 
               fieldName="title" 
@@ -78,7 +78,7 @@ function EditExistingListing() {
             />
             <CheckBoxField 
               form={form} 
-              fieldName="is_available"
+              fieldName="is_active"
               label="Is Available"
               defaultChecked={selectedListing.is_active}
               className="w-64"

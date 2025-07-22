@@ -1,39 +1,39 @@
 import { Button } from "@/components/ui/button"
-import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
-import { MoonLoader } from "react-spinners";
+import { useListingImageDialogOperation } from "./ListingImageDialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSelectedListing } from "../../CardButtons";
+import { MoonLoader } from "react-spinners";
+import { useSelectedListingImage } from "./ListingImageDialogContent";
 
 
-function DeleteExistingRoom() {
-  
+function DeleteExistingListingImage() {
+  const { setEntities: setOperation } = useListingImageDialogOperation();
   const { entities: selectedListing } = useSelectedListing();
-  const { setEntities: setOperation } = useRoomsDialogOperation();
-  const { entities: selectedRoom } = useSelectedRoom();
-  
-  const queryClient = useQueryClient(); 
+  const { entities: selectedListingImage } = useSelectedListingImage();
+
+  const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => axios.delete(`/api/landlord-listings/rooms/${selectedRoom?.id}`),
+    mutationFn: () => axios.delete(`/api/landlord-listings/images/${selectedListingImage.id}`),
     onSuccess: () => {
       setOperation("list");
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
-      queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
+      queryClient.invalidateQueries({queryKey: ["images", selectedListing?.id]});
     },
   })
 
-  async function handleDeleteRoom() {
-    await mutation.mutateAsync();    
+  async function handleDeleteImage() {
+    await mutation.mutateAsync()
   }
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <p className="text-gray-800 font-semibold text-center text-sm">Are you sure you want to delete this room?</p>
+      <p className="text-gray-800 font-semibold text-center text-sm">Are you sure you want to delete this image?</p>
       <div className="flex gap-2">
         <Button onClick={() => setOperation("list")}>Cancel</Button>
         <Button 
           variant={"destructive"}
-          onClick={handleDeleteRoom}
+          onClick={handleDeleteImage}
         >
           {mutation.isPending ? (
             <MoonLoader
@@ -47,4 +47,4 @@ function DeleteExistingRoom() {
   )
 }
 
-export default DeleteExistingRoom
+export default DeleteExistingListingImage

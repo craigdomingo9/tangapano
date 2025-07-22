@@ -10,6 +10,7 @@ import { PulseLoader } from "react-spinners";
 import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
 import AmenitiesDialog from "@/components/dashboard/listings/amenities/AmenitiesDialog";
 import ListingDialog, { useListingDialogOperation, useListingDialogState } from "@/components/dashboard/listings/listing/ListingDialog";
+import ListingImageDialog from "@/components/dashboard/listings/images/ListingImageDialog";
 
 function page() {
 
@@ -61,11 +62,14 @@ function page() {
               <ListingsList listings={listings} />
             </MainContentArea>
           )}
+        <div className="h-12 border border-transparent"></div>
         </div>
       </div>
+      {/* Dialogs */}
       <AmenitiesDialog />
       <RoomsDialog />
       <ListingDialog />
+      <ListingImageDialog />
     </>
   )
 }

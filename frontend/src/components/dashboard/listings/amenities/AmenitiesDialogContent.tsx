@@ -19,7 +19,7 @@ function AmenitiesDialogContent() {
   // Get QueryClient from the context
   const queryClient = useQueryClient()
   
-  const { data: allAvailableAmenities } = useQuery({ 
+  const { data: allAvailableAmenities, status } = useQuery({ 
     queryKey: ['amenities'], 
     queryFn: fetchAmenities
   })
@@ -57,6 +57,14 @@ function AmenitiesDialogContent() {
 
   return (
     <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-lg relative">
+
+      {status === "pending" && (
+        <div className="w-full flex justify-center items-center mt-4">
+          <MoonLoader
+            size={15}
+          />
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2 mb-6 max-h-60 overflow-y-auto pr-2">
         {allAvailableAmenities?.map((amenity: Amenity) => (

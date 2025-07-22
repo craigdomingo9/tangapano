@@ -3,6 +3,7 @@ import createEntityStore from "@/lib/store/entityStore";
 import { useRoomsDialogState } from "./listings/rooms/RoomsDialog";
 import { useAmenitiesDialogState, useSelectedAmenities } from "./listings/amenities/AmenitiesDialog";
 import { useListingDialogOperation, useListingDialogState } from "./listings/listing/ListingDialog";
+import { useListingImageDialogState } from "./listings/images/ListingImageDialog";
 
 
 type Props = {
@@ -13,11 +14,12 @@ export const useSelectedListing = createEntityStore<Listing>({} as Listing);
 
 function CardButtons({listing}: Props) {
   const { setEntities: setAmenitiesDialog } = useAmenitiesDialogState();
-  const { setEntities: setSelectedAmenities } = useSelectedAmenities();
-  const { setEntities: setSelectedListing } = useSelectedListing();
+  const { setEntities: setListingImageDialog } = useListingImageDialogState();
   const { setEntities: setRoomsDialog } = useRoomsDialogState();
   const { setEntities: setListingDialog } = useListingDialogState();
   const { setEntities: setListingDialogOperation } = useListingDialogOperation();
+  const { setEntities: setSelectedAmenities } = useSelectedAmenities();
+  const { setEntities: setSelectedListing } = useSelectedListing();
   
   return (
     <div className="grid grid-cols-2">
@@ -42,6 +44,10 @@ function CardButtons({listing}: Props) {
       </button>
       <button
         className="h-10 text-sm font-medium bg-teal-500 hover:bg-teal-600 text-white flex items-center justify-center gap-1 transition-colors duration-200"
+        onClick={() => {
+          setSelectedListing(listing);
+          setListingImageDialog(true);
+        }}
       >
         <ImageIcon size={16} /> Images ({listing.images.length})
       </button>
