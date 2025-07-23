@@ -9,6 +9,7 @@ import { useListingImageDialogOperation } from "./ListingImageDialog";
 import { MoonLoader } from "react-spinners";
 import InputField from "@/components/universal/Form/Elements/InputField";
 import { useSelectedListing } from "../../CardButtons";
+import { toast } from "sonner";
 
 
 function AddNewListingImage() {
@@ -25,6 +26,7 @@ function AddNewListingImage() {
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
       queryClient.invalidateQueries({queryKey: ["images", selectedListing?.id]});
       setOperation("list");
+      toast.success("Image was added successfully.")
     }
   })
 

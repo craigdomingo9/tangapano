@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelectedListing } from "../../CardButtons";
 import { MoonLoader } from "react-spinners";
 import { useSelectedListingImage } from "./ListingImageDialogContent";
+import { toast } from "sonner";
 
 
 function DeleteExistingListingImage() {
@@ -19,6 +20,7 @@ function DeleteExistingListingImage() {
       setOperation("list");
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
       queryClient.invalidateQueries({queryKey: ["images", selectedListing?.id]});
+      toast.success("Image was deleted successfully.")
     },
   })
 

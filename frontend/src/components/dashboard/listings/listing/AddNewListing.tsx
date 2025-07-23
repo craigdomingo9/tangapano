@@ -11,6 +11,7 @@ import NeighborhoodSelector from "@/components/HomePage/NeighborhoodSelector";
 import { Button } from "@/components/ui/button";
 import { MoonLoader } from "react-spinners";
 import axios from "axios";
+import { toast } from "sonner";
 
 
 function AddNewListing() {
@@ -30,6 +31,7 @@ function AddNewListing() {
       form.reset();
       setDialog(false);
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
+      toast.success("Listing was added successfully.")
     }
   })
 

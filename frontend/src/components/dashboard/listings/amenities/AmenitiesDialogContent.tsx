@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSelectedListing } from '../../CardButtons';
 import { MoonLoader } from 'react-spinners';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 
 
@@ -41,6 +42,7 @@ function AmenitiesDialogContent() {
     }
 
     queryClient.invalidateQueries({queryKey: ['landlord-listings']});
+    toast.success("Amenities were updated successfully.")
 
     setIsSaving(false);
     setDialog(false);

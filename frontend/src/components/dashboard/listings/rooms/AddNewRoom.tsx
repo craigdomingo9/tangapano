@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRoomsDialogOperation } from "./RoomsDialogContent";
 import { useSelectedListing } from "../../CardButtons";
+import { toast } from "sonner";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
@@ -30,6 +31,7 @@ function AddNewRoom() {
       form.reset();
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
       queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
+      toast.success("Room was created successfully.")
     },
     onError: (err) => {
       console.error("Failed to add room:", err);

@@ -13,6 +13,7 @@ import axios from "axios";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { MoonLoader } from "react-spinners";
 import { Form } from "@/components/ui/form";
+import { toast } from "sonner";
 
 
 function EditExistingListing() {
@@ -32,6 +33,7 @@ function EditExistingListing() {
       form.reset();
       setDialog(false);
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
+      toast.success("Listing was updated successfully.")
     }
   })
 

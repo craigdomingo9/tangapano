@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
 import { useSelectedListing } from "../../CardButtons";
 import { createEditExitingRoomForm, editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listings/editExisitingRoomForm";
+import { toast } from "sonner";
 
 
 function EditExistingRoom() {
@@ -27,6 +28,7 @@ function EditExistingRoom() {
       setOperation("list");
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
       queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
+      toast.success("Room was updated successfully.")
     },
   })
 

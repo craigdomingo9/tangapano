@@ -4,6 +4,7 @@ import { useSelectedListing } from "../../CardButtons";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MoonLoader } from "react-spinners";
+import { toast } from "sonner";
 
 
 function DeleteExistingListing() {
@@ -16,6 +17,7 @@ function DeleteExistingListing() {
     onSuccess: () => {
       setDialog(false);
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
+      toast.success("Listing was deleted successfully.")
     },
   })
 

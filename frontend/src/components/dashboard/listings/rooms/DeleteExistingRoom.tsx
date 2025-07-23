@@ -4,6 +4,7 @@ import { MoonLoader } from "react-spinners";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSelectedListing } from "../../CardButtons";
+import { toast } from "sonner";
 
 
 function DeleteExistingRoom() {
@@ -19,6 +20,7 @@ function DeleteExistingRoom() {
       setOperation("list");
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
       queryClient.invalidateQueries({queryKey: ["rooms", selectedListing?.id]});
+      toast.success("Room was deleted successfully.")
     },
   })
 
