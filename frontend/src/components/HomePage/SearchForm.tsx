@@ -50,40 +50,44 @@ function SearchForm() {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <CampusSelector
-            form={form}
-            campuses={campuses}
-          />
-          <NeighborhoodSelector
-            form={form}
-            campuses={campuses}
-          />
-          <PriceRangeSelector 
-            form={form}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div>
-            <div className="flex justify-between my-3">
-              <InputField
+            <div className="flex flex-col gap-6">
+              <CampusSelector
                 form={form}
-                fieldName="max_occupants"
-                label="Students Per Room"
-                defaultValue={2}
-                type="number"
-                inputClassName="w-34 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                labelClassName="text-white"
+                campuses={campuses}
               />
-              <GenderSelector 
+              <NeighborhoodSelector
+                form={form}
+                campuses={campuses}
+              />
+              <PriceRangeSelector 
                 form={form}
               />
+
+              <div className="flex justify-between my-3 mb-0">
+                <InputField
+                  form={form}
+                  fieldName="max_occupants"
+                  label="Students Per Room"
+                  defaultValue={2}
+                  type="number"
+                  inputClassName="w-34 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  labelClassName="text-white"
+                />
+                <GenderSelector 
+                  form={form}
+                />
+
+              </div>
 
             </div>
-          </div>
 
-          <AmenitiesSelector 
-            amenities={amenities}
-            form={form}
-          />
+            <AmenitiesSelector 
+              amenities={amenities}
+              form={form}
+            />
+          </div>
 
           <div className="grid mb-6">
             <Button type="submit" className="mx-auto w-full h-16 text-lg bg-amber-600 cursor-pointer">Search</Button>

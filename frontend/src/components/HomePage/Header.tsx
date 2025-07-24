@@ -9,7 +9,7 @@ function Header() {
   const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    console.log(user, isAuthenticated);
+    // console.log(user, isAuthenticated);
   }, [user, isAuthenticated]);
 
   return (
