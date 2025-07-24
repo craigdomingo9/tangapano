@@ -18,6 +18,15 @@ type Props = {
 function ListingCard({ listing }: Props) {
 
   const [room, _] = useState(listing.rooms[0]);
+  
+  const roomPrices = listing.rooms.map((_room) => parseFloat(_room.rent_per_month));
+  const minRoomPrice = roomPrices.reduce((prev, curr) => Math.min(curr, prev || 0))
+  const maxRoomPrice = roomPrices.reduce((prev, curr) => Math.max(curr, prev || 0))
+  // console.log(roomPrices, minRoomPrice, maxRoomPrice)
+
+  const roomsPriceRange = minRoomPrice !== maxRoomPrice ? 
+  `$${minRoomPrice}-$${maxRoomPrice}/month`
+  : `$${minRoomPrice}/month`
 
   return (
     <Card className="py-0 mx-2 h-[34rem] flex flex-col gap-0 cursor-pointer hover:scale-[1.025] transition">
@@ -33,7 +42,7 @@ function ListingCard({ listing }: Props) {
             <MapPin size={16} className="mr-2 text-indigo-500" /> {listing.neighborhood.name}
           </p>
           <p className="text-gray-700 flex items-center font-semibold mb-1">
-            <DollarSign size={16} className="mr-2 text-green-600" /> ${room.rent_per_month}/month | ${listing.campus.agents.agent_fee} agent fee
+            <DollarSign size={16} className="mr-2 text-green-600" /> {roomsPriceRange} | ${listing.campus.agents.agent_fee} agent fee
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Users size={16} className="mr-2 text-purple-500" /> {room.max_occupants} student(s) per room

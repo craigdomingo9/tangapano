@@ -10,7 +10,7 @@ function Header() {
 
   useEffect(() => {
     // console.log(user, isAuthenticated);
-  }, [user, isAuthenticated]);
+  }, [user, isAuthenticated, logout]);
 
   return (
     <div className="flex justify-center sticky z-50 top-0 p-4 h-24 text-white bg-[var(--primary-bg)]">
