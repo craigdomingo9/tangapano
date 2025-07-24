@@ -18,7 +18,8 @@ function Listings({filterParamsURL}: Props) {
     fetchNextPage, 
     hasNextPage, 
     isFetchingNextPage,
-    status 
+    status,
+    isRefetching
   } = useListings(filterParamsURL);
 
   const { ref, inView } = useInView();
@@ -32,7 +33,7 @@ function Listings({filterParamsURL}: Props) {
   return (
     <div className="max-w-3xl flex-1">
       <div className="space-y-6">
-        {status === 'pending' && (
+        {(status === 'pending' || isRefetching) && (
           <div className='flex justify-center mt-5'>
             <PulseLoader color='var(--primary-bg)' />
           </div>

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/card"
 import { useState } from "react"
 import ListingImages from "./ListingImages";
-import { DollarSign, MapPin, Ruler, Users } from "lucide-react";
+import { Bed, DollarSign, MapPin, Ruler, Users } from "lucide-react";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import ContactAgentButton from "./ContactAgentButton";
 
@@ -33,10 +33,13 @@ function ListingCard({ listing }: Props) {
             <MapPin size={16} className="mr-2 text-indigo-500" /> {listing.neighborhood.name}
           </p>
           <p className="text-gray-700 flex items-center font-semibold mb-1">
-            <DollarSign size={16} className="mr-2 text-green-600" /> From ${room.rent_per_month}/month | ${listing.campus.agents.agent_fee} agent fee
+            <DollarSign size={16} className="mr-2 text-green-600" /> ${room.rent_per_month}/month | ${listing.campus.agents.agent_fee} agent fee
           </p>
           <p className="text-gray-700 flex items-center mb-1">
-            <Users size={16} className="mr-2 text-purple-500" /> Max {room.max_occupants} student(s) per room
+            <Users size={16} className="mr-2 text-purple-500" /> {room.max_occupants} student(s) per room
+          </p>
+          <p className="text-gray-700 flex items-center mb-1">
+            <Bed size={16} className="mr-2 text-yellow-500" /> {listing.rooms.length} room(s) available
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Ruler size={16} className="mr-2 text-orange-500" /> {listing.distance_from_campus} mins from campus

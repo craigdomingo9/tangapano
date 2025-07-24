@@ -17,7 +17,7 @@ function ContactAgentButton({listing}: Props) {
 
   return (
     <Button 
-      className="w-full h-14 rounded-t-none cursor-pointer sm:hover:scale-[1.03] transition" 
+      className="w-full h-14 rounded-t-none cursor-pointer sm:hover:scale-[1.03] transition bg-green-500" 
       onClick={handleClick}
     >
       <MessageCircle size={20} />

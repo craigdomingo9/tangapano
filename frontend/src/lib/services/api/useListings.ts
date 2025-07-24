@@ -4,7 +4,7 @@ import { axiosInstance } from './config';
 
 export default function useListings(params: string) {
   return useInfiniteQuery({
-    queryKey: ['listings'],
+    queryKey: ['listings', params],
     queryFn: async ({ pageParam = 1 }) => {
       try {
         return axiosInstance.get(`/listings/listings/?${params}&is_available=true&page=${pageParam}`)

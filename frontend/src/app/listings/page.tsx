@@ -17,7 +17,7 @@ async function page({searchParams}: Props) {
   });
 
   return (
-    <div className="flex justify-center min-h-dvh flex-col items-center [&>div]:w-full">
+    <div className="flex justify-center flex-col items-center [&>div]:w-full">
       <div />
       <Listings 
         filterParamsURL={filters.toString()} 
