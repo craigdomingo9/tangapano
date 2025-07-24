@@ -25,4 +25,4 @@ class Room(models.Model):
         verbose_name_plural = "Rooms"
 
     def __str__(self):
-        return f"{self.listing.title} - {self.room_type} Room"
+        return f"{self.listing.title} - {self.max_occupants} person room"

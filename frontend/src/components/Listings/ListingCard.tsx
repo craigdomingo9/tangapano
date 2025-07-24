@@ -6,9 +6,11 @@ import {
 } from "@/components/ui/card"
 import { useState } from "react"
 import ListingImages from "./ListingImages";
-import { Bed, DollarSign, MapPin, Ruler, Users } from "lucide-react";
+import { Bed, DollarSign, MapPin, MessageCircle, Ruler, Users } from "lucide-react";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import ContactAgentButton from "./ContactAgentButton";
+import { Button } from "../ui/button";
+import { useContactAgentDialogState, useSelectedListingByStudent } from "./ContactAgentDialog";
 
 
 type Props = {
@@ -16,6 +18,8 @@ type Props = {
 }
 
 function ListingCard({ listing }: Props) {
+  const { setEntities: setDialog } = useContactAgentDialogState();
+  const { setEntities: setSelectedListing } = useSelectedListingByStudent();
 
   const [room, _] = useState(listing.rooms[0]);
   
@@ -27,6 +31,7 @@ function ListingCard({ listing }: Props) {
   const roomsPriceRange = minRoomPrice !== maxRoomPrice ? 
   `$${minRoomPrice}-$${maxRoomPrice}/month`
   : `$${minRoomPrice}/month`
+
 
   return (
     <Card className="py-0 mx-2 h-[34rem] flex flex-col gap-0 cursor-pointer hover:scale-[1.025] transition">
@@ -50,12 +55,12 @@ function ListingCard({ listing }: Props) {
           <p className="text-gray-700 flex items-center mb-1">
             <Bed size={16} className="mr-2 text-yellow-500" /> {listing.rooms.length} room(s) available
           </p>
-          <p className="text-gray-700 flex items-center mb-1">
+          <p className="text-gray-700 flex items-center mb-3">
             <Ruler size={16} className="mr-2 text-orange-500" /> {listing.distance_from_campus} mins from campus
           </p>
-          <p className="text-gray-700 flex items-center mb-3">
+          {/* <p className="text-gray-700 flex items-center mb-3">
             <Users size={16} className="mr-2 text-blue-500" /> Gender: {capitalizeFirstLetter(room.gender_preference)}
-          </p>
+          </p> */}
           <div className="flex flex-wrap gap-1 mb-3">
             {listing.amenities.map((amenity) => (
               <span key={amenity.id} className="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -66,7 +71,16 @@ function ListingCard({ listing }: Props) {
         </div>
       </CardContent>
       <>
-        <ContactAgentButton listing={listing} />
+        <Button 
+          className="w-full h-14 rounded-t-none cursor-pointer sm:hover:scale-[1.03] transition bg-green-500" 
+          onClick={() => {
+            setSelectedListing(listing);
+            setDialog(true);
+          }}
+        >
+          <MessageCircle size={20} />
+          Contact Agent
+        </Button>
       </>
     </Card>
   )

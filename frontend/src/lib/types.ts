@@ -59,7 +59,7 @@ interface Room {
   listing: number;
   max_occupants: number;
   rent_per_month: string;
-  gender_preference: string;
+  gender_preference: "any" | "male" | "female";
   is_available: boolean;
   is_active: boolean;
   created_at: string;

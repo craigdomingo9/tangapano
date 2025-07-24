@@ -4,6 +4,7 @@ import useListings from "@/lib/services/api/useListings";
 import React, { useEffect } from 'react';
 import { PulseLoader } from "react-spinners";
 import ListingsList from './ListingsList';
+import ContactAgentDialog from './ContactAgentDialog';
 
 
 type Props = {
@@ -31,6 +32,7 @@ function Listings({filterParamsURL}: Props) {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
+    <>
     <div className="max-w-3xl flex-1">
       <div className="space-y-6">
         {(status === 'pending' || isRefetching) && (
@@ -65,6 +67,9 @@ function Listings({filterParamsURL}: Props) {
         )}
       </div>
     </div>
+    {/* Dialogs */}
+    <ContactAgentDialog />
+    </>
   )
 }
 

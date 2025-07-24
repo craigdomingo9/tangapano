@@ -15,8 +15,8 @@ class AmenityAdmin(admin.ModelAdmin):
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ('listing', 'max_occupants', 'current_occupants', 'rent_per_month', 'is_available', 'is_active')
-    search_fields = ('listing__title', 'room_type')
+    list_display = ('listing', 'max_occupants', 'current_occupants', 'rent_per_month', 'is_available')
+    search_fields = ('listing__title',)
     list_filter = ('is_available', 'is_active', 'max_occupants')
 
 

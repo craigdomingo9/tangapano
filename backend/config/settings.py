@@ -43,9 +43,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  
     'http://192.168.43.242:3000',
 ]
-CSRF_TRUSTED_ORIGINS = [
-    "http://192.168.43.242:3000",
-]
 
 
 
