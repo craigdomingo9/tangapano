@@ -59,7 +59,7 @@ class ListingFilter(filters.FilterSet):
         if gender and gender != 'any':
             room_filter &= Q(gender_preference=gender)
         if max_occupants:
-            room_filter &= Q(max_occupants__lte=max_occupants)
+            room_filter &= Q(max_occupants=max_occupants)
         if is_available:
             room_filter &= Q(is_available=True)
 
