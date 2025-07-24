@@ -1,3 +1,4 @@
+import { axiosInstance } from '@/lib/services/api/config'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
@@ -7,13 +8,7 @@ export async function POST(req: NextRequest) {
     console.log('Received credentials:', username)
 
     console.log('Attempting login request to Django backend...')
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/auth/login/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
+    const res = await axiosInstance.post('/users/auth/login/', JSON.stringify({ username, password }))
     console.log('Received response from backend:', res.status)
 
     if (res.status >= 400) {
@@ -21,7 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
 
-    const { token } = await res.json()
+    const { token } = await res.data
 
     const response = NextResponse.json({ message: 'Login successful' })
     response.cookies.set('auth_token', token, {

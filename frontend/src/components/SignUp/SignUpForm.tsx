@@ -6,14 +6,16 @@ import { ArrowLeft, ArrowRight, Building2, CheckCircle, User } from "lucide-reac
 import { axiosInstance } from "@/lib/services/api/config";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useMutation } from "@tanstack/react-query";
+import { MoonLoader } from "react-spinners";
 
 
 function SignUpForm() {
 
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const { register, handleSubmit, formState: { errors }, trigger, getValues } = createSignupForm();
-  const [isSigningUp, setIsSigningUp] = useState(false);
+  const { register, handleSubmit, formState: { errors }, trigger, getValues, reset } = createSignupForm();
 
   const handleNext = async () => {
     let isValid = false;
@@ -32,9 +34,19 @@ function SignUpForm() {
     setCurrentStep(currentStep - 1);
   };
 
-  const onSubmit = async(data: z.infer<typeof signupFormSchema>) => {
-    setIsSigningUp(true);
+  const mutation = useMutation({
+    mutationFn: (data: any) => axiosInstance.post('/users/register/', data, { headers: { 'Content-Type': 'application/json' } }),
+    onSuccess() {
+      reset();
+      toast.success("Signed up successfully")
+      router.push('/login');
+    },
+    onError() {
+      toast.error('Signup failed. Please try again.')
+    },
+  })
 
+  const onSubmit = async(data: z.infer<typeof signupFormSchema>) => {
     const dataToSend: any = {
       first_name: data.first_name,
       last_name: data.last_name,
@@ -52,42 +64,17 @@ function SignUpForm() {
       };
     }
 
-    try {
-      const response = await axiosInstance.post('/users/register/', 
-        dataToSend, 
-        { 
-          headers: { 'Content-Type': 'application/json' } 
-        }
-      );
-
-      if (response.status !== 201) {
-        toast.error('Signup failed. Please try again.')
-        return;
-      }
-
-      router.push('/login');
-
-      console.log("Formatted Data to Send:", dataToSend);
-      toast.success("Signed up successfully")
-    } catch (error) {
-      console.error(error);
-      toast.error('Signup failed. Please try again.')
-      return;
-    } finally {
-      setIsSigningUp(false);
-    }
+    await mutation.mutateAsync(dataToSend)
 
   };
   
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md">
-        <h2 className="text-3xl font-extrabold text-indigo-700 text-center mb-6">
-          Sign Up
-        </h2>
-
-
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-center text-2xl text-indigo-700">Sign Up</CardTitle>
+      </CardHeader>
+      <CardContent>
         <div className="flex justify-between mb-6 text-gray-500">
           <div className={`flex flex-col items-center flex-1 ${currentStep >= 1 ? 'text-indigo-600 font-semibold' : ''}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 1 ? 'border-indigo-600 bg-indigo-100' : 'border-gray-300'}`}>
@@ -234,14 +221,23 @@ function SignUpForm() {
                   type="submit"
                   className="flex-1 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
                 >
-                  Sign Up <CheckCircle size={20} className="ml-2" />
+                  {mutation.isPending ? (
+                    <MoonLoader
+                      color="white"
+                      size={15}
+                    />
+                  ) : (
+                    <>
+                      Sign Up <CheckCircle size={20} className="ml-2" />
+                    </>
+                  )}
                 </button>
               </div>
             </div>
           )}
         </form>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 

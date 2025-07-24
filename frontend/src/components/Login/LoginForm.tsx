@@ -12,11 +12,11 @@ import { createLoginForm, loginFormSchema } from "@/lib/services/forms/loginForm
 import { Form } from "../ui/form"
 import InputField from "../universal/Form/Elements/InputField"
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { MoonLoader } from "react-spinners";
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 
 
@@ -27,23 +27,20 @@ export function LoginForm({
 
   const form = createLoginForm();
   const router = useRouter();
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  async function onSubmit(data: z.infer<typeof loginFormSchema>) {
-    setIsLoggingIn(true);
-    
-    try {
-      const _ = await axios.post('/api/login', data);
-      
+  const mutation = useMutation({
+    mutationFn: (data: z.infer<typeof loginFormSchema>) => axios.post('/api/login', data),
+    onSuccess() {
       toast.success("Logged in successfully")
       router.push('/dashboard/listings')
-    } catch (error) {
+    },
+    onError() {
       toast.error("Invalid username or password")
-      
-      setIsLoggingIn(false);
-    } finally {
-      setIsLoggingIn(false);
-    }
+    },
+  })
+
+  async function onSubmit(data: z.infer<typeof loginFormSchema>) {
+    await mutation.mutateAsync(data);
   }
 
   return (
@@ -77,7 +74,7 @@ export function LoginForm({
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">
-                  {isLoggingIn ? (
+                  {mutation.isPending ? (
                     <MoonLoader
                       color="white"
                       size={15}
