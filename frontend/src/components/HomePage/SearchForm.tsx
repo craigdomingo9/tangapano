@@ -20,11 +20,11 @@ function SearchForm() {
 
   const { data: amenities } = useQuery({ 
     queryKey: ['amenities'], 
-    queryFn: fetchAmenities
+    queryFn: () => fetchAmenities({ params: { has_listings: true }})
   })
   const { data: campuses } = useQuery({ 
     queryKey: ['campuses'], 
-    queryFn: fetchCampuses 
+    queryFn: () => fetchCampuses({ params: { has_listings: true }})
   })
 
   // console.log("Campuses:", campuses);

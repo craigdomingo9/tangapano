@@ -4,11 +4,13 @@ from campuses.serializers.neighborhood_serializer import NeighborhoodSerializer
 
 
 class CampusSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Campus
         fields = [
             "id",
             "name",
+            "has_listings",
             "city",
             "agents",
             "address",
@@ -18,6 +20,9 @@ class CampusSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
         depth = 1
+
+    def get_has_listings(self, obj):
+        return obj.has_listings
 
 
 

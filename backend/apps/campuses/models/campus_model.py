@@ -18,5 +18,9 @@ class Campus(models.Model):
     def __str__(self):
         return self.name
     
+    @property
+    def has_listings(self):
+        return self.campus_listings.exists()
+    
     class Meta:
         verbose_name_plural = "Campuses"
