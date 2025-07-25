@@ -1,11 +1,15 @@
 import { getAuthToken } from "@/lib/auth/getToken";
 import { axiosInstance } from "@/lib/services/api/config";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH( request: Request, { params }: { params: { id: string } } ) {
+export async function PATCH(
+  request: NextRequest,
+  context: { params: any }
+) {
 
   const token = await getAuthToken();
-  const listingId = await params.id;
+  const listingId = context.params.id;
+
   const { amenities } = await request.json();
 
   const res = await axiosInstance.patch(`/listings/landlord-listings/${listingId}/`, { amenity_ids: amenities }, {
