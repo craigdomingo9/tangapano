@@ -30,6 +30,8 @@ interface User {
   role: string;
   first_name: string;
   last_name: string;
+  landlord_profile: Landlord;
+  agent_profile: Agent;
 }
 
 interface Agent {
@@ -68,7 +70,7 @@ interface Room {
 
 
 
-interface Listing {
+type Listing = {
   id: string;
   title: string;
   landlord: Landlord;

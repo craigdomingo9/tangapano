@@ -13,12 +13,13 @@ class UserRegistrationView(generics.CreateAPIView):
 
 
 # 👤 2. Get current logged-in user
-class UserProfileView(generics.RetrieveAPIView):
+class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_object(self):
         return self.request.user
+    
 
 
 # 👥 3. List all users (admin-only or staff)

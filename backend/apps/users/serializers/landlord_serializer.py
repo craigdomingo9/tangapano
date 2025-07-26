@@ -12,5 +12,5 @@ class LandlordSerializer(serializers.ModelSerializer):
             "phone_number",
             "address",
         ]
-        read_only_fields = ["id"]
+        read_only_fields = ["id", "user"]
 

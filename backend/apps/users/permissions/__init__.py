@@ -1,0 +1,1 @@
+from .landlord_permissions import IsOwnerLandlord

@@ -5,7 +5,16 @@ from users.models import Landlord
 User = get_user_model()
 
 
+
+class LandlordProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Landlord
+        fields = '__all__'
+        read_only_fields = ['user']
+
+
 class UserSerializer(serializers.ModelSerializer):
+    landlord_profile = LandlordProfileSerializer(required=False)
     class Meta:
         model = User
         fields = [
@@ -15,14 +24,12 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "role",
+            "landlord_profile",
+            "agent_profile",
         ]
-        read_only_fields = ["id", "role"]  # optionally lock down role in general use
-
-
-class LandlordProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Landlord
-        fields = ["company_name", "phone_number", "address"]
+        read_only_fields = ["id", "role", "landlord_profile", "agent_profile"]
+    
+    
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

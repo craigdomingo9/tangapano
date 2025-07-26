@@ -6,11 +6,12 @@ type Props = {
 
 function MainContentArea({
   children,
-  HeaderTitle
-}: Props) {
+  HeaderTitle,
+  ...props
+}: React.ComponentProps<"div"> &Props) {
   return (
     <>
-      <div className="flex flex-col flex-1 gap-2 shadow-xl rounded-lg border-t border-slate-200">
+      <div className="flex flex-col flex-1 gap-2 shadow-xl rounded-lg border-t border-slate-200" {...props}>
         {HeaderTitle && (
           <div className="py-2 pl-1">
             <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-muted-foreground">

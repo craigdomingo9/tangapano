@@ -5,6 +5,7 @@ from rest_framework import permissions, status
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
+from users.serializers import UserSerializer
 # This file defines the authentication views for user login and logout.
 
 User = get_user_model()
@@ -33,16 +34,7 @@ class VerifyTokenView(APIView):
 
     def get(self, request):
         user = request.user
-        return Response({
-            'user': {
-                'id': user.id,
-                'username': user.username,
-                'email': user.email,
-                'role': user.role,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-            }
-        })
+        return Response(data=UserSerializer(user).data, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
