@@ -6,8 +6,7 @@ type Props = {
 
 async function page({searchParams}: Props) {
 
-  // Copy searchParams to avoid direct mutation
-  const params = { ...(await searchParams) };
+  const params = await searchParams;
 
   // Extract amenities (could be string or string[])
   const amenities = params.amenity;
