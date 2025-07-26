@@ -1,6 +1,4 @@
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 
 export const signupFormSchema = z.object({
     first_name: z.string().optional(),
@@ -19,19 +17,4 @@ export const signupFormSchema = z.object({
     path: ["confirm_password"],
 })
 
-
-export const createSignupForm = () => {
-    return useForm<z.infer<typeof signupFormSchema>>({
-        resolver: zodResolver(signupFormSchema),
-        defaultValues: {
-            first_name: "",
-            last_name: "",
-            company_name: "",
-            phone_number: "",
-            address: "",
-            username: "",
-            password: "",
-        }
-    })
-}
 

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: any }
+  context: { params: { id: string } }
 ) {
 
   const token = await getAuthToken();

@@ -26,7 +26,7 @@ function SortBySelect() {
 
     router.push(`/listings?${params.toString()}`);
     router.refresh();
-  }, [sortValue])
+  }, [sortValue, router])
 
   return (
     <div className="flex justify-end m-2">

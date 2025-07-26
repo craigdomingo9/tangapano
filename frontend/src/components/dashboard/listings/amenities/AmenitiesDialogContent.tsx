@@ -22,7 +22,7 @@ function AmenitiesDialogContent() {
   
   const { data: allAvailableAmenities, status } = useQuery({ 
     queryKey: ['amenities'], 
-    queryFn: fetchAmenities
+    queryFn: () => fetchAmenities({ params: {}})
   })
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function AmenitiesDialogContent() {
       const isSelected = prev?.some(item => item.id === amenityId);
       return isSelected
         ? prev?.filter(item => item.id !== amenityId)
-        : [...prev as Amenity[], allAvailableAmenities?.find((item: Amenity) => item.id === amenityId)!];
+        : [...prev as Amenity[], allAvailableAmenities.find((item: Amenity) => item.id === amenityId)!];
     });
   };
 

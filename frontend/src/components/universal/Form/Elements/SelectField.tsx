@@ -54,7 +54,7 @@ function SelectField({
               <FormControl>
                 <Select 
                   onValueChange={(value) => {
-                      field.onChange;
+                      field.onChange(value);
                       form.setValue(`${fieldName}`, value);
                       setFieldValue(value);
                   }}

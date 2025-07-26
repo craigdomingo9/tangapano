@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useSelectedListing } from "../../CardButtons";
-import { useListingImageDialogOperation, useListingImageDialogState } from "./ListingImageDialog";
+import { useListingImageDialogOperation } from "./ListingImageDialog";
 import { PlusCircle, Trash2 } from "lucide-react";
 import DeleteExistingListingImage from "./DeleteExistingListingImage";
 import AddNewListingImage from "./AddNewListingImage";
@@ -9,6 +9,7 @@ import createEntityStore from "@/lib/store/entityStore";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/services/api/config";
 import { MoonLoader } from "react-spinners";
+
 
 
 export const useSelectedListingImage = createEntityStore<Image>({} as Image);

@@ -7,14 +7,12 @@ import {
 import { useState } from "react"
 import ListingImages from "./ListingImages";
 import { Bed, DollarSign, MapPin, MessageCircle, Ruler, Users } from "lucide-react";
-import { capitalizeFirstLetter } from "@/lib/utils";
-import ContactAgentButton from "./ContactAgentButton";
 import { Button } from "../ui/button";
 import { useContactAgentDialogState, useSelectedListingByStudent } from "./ContactAgentDialog";
 
 
 type Props = {
-    listing: Listing
+  listing: Listing
 }
 
 function ListingCard({ listing }: Props) {

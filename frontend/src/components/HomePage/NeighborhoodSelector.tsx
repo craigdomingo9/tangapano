@@ -42,7 +42,7 @@ function NeighborhoodSelector({ form, campuses, selectClassName, placeholder = "
       setNeighborhoods([]);
       form.setValue("neighborhood", "");
     }
-  }, [selectedCampusId, campuses, form]);
+  }, [selectedCampusId, campuses, form, defaultValue]);
 
   return (
     <SelectField

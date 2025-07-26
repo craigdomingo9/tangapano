@@ -1,6 +1,5 @@
 import { getAuthToken } from '@/lib/auth/getToken'
 import { axiosInstance } from '@/lib/services/api/config'
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 

@@ -1,5 +1,5 @@
 import { useAuth } from "@/app/context/AuthContext";
-import { createEditLandlordForm, editLandlordFormSchema } from "@/lib/services/forms/dashboard/profile/editLandlordForm";
+import { editLandlordFormSchema } from "@/lib/services/forms/dashboard/profile/editLandlordForm";
 import { useLandlordDialogState } from "./LandlordDialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -9,10 +9,13 @@ import { Form } from "@/components/ui/form";
 import InputField from "@/components/universal/Form/Elements/InputField";
 import { Button } from "@/components/ui/button";
 import { MoonLoader } from "react-spinners";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function LandlordDialogContent() {
-  const form = createEditLandlordForm();
+
+  const form = useForm({ resolver: zodResolver(editLandlordFormSchema) });
   const { user } = useAuth();
   const { setEntities: setDialog } = useLandlordDialogState();
   const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form"
 import ImageSelectorField from "@/components/universal/Form/Elements/ImageSelectorField";
-import { addNewListingImageFormSchema, createAddNewListingImageForm } from "@/lib/services/forms/dashboard/listings/addNewListingImage"
+import { addNewListingImageFormSchema } from "@/lib/services/forms/dashboard/listings/addNewListingImageForm"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import z from "zod";
@@ -10,17 +10,20 @@ import { MoonLoader } from "react-spinners";
 import InputField from "@/components/universal/Form/Elements/InputField";
 import { useSelectedListing } from "../../CardButtons";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function AddNewListingImage() {
+
   const { setEntities: setOperation } = useListingImageDialogOperation();
   const { entities: selectedListing } = useSelectedListing();
 
-  const form = createAddNewListingImageForm();
+  const form = useForm<z.infer<typeof addNewListingImageFormSchema>>({resolver: zodResolver(addNewListingImageFormSchema)});
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data: any) => axios.post("/api/landlord-listings/images", data),
+    mutationFn: (data: FormData) => axios.post("/api/landlord-listings/images", data),
     onSuccess: () => {
       form.reset();
       queryClient.invalidateQueries({queryKey: ["landlord-listings"]});

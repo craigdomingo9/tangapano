@@ -2,17 +2,20 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/universal/Form/Elements/InputField";
-import { createEditUserForm, editUserFormSchema } from "@/lib/services/forms/dashboard/profile/editUserForm"
+import { editUserFormSchema } from "@/lib/services/forms/dashboard/profile/editUserForm"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import z, { set } from "zod";
+import z from "zod";
 import { useUserDialogState } from "./UserDialog";
 import { MoonLoader } from "react-spinners";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function UserDialogContent() {
-  const form = createEditUserForm();
+
+  const form = useForm<z.infer<typeof editUserFormSchema>>({resolver: zodResolver(editUserFormSchema)});
   const { user } = useAuth();
   const { setEntities: setDialog } = useUserDialogState();
   const queryClient = useQueryClient();

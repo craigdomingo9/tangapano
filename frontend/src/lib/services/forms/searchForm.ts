@@ -1,6 +1,5 @@
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+
 
 export const searchFormSchema = z.object({
   campus: z.string().min(1, "Campus is required"),
@@ -19,17 +18,4 @@ export const searchFormSchema = z.object({
   message: "Minimum price cannot be greater than maximum price",
   path: ["price_min"]
 });
-
-export const createSearchForm = () => {
-  return useForm<z.infer<typeof searchFormSchema>>({
-    resolver: zodResolver(searchFormSchema),
-    defaultValues: {
-    price_min: undefined,
-    price_max: undefined,
-    max_occupants: undefined,
-    gender: "any",
-    amenities: []
-  }
-  })
-}
 

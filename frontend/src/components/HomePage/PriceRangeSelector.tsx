@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Label } from "@/components/ui/label";
 import { UseFormReturn } from 'react-hook-form';
 import { Input } from '../ui/input';
 import { FormLabel } from '../ui/form';
@@ -33,7 +32,7 @@ export default function PriceRangeSelector({
     // console.log("Min Value:", minValue, "Max Value:", maxValue);
     form.setValue("price_min", minValue);
     form.setValue("price_max", maxValue);
-  }, [minValue, maxValue, min, max]);
+  }, [minValue, maxValue, min, max, form]);
   
   return (
     <div className="space-y-4 shadow-2xl p-3 rounded-md">

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { createLoginForm, loginFormSchema } from "@/lib/services/forms/loginForm"
+import { loginFormSchema } from "@/lib/services/forms/loginForm"
 import { Form } from "../ui/form"
 import InputField from "../universal/Form/Elements/InputField"
 import { useRouter } from "next/navigation";
@@ -17,6 +17,8 @@ import axios from "axios";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 
@@ -24,8 +26,8 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-
-  const form = createLoginForm();
+  
+  const form = useForm<z.infer<typeof loginFormSchema>>({resolver: zodResolver(loginFormSchema)});
   const router = useRouter();
 
   const mutation = useMutation({

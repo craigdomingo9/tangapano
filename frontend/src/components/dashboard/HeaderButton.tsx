@@ -1,5 +1,4 @@
 import { Button } from '../ui/button'
-import { PlusCircle } from 'lucide-react'
 
 type Props = {
   children: React.ReactNode

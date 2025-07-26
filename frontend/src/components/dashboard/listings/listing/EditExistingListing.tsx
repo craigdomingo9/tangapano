@@ -1,6 +1,5 @@
-import SelectField from "@/components/HomePage/SelectField";
 import InputField from "@/components/universal/Form/Elements/InputField";
-import { createEditExistingListingForm, editExistingListingFormSchema } from "@/lib/services/forms/dashboard/listings/editExistingListingForm";
+import { editExistingListingFormSchema } from "@/lib/services/forms/dashboard/listings/editExistingListingForm";
 import { useSelectedListing } from "../../CardButtons";
 import z from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,16 +13,19 @@ import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { MoonLoader } from "react-spinners";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function EditExistingListing() {
-  const form = createEditExistingListingForm();
+
+  const form = useForm({ resolver: zodResolver(editExistingListingFormSchema) });
   const { entities: selectedListing } = useSelectedListing();
   const { setEntities: setDialog } = useListingDialogState();
 
   const { data: campuses } = useQuery({ 
     queryKey: ['campuses'], 
-    queryFn: fetchCampuses
+    queryFn: () => fetchCampuses({ params: {}})
   });
 
   const queryClient = useQueryClient();

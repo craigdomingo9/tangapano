@@ -12,7 +12,7 @@ import AmenitiesDialog from "@/components/dashboard/listings/amenities/Amenities
 import ListingDialog, { useListingDialogOperation, useListingDialogState } from "@/components/dashboard/listings/listing/ListingDialog";
 import ListingImageDialog from "@/components/dashboard/listings/images/ListingImageDialog";
 
-function page() {
+function Page() {
 
   const {
     data,
@@ -74,4 +74,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

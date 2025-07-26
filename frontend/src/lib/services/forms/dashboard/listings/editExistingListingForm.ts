@@ -1,6 +1,4 @@
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 
 
 export const editExistingListingFormSchema = z.object({
@@ -10,7 +8,5 @@ export const editExistingListingFormSchema = z.object({
   distance_from_campus: z.string().transform(val => Number(val)),
   is_active: z.boolean(),
 });
-
-export const createEditExistingListingForm = () => useForm({ resolver: zodResolver(editExistingListingFormSchema) })
 
 

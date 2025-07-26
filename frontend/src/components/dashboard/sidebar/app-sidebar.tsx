@@ -14,7 +14,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { NavSecondary } from "./nax-secondary"
+import { NavSecondary } from "./nav-secondary"
 import { NavUser } from "./nav-user"
 import { useIsMobile } from "@/hooks/use-mobile";
 

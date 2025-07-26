@@ -1,8 +1,7 @@
-import fetchAmenities from "@/lib/services/api/fetchAmenities"
 import fetchCampuses from "@/lib/services/api/fetchCampuses"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useListingDialogState } from "./ListingDialog";
-import { addNewListingFormSchema, createAddNewListingForm } from "@/lib/services/forms/dashboard/listings/addNewListingForm";
+import { addNewListingFormSchema } from "@/lib/services/forms/dashboard/listings/addNewListingForm";
 import { z } from "zod"
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/universal/Form/Elements/InputField";
@@ -12,16 +11,19 @@ import { Button } from "@/components/ui/button";
 import { MoonLoader } from "react-spinners";
 import axios from "axios";
 import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 
 function AddNewListing() {
-  const form = createAddNewListingForm();
+  const form = useForm({ resolver: zodResolver(addNewListingFormSchema) });
+  
   const queryClient = useQueryClient();
   const { setEntities: setDialog } = useListingDialogState();
 
   const { data: campuses } = useQuery({ 
     queryKey: ['campuses'], 
-    queryFn: fetchCampuses
+    queryFn: () => fetchCampuses({ params: {}})
   });
 
 

@@ -10,13 +10,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
 import { useSelectedListing } from "../../CardButtons";
-import { createEditExitingRoomForm, editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listings/editExisitingRoomForm";
+import { editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listings/editExisitingRoomForm";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function EditExistingRoom() {
 
-  const form = createEditExitingRoomForm();
+  const form = useForm({ resolver: zodResolver(editExitingRoomFormSchema) });
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedRoom } = useSelectedRoom();
   const { entities: selectedListing } = useSelectedListing();

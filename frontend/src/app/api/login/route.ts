@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/lib/services/api/config'
+import { AxiosError } from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
@@ -29,7 +30,8 @@ export async function POST(req: NextRequest) {
 
     return response
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    if (!(error instanceof AxiosError)) return;
     const message = error?.response?.data?.error || 'Invalid credentials'
     return NextResponse.json({ error: message }, { status: 401 })
   }

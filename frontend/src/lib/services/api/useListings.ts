@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { axiosInstance } from './config';
 import { hashString } from '@/lib/utils';
+import { AxiosError } from 'axios';
 
 export default function useListings(params: string) {
   return useInfiniteQuery({
@@ -9,7 +10,8 @@ export default function useListings(params: string) {
       try {
         return axiosInstance.get(`/listings/listings/?${params}&is_available=true&page=${pageParam}`)
           .then(response => response.data);
-      } catch (error: any) {
+      } catch (error: unknown) {
+        if (!(error instanceof AxiosError)) return;
         throw new Error(`Failed to fetch properties: ${error.message}`);
       }
     },

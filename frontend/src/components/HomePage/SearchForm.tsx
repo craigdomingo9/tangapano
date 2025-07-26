@@ -1,5 +1,5 @@
 "use client";
-import { createSearchForm, searchFormSchema } from "@/lib/services/forms/searchForm"
+import { searchFormSchema } from "@/lib/services/forms/searchForm"
 import { useQuery } from '@tanstack/react-query'
 import fetchCampuses from "@/lib/services/api/fetchCampuses";
 import fetchAmenities from "@/lib/services/api/fetchAmenities";
@@ -14,6 +14,8 @@ import AmenitiesSelector from "./AmenitiesSelector";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import buildDynamicSearchParams from "@/lib/services/buildDynamicSearchParams";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function SearchForm() {
@@ -31,7 +33,7 @@ function SearchForm() {
   // console.log("Amenities:", amenities);
 
   const router = useRouter();
-  const form = createSearchForm();
+  const form = useForm<z.infer<typeof searchFormSchema>>({resolver: zodResolver(searchFormSchema)});
 
   function onSubmit(data: z.infer<typeof searchFormSchema>) {
     const params = buildDynamicSearchParams(data);

@@ -1,7 +1,4 @@
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-
 
 export const editExitingRoomFormSchema = z.object({
   rent_per_month: z.string().transform(val => Number(val)),
@@ -10,6 +7,4 @@ export const editExitingRoomFormSchema = z.object({
   is_available: z.boolean()
 });
 
-
-export const createEditExitingRoomForm = () => useForm({ resolver: zodResolver(editExitingRoomFormSchema) })
 

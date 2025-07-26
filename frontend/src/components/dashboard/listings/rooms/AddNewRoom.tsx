@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputField from "@/components/universal/Form/Elements/InputField";
-import { addNewRoomFormSchema, createAddNewRoomForm } from "@/lib/services/forms/dashboard/listings/addNewRoomForm"
+import { addNewRoomFormSchema } from "@/lib/services/forms/dashboard/listings/addNewRoomForm"
 import { z } from "zod";
-import { useState } from "react";
 import { MoonLoader } from "react-spinners";
 import SelectField from "@/components/HomePage/SelectField";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,12 +10,14 @@ import axios from "axios";
 import { useRoomsDialogOperation } from "./RoomsDialogContent";
 import { useSelectedListing } from "../../CardButtons";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
 function AddNewRoom() {
-
-  const form = createAddNewRoomForm();
+  
+  const form = useForm({ resolver: zodResolver(addNewRoomFormSchema) });
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedListing } = useSelectedListing();
 

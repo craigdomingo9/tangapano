@@ -1,5 +1,5 @@
 import * as React from "react"
-import { LifeBuoy, Send, type LucideIcon } from "lucide-react"
+import { LifeBuoy, Send } from "lucide-react"
 
 import {
   SidebarGroup,

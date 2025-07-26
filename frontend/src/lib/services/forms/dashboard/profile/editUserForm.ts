@@ -1,5 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 export const editUserFormSchema = z.object({
@@ -8,5 +6,3 @@ export const editUserFormSchema = z.object({
   email: z.email("Invalid email").optional(),
   username: z.string().min(1, "Username is required"),
 })
-
-export const createEditUserForm = () => useForm<z.infer<typeof editUserFormSchema>>({resolver: zodResolver(editUserFormSchema)})

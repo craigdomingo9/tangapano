@@ -1,6 +1,4 @@
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 
 
 export const addNewRoomFormSchema = z.object({
@@ -10,5 +8,4 @@ export const addNewRoomFormSchema = z.object({
 });
 
 
-export const createAddNewRoomForm = () => useForm({ resolver: zodResolver(addNewRoomFormSchema) })
 

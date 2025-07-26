@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod"
-import { createSignupForm, signupFormSchema } from "@/lib/services/forms/signupForm";
+import { signupFormSchema } from "@/lib/services/forms/signupForm";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Building2, CheckCircle, User } from "lucide-react";
 import { axiosInstance } from "@/lib/services/api/config";
@@ -9,13 +9,15 @@ import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useMutation } from "@tanstack/react-query";
 import { MoonLoader } from "react-spinners";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 function SignUpForm() {
 
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const { register, handleSubmit, formState: { errors }, trigger, getValues, reset } = createSignupForm();
+  const { register, handleSubmit, formState: { errors }, trigger, getValues, reset } = useForm<z.infer<typeof signupFormSchema>>({resolver: zodResolver(signupFormSchema)});
 
   const handleNext = async () => {
     let isValid = false;
