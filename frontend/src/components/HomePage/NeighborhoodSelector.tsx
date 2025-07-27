@@ -9,10 +9,11 @@ type Props = {
   labelClassName?: string,
   selectClassName?: string,
   defaultValue?: string,
-  placeholder?: string
+  placeholder?: string,
+  source?: string,
 };
 
-function NeighborhoodSelector({ form, campuses, selectClassName, placeholder = "", defaultValue = undefined, labelClassName = "text-white" }: Props) {
+function NeighborhoodSelector({ form, campuses, selectClassName, source, placeholder = "", defaultValue = " ", labelClassName = "text-white" }: Props) {
   const selectedCampusId = useWatch({ control: form.control, name: "campus" });
   
   // State to hold the neighborhoods relevant to the currently selected campus
@@ -44,13 +45,17 @@ function NeighborhoodSelector({ form, campuses, selectClassName, placeholder = "
     }
   }, [selectedCampusId, campuses, form, defaultValue]);
 
+  const allNeighborhoods = neighborhoods.map((n: Neighborhood) => ({ id: n.id, name: n.name }));
+  let neighborhoodsList = [...allNeighborhoods];
+  if (source === "searchPage") neighborhoodsList = [{id: " ", name: "All"}, ...neighborhoodsList];
+
   return (
     <SelectField
       form={form}
       fieldName="neighborhood"
       label="Select neighborhood"
       labelClassName={labelClassName}
-      selectionList={neighborhoods.map((n: Neighborhood) => ({ id: n.id, name: n.name }))}
+      selectionList={neighborhoodsList}
       defaultValue={defaultValue}
       placeholder={placeholder}
       disabled={neighborhoods?.length === 0}

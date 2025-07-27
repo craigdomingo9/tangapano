@@ -62,6 +62,7 @@ function SearchForm() {
               <NeighborhoodSelector
                 form={form}
                 campuses={campuses}
+                source="searchPage"
               />
               <PriceRangeSelector 
                 form={form}
