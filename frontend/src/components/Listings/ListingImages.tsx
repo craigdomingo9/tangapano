@@ -17,7 +17,7 @@ function ListingImages({listing}: Props) {
         {listing.images.map((image) => (
           <CarouselItem key={image.id}>
             <Avatar className="w-full rounded-none h-56">
-              <AvatarImage className="rounded-t-md" src={image.image} />
+              <AvatarImage className="rounded-t-xl" src={image.image} />
               <AvatarFallback className="rounded-none">{listing.title}</AvatarFallback>
             </Avatar>
           </CarouselItem>

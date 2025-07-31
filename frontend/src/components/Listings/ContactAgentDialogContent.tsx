@@ -44,7 +44,7 @@ function ContactAgentDialogContent() {
           return (
             <div
               key={room.id}
-              className={cn("flex items-center justify-between p-3 border transition delay-300 border-gray-200 rounded-lg bg-white shadow-sm", selectedRoom.id === room.id && "border-green-500 bg-green-100")}
+              className={cn("flex items-center cursor-pointer justify-between p-3 border transition delay-300 border-gray-200 rounded-lg bg-white shadow-sm", selectedRoom.id === room.id && "border-green-500 bg-green-100")}
               onClick={() => setSelectedRoom(room)}
             >
               <div>

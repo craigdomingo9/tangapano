@@ -4,15 +4,20 @@ import SelectField from '@/components/universal/Form/Elements/SelectField'
 type Props = {
   form: UseFormReturn<any, any, any>,
   fieldName?: string,
+  excludeAny?: boolean
 }
 
-const genders = [
+
+function GenderSelector({form, fieldName = "gender", excludeAny = false}: Props) {
+  const genders = [
     "any",
     "male",
     "female",
-]
+  ]
+  if (excludeAny) {
+    genders.shift();
+  }
 
-function GenderSelector({form, fieldName = "gender"}: Props) {
   return (
     <SelectField 
       form={form}
@@ -21,7 +26,6 @@ function GenderSelector({form, fieldName = "gender"}: Props) {
       label="Gender"
       selectionList={genders}
       description=""
-      placeholder="Male" 
       labelClassName='text-white'
       selectClassName="w-34 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
     />
