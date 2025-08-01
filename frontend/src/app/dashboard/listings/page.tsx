@@ -52,7 +52,7 @@ function Page() {
           />
           {status === 'pending' && (
             <div className='flex justify-center'>
-              <PulseLoader color='var(--primary-bg)' />
+              <PulseLoader color='var(--ou-crimson)' />
             </div>
           )}
           {data && status === 'success' && (

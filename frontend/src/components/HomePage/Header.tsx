@@ -13,7 +13,7 @@ function Header() {
   }, [user, isAuthenticated, logout]);
 
   return (
-    <div className="flex justify-center sticky z-50 top-0 p-4 h-24 text-white bg-[var(--primary-bg)]">
+    <div className="flex justify-center sticky z-50 top-0 p-4 h-24 text-white bg-[var(--ou-crimson)]">
       <div className="flex items-center justify-between w-full max-w-3xl px-1">
         <div>
           <Link href={"/"} className="font-bold scroll-m-20 text-2xl tracking-tighter">TangaPano</Link>

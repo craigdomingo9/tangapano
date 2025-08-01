@@ -67,7 +67,7 @@ function LandlordDialogContent() {
               </div>
               <div className="flex justify-end gap-3 mt-5">
                 <Button onClick={() => setDialog(false)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium">Cancel</Button>
-                <Button type="submit" className="px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg text-white font-medium">
+                <Button type="submit" className="px-4 py-2 rounded-lg text-white font-medium">
                   {mutation.isPending ? (
                     <MoonLoader
                       color="white"

@@ -76,7 +76,7 @@ function AmenitiesDialogContent() {
             onClick={() => handleToggleAmenity(amenity.id)}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
               ${currentSelectedAmenities?.some(item => item?.id === amenity?.id)
-                ? 'bg-blue-600 text-white shadow-md'
+                ? 'bg-[var(--lapis-lazuli)] text-white shadow-md'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
           >
@@ -87,7 +87,7 @@ function AmenitiesDialogContent() {
 
       <div className="flex justify-end gap-3">
         <Button onClick={() => setDialog(false)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium">Cancel</Button>
-        <Button onClick={handleSave} className="px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg text-white font-medium">
+        <Button onClick={handleSave} className="px-4 py-2 rounded-lg text-white font-medium">
           {isSaving ? (
             <MoonLoader
               color="white"

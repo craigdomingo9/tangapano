@@ -11,6 +11,9 @@ import { useMutation } from "@tanstack/react-query";
 import { MoonLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 
 function SignUpForm() {
@@ -74,7 +77,7 @@ function SignUpForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-center text-2xl text-indigo-700">Sign Up</CardTitle>
+        <CardTitle className="text-center text-2xl text-[var(--lapis-lazuli)]">Sign Up</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex justify-between mb-6 text-gray-500">
@@ -101,77 +104,76 @@ function SignUpForm() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">Step 1: Account Information</h3>
               <div>
                 <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">First Name</label>
-                <input
+                <Input
                   type="text"
                   id="first_name"
                   {...register("first_name")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="John"
                 />
                 {errors.first_name && <p className="mt-1 text-sm text-red-600">{errors.first_name.message}</p>}
               </div>
               <div>
                 <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">Last Name</label>
-                <input
+                <Input
                   type="text"
                   id="last_name"
                   {...register("last_name")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="Doe"
                 />
                 {errors.last_name && <p className="mt-1 text-sm text-red-600">{errors.last_name.message}</p>}
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <input
+                <Input
                   type="email"
                   id="email"
                   {...register("email")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="you@example.com"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
               </div>
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-                <input
+                <Input
                   type="text"
                   id="username"
                   {...register("username")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="tinashedivi"
                 />
                 {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>}
               </div>
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                <input
+                <Input
                   type="password"
                   id="password"
                   {...register("password")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="••••••••"
                 />
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
               </div>
               <div>
                 <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">Confirm Password</label>
-                <input
+                <Input
                   type="password"
                   id="confirm_password"
                   {...register("confirm_password")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2"
                   placeholder="••••••••"
                 />
                 {errors.confirm_password && <p className="mt-1 text-sm text-red-600">{errors.confirm_password.message}</p>}
               </div>
-              <button
-                type="button"
+              <Button
                 onClick={handleNext}
-                className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                className="w-full flex items-center justify-center py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
               >
-                Next Step <ArrowRight size={20} className="ml-2" />
-              </button>
+                Next Step <ArrowRight size={20} />
+              </Button>
             </div>
           )}
 
@@ -180,48 +182,47 @@ function SignUpForm() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">Step 2: Landlord Details (Optional)</h3>
               <div>
                 <label htmlFor="company_name" className="block text-sm font-medium text-gray-700">Company Name</label>
-                <input
+                <Input
                   type="text"
                   id="company_name"
                   {...register("company_name")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., Harare Student Homes Ltd."
                 />
                 {errors.company_name && <p className="mt-1 text-sm text-red-600">{errors.company_name.message}</p>}
               </div>
               <div>
                 <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700">Phone Number</label>
-                <input
+                <Input
                   type="text"
                   id="phone_number"
                   {...register("phone_number")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., +263771234567 or 0771234567"
                 />
                 {errors.phone_number && <p className="mt-1 text-sm text-red-600">{errors.phone_number.message}</p>}
               </div>
               <div>
                 <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-                <textarea
+                <Textarea
                   id="address"
                   {...register("address")}
                   rows={3}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-y"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md resize-y"
                   placeholder="123 Main St, Harare"
-                ></textarea>
+                ></Textarea>
                 {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>}
               </div>
               <div className="flex justify-between gap-4">
-                <button
-                  type="button"
+                <Button
                   onClick={handleBack}
-                  className="flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                  className="flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white"
                 >
-                  <ArrowLeft size={20} className="mr-2" /> Back
-                </button>
-                <button
+                  <ArrowLeft size={20} /> Back
+                </Button>
+                <Button
                   type="submit"
-                  className="flex-1 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+                  className="flex-1 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white"
                 >
                   {mutation.isPending ? (
                     <MoonLoader
@@ -233,7 +234,7 @@ function SignUpForm() {
                       Sign Up <CheckCircle size={20} className="ml-2" />
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           )}

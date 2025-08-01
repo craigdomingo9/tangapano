@@ -68,8 +68,9 @@ export function AppSidebar() {
                       onClick={() => {
                         if (isMobile) toggleSidebar();
                       }}
+                      className="flex items-center gap-2"
                     >
-                      <item.icon strokeWidth={1.5} />
+                      <item.icon className="size-6" strokeWidth={1.5} />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

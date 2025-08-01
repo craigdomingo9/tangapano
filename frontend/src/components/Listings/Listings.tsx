@@ -37,7 +37,7 @@ function Listings({filterParamsURL}: Props) {
       <div className="space-y-6">
         {(status === 'pending' || isRefetching) && (
           <div className='flex justify-center mt-5'>
-            <PulseLoader color='var(--primary-bg)' />
+            <PulseLoader color='var(--ou-crimson)' />
           </div>
         )}
         {status === 'error' && <p>Error: {error.message}</p>}
@@ -53,7 +53,7 @@ function Listings({filterParamsURL}: Props) {
             <div ref={ref} className="py-4 text-center">
               {isFetchingNextPage && (
                 <div className='flex justify-center'>
-                  <PulseLoader color='var(--primary-bg)' />
+                  <PulseLoader color='var(--ou-crimson)' />
                 </div>
               )}
               {!hasNextPage && !isFetchingNextPage && (

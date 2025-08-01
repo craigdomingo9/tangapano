@@ -21,7 +21,7 @@ function UserInfo() {
   if (loading) {
     return (
       <div className="flex justify-center">
-        <MoonLoader size={20} color="var(--primary-bg)" />
+        <MoonLoader size={20} color="var(--ou-crimson)" />
       </div>
     );
   }

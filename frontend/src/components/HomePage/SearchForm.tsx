@@ -94,7 +94,7 @@ function SearchForm() {
           </div>
 
           <div className="grid mb-6">
-            <Button type="submit" className="mx-auto w-full h-16 text-lg bg-amber-600 cursor-pointer">Search</Button>
+            <Button type="submit" className="mx-auto w-full h-16 text-lg cursor-pointer">Search</Button>
           </div>
 
         </form>

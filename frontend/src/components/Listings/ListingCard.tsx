@@ -70,7 +70,7 @@ function ListingCard({ listing }: Props) {
       </CardContent>
       <>
         <Button 
-          className="w-full h-14 rounded-t-none cursor-pointer sm:hover:scale-[1.03] transition bg-green-500" 
+          className="w-full h-14 rounded-t-none cursor-pointer sm:hover:scale-[1.03] transition bg-af-blue" 
           onClick={() => {
             setSelectedListing(listing);
             setDialog(true);

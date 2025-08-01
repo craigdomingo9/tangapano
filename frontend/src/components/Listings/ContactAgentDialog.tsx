@@ -16,7 +16,7 @@ function ContactAgentDialog() {
   return (
     <DialogContainer 
       state={dialog} 
-      title={'Contact Agent'} 
+      title={'Contact Agent on Whatsapp'} 
       onChange={() => setDialog(!dialog)}
     >
       <ContactAgentDialogContent />
