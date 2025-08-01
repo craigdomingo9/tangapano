@@ -14,6 +14,7 @@ import { editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listin
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { gendersList } from "@/lib/lists";
 
 
 function EditExistingRoom() {
@@ -53,7 +54,7 @@ function EditExistingRoom() {
               <InputField 
                 form={form} 
                 fieldName="max_occupants" 
-                label="Max Students" 
+                label="Students Per Room" 
                 defaultValue={selectedRoom.max_occupants}
               />
               
@@ -62,12 +63,8 @@ function EditExistingRoom() {
                 fieldName="gender_preference"
                 label="Gender Preference"
                 defaultValue={selectedRoom.gender_preference}
-                selectionList={[
-                  {id: "any", name: "Any"},
-                  {id: "male", name: "Male"},
-                  {id: "female", name: "Female"},
-                ]}
-                placeholder={capitalizeFirstLetter(selectedRoom.gender_preference)}
+                selectionList={gendersList}
+                placeholder={gendersList.filter(option => option.id == selectedRoom.gender_preference).at(0)?.name}
                 selectClassName="w-full rounded-lg min-h-10"
               />
               <CheckBoxField 

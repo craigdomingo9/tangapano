@@ -19,8 +19,6 @@ class ListingFilter(filters.FilterSet):
         fields = []
     
     def filter_gender(self, queryset, name, value):
-        if value == 'any':
-            return queryset
         return queryset.filter(rooms__gender_preference=value)
     
     
@@ -56,7 +54,7 @@ class ListingFilter(filters.FilterSet):
             room_filter &= Q(rent_per_month__gte=price_min)
         if price_max:
             room_filter &= Q(rent_per_month__lte=price_max)
-        if gender and gender != 'any':
+        if gender:
             room_filter &= Q(gender_preference=gender)
         if max_occupants:
             room_filter &= Q(max_occupants=max_occupants)

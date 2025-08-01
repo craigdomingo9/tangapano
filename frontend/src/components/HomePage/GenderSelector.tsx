@@ -1,35 +1,49 @@
-import { UseFormReturn } from 'react-hook-form'
-import SelectField from '@/components/universal/Form/Elements/SelectField'
+import { UseFormReturn, useWatch } from "react-hook-form";
+import SelectField from "./SelectField";
+import { useEffect, useState } from "react";
+import { Mars, Shuffle, Venus } from "lucide-react";
+import { gendersList } from "@/lib/lists";
 
 type Props = {
-  form: UseFormReturn<any, any, any>,
-  fieldName?: string,
-  excludeAny?: boolean
-}
+  form: UseFormReturn<any, any, any>;
+  fieldName?: string;
+  excludeAny?: boolean;
+};
 
 
-function GenderSelector({form, fieldName = "gender", excludeAny = false}: Props) {
-  const genders = [
-    "any",
-    "male",
-    "female",
-  ]
-  if (excludeAny) {
-    genders.shift();
-  }
+function GenderSelector({
+  form,
+  fieldName = "gender",
+  excludeAny = false,
+}: Props) {
+  const studentsPerRoom = useWatch({
+    control: form.control,
+    name: "max_occupants",
+  });
+
+  const defaultList = gendersList;
+  const [selectionList, setSelectionList] = useState(defaultList);
+
+  useEffect(() => {
+    if (studentsPerRoom == 1) {
+      setSelectionList(selectionList.filter(option => option.id !== 'any'));
+    } else {
+      setSelectionList(defaultList);
+    }
+  }, [studentsPerRoom])
+  
+
 
   return (
-    <SelectField 
+    <SelectField
       form={form}
-      defaultValue={genders[0]}
+      defaultValue={defaultList.at(0)?.id}
       fieldName={fieldName}
       label="Gender"
-      selectionList={genders}
-      description=""
-      labelClassName='text-white'
-      selectClassName="w-34 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      selectionList={selectionList}
+      selectClassName="w-34"
     />
-  )
+  );
 }
 
-export default GenderSelector
+export default GenderSelector;

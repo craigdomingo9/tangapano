@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils";
+import { LucideIcon } from "lucide-react";
 import { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -19,7 +20,8 @@ type Props = {
   defaultValue?: string,
   selectionList: {
     id: string,
-    name: string
+    name: string,
+    icon?: LucideIcon
   }[],
   selectClassName?: string,
   disabled?: boolean
@@ -60,7 +62,7 @@ function SelectField({
               <SelectContent>
                 {selectionList.map((item) => (
                   <SelectItem key={item.id} value={item.id.toString()}>
-                    {item.name}
+                    {item.name} {item.icon && <item.icon />}
                   </SelectItem>
                 ))}
               </SelectContent>
