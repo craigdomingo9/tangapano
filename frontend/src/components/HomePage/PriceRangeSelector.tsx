@@ -81,7 +81,7 @@ export default function PriceRangeSelector({ form }: Props) {
 
           {/* Max range */}
           <Input
-            className="absolute border-0 pr-0 w-[200px] h-[30px] appearance-none bg-none z-10
+            className="absolute border-0 pl-0 pr-0 w-[200px] h-[30px] appearance-none bg-none z-10
               pointer-events-none
               [&::-webkit-slider-thumb]:pointer-events-auto
               [&::-webkit-slider-thumb]:appearance-none
