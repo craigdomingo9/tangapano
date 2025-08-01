@@ -7,14 +7,12 @@ import { gendersList } from "@/lib/lists";
 type Props = {
   form: UseFormReturn<any, any, any>;
   fieldName?: string;
-  excludeAny?: boolean;
 };
 
 
 function GenderSelector({
   form,
   fieldName = "gender",
-  excludeAny = false,
 }: Props) {
   const studentsPerRoom = useWatch({
     control: form.control,
@@ -25,7 +23,7 @@ function GenderSelector({
   const [selectionList, setSelectionList] = useState(defaultList);
 
   useEffect(() => {
-    if (studentsPerRoom == 1) {
+    if (studentsPerRoom == 0) {
       setSelectionList(selectionList.filter(option => option.id !== 'any'));
     } else {
       setSelectionList(defaultList);

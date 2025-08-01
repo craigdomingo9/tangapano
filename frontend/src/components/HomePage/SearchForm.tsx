@@ -80,7 +80,6 @@ function SearchForm() {
                 />
                 <GenderSelector 
                   form={form}
-                  excludeAny={true}
                 />
 
               </div>
