@@ -21,7 +21,7 @@ function LandlordDialogContent() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: z.infer<typeof editLandlordFormSchema>) => axios.patch("/api/profile", data),
+    mutationFn: (data: z.infer<typeof editLandlordFormSchema>) => axios.patch("/api/users/profile", data),
     onSuccess: () => {
       form.reset();
       toast.success("Profile was updated successfully.");

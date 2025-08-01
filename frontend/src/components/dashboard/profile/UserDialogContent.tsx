@@ -21,7 +21,7 @@ function UserDialogContent() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (data: z.infer<typeof editUserFormSchema>) => axios.patch("/api/user", data),
+    mutationFn: (data: z.infer<typeof editUserFormSchema>) => axios.patch("/api/users/user", data),
     onSuccess: () => {
       form.reset();
       toast.success("User was updated successfully.");
