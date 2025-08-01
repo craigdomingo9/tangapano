@@ -1,5 +1,5 @@
 # Standard Library
-from rest_framework import viewsets, generics
+from rest_framework import generics
 from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator

@@ -5,7 +5,6 @@ import { z } from "zod";
 import { MoonLoader } from "react-spinners";
 import SelectField from "@/components/HomePage/SelectField";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
-import { capitalizeFirstLetter } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
@@ -61,7 +60,7 @@ function EditExistingRoom() {
               <SelectField 
                 form={form}
                 fieldName="gender_preference"
-                label="Gender Preference"
+                label="Gender"
                 defaultValue={selectedRoom.gender_preference}
                 selectionList={gendersList}
                 placeholder={gendersList.filter(option => option.id == selectedRoom.gender_preference).at(0)?.name}

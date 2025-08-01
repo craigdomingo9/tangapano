@@ -14,6 +14,7 @@ interface Neighborhood {
   id: string;
   name: string;
   city: string;
+  has_listings: string;
 }
 
 interface Amenity {

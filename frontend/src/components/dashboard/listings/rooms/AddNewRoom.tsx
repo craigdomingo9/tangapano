@@ -12,6 +12,7 @@ import { useSelectedListing } from "../../CardButtons";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { gendersList } from "@/lib/lists";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
@@ -70,14 +71,10 @@ function AddNewRoom() {
               <SelectField 
                 form={form}
                 fieldName="gender_preference"
-                label="Gender Preference"
-                defaultValue="any"
-                selectionList={[
-                  {id: "any", name: "Any"},
-                  {id: "male", name: "Male"},
-                  {id: "female", name: "Female"},
-                ]}
-                placeholder="Any"
+                label="Gender"
+                defaultValue={gendersList.at(0)?.id}
+                selectionList={gendersList}
+                placeholder={gendersList.at(0)?.name}
                 selectClassName="w-full rounded-lg min-h-10"
               />
             </div>

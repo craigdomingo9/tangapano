@@ -11,7 +11,7 @@ class NeighborhoodViewSet(viewsets.ModelViewSet):
     """
     queryset = Neighborhood.objects.all()
     serializer_class = NeighborhoodSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAdminUser]
     
     filter_backends = [
         DjangoFilterBackend, 

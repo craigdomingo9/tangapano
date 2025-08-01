@@ -19,7 +19,6 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
-    
 
 
 # 👥 3. List all users (admin-only or staff)

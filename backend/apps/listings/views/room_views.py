@@ -21,7 +21,7 @@ class RoomViewSet(viewsets.ModelViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action == ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
             self.permission_classes = [permissions.IsAuthenticated, IsRoomOwnedByLandlord]
         else:
             self.permission_classes = [permissions.AllowAny]

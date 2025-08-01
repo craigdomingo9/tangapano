@@ -1,2 +1,2 @@
-from .landlord_listings_permission import IsOwnerLandlord
+from .landlord_listings_permission import IsOwnerLandlord, IsLandlordsImage
 from .rooms_permissions import IsRoomOwnedByLandlord

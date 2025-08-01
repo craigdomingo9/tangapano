@@ -23,17 +23,17 @@ function NeighborhoodSelector({ form, campuses, selectClassName, source, placeho
     // Find the selected campus object from the 'campuses' array
     // We use String(selectedCampusId) to ensure type consistency for comparison
     const campus = campuses?.find((c) => c.id.toString() === String(selectedCampusId));
-
+    const neighborhoods = campus?.neighborhoods.filter(neighborhood => neighborhood.has_listings)
 
     if (campus) {
       // If a campus is found, update the neighborhoods state with its neighborhoods.
       // Ensure 'campus.neighborhoods' is treated as an array, even if it's null/undefined or empty.
-      setNeighborhoods(campus.neighborhoods || []);
+      setNeighborhoods(neighborhoods || []);
       
       // Set the default neighborhood for the form based on the selected campus.
       // If the campus has neighborhoods, default to the first one. Otherwise, clear the field.
-      if (campus.neighborhoods && campus.neighborhoods.length > 0) {
-        form.setValue("neighborhood", defaultValue || campus.neighborhoods[0].id.toString());
+      if (neighborhoods && neighborhoods.length > 0) {
+        form.setValue("neighborhood", defaultValue || neighborhoods[0].id.toString());
       } else {
         // If no neighborhoods for the selected campus, clear the neighborhood field.
         form.setValue("neighborhood", "");

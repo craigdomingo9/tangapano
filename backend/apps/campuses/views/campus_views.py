@@ -12,9 +12,18 @@ class CampusViewSet(viewsets.ModelViewSet):
     """
     queryset = Campus.objects.all()
     serializer_class = CampusSerializer
-    permission_classes = [permissions.AllowAny]
     
     filter_backends = [
         DjangoFilterBackend, 
     ]
     filterset_class = CampusFilter
+    
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            self.permission_classes = [permissions.IsAdminUser]
+        else:
+            self.permission_classes = [permissions.AllowAny]
+        return super().get_permissions()

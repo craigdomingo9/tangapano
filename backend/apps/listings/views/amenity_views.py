@@ -9,4 +9,14 @@ class AmenityViewSet(viewsets.ModelViewSet):
     """
     queryset = Amenity.objects.all()
     serializer_class = AmenitySerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAdminUser]
+    
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            self.permission_classes = [permissions.IsAdminUser]
+        else:
+            self.permission_classes = [permissions.AllowAny]
+        return super().get_permissions()

@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from campuses.models import Campus, Neighborhood
+from campuses.models import Campus
 from campuses.serializers.neighborhood_serializer import NeighborhoodSerializer
 
 
 class CampusSerializer(serializers.ModelSerializer):
+    neighborhoods = NeighborhoodSerializer(many=True, required=False)
     
     class Meta:
         model = Campus
