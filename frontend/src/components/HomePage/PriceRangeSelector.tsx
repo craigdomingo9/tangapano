@@ -38,7 +38,7 @@ export default function PriceRangeSelector({ form }: Props) {
 
       <div className="flex w-full">
         <div>
-          <FormLabel className="font-semibold mx-2 justify-center">
+          <FormLabel className="font-semibold mx-2 justify-center w-6">
             ${minValue}
           </FormLabel>
         </div>
@@ -107,7 +107,7 @@ export default function PriceRangeSelector({ form }: Props) {
         </div>
 
         <div>
-          <FormLabel className="font-semibold mx-2">${maxValue}</FormLabel>
+          <FormLabel className="font-semibold mx-2 w-6">${maxValue}</FormLabel>
         </div>
       </div>
     </div>
