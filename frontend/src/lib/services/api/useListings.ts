@@ -1,15 +1,18 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { axiosInstance } from './config';
-import { hashString } from '@/lib/utils';
-import { AxiosError } from 'axios';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { axiosInstance } from "./config";
+import { hashString } from "@/lib/utils";
+import { AxiosError } from "axios";
 
 export default function useListings(params: string) {
   return useInfiniteQuery({
-    queryKey: ['listings', hashString(params)],
+    queryKey: ["listings", hashString(params)],
     queryFn: async ({ pageParam = 1 }) => {
       try {
-        return axiosInstance.get(`/listings/listings/?${params}&is_available=true&page=${pageParam}`)
-          .then(response => response.data);
+        return axiosInstance
+          .get(
+            `/listings/listings/?${params}&is_available=true&page=${pageParam}`,
+          )
+          .then((response) => response.data);
       } catch (error: unknown) {
         if (!(error instanceof AxiosError)) return;
         throw new Error(`Failed to fetch properties: ${error.message}`);

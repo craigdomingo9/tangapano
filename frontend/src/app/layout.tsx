@@ -20,9 +20,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <Providers>
           <AuthProvider>
-            <ClientLayout>
-              {children}
-            </ClientLayout>
+            <ClientLayout>{children}</ClientLayout>
             <Toaster />
           </AuthProvider>
         </Providers>

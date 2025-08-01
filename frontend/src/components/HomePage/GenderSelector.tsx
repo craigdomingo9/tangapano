@@ -9,11 +9,7 @@ type Props = {
   fieldName?: string;
 };
 
-
-function GenderSelector({
-  form,
-  fieldName = "gender",
-}: Props) {
+function GenderSelector({ form, fieldName = "gender" }: Props) {
   const studentsPerRoom = useWatch({
     control: form.control,
     name: "max_occupants",
@@ -24,13 +20,11 @@ function GenderSelector({
 
   useEffect(() => {
     if (studentsPerRoom == 0) {
-      setSelectionList(selectionList.filter(option => option.id !== 'any'));
+      setSelectionList(selectionList.filter((option) => option.id !== "any"));
     } else {
       setSelectionList(defaultList);
     }
-  }, [studentsPerRoom])
-  
-
+  }, [studentsPerRoom]);
 
   return (
     <SelectField

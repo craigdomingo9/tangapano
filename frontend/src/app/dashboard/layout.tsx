@@ -21,14 +21,10 @@ export default function DashboardLayout({
       <SidebarProvider>
         <AppSidebar />
         <main className="flex flex-1 flex-col">
-          <CustomSidebarInset>
-            {children}
-          </CustomSidebarInset>
+          <CustomSidebarInset>{children}</CustomSidebarInset>
           <Toaster />
         </main>
       </SidebarProvider>
     </AuthProvider>
   );
 }
-
-

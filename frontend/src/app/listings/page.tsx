@@ -1,11 +1,10 @@
 import Listings from "@/components/Listings/Listings";
 
 type Props = {
-  searchParams: { [key: string]: string | string[] | undefined }
-}
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
-async function page({searchParams}: Props) {
-
+async function page({ searchParams }: Props) {
   const params = await searchParams;
 
   // Extract amenities (could be string or string[])
@@ -33,11 +32,9 @@ async function page({searchParams}: Props) {
   return (
     <div className="flex justify-center flex-col items-center [&>div]:w-full">
       <div />
-      <Listings 
-        filterParamsURL={filters.toString()} 
-      />
+      <Listings filterParamsURL={filters.toString()} />
     </div>
-  )
+  );
 }
 
-export default page
+export default page;

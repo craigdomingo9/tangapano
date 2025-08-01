@@ -18,7 +18,7 @@ function buildDynamicSearchParams(data: Record<string, any>): URLSearchParams {
 
       // Only append parameters if the value is not null, undefined, or an empty string.
       // This prevents sending unnecessary or invalid parameters.
-      if (value !== undefined && value !== null && value !== '') {
+      if (value !== undefined && value !== null && value !== "") {
         // Determine the actual URL parameter name:
         // Use the mapped name if it exists, otherwise use the original key.
         const paramName = paramNameMap[key] || key;

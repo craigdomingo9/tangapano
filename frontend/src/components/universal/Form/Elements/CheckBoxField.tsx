@@ -1,42 +1,45 @@
 import { useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form"
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { UseFormReturn } from "react-hook-form";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import CheckBox from "./CheckBox";
 
-
-function CheckBoxField({ 
-  form, 
-  defaultChecked, 
+function CheckBoxField({
+  form,
+  defaultChecked,
   fieldName,
-  label, 
-  description, 
-  className
-  } : {
-    form: UseFormReturn<any, any, any>,
-    defaultChecked: boolean,
-    fieldName: string,
-    label: string,
-    description?: string,
-    disabled?: boolean,
-    className?: string
-  }) 
-  {
-
+  label,
+  description,
+  className,
+}: {
+  form: UseFormReturn<any, any, any>;
+  defaultChecked: boolean;
+  fieldName: string;
+  label: string;
+  description?: string;
+  disabled?: boolean;
+  className?: string;
+}) {
   const [fieldChecked, setFieldChecked] = useState<boolean>(defaultChecked);
-
 
   const setChecked = (newChecked: boolean) => {
     setFieldChecked(newChecked);
     form.setValue(fieldName, newChecked);
-  }
+  };
 
   const onChange = () => {
     setChecked(!fieldChecked);
-  }
+  };
 
   useEffect(() => {
     setChecked(defaultChecked);
-  }, [])
+  }, []);
 
   return (
     <FormField
@@ -47,9 +50,9 @@ function CheckBoxField({
           <FormControl>
             <CheckBox
               label={label}
-              fieldName={fieldName} 
+              fieldName={fieldName}
               state={fieldChecked}
-              onChange={onChange} 
+              onChange={onChange}
               className={className}
             />
           </FormControl>
@@ -59,8 +62,8 @@ function CheckBoxField({
           <FormMessage className="text-xs" />
         </FormItem>
       )}
-  />
-  )
+    />
+  );
 }
 
-export default CheckBoxField
+export default CheckBoxField;

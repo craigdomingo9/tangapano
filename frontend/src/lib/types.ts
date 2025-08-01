@@ -1,6 +1,3 @@
-
-
-
 interface Campus {
   id: string;
   name: string;
@@ -69,8 +66,6 @@ interface Room {
   updated_at: string;
 }
 
-
-
 type Listing = {
   id: string;
   title: string;
@@ -86,6 +81,4 @@ type Listing = {
   is_available: boolean;
   created_at: string;
   updated_at: string;
-}
-
-
+};

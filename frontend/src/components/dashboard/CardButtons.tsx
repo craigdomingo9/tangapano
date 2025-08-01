@@ -1,26 +1,32 @@
 import { Bed, Edit, ImageIcon, List, Trash2 } from "lucide-react";
 import createEntityStore from "@/lib/store/entityStore";
 import { useRoomsDialogState } from "./listings/rooms/RoomsDialog";
-import { useAmenitiesDialogState, useSelectedAmenities } from "./listings/amenities/AmenitiesDialog";
-import { useListingDialogOperation, useListingDialogState } from "./listings/listing/ListingDialog";
+import {
+  useAmenitiesDialogState,
+  useSelectedAmenities,
+} from "./listings/amenities/AmenitiesDialog";
+import {
+  useListingDialogOperation,
+  useListingDialogState,
+} from "./listings/listing/ListingDialog";
 import { useListingImageDialogState } from "./listings/images/ListingImageDialog";
 
-
 type Props = {
-  listing: Listing
-}
+  listing: Listing;
+};
 
 export const useSelectedListing = createEntityStore<Listing>({} as Listing);
 
-function CardButtons({listing}: Props) {
+function CardButtons({ listing }: Props) {
   const { setEntities: setAmenitiesDialog } = useAmenitiesDialogState();
   const { setEntities: setListingImageDialog } = useListingImageDialogState();
   const { setEntities: setRoomsDialog } = useRoomsDialogState();
   const { setEntities: setListingDialog } = useListingDialogState();
-  const { setEntities: setListingDialogOperation } = useListingDialogOperation();
+  const { setEntities: setListingDialogOperation } =
+    useListingDialogOperation();
   const { setEntities: setSelectedAmenities } = useSelectedAmenities();
   const { setEntities: setSelectedListing } = useSelectedListing();
-  
+
   return (
     <div className="grid grid-cols-2">
       <button
@@ -72,7 +78,7 @@ function CardButtons({listing}: Props) {
         <Trash2 size={16} /> Delete Listing
       </button>
     </div>
-  )
+  );
 }
 
-export default CardButtons
+export default CardButtons;

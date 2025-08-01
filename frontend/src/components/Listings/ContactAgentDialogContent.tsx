@@ -18,7 +18,7 @@ interface Room {
 function ContactAgentDialogContent() {
   const { entities: selectedListing } = useSelectedListingByStudent();
   const [selectedRoom, setSelectedRoom] = useState<Room>(
-    selectedListing.rooms.at(0) as Room
+    selectedListing.rooms.at(0) as Room,
   );
   // console.log(selectedListing, selectedRoom);
 
@@ -26,7 +26,7 @@ function ContactAgentDialogContent() {
   const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id} Rent:${selectedRoom.rent_per_month}\nCan you please provide more details?`;
 
   const whatsappUrl = `https://wa.me/${agentPhoneNumber}?text=${encodeURIComponent(
-    message
+    message,
   )}`;
 
   function handleClick() {

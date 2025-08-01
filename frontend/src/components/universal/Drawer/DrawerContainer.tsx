@@ -1,25 +1,14 @@
-import {
-  Drawer,
-  DrawerContent,
-} from "@/components/ui/drawer"
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 
-
-
 type Props = {
-  open: boolean,
-  setOpen: (val: boolean) => void,
-  Content: JSX.Element,
-  className?: string
-}
+  open: boolean;
+  setOpen: (val: boolean) => void;
+  Content: JSX.Element;
+  className?: string;
+};
 
-function DrawerContainer({
-  open,
-  setOpen,
-  Content,
-  className
-}: Props) {
-
+function DrawerContainer({ open, setOpen, Content, className }: Props) {
   return (
     <Drawer open={open} onOpenChange={() => setOpen(!open)}>
       <DrawerContent>
@@ -28,7 +17,7 @@ function DrawerContainer({
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 
-export default DrawerContainer
+export default DrawerContainer;

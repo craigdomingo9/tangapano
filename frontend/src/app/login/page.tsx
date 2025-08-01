@@ -1,5 +1,4 @@
-import { LoginForm } from "@/components/Login/LoginForm"
-
+import { LoginForm } from "@/components/Login/LoginForm";
 
 function page() {
   return (
@@ -8,7 +7,7 @@ function page() {
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }
 
-export default page
+export default page;

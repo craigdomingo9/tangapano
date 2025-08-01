@@ -122,25 +122,19 @@
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE/Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;             /* Chrome/Safari */
+  display: none; /* Chrome/Safari */
 }
-
-
-
 
 :root {
   --ou-crimson: #880d1eff;
   --lapis-lazuli: #0c6291ff;
-  --air-force-blue: #4B89ABff;
+  --air-force-blue: #4b89abff;
 }
 
 .bg-af-blue {
   background-color: var(--air-force-blue);
 }
-
-
-

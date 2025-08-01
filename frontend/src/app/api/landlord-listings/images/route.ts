@@ -11,7 +11,10 @@ export async function POST(request: Request) {
   const listingId = formData.get("listing") as string;
 
   if (!imageFile || !listingId) {
-    return NextResponse.json({ error: "Missing image or listing" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing image or listing" },
+      { status: 400 },
+    );
   }
 
   // Convert to Buffer
@@ -20,15 +23,19 @@ export async function POST(request: Request) {
 
   const uploadForm = new FormData();
   uploadForm.append("listing", listingId);
-  uploadForm.append("caption", caption)
+  uploadForm.append("caption", caption);
   uploadForm.append("image", new Blob([buffer]), imageFile.name); // Safe for modern environments
 
-  const res = await axiosInstance.post(`/listings/listing-images/`, uploadForm, {
-    headers: {
-      Authorization: `Token ${token}`,
-      "Content-Type": "multipart/form-data"
+  const res = await axiosInstance.post(
+    `/listings/listing-images/`,
+    uploadForm,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
     },
-  });
+  );
 
   if (res.status >= 400) {
     return NextResponse.json({ token: false }, { status: 401 });

@@ -8,18 +8,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-
-
+} from "@/components/ui/alert-dialog";
 
 type Props = {
-  Trigger: JSX.Element,
-  title: string,
-  description: JSX.Element | string,
-  proceedText: string,
-  cancelText: string,
-  actionFunction: () => void
-}
+  Trigger: JSX.Element;
+  title: string;
+  description: JSX.Element | string;
+  proceedText: string;
+  cancelText: string;
+  actionFunction: () => void;
+};
 
 function AlertDialogContainer({
   Trigger,
@@ -27,30 +25,25 @@ function AlertDialogContainer({
   description,
   proceedText,
   cancelText,
-  actionFunction
-
+  actionFunction,
 }: Props) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        {Trigger}
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{Trigger}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {description}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelText}</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={actionFunction}
-          >{proceedText}</AlertDialogAction>
+          <AlertDialogAction onClick={actionFunction}>
+            {proceedText}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }
 
-export default AlertDialogContainer
+export default AlertDialogContainer;

@@ -1,5 +1,5 @@
 "use client";
-import { Building2, Command, User } from "lucide-react"
+import { Building2, Command, User } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,10 +12,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
-import { NavSecondary } from "./nav-secondary"
-import { NavUser } from "./nav-user"
+} from "@/components/ui/sidebar";
+import Link from "next/link";
+import { NavSecondary } from "./nav-secondary";
+import { NavUser } from "./nav-user";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const items = [
@@ -29,10 +29,9 @@ const items = [
     url: "/dashboard/profile",
     icon: User,
   },
-]
+];
 
 export function AppSidebar() {
-
   const { toggleSidebar } = useSidebar();
   const isMobile = useIsMobile();
 
@@ -63,8 +62,8 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link 
-                      href={item.url} 
+                    <Link
+                      href={item.url}
                       onClick={() => {
                         if (isMobile) toggleSidebar();
                       }}
@@ -85,5 +84,5 @@ export function AppSidebar() {
         <NavUser />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

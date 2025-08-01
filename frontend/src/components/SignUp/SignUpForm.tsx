@@ -1,8 +1,14 @@
 "use client";
-import { z } from "zod"
+import { z } from "zod";
 import { signupFormSchema } from "@/lib/services/forms/signupForm";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Building2, CheckCircle, User } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Building2,
+  CheckCircle,
+  User,
+} from "lucide-react";
 import { axiosInstance } from "@/lib/services/api/config";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -15,23 +21,37 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
-
 function SignUpForm() {
-
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const { register, handleSubmit, formState: { errors }, trigger, getValues, reset } = useForm<z.infer<typeof signupFormSchema>>({resolver: zodResolver(signupFormSchema)});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    trigger,
+    getValues,
+    reset,
+  } = useForm<z.infer<typeof signupFormSchema>>({
+    resolver: zodResolver(signupFormSchema),
+  });
 
   const handleNext = async () => {
     let isValid = false;
     if (currentStep === 1) {
-      isValid = await trigger(['first_name', 'last_name', 'email', 'username', 'password', 'confirm_password']);
+      isValid = await trigger([
+        "first_name",
+        "last_name",
+        "email",
+        "username",
+        "password",
+        "confirm_password",
+      ]);
     }
-    
+
     if (isValid) {
       setCurrentStep(currentStep + 1);
     } else {
-      toast.error('Please fix the errors in Step 1 before proceeding.')
+      toast.error("Please fix the errors in Step 1 before proceeding.");
     }
   };
 
@@ -40,18 +60,21 @@ function SignUpForm() {
   };
 
   const mutation = useMutation({
-    mutationFn: (data: any) => axiosInstance.post('/users/register/', data, { headers: { 'Content-Type': 'application/json' } }),
+    mutationFn: (data: any) =>
+      axiosInstance.post("/users/register/", data, {
+        headers: { "Content-Type": "application/json" },
+      }),
     onSuccess() {
       reset();
-      toast.success("Signed up successfully")
-      router.push('/login');
+      toast.success("Signed up successfully");
+      router.push("/login");
     },
     onError() {
-      toast.error('Signup failed. Please try again.')
+      toast.error("Signup failed. Please try again.");
     },
-  })
+  });
 
-  const onSubmit = async(data: z.infer<typeof signupFormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
     const dataToSend: any = {
       first_name: data.first_name,
       last_name: data.last_name,
@@ -65,34 +88,48 @@ function SignUpForm() {
       dataToSend.landlord_profile = {
         company_name: data.company_name,
         phone_number: data.phone_number,
-        address: data.address
+        address: data.address,
       };
     }
 
-    await mutation.mutateAsync(dataToSend)
-
+    await mutation.mutateAsync(dataToSend);
   };
-  
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-center text-2xl text-[var(--lapis-lazuli)]">Sign Up</CardTitle>
+        <CardTitle className="text-center text-2xl text-[var(--lapis-lazuli)]">
+          Sign Up
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex justify-between mb-6 text-gray-500">
-          <div className={`flex flex-col items-center flex-1 ${currentStep >= 1 ? 'text-indigo-600 font-semibold' : ''}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 1 ? 'border-indigo-600 bg-indigo-100' : 'border-gray-300'}`}>
+          <div
+            className={`flex flex-col items-center flex-1 ${currentStep >= 1 ? "text-indigo-600 font-semibold" : ""}`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 1 ? "border-indigo-600 bg-indigo-100" : "border-gray-300"}`}
+            >
               {currentStep > 1 ? <CheckCircle size={18} /> : <User size={18} />}
             </div>
             <span className="text-sm mt-1">Account Info</span>
           </div>
           <div className="flex items-center justify-center flex-1">
-            <div className={`h-0.5 w-full ${currentStep > 1 ? 'bg-indigo-600' : 'bg-gray-300'}`}></div>
+            <div
+              className={`h-0.5 w-full ${currentStep > 1 ? "bg-indigo-600" : "bg-gray-300"}`}
+            ></div>
           </div>
-          <div className={`flex flex-col items-center flex-1 ${currentStep >= 2 ? 'text-indigo-600 font-semibold' : ''}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 2 ? 'border-indigo-600 bg-indigo-100' : 'border-gray-300'}`}>
-              {currentStep > 2 ? <CheckCircle size={18} /> : <Building2 size={18} />}
+          <div
+            className={`flex flex-col items-center flex-1 ${currentStep >= 2 ? "text-indigo-600 font-semibold" : ""}`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 2 ? "border-indigo-600 bg-indigo-100" : "border-gray-300"}`}
+            >
+              {currentStep > 2 ? (
+                <CheckCircle size={18} />
+              ) : (
+                <Building2 size={18} />
+              )}
             </div>
             <span className="text-sm mt-1 text-center">Landlord Details</span>
           </div>
@@ -101,9 +138,16 @@ function SignUpForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {currentStep === 1 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Step 1: Account Information</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Step 1: Account Information
+              </h3>
               <div>
-                <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">First Name</label>
+                <label
+                  htmlFor="first_name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  First Name
+                </label>
                 <Input
                   type="text"
                   id="first_name"
@@ -111,10 +155,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="John"
                 />
-                {errors.first_name && <p className="mt-1 text-sm text-red-600">{errors.first_name.message}</p>}
+                {errors.first_name && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.first_name.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">Last Name</label>
+                <label
+                  htmlFor="last_name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Last Name
+                </label>
                 <Input
                   type="text"
                   id="last_name"
@@ -122,10 +175,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="Doe"
                 />
-                {errors.last_name && <p className="mt-1 text-sm text-red-600">{errors.last_name.message}</p>}
+                {errors.last_name && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.last_name.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email
+                </label>
                 <Input
                   type="email"
                   id="email"
@@ -133,10 +195,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="you@example.com"
                 />
-                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Username
+                </label>
                 <Input
                   type="text"
                   id="username"
@@ -144,10 +215,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="tinashedivi"
                 />
-                {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>}
+                {errors.username && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.username.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Password
+                </label>
                 <Input
                   type="password"
                   id="password"
@@ -155,10 +235,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="••••••••"
                 />
-                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <label
+                  htmlFor="confirm_password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </label>
                 <Input
                   type="password"
                   id="confirm_password"
@@ -166,7 +255,11 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2"
                   placeholder="••••••••"
                 />
-                {errors.confirm_password && <p className="mt-1 text-sm text-red-600">{errors.confirm_password.message}</p>}
+                {errors.confirm_password && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.confirm_password.message}
+                  </p>
+                )}
               </div>
               <Button
                 onClick={handleNext}
@@ -179,9 +272,16 @@ function SignUpForm() {
 
           {currentStep === 2 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Step 2: Landlord Details (Optional)</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Step 2: Landlord Details (Optional)
+              </h3>
               <div>
-                <label htmlFor="company_name" className="block text-sm font-medium text-gray-700">Company Name</label>
+                <label
+                  htmlFor="company_name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Company Name
+                </label>
                 <Input
                   type="text"
                   id="company_name"
@@ -189,10 +289,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., Harare Student Homes Ltd."
                 />
-                {errors.company_name && <p className="mt-1 text-sm text-red-600">{errors.company_name.message}</p>}
+                {errors.company_name && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.company_name.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700">Phone Number</label>
+                <label
+                  htmlFor="phone_number"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Phone Number
+                </label>
                 <Input
                   type="text"
                   id="phone_number"
@@ -200,10 +309,19 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., +263771234567 or 0771234567"
                 />
-                {errors.phone_number && <p className="mt-1 text-sm text-red-600">{errors.phone_number.message}</p>}
+                {errors.phone_number && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.phone_number.message}
+                  </p>
+                )}
               </div>
               <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Address
+                </label>
                 <Textarea
                   id="address"
                   {...register("address")}
@@ -211,7 +329,11 @@ function SignUpForm() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md resize-y"
                   placeholder="123 Main St, Harare"
                 ></Textarea>
-                {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>}
+                {errors.address && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.address.message}
+                  </p>
+                )}
               </div>
               <div className="flex justify-between gap-4">
                 <Button
@@ -225,10 +347,7 @@ function SignUpForm() {
                   className="flex-1 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white"
                 >
                   {mutation.isPending ? (
-                    <MoonLoader
-                      color="white"
-                      size={15}
-                    />
+                    <MoonLoader color="white" size={15} />
                   ) : (
                     <>
                       Sign Up <CheckCircle size={20} className="ml-2" />
@@ -241,7 +360,7 @@ function SignUpForm() {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default SignUpForm
+export default SignUpForm;

@@ -1,16 +1,14 @@
-import { InfiniteData } from "@tanstack/react-query"
-import SortBySelect from "./SortBySelect"
-import ListingCard from "./ListingCard"
-import React from "react"
-
-
+import { InfiniteData } from "@tanstack/react-query";
+import SortBySelect from "./SortBySelect";
+import ListingCard from "./ListingCard";
+import React from "react";
 
 type Props = {
-  listings: InfiniteData<any, unknown>,
-}
+  listings: InfiniteData<any, unknown>;
+};
 
-function ListingsList({listings}: Props) {
-  console.log(listings)
+function ListingsList({ listings }: Props) {
+  console.log(listings);
 
   return (
     <>
@@ -22,17 +20,13 @@ function ListingsList({listings}: Props) {
         {listings?.pages.map((page, index) => (
           <React.Fragment key={index}>
             {page?.results?.map((listing: Listing) => (
-              <ListingCard
-                key={listing.id} 
-                listing={listing} 
-              />
+              <ListingCard key={listing.id} listing={listing} />
             ))}
           </React.Fragment>
         ))}
       </div>
-
     </>
-  )
+  );
 }
 
-export default ListingsList
+export default ListingsList;

@@ -1,31 +1,37 @@
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 type Props = {
-  form: UseFormReturn<any, any, any>,
-  fieldName: string,
-  label: string,
-  placeholder?: string,
-  labelClassName?: string,
-  defaultValue?: string,
+  form: UseFormReturn<any, any, any>;
+  fieldName: string;
+  label: string;
+  placeholder?: string;
+  labelClassName?: string;
+  defaultValue?: string;
   selectionList: {
-    id: string,
-    name: string,
-    icon?: LucideIcon
-  }[],
-  selectClassName?: string,
-  disabled?: boolean
-}
+    id: string;
+    name: string;
+    icon?: LucideIcon;
+  }[];
+  selectClassName?: string;
+  disabled?: boolean;
+};
 
 function SelectField({
   form,
@@ -36,12 +42,14 @@ function SelectField({
   selectionList = [],
   defaultValue,
   selectClassName,
-  disabled = false
+  disabled = false,
 }: Props) {
-
-  
   useEffect(() => {
-    if (form && defaultValue !== undefined && form.getValues(fieldName) === undefined) {
+    if (
+      form &&
+      defaultValue !== undefined &&
+      form.getValues(fieldName) === undefined
+    ) {
       form.setValue(fieldName, defaultValue);
     }
   }, [fieldName, form, defaultValue]);
@@ -52,26 +60,37 @@ function SelectField({
       name={fieldName}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className={cn("font-semibold", labelClassName)}>{label}</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
-              <FormControl>
-                <SelectTrigger className={cn("w-80 min-h-12 rounded-sm bg-white text-black border ", selectClassName)}>
-                  <SelectValue placeholder={placeholder} />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {selectionList.map((item) => (
-                  <SelectItem key={item.id} value={item.id.toString()}>
-                    {item.name} {item.icon && <item.icon />}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <FormLabel className={cn("font-semibold", labelClassName)}>
+            {label}
+          </FormLabel>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            disabled={disabled}
+          >
+            <FormControl>
+              <SelectTrigger
+                className={cn(
+                  "w-80 min-h-12 rounded-sm bg-white text-black border ",
+                  selectClassName,
+                )}
+              >
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              {selectionList.map((item) => (
+                <SelectItem key={item.id} value={item.id.toString()}>
+                  {item.name} {item.icon && <item.icon />}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <FormMessage />
         </FormItem>
       )}
     />
-  )
+  );
 }
 
-export default SelectField
+export default SelectField;

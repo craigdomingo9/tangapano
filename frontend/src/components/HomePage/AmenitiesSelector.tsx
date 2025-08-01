@@ -1,17 +1,19 @@
-import { UseFormReturn } from "react-hook-form"
-import { Label } from "../ui/label"
-
+import { UseFormReturn } from "react-hook-form";
+import { Label } from "../ui/label";
 
 type Props = {
-  amenities: Amenity[],
-  form: UseFormReturn<any, any, any>
-}
+  amenities: Amenity[];
+  form: UseFormReturn<any, any, any>;
+};
 
-function AmenitiesSelector({amenities, form}: Props) {
+function AmenitiesSelector({ amenities, form }: Props) {
   return (
     <div className="space-y-2 my-5 grid grid-cols-2 place-items-center">
       {amenities?.map((amenity) => (
-        <div key={amenity.id} className="flex items-center justify-between gap-2 text-white w-36 py-2">
+        <div
+          key={amenity.id}
+          className="flex items-center justify-between gap-2 text-white w-36 py-2"
+        >
           <Label htmlFor={`amenity-${amenity.name}`} className="text-sm">
             {amenity.display_name}
           </Label>
@@ -28,7 +30,7 @@ function AmenitiesSelector({amenities, form}: Props) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export default AmenitiesSelector
+export default AmenitiesSelector;

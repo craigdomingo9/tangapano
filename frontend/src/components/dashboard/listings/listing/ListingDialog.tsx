@@ -3,17 +3,17 @@ import createEntityStore from "@/lib/store/entityStore";
 import { useEffect } from "react";
 import ListingDialogContent from "./ListingDialogContent";
 
-
 export const useListingDialogState = createEntityStore<boolean>(false);
-export const useListingDialogOperation = createEntityStore<"add" | "edit" | "delete">("add");
-
+export const useListingDialogOperation = createEntityStore<
+  "add" | "edit" | "delete"
+>("add");
 
 function ListingDialog() {
   const { entities: dialog, setEntities: setDialog } = useListingDialogState();
   const { entities: operation } = useListingDialogOperation();
 
-  useEffect(() => {}, [dialog])
-  
+  useEffect(() => {}, [dialog]);
+
   const titleMap = {
     add: "Add New Listing",
     edit: "Edit Listing",
@@ -35,7 +35,7 @@ function ListingDialog() {
     >
       <ListingDialogContent />
     </DialogContainer>
-  )
+  );
 }
 
-export default ListingDialog
+export default ListingDialog;

@@ -16,28 +16,29 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-
 function EditExistingListing() {
-
-  const form = useForm({ resolver: zodResolver(editExistingListingFormSchema) });
+  const form = useForm({
+    resolver: zodResolver(editExistingListingFormSchema),
+  });
   const { entities: selectedListing } = useSelectedListing();
   const { setEntities: setDialog } = useListingDialogState();
 
-  const { data: campuses } = useQuery({ 
-    queryKey: ['campuses'], 
-    queryFn: () => fetchCampuses({ params: {}})
+  const { data: campuses } = useQuery({
+    queryKey: ["campuses"],
+    queryFn: () => fetchCampuses({ params: {} }),
   });
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data: z.infer<typeof editExistingListingFormSchema>) => axios.patch(`/api/landlord-listings/${selectedListing?.id}`, data),
+    mutationFn: (data: z.infer<typeof editExistingListingFormSchema>) =>
+      axios.patch(`/api/landlord-listings/${selectedListing?.id}`, data),
     onSuccess: () => {
       form.reset();
       setDialog(false);
-      queryClient.invalidateQueries({queryKey: ["landlord-listings"]});
-      toast.success("Listing was updated successfully.")
-    }
-  })
+      queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });
+      toast.success("Listing was updated successfully.");
+    },
+  });
 
   async function onSubmit(data: z.infer<typeof editExistingListingFormSchema>) {
     await mutation.mutateAsync(data);
@@ -46,13 +47,17 @@ function EditExistingListing() {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit, (errors) =>
+            console.log(errors),
+          )}
+        >
           <div className="grid space-y-4 place-items-center">
-            <InputField 
-              form={form} 
-              fieldName="title" 
-              label="Title" 
-              placeholder="eg. Malvin Residence" 
+            <InputField
+              form={form}
+              fieldName="title"
+              label="Title"
+              placeholder="eg. Malvin Residence"
               defaultValue={selectedListing.title}
               inputClassName="w-64"
             />
@@ -72,16 +77,16 @@ function EditExistingListing() {
               defaultValue={selectedListing.neighborhood.id.toString()}
               placeholder={selectedListing.neighborhood.name}
             />
-            <InputField 
-              form={form} 
-              fieldName="distance_from_campus" 
-              label="Distance From Campus (in minutes)" 
-              placeholder="eg. 15" 
+            <InputField
+              form={form}
+              fieldName="distance_from_campus"
+              label="Distance From Campus (in minutes)"
+              placeholder="eg. 15"
               defaultValue={selectedListing.distance_from_campus}
               inputClassName="w-64"
             />
-            <CheckBoxField 
-              form={form} 
+            <CheckBoxField
+              form={form}
               fieldName="is_active"
               label="Is Available"
               defaultChecked={selectedListing.is_active}
@@ -89,20 +94,27 @@ function EditExistingListing() {
             />
           </div>
           <div className="flex justify-end gap-3 mt-5">
-            <Button onClick={() => setDialog(false)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium">Cancel</Button>
-            <Button type="submit" className="px-4 py-2 rounded-lg text-white font-medium">
+            <Button
+              onClick={() => setDialog(false)}
+              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="px-4 py-2 rounded-lg text-white font-medium"
+            >
               {mutation.isPending ? (
-                <MoonLoader
-                  color="white"
-                  size={15}
-                />
-              ) : 'Save'}
+                <MoonLoader color="white" size={15} />
+              ) : (
+                "Save"
+              )}
             </Button>
           </div>
         </form>
       </Form>
     </div>
-  )
+  );
 }
 
-export default EditExistingListing
+export default EditExistingListing;

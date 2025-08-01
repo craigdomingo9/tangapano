@@ -1,5 +1,5 @@
-import * as React from "react"
-import { LifeBuoy, Send } from "lucide-react"
+import * as React from "react";
+import { LifeBuoy, Send } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -7,8 +7,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
+} from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const items = [
   {
@@ -21,12 +21,11 @@ const items = [
     url: "#",
     icon: Send,
   },
-]
+];
 
 export function NavSecondary({
   ...props
-}: {
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: {} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
@@ -44,5 +43,5 @@ export function NavSecondary({
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  )
+  );
 }
