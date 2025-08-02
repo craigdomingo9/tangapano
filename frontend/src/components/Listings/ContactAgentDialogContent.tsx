@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSelectedListingByStudent } from "./ContactAgentDialog";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { axiosInstance } from "@/lib/services/api/config";
 
 interface Room {
   id: string;
@@ -18,7 +20,7 @@ interface Room {
 function ContactAgentDialogContent() {
   const { entities: selectedListing } = useSelectedListingByStudent();
   const [selectedRoom, setSelectedRoom] = useState<Room>(
-    selectedListing.rooms.at(0) as Room,
+    selectedListing.rooms.at(0) as Room
   );
   // console.log(selectedListing, selectedRoom);
 
@@ -26,11 +28,21 @@ function ContactAgentDialogContent() {
   const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id} Rent:${selectedRoom.rent_per_month}\nCan you please provide more details?`;
 
   const whatsappUrl = `https://wa.me/${agentPhoneNumber}?text=${encodeURIComponent(
-    message,
+    message
   )}`;
 
-  function handleClick() {
-    // console.log("----clicked----", selectedRoom)
+  const mutation = useMutation({
+    mutationFn: (data: { contacted_agent: string; room: string }) =>
+      axiosInstance.post("/interests/interests/", data),
+    onSuccess(data, variables, context) {},
+  });
+
+  async function handleClick() {
+    await mutation.mutateAsync({
+      contacted_agent: selectedListing.campus.agents.id,
+      room: selectedRoom.id,
+    });
+
     window.open(whatsappUrl, "_blank");
   }
 
@@ -55,7 +67,7 @@ function ContactAgentDialogContent() {
               className={cn(
                 "flex items-center cursor-pointer justify-between last:mb-2 p-3 transition-all animate-in delay-100 rounded-lg bg-white shadow-sm",
                 selectedRoom.id === room.id && "border bg-green-100",
-                selectedRoom.id !== room.id && "border border-gray-200",
+                selectedRoom.id !== room.id && "border border-gray-200"
               )}
               onClick={() => setSelectedRoom(room)}
             >
