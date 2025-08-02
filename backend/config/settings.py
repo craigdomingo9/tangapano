@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'users',
     'listings',
     'campuses',
+    'interests'
 ]
 
 MIDDLEWARE = [

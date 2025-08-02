@@ -10,6 +10,5 @@ router.register(r'landlord-listings', LandlordListingViewSet, basename='landlord
 router.register(r'rooms', RoomViewSet, basename='rooms')
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('listings/', ListingAPIView.as_view(), name='listings')
-]
+] + router.urls
