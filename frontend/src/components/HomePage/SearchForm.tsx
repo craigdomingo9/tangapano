@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import buildDynamicSearchParams from "@/lib/services/buildDynamicSearchParams";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import StudentsPerRoomField from "./StudentsPerRoomField";
 
 function SearchForm() {
   const { data: amenities } = useQuery({
@@ -33,6 +34,9 @@ function SearchForm() {
   const router = useRouter();
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
+    defaultValues: {
+      max_occupants: "2",
+    },
   });
 
   function onSubmit(data: z.infer<typeof searchFormSchema>) {
@@ -64,15 +68,7 @@ function SearchForm() {
               <PriceRangeSelector form={form} />
 
               <div className="flex justify-between my-3 mb-0">
-                <InputField
-                  form={form}
-                  fieldName="max_occupants"
-                  label="Students Per Room"
-                  defaultValue={2}
-                  type="number"
-                  inputClassName="w-34 min-h-12 rounded-sm bg-white text-black border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  labelClassName="text-white"
-                />
+                <StudentsPerRoomField form={form} fieldName="max_occupants" />
                 <GenderSelector form={form} />
               </div>
             </div>

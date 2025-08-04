@@ -45,7 +45,7 @@ function EditExistingRoom() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (errors) =>
-              console.log(errors),
+              console.log(errors)
             )}
           >
             <div className="grid grid-cols-2 space-y-2 space-x-2">
@@ -71,7 +71,7 @@ function EditExistingRoom() {
                 placeholder={
                   gendersList
                     .filter(
-                      (option) => option.id == selectedRoom.gender_preference,
+                      (option) => option.id == selectedRoom.gender_preference
                     )
                     .at(0)?.name
                 }

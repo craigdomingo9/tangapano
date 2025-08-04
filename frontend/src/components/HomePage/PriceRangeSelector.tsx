@@ -50,7 +50,7 @@ export default function PriceRangeSelector({ form }: Props) {
           {/* Selected range highlight */}
           <div
             ref={progressRef}
-            className="absolute top-1/2 h-[3px] pr-0 mr-0 bg-[var(--lapis-lazuli)] -translate-y-1/2 z-0"
+            className="absolute top-1/2 h-[4px] pr-0 mr-0 bg-[var(--lapis-lazuli)] -translate-y-1/2 z-0"
           />
 
           {/* Min range */}

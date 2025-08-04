@@ -20,5 +20,5 @@ export const searchFormSchema = z
     {
       message: "Minimum price cannot be greater than maximum price",
       path: ["price_min"],
-    },
+    }
   );

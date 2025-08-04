@@ -10,30 +10,17 @@ type Props = {
 };
 
 function GenderSelector({ form, fieldName = "gender" }: Props) {
-  const studentsPerRoom = useWatch({
-    control: form.control,
-    name: "max_occupants",
-  });
-
   const defaultList = gendersList;
-  const [selectionList, setSelectionList] = useState(defaultList);
-
-  useEffect(() => {
-    if (studentsPerRoom == 0) {
-      setSelectionList(selectionList.filter((option) => option.id !== "any"));
-    } else {
-      setSelectionList(defaultList);
-    }
-  }, [studentsPerRoom]);
 
   return (
     <SelectField
       form={form}
+      placeholder={defaultList.at(0)?.name}
       defaultValue={defaultList.at(0)?.id}
       fieldName={fieldName}
       label="Gender"
-      selectionList={selectionList}
-      selectClassName="w-34"
+      selectionList={defaultList}
+      selectClassName="w-34 [&>*]:text-black"
     />
   );
 }

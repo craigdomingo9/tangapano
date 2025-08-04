@@ -61,9 +61,7 @@ function InputField({
       name={fieldName}
       render={() => (
         <FormItem>
-          <FormLabel
-            className={cn("text-opacity font-semibold", labelClassName)}
-          >
+          <FormLabel className={cn("font-semibold", labelClassName)}>
             {label}
           </FormLabel>
           <FormControl>
