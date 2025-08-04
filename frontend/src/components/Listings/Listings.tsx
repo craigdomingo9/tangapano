@@ -2,9 +2,10 @@
 import { useInView } from "react-intersection-observer";
 import useListings from "@/lib/services/api/useListings";
 import React, { useEffect } from "react";
-import { PulseLoader } from "react-spinners";
 import ListingsList from "./ListingsList";
 import ContactAgentDialog from "./ContactAgentDialog";
+import Loader from "../Loader";
+import ListingSkeleton from "./ListingSkeleton";
 
 type Props = {
   filterParamsURL: string;
@@ -34,8 +35,12 @@ function Listings({ filterParamsURL }: Props) {
       <div className="max-w-3xl flex-1">
         <div className="space-y-6">
           {(status === "pending" || isRefetching) && (
-            <div className="flex justify-center mt-5">
-              <PulseLoader color="var(--ou-crimson)" />
+            <div className="flex flex-col justify-center items-center w-full">
+              <Loader className="my-2" />
+              <div className="flex flex-col md:flex-row">
+                <ListingSkeleton />
+                <ListingSkeleton />
+              </div>
             </div>
           )}
           {status === "error" && <p>Error: {error.message}</p>}
@@ -49,7 +54,7 @@ function Listings({ filterParamsURL }: Props) {
               <div ref={ref} className="py-4 text-center">
                 {isFetchingNextPage && (
                   <div className="flex justify-center">
-                    <PulseLoader color="var(--ou-crimson)" />
+                    <Loader />
                   </div>
                 )}
                 {!hasNextPage && !isFetchingNextPage && (

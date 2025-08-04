@@ -3,13 +3,13 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '8000',
-        pathname: '/**',
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/**",
       },
     ],
   },
-  allowedDevOrigins: ["192.168.43.242"]
+  devIndicators: false,
+  allowedDevOrigins: ["192.168.43.242"],
 };
-  

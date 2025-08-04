@@ -23,7 +23,7 @@ function ListingImages({ listing }: Props) {
           <CarouselItem key={image.id}>
             <Avatar className="w-full rounded-none h-56">
               <AvatarImage className="rounded-t-xl" src={image.image} />
-              <AvatarFallback className="rounded-none">
+              <AvatarFallback className="rounded-none rounded-t-xl">
                 {listing.title}
               </AvatarFallback>
             </Avatar>
