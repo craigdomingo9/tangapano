@@ -75,7 +75,7 @@ function EditExistingRoom() {
                     )
                     .at(0)?.name
                 }
-                selectClassName="w-full rounded-lg min-h-10"
+                selectClassName="w-full rounded-lg min-h-10 [&>*]:text-black"
               />
               <CheckBoxField
                 form={form}

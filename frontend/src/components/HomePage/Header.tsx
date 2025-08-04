@@ -30,6 +30,7 @@ function Header() {
             <div className="flex items-center gap-4">
               <Link
                 href={"/dashboard/listings"}
+                target="_blank"
                 className="hover:scale-110 transition"
                 prefetch
               >
