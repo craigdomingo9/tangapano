@@ -1,5 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import SelectField from "./SelectField";
+import { useEffect, useMemo, useState } from "react";
 
 type Props = {
   form: UseFormReturn<any, any, any>;
@@ -8,6 +9,12 @@ type Props = {
   selectClassName?: string;
   defaultValue?: string;
   placeholder?: string;
+  onSearchPage?: boolean;
+};
+
+type ListItem = {
+  id: string;
+  name: string;
 };
 
 function CampusSelector({
@@ -17,11 +24,28 @@ function CampusSelector({
   placeholder = "",
   defaultValue = undefined,
   labelClassName = "text-white",
+  onSearchPage,
 }: Props) {
-  const campusSelectionList = campuses?.map((campus: Campus) => ({
-    id: campus.id,
-    name: campus.name,
-  }));
+  const campusSelectionList: ListItem[] = useMemo(
+    () =>
+      campuses?.map((campus) => ({
+        id: campus.id,
+        name: campus.name,
+      })) ?? [],
+    [campuses]
+  );
+
+  const [defaultCampus, setDefaultCampus] = useState<ListItem | undefined>();
+
+  useEffect(() => {
+    if (onSearchPage && campusSelectionList.length > 0) {
+      setDefaultCampus(campusSelectionList[0]);
+    }
+  }, [campuses]);
+
+  const selectedValue = defaultValue ?? defaultCampus?.id.toString();
+
+  const resolvedPlaceholder = placeholder || defaultCampus?.name || "";
 
   return (
     <SelectField
@@ -30,10 +54,10 @@ function CampusSelector({
       label="Select campus"
       labelClassName={labelClassName}
       selectionList={campusSelectionList}
-      defaultValue={defaultValue}
-      placeholder={placeholder}
+      defaultValue={selectedValue}
+      placeholder={resolvedPlaceholder}
       disabled={campuses?.length === 0}
-      selectClassName={selectClassName}
+      selectClassName={`${selectClassName} [&>*]:text-black`}
     />
   );
 }

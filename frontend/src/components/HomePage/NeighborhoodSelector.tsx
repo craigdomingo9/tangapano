@@ -1,5 +1,5 @@
 import { UseFormReturn, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SelectField from "./SelectField"; // Assuming this path is correct for your SelectField component
 
 type Props = {
@@ -21,51 +21,41 @@ function NeighborhoodSelector({
   defaultValue = " ",
   labelClassName = "text-white",
 }: Props) {
-  const selectedCampusId = useWatch({ control: form.control, name: "campus" });
+  const selectedCampusId = useWatch({
+    control: form.control,
+    name: "campus",
+  });
 
-  // State to hold the neighborhoods relevant to the currently selected campus
   const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
+  const [resolvedPlaceholder, setResolvedPlaceholder] = useState(placeholder);
 
   useEffect(() => {
-    // Find the selected campus object from the 'campuses' array
-    // We use String(selectedCampusId) to ensure type consistency for comparison
     const campus = campuses?.find(
-      (c) => c.id.toString() === String(selectedCampusId),
+      (c) => String(c.id) === String(selectedCampusId)
     );
-    const neighborhoods = campus?.neighborhoods.filter(
-      (neighborhood) => neighborhood.has_listings,
+    const filtered = campus?.neighborhoods?.filter((n) => n.has_listings) ?? [];
+
+    setNeighborhoods(filtered);
+
+    form.setValue(
+      "neighborhood",
+      filtered.length > 0 ? defaultValue ?? filtered[0].id.toString() : ""
     );
-
-    if (campus) {
-      // If a campus is found, update the neighborhoods state with its neighborhoods.
-      // Ensure 'campus.neighborhoods' is treated as an array, even if it's null/undefined or empty.
-      setNeighborhoods(neighborhoods || []);
-
-      // Set the default neighborhood for the form based on the selected campus.
-      // If the campus has neighborhoods, default to the first one. Otherwise, clear the field.
-      if (neighborhoods && neighborhoods.length > 0) {
-        form.setValue(
-          "neighborhood",
-          defaultValue || neighborhoods[0].id.toString(),
-        );
-      } else {
-        // If no neighborhoods for the selected campus, clear the neighborhood field.
-        form.setValue("neighborhood", "");
-      }
-    } else {
-      // If no campus is selected or found, clear the neighborhoods list and the form field.
-      setNeighborhoods([]);
-      form.setValue("neighborhood", "");
-    }
   }, [selectedCampusId, campuses, form, defaultValue]);
 
-  const allNeighborhoods = neighborhoods.map((n: Neighborhood) => ({
-    id: n.id,
-    name: n.name,
-  }));
-  let neighborhoodsList = [...allNeighborhoods];
-  if (source === "searchPage")
-    neighborhoodsList = [{ id: " ", name: "All" }, ...neighborhoodsList];
+  const neighborhoodsList = useMemo(() => {
+    const baseList = neighborhoods.map((n) => ({
+      id: n.id,
+      name: n.name,
+    }));
+
+    if (source === "searchPage") {
+      setResolvedPlaceholder("All");
+      return [{ id: " ", name: "All" }, ...baseList];
+    }
+
+    return baseList;
+  }, [neighborhoods, source]);
 
   return (
     <SelectField
@@ -75,9 +65,9 @@ function NeighborhoodSelector({
       labelClassName={labelClassName}
       selectionList={neighborhoodsList}
       defaultValue={defaultValue}
-      placeholder={placeholder}
-      disabled={neighborhoods?.length === 0}
-      selectClassName={selectClassName}
+      placeholder={resolvedPlaceholder}
+      disabled={neighborhoods.length === 0}
+      selectClassName={`${selectClassName} [&>*]:text-black`}
     />
   );
 }

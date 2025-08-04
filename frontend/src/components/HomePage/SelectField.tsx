@@ -45,11 +45,7 @@ function SelectField({
   disabled = false,
 }: Props) {
   useEffect(() => {
-    if (
-      form &&
-      defaultValue !== undefined &&
-      form.getValues(fieldName) === undefined
-    ) {
+    if (form) {
       form.setValue(fieldName, defaultValue);
     }
   }, [fieldName, form, defaultValue]);
@@ -72,7 +68,7 @@ function SelectField({
               <SelectTrigger
                 className={cn(
                   "w-80 min-h-12 rounded-sm bg-white text-black border ",
-                  selectClassName,
+                  selectClassName
                 )}
               >
                 <SelectValue placeholder={placeholder} />
