@@ -31,7 +31,7 @@ function StudentsPerRoomField({
   };
 
   return (
-    <div {...props}>
+    <div {...props} className="shadow-lg">
       <Label>Students per Room</Label>
       <div className="flex justify-center items-center [&>*]:mt-2 space--2">
         <Button
@@ -41,7 +41,7 @@ function StudentsPerRoomField({
         >
           <Minus />
         </Button>
-        <div className="h-12 bg-white text-black w-12 rounded-none flex justify-center items-center select-none">
+        <div className="h-12 bg-white text-gray-800 w-12 rounded-none flex justify-center items-center select-none">
           {roomCapacity}
         </div>
         <Button

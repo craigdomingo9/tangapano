@@ -31,13 +31,13 @@ function ListingCard({ listing }: Props) {
   const [room, _] = useState(listing.rooms[0]);
 
   const roomPrices = listing.rooms.map((_room) =>
-    parseFloat(_room.rent_per_month),
+    parseFloat(_room.rent_per_month)
   );
   const minRoomPrice = roomPrices.reduce((prev, curr) =>
-    Math.min(curr, prev || 0),
+    Math.min(curr, prev || 0)
   );
   const maxRoomPrice = roomPrices.reduce((prev, curr) =>
-    Math.max(curr, prev || 0),
+    Math.max(curr, prev || 0)
   );
   // console.log(roomPrices, minRoomPrice, maxRoomPrice)
 
@@ -66,11 +66,16 @@ function ListingCard({ listing }: Props) {
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Users size={16} className="mr-2 text-purple-500" />{" "}
-            {room.max_occupants} student(s) per room
+            {room.max_occupants}{" "}
+            {listing.rooms.at(0)?.gender_preference !== "any"
+              ? listing.rooms.at(0)?.gender_preference
+              : ""}{" "}
+            student{room.max_occupants > 1 ? "s" : ""} per room
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Bed size={16} className="mr-2 text-yellow-500" />{" "}
-            {listing.rooms.length} room(s) available
+            {listing.rooms.length} room{listing.rooms.length > 1 ? "s" : ""}{" "}
+            available
           </p>
           <p className="text-gray-700 flex items-center mb-3">
             <Ruler size={16} className="mr-2 text-orange-500" />{" "}
