@@ -13,7 +13,7 @@ class LandlordListingViewSet(viewsets.ModelViewSet):
     """
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerLandlord]
-    
+    throttle_scope = "dashboard_listings"
     
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:

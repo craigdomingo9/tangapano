@@ -10,7 +10,7 @@ export default function useListings(params: string) {
       try {
         return axiosInstance
           .get(
-            `/listings/listings/?${params}&is_available=true&page=${pageParam}`,
+            `/listings/listings/?${params}&is_available=true&page=${pageParam}`
           )
           .then((response) => response.data);
       } catch (error: unknown) {

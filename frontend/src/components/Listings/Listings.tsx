@@ -6,6 +6,8 @@ import ListingsList from "./ListingsList";
 import ContactAgentDialog from "./ContactAgentDialog";
 import Loader from "../Loader";
 import ListingSkeleton from "./ListingSkeleton";
+import { toast } from "sonner";
+import { AlertCircle } from "lucide-react";
 
 type Props = {
   filterParamsURL: string;
@@ -30,6 +32,20 @@ function Listings({ filterParamsURL }: Props) {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  if (status === "error") {
+    const message = "Fetching failed. Please try again later.";
+    toast.error(message);
+
+    return (
+      <div className="flex fullHeight items-center justify-center">
+        <div></div>
+        <div className="max-w-3xl flex-1 flex justify-center items-center">
+          <AlertCircle className="" /> {message}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="max-w-3xl flex-1">
@@ -43,7 +59,6 @@ function Listings({ filterParamsURL }: Props) {
               </div>
             </div>
           )}
-          {status === "error" && <p>Error: {error.message}</p>}
 
           {status === "success" && (
             <>

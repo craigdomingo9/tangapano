@@ -138,3 +138,15 @@
 .bg-af-blue {
   background-color: var(--air-force-blue);
 }
+
+:root {
+  --headerHeight: 88px;
+}
+
+.headerHeight {
+  height: var(--headerHeight);
+}
+
+.fullHeight {
+  height: calc(100vh - var(--headerHeight));
+}

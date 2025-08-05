@@ -26,6 +26,7 @@ class ListingAPIView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     pagination_class = StandardResultsSetPagination
     filterset_class = ListingFilter
+    throttle_scope = "listings"
     
     filter_backends = [
         DjangoFilterBackend, 

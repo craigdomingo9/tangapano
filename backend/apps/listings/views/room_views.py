@@ -16,6 +16,7 @@ class RoomViewSet(viewsets.ModelViewSet):
     filter_backends = [
         DjangoFilterBackend, 
     ]
+    throttle_scope = "rooms"
     
     def get_permissions(self):
         """

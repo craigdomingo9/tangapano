@@ -88,6 +88,14 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.OrderingFilter',
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'listings': '30/day',
+        'dashboard_listings': '500/day',
+        'rooms': '50/day',
+    }
 }
 
 AUTH_USER_MODEL = 'users.User'
