@@ -92,9 +92,9 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'listings': '30/day',
-        'dashboard_listings': '500/day',
-        'rooms': '50/day',
+        'listings': '300/day',
+        'dashboard_listings': '5000/day',
+        'rooms': '500/day',
     }
 }
 

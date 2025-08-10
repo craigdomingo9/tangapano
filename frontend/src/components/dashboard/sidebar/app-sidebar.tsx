@@ -1,5 +1,5 @@
 "use client";
-import { Building2, Command, User } from "lucide-react";
+import { Bed, Building2, Command, User } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -23,6 +23,11 @@ const items = [
     title: "Listings",
     url: "/dashboard/listings",
     icon: Building2,
+  },
+  {
+    title: "Rooms",
+    url: "/dashboard/rooms",
+    icon: Bed,
   },
   {
     title: "Profile",
