@@ -25,7 +25,7 @@ class Command(BaseCommand):
         
         ZIM_NEIGHBORHOODS = {
             "Harare": ["Avondale", "Borrowdale", "Mbare", "Greendale", "Mount Pleasant", "Waterfalls"],
-            "Gweru": ["Senga KMP", "Senga CBZ", "Adelaide", "Randolph Park", "Mkoba", "Nashville"],
+            "Gweru": ["Senga KMP", "Senga CBZ", "Adelaide", "Randolph Park"],
             "Masvingo": ["Mucheke", "Rujeko", "Rhodes", "Junction", "Runyararo"],
             "Chinhoyi": ["Cold Stream", "Hunyani", "Gadzema", "Cherima", "Orange Grove"],
             "Lupane": ["Lupane Center", "Gwayi", "Jotsholo", "Dandanda", "Tshongogwe"],

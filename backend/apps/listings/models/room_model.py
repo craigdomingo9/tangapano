@@ -26,3 +26,8 @@ class Room(models.Model):
 
     def __str__(self):
         return f"{self.listing.title} - {self.max_occupants} person room"
+    
+    @property
+    def is_full(self):
+        return self.current_occupants >= self.max_occupants
+    

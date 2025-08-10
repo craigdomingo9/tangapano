@@ -22,7 +22,7 @@ class Command(BaseCommand):
             '--landlords', type=int, default=200, help='Number of landlords to create'
         )
         parser.add_argument(
-            '--listings', type=int, default=10, help='Listings per landlord'
+            '--listings', type=int, default=5, help='Listings per landlord'
         )
 
     @transaction.atomic
@@ -38,16 +38,18 @@ class Command(BaseCommand):
 
         self.stdout.write("🧱 Creating amenities...")
         amenities_data = [
-            {"name": "wifi"},
-            {"name": "geyser"},
-            {"name": "study_room"},
-            {"name": "study_desk"},
-            {"name": "parking"},
-            {"name": "security"},
-            {"name": "solar_power"},
-            {"name": "mixed_gender"},
-            {"name": "washing_machine"},
-            {"name": "refrigerator"},
+            {"name": "wifi", "display_name": "WIFI"},
+            {"name": "geyser", "display_name": "Geyser"},
+            {"name": "study_room", "display_name": "Study Room"},
+            {"name": "study_desk", "display_name": "Study Desk"},
+            {"name": "parking", "display_name": "Parking"},
+            {"name": "durawall", "display_name": "Durawall"},
+            {"name": "guard_dog", "display_name": "Guard Dog"},
+            {"name": "electricity", "display_name": "Electricity"},
+            {"name": "no_curfew", "display_name": "No Curfew"},
+            {"name": "solar_power", "display_name": "Solar Power"},
+            {"name": "washing_machine", "display_name": "Washing Machine"},
+            {"name": "refrigerator", "display_name": "Refrigerator"},
         ]
 
         for amenity in amenities_data:
@@ -121,14 +123,16 @@ class Command(BaseCommand):
                 listing.amenities.set(selected_amenities)
 
                 for _ in range(random.randint(3, 7)):
-                    occupants = random.choice([1, 2, 3])
-                    base_price = 50 + (4 - occupants) * 20
+                    max_occupants = random.choice([1, 2, 3])
+                    current_occupants = random.choice([0, 1, 2, 3])
+                    base_price = 50 + (4 - max_occupants) * 20
                     rent = base_price + random.choice([-10, -5, 0, 5, 10])  # +/- 10%
 
                     Room.objects.create(
                         listing=listing,
                         rent_per_month=rent,
-                        max_occupants=occupants,
+                        max_occupants=max_occupants,
+                        current_occupants=current_occupants,
                         gender_preference=random.choice(["male", "female", "any"]),
                         is_available=fake.boolean(chance_of_getting_true=80)
                     )
