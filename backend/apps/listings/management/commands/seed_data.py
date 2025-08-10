@@ -124,7 +124,9 @@ class Command(BaseCommand):
 
                 for _ in range(random.randint(3, 7)):
                     max_occupants = random.choice([1, 2, 3])
-                    current_occupants = random.choice([0, 1, 2, 3])
+                    current_occupants = max_occupants - random.choice([0, 1, 2])
+                    if current_occupants > max_occupants or current_occupants < 0: current_occupants = 0
+                    
                     base_price = 50 + (4 - max_occupants) * 20
                     rent = base_price + random.choice([-10, -5, 0, 5, 10])  # +/- 10%
 
@@ -134,7 +136,6 @@ class Command(BaseCommand):
                         max_occupants=max_occupants,
                         current_occupants=current_occupants,
                         gender_preference=random.choice(["male", "female", "any"]),
-                        is_available=fake.boolean(chance_of_getting_true=80)
                     )
 
         self.stdout.write(self.style.SUCCESS("✅ Database seeded successfully!"))

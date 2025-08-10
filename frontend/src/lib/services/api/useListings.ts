@@ -9,9 +9,7 @@ export default function useListings(params: string) {
     queryFn: async ({ pageParam = 1 }) => {
       try {
         return axiosInstance
-          .get(
-            `/listings/listings/?${params}&is_available=true&page=${pageParam}`
-          )
+          .get(`/listings/listings/?${params}&is_full=false&page=${pageParam}`)
           .then((response) => response.data);
       } catch (error: unknown) {
         if (!(error instanceof AxiosError)) return;

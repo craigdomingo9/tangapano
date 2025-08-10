@@ -18,7 +18,7 @@ function GenderSelector({ form, fieldName = "gender" }: Props) {
       placeholder={defaultList.at(0)?.name}
       defaultValue={defaultList.at(0)?.id}
       fieldName={fieldName}
-      label="Gender"
+      label="Room Gender"
       selectionList={defaultList}
       selectClassName="w-34 [&>*]:text-black"
     />

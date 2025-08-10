@@ -1,7 +1,11 @@
 "use client";
+import { useSelectedListing } from "@/components/dashboard/CardButtons";
 import DashboardHeader from "@/components/dashboard/Header";
 import HeaderButton from "@/components/dashboard/HeaderButton";
-import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
+import RoomsDialog, {
+  useRoomsDialogState,
+} from "@/components/dashboard/listings/rooms/RoomsDialog";
+import { useRoomsDialogOperation } from "@/components/dashboard/listings/rooms/RoomsDialogContent";
 import RoomsSkeleton from "@/components/dashboard/listings/rooms/RoomsSkeleton";
 import MainContentArea from "@/components/dashboard/MainContentArea";
 import ListingNavigation from "@/components/dashboard/rooms/ListingNavigation";
@@ -15,6 +19,12 @@ import { PlusCircle } from "lucide-react";
 export const useActiveListing = createEntityStore<Listing>({} as Listing);
 
 function page() {
+  const { entities: operation, setEntities: setOperation } =
+    useRoomsDialogOperation();
+  const { setEntities: setSelectedListing } = useSelectedListing();
+  const { entities: activeListing } = useActiveListing();
+  const { setEntities: setRoomsDialog } = useRoomsDialogState();
+
   const { data, error, status } = useQuery({
     queryKey: ["landlord-listings"],
     queryFn: () => {
@@ -35,7 +45,13 @@ function page() {
             }}
             Action={
               <div className="flex items-center gap-x-2">
-                <HeaderButton onClick={() => {}}>
+                <HeaderButton
+                  onClick={() => {
+                    setOperation("add");
+                    setSelectedListing(activeListing);
+                    setRoomsDialog(true);
+                  }}
+                >
                   <PlusCircle size={20} /> Add New Room
                 </HeaderButton>
               </div>

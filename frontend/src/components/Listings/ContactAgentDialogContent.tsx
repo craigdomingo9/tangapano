@@ -5,18 +5,6 @@ import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/services/api/config";
 
-interface Room {
-  id: string;
-  listing: number;
-  max_occupants: number;
-  rent_per_month: string;
-  gender_preference: "any" | "male" | "female";
-  is_available: boolean;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
 function ContactAgentDialogContent() {
   const { entities: selectedListing } = useSelectedListingByStudent();
   const [selectedRoom, setSelectedRoom] = useState<Room>(
@@ -24,7 +12,7 @@ function ContactAgentDialogContent() {
   );
   // console.log(selectedListing, selectedRoom);
 
-  const agentPhoneNumber = selectedListing.campus.agents.phone_number;
+  const agentPhoneNumber = selectedListing.campus.agent.phone_number;
   const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id} Rent:${selectedRoom.rent_per_month}\nCan you please provide more details?`;
 
   const whatsappUrl = `https://wa.me/${agentPhoneNumber}?text=${encodeURIComponent(
@@ -34,12 +22,11 @@ function ContactAgentDialogContent() {
   const mutation = useMutation({
     mutationFn: (data: { contacted_agent: string; room: string }) =>
       axiosInstance.post("/interests/interests/", data),
-    onSuccess(data, variables, context) {},
   });
 
   async function handleClick() {
     await mutation.mutateAsync({
-      contacted_agent: selectedListing.campus.agents.id,
+      contacted_agent: selectedListing.campus.agent.id,
       room: selectedRoom.id,
     });
 
@@ -53,14 +40,11 @@ function ContactAgentDialogContent() {
       </p>
       <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4">
         {selectedListing.rooms?.map((room, index) => {
-          const text =
-            room.gender_preference === "any"
-              ? `${room.max_occupants} student${
-                  room.max_occupants > 1 ? "s" : ""
-                }`
-              : `${room.max_occupants} ${room.gender_preference} student${
-                  room.max_occupants > 1 ? "s" : ""
-                }`;
+          const spotsLeft = room.max_occupants - room.current_occupants;
+          const spotsLeftText = `${spotsLeft} spot${
+            spotsLeft > 1 ? "s" : ""
+          } available`;
+
           return (
             <div
               key={room.id}
@@ -75,7 +59,7 @@ function ContactAgentDialogContent() {
                 <p className="font-semibold text-gray-800">Room {index + 1}</p>
                 <p className="text-gray-600 text-sm">
                   ${parseFloat(room.rent_per_month).toFixed(2)}/month &middot;{" "}
-                  {text}
+                  {spotsLeftText}
                 </p>
               </div>
             </div>

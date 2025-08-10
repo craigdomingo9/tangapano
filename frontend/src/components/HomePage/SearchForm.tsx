@@ -29,9 +29,6 @@ function SearchForm() {
     queryFn: () => fetchCampuses({ params: { has_listings: true } }),
   });
 
-  // console.log("Campuses:", campuses);
-  // console.log("Amenities:", amenities);
-
   const router = useRouter();
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),

@@ -13,7 +13,7 @@ class CampusSerializer(serializers.ModelSerializer):
             "name",
             "has_listings",
             "city",
-            "agents",
+            "agent",
             "address",
             "created_at",
             "updated_at",

@@ -1,7 +1,10 @@
 from django.core.management.base import BaseCommand
 from campuses.models import Campus, Neighborhood
 from users.models import User, Agent
+import random
+from faker import Faker
 
+fake = Faker()
 
 class Command(BaseCommand):
     help = "Deletes all campuses and neighborhoods and seeds new Zimbabwean data."
@@ -32,23 +35,28 @@ class Command(BaseCommand):
         }
 
         for name, city in zip(campus_names, cities):
-            campus = Campus.objects.create(name=name, city=city)
+            # Create agent user for this campus
+            username = "_".join(name.lower().split(" "))
+            agent_user = User.objects.create_user(
+                username=f"agent_{username}",
+                email=f"agent_{username}@example.com",
+                password="password123",
+                first_name="Agent",
+                last_name=name,
+                role="agent"
+            )
+            
+            # Create Agent linked to user and campus
+            agent = Agent.objects.create(
+                user=agent_user, 
+                agency_name=fake.company(),
+                agent_fee=random.choice([15, 20, 10]),
+                phone_number="+263781901939"
+            )
+            campus = Campus.objects.create(name=name, city=city, agent=agent)
 
             for neighborhood_name in ZIM_NEIGHBORHOODS[city]:
                 neighborhood = Neighborhood.objects.create(name=neighborhood_name, city=city)
                 campus.neighborhoods.add(neighborhood)
-
-            # Create agent user for this campus
-            agent_user = User.objects.create_user(
-                username=f"agent_{city.lower()}",
-                email=f"agent_{city.lower()}@example.com",
-                password="password123",
-                first_name="Agent",
-                last_name=city,
-                role="agent"
-            )
-
-            # Create Agent linked to user and campus
-            Agent.objects.create(user=agent_user, campus=campus)
 
         self.stdout.write(self.style.SUCCESS("✅ Campuses, neighborhoods, and agents seeded successfully."))

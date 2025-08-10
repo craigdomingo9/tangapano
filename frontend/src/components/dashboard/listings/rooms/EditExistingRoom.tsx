@@ -55,13 +55,6 @@ function EditExistingRoom() {
                 label="Rent/month ($)"
                 defaultValue={selectedRoom.rent_per_month}
               />
-              <InputField
-                form={form}
-                fieldName="max_occupants"
-                label="Students Per Room"
-                defaultValue={selectedRoom.max_occupants}
-              />
-
               <SelectField
                 form={form}
                 fieldName="gender_preference"
@@ -77,11 +70,17 @@ function EditExistingRoom() {
                 }
                 selectClassName="w-full rounded-lg min-h-10 [&>*]:text-black"
               />
-              <CheckBoxField
+              <InputField
                 form={form}
-                fieldName="is_available"
-                label="Is Available?"
-                defaultChecked={selectedRoom.is_available}
+                fieldName="current_occupants"
+                label="Current Occupants"
+                defaultValue={selectedRoom.current_occupants.toString()}
+              />
+              <InputField
+                form={form}
+                fieldName="max_occupants"
+                label="Max Students"
+                defaultValue={selectedRoom.max_occupants}
               />
             </div>
             <div className="flex justify-end gap-3 mt-5">

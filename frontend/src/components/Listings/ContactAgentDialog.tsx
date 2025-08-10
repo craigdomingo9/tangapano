@@ -5,7 +5,7 @@ import ContactAgentDialogContent from "./ContactAgentDialogContent";
 
 export const useContactAgentDialogState = createEntityStore<boolean>(false);
 export const useSelectedListingByStudent = createEntityStore<Listing>(
-  {} as Listing,
+  {} as Listing
 );
 
 function ContactAgentDialog() {
@@ -17,7 +17,7 @@ function ContactAgentDialog() {
   return (
     <DialogContainer
       state={dialog}
-      title={"Contact Agent on Whatsapp"}
+      title={"Contact Agent"}
       onChange={() => setDialog(!dialog)}
     >
       <ContactAgentDialogContent />

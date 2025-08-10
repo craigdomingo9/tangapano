@@ -63,17 +63,20 @@ function ListingRooms() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {rooms.map((room: Room, indx: number) => {
+            const studentsLeft = room.max_occupants - room.current_occupants;
             const statusInfo =
-              room.is_available === true
+              room.is_full === true
                 ? {
-                    text: "Vacant",
-                    color: "bg-yellow-500",
-                    icon: <RemoveCircleIcon className="text-white w-6 h-6" />,
-                  }
-                : {
                     text: "Occupied",
                     color: "bg-green-500",
                     icon: <CheckCircleIcon className="text-white w-6 h-6" />,
+                  }
+                : {
+                    text: `${studentsLeft} student${
+                      studentsLeft > 1 ? "s" : ""
+                    } left`,
+                    color: "bg-yellow-500",
+                    icon: <RemoveCircleIcon className="text-white w-6 h-6" />,
                   };
             return (
               <div
@@ -89,9 +92,9 @@ function ListingRooms() {
                     transition-all duration-300
                     hover:shadow-xl hover:scale-105
                     ${
-                      room.is_available
-                        ? "border-l-4 border-yellow-500"
-                        : "border-l-4 border-green-500"
+                      room.is_full
+                        ? "border-l-4 border-green-500"
+                        : "border-l-4 border-yellow-500"
                     }
                   `}
               >

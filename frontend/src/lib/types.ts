@@ -4,7 +4,7 @@ interface Campus {
   city: string;
   address: string;
   neighborhoods: Neighborhood[];
-  agents: Agent;
+  agent: Agent;
 }
 
 interface Neighborhood {
@@ -58,9 +58,10 @@ interface Room {
   id: string;
   listing: number;
   max_occupants: number;
+  current_occupants: number;
   rent_per_month: string;
   gender_preference: "any" | "male" | "female";
-  is_available: boolean;
+  is_full: boolean;
   is_active: boolean;
   created_at: string;
   updated_at: string;

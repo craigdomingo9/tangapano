@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 from listings.models import Listing, Room
-from django.db.models import Q, Count, Prefetch, OuterRef, Exists
+from django.db.models import Q, Count, Prefetch, OuterRef, Exists, F
 
 
 
@@ -11,12 +11,17 @@ class ListingFilter(filters.FilterSet):
     price_max = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='lte')
     gender = filters.CharFilter(method='filter_gender', label='Gender')
     max_occupants = filters.NumberFilter(field_name='rooms__max_occupants')
-    is_available = filters.BooleanFilter(field_name='rooms__is_available')
+    is_full = filters.BooleanFilter(method='filter_is_full')
     amenities = filters.CharFilter(method='filter_amenities')
     
     class Meta:
         model = Listing
         fields = []
+    
+    def filter_is_full(self, queryset, name, value):
+        if value:
+            return queryset.filter(rooms__current_occupants__lt=F('max_occupants'))
+        return queryset
     
     def filter_gender(self, queryset, name, value):
         return queryset.filter(rooms__gender_preference=value)
@@ -46,10 +51,11 @@ class ListingFilter(filters.FilterSet):
         price_max = params.get('price_max')
         gender = params.get('gender')
         max_occupants = params.get('max_occupants')
-        is_available = params.get('is_available')
+        is_full = params.get('is_full')
+        
 
         # Build Q filters for rooms
-        room_filter = Q(is_available=True)
+        room_filter = Q()
         if price_min:
             room_filter &= Q(rent_per_month__gte=price_min)
         if price_max:
@@ -58,8 +64,8 @@ class ListingFilter(filters.FilterSet):
             room_filter &= Q(gender_preference=gender)
         if max_occupants:
             room_filter &= Q(max_occupants=max_occupants)
-        if is_available:
-            room_filter &= Q(is_available=True)
+        if is_full:
+            room_filter &= Q(current_occupants__lt=F('max_occupants'))
 
         # ✅ Only include listings where such rooms exist
         matching_rooms = Room.objects.filter(

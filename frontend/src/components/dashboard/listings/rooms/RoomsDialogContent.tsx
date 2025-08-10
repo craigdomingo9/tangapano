@@ -50,7 +50,10 @@ function RoomsDialogContent() {
         <div className="space-y-6 max-h-80 overflow-y-auto pr-2 pt-6">
           {roomsData?.map((room, index) => {
             const roomNumber = index + 1;
-            const roomStatus = room.is_available ? "Vacant" : "Occupied";
+            const studentsLeft = room.max_occupants - room.current_occupants;
+            const roomStatus = room.is_full
+              ? "Occupied"
+              : `${studentsLeft} student${studentsLeft > 1 ? "s" : ""} left`;
 
             return (
               <div
@@ -60,7 +63,7 @@ function RoomsDialogContent() {
                 <div
                   className={cn(
                     "absolute -top-4 left-2 text-xs text-white border border-b-0 border-gray-300 rounded-t-lg px-2",
-                    roomStatus === "Vacant" ? "bg-amber-300" : "bg-green-500"
+                    roomStatus !== "Occupied" ? "bg-amber-300" : "bg-green-500"
                   )}
                 >
                   {roomStatus}

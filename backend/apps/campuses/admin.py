@@ -6,7 +6,7 @@ from campuses.models import Campus, Neighborhood
 
 @admin.register(Campus)
 class CampusAdmin(admin.ModelAdmin):
-    list_display = ('name', 'city', 'agents', 'has_listings')
+    list_display = ('name', 'city', 'agent', 'has_listings')
     search_fields = ('name', 'city', 'neighborhoods')
     list_filter = ('name',)
 

@@ -4,7 +4,7 @@ from campuses.models.neighborhood_model import Neighborhood
 class Campus(models.Model):
     name = models.CharField(max_length=255, unique=True)
     city = models.CharField(max_length=255, blank=True)
-    agents = models.ForeignKey(
+    agent = models.ForeignKey(
         "users.Agent",
         on_delete=models.SET_NULL,
         null=True,

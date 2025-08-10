@@ -28,7 +28,7 @@ function CardButtons({ listing }: Props) {
   const { setEntities: setSelectedListing } = useSelectedListing();
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2 [&>button]:cursor-pointer">
       <button
         className="h-10 text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center gap-1 transition-colors duration-200"
         onClick={() => {
