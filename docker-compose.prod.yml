@@ -8,6 +8,8 @@ services:
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media
+    environment:
+      - DJANGO_DEBUG=False
     env_file:
       - .env
     ports:
@@ -55,6 +57,22 @@ services:
       - db
     networks:
       - tangapano
+
+  backup:
+    container_name: postgres_backup
+    restart: always
+    image: postgres:15
+    depends_on:
+      - db
+    environment:
+      PGPASSWORD: postgres
+    volumes:
+      - ./backups:/backups
+    entrypoint: >
+      bash -c "apt-get update && apt-get install -y cron &&
+               echo '0 2 * * * pg_dump -h db -U postgres postgres > /backups/db-$(date +\%F).sql && find /backups -type f -mtime +7 -delete' > /etc/crontab &&
+               crontab /etc/crontab &&
+               cron -f"
 
   nginx:
     container_name: nginx

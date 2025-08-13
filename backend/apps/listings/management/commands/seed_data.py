@@ -78,7 +78,7 @@ class Command(BaseCommand):
         self.stdout.write(f"👨‍💼 Creating {landlords_count} landlords...")
         for i in tqdm(range(landlords_count), desc="Creating Landlords"):
             user = User.objects.create_user(
-                username=fake.unique.user_name(),
+                username=f'landlord_{i + 1}',
                 email=fake.unique.email(),
                 password="password123",
                 first_name=fake.first_name(),

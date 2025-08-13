@@ -1,1 +1,15 @@
 .\env.local
+# This file is used to specify files and directories that should be ignored by Docker when building images.
+# It is similar to .gitignore but specifically for Docker.
+# The following entries are examples of what you might want to ignore in a Docker context.
+# You can add your own entries below.
+# Ignore local environment files
+.env.local
+# Ignore node_modules directory
+node_modules
+# Ignore build artifacts
+build
+# Ignore logs
+logs
+# Ignore temporary files
+tmp
