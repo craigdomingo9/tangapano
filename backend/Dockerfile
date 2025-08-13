@@ -1,16 +1,20 @@
-FROM python:3.11-slim
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
+# ---------- Base ----------
+FROM python:3.11-slim AS base
 WORKDIR /app
-COPY requirements.txt .
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# ---------- Development ----------
+FROM base AS development
+COPY . /app/
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
+# ---------- Production ----------
+FROM base AS production
+COPY . /app/
 RUN python manage.py collectstatic --noinput
-
-EXPOSE 8000
 CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]

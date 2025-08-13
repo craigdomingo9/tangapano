@@ -1,18 +1,25 @@
-# Build phase
-FROM node:18-alpine AS builder
+# ---------- Base ----------
+FROM node:20-alpine AS base
 WORKDIR /app
-COPY . .
+COPY package*.json ./
+
+# ---------- Development ----------
+FROM base AS development
+RUN npm install
+COPY . /app/
+CMD ["npm", "run", "dev"]
+
+# ---------- Production ----------
+FROM base AS builder
 RUN npm ci
+COPY . /app/
 RUN npm run build
 
-# Production phase
-FROM node:18-alpine
+FROM node:20-alpine AS production
 WORKDIR /app
-COPY --from=builder /app/.next .next
-COPY --from=builder /app/public public
-COPY --from=builder /app/package.json .
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY package*.json ./
+RUN npm ci --omit=dev
+CMD ["npm", "start"]
 
-ENV NODE_ENV=production
-ENV NEXT_PUBLIC_BACKEND_URL=http://backend:8000/api
-EXPOSE 3000
-CMD ["npm", "run", "start"]
