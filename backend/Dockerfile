@@ -8,18 +8,17 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy entrypoint
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # ---------- Development ----------
 FROM base AS development
 COPY . /app/
-RUN python manage.py migrate
-RUN python manage.py seed_campuses
-RUN python manage.py seed_data
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["/app/entrypoint.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 # ---------- Production ----------
 FROM base AS production
 COPY . /app/
-RUN python manage.py migrate
-RUN python manage.py seed_production_data
 RUN python manage.py collectstatic --noinput
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["/app/entrypoint.sh", "gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]

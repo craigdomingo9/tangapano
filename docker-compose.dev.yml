@@ -11,6 +11,7 @@ services:
       - media_volume:/app/media
     environment:
       - DJANGO_DEBUG=True
+      - DJANGO_ENV=development
     env_file:
       - .env
     ports:
@@ -32,6 +33,8 @@ services:
       - "3000:3000"
     env_file:
       - .env
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000/api/
     depends_on:
       - backend
     networks:

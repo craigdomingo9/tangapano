@@ -13,3 +13,4 @@ build
 logs
 # Ignore temporary files
 tmp
+.next
