@@ -10,14 +10,13 @@ function ContactAgentDialogContent() {
   const [selectedRoom, setSelectedRoom] = useState<Room>(
     selectedListing.rooms.at(0) as Room
   );
-  // console.log(selectedListing, selectedRoom);
 
   const agentPhoneNumber = selectedListing.campus.agent.phone_number;
   const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id} Rent:${selectedRoom.rent_per_month}\nCan you please provide more details?`;
 
-  const whatsappUrl = `https://wa.me/${agentPhoneNumber}?text=${encodeURIComponent(
-    message
-  )}`;
+  // const whatsappUrl = `https://wa.me/${agentPhoneNumber}?text=${encodeURIComponent(
+  //   message
+  // )}`;
 
   const mutation = useMutation({
     mutationFn: (data: { contacted_agent: string; room: string }) =>
@@ -30,7 +29,26 @@ function ContactAgentDialogContent() {
       room: selectedRoom.id,
     });
 
-    window.open(whatsappUrl, "_blank");
+    openWhatsApp();
+  }
+
+  function openWhatsApp() {
+    // Use a temporary link element
+    const link = document.createElement("a");
+    link.href = `https://api.whatsapp.com/send?phone=${agentPhoneNumber}&text=${encodeURIComponent(
+      message
+    )}`;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer"; // For security best practice
+
+    // Append the link to the body (not strictly necessary but good practice)
+    document.body.appendChild(link);
+
+    // Programmatically click the link
+    link.click();
+
+    // Remove the temporary link element
+    document.body.removeChild(link);
   }
 
   return (
