@@ -1,3 +1,5 @@
+name: Tangapano Production Environment
+
 services:
   backend:
     container_name: backend
@@ -18,7 +20,7 @@ services:
     depends_on:
       - db
     networks:
-      - tangapano
+      - app_net
 
   frontend:
     container_name: frontend
@@ -30,17 +32,18 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+      - NODE_ENV=production
     env_file:
       - .env
     depends_on:
       - backend
     networks:
-      - tangapano
+      - app_net
 
   db:
     image: postgres:15
     container_name: db
-    restart: always
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -48,7 +51,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - tangapano
+      - app_net
 
   pgadmin:
     container_name: pgadmin
@@ -56,26 +59,34 @@ services:
     image: dpage/pgadmin4
     env_file:
       - .env
+    ports:
+      - "5050:80"
     depends_on:
       - db
     networks:
-      - tangapano
+      - app_net
 
   backup:
     container_name: postgres_backup
-    restart: always
     image: postgres:15
     depends_on:
       - db
     environment:
       PGPASSWORD: postgres
     volumes:
-      - ./backups:/backups
-    entrypoint: >
-      bash -c "apt-get update && apt-get install -y cron &&
-               echo '0 2 * * * pg_dump -h db -U postgres postgres > /backups/db-$(date +\%F).sql && find /backups -type f -mtime +7 -delete' > /etc/crontab &&
-               crontab /etc/crontab &&
-               cron -f"
+      - postgres_backups:/backups
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        mkdir -p /backups
+        while true; do
+          TIMESTAMP=$(date +\%F_\%H-%M-%S)
+          pg_dump -h db -U postgres mydb > /backups/backup_$TIMESTAMP.sql
+          # Keep only the last 7 backups
+          ls -1t /backups | tail -n +8 | xargs -r rm --
+          sleep 24h
+        done
+    restart: unless-stopped
 
   nginx:
     container_name: nginx
@@ -93,13 +104,14 @@ services:
       - frontend
       - backend
     networks:
-      - tangapano
+      - app_net
 
 volumes:
   postgres_data:
+  postgres_backup:
   static_volume:
   media_volume:
 
 networks:
-  tangapano:
+  app_net:
     driver: bridge

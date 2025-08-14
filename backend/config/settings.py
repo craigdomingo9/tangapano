@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'filters',
+    'django_extensions',
     # apps
     'users',
     'listings',

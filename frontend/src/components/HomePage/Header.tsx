@@ -7,9 +7,7 @@ import { useEffect } from "react";
 function Header() {
   const { user, isAuthenticated, logout } = useAuth();
 
-  useEffect(() => {
-    // console.log(user, isAuthenticated);
-  }, [user, isAuthenticated, logout]);
+  useEffect(() => {}, [user, isAuthenticated, logout]);
 
   return (
     <div className="flex justify-center sticky z-50 top-0 p-4 headerHeight text-white bg-[var(--ou-crimson)]">

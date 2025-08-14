@@ -1,3 +1,5 @@
+name: Tangapano Development Environment
+
 services:
   backend:
     container_name: backend
@@ -19,7 +21,7 @@ services:
     depends_on:
       - db
     networks:
-      - tangapano
+      - app_net
 
   frontend:
     container_name: frontend
@@ -29,6 +31,7 @@ services:
       target: development
     volumes:
       - ./frontend:/app
+      - node_modules_volume:/app/node_modules
     ports:
       - "3000:3000"
     env_file:
@@ -38,12 +41,12 @@ services:
     depends_on:
       - backend
     networks:
-      - tangapano
+      - app_net
 
   db:
     image: postgres:15
     container_name: db
-    restart: always
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -51,7 +54,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - tangapano
+      - app_net
 
   pgadmin:
     image: dpage/pgadmin4
@@ -64,13 +67,14 @@ services:
     depends_on:
       - db
     networks:
-      - tangapano
+      - app_net
 
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  node_modules_volume:
 
 networks:
-  tangapano:
+  app_net:
     driver: bridge
