@@ -18,7 +18,7 @@ RUN npm ci
 COPY . /app/
 RUN npm run build
 
-FROM node:20-bullseye AS production
+FROM node:20-bullseye-slim AS production
 WORKDIR /app
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
