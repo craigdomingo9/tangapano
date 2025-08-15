@@ -11,11 +11,13 @@ module.exports = {
     ],
   },
   webpack: (config) => {
-    config.watchOptions = {
-      poll: 1000,
-      aggregateTimeout: 0,
-      ignored: ["**/node_modules"],
-    };
+    if (process.env.NODE_ENV === "development") {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 0,
+        ignored: ["**/node_modules"],
+      };
+    }
     return config;
   },
   devIndicators: false,
