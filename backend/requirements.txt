@@ -11,3 +11,5 @@ django-filter==25.1
 tqdm
 django-extensions
 Werkzeug
+setuptools<81
+pipdeptree

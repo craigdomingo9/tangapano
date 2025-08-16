@@ -1,8 +1,8 @@
 import Listings from "@/components/Listings/Listings";
 
-type Props = {
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+interface Props {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
 async function page({ searchParams }: Props) {
   const params = await searchParams;

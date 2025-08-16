@@ -23,6 +23,7 @@ CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
 FROM base AS production
 COPY . /app/
 RUN python manage.py collectstatic --noinput
-# CMD passes arguments to the entrypoint script
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
 

@@ -1,5 +1,6 @@
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
+import { JSX } from "react";
 
 type Props = {
   open: boolean;

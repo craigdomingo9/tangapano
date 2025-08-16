@@ -2,7 +2,7 @@ name: Tangapano Development Environment
 
 services:
   backend:
-    container_name: backend
+    container_name: backend_dev
     restart: always
     build:
       context: ./backend
@@ -14,18 +14,18 @@ services:
     environment:
       - DJANGO_DEBUG=True
       - DJANGO_ENV=development
-      - DB_HOST=db
+      - DB_HOST=db_dev
     env_file:
       - .env
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - db_dev
     networks:
       - app_net
 
   frontend:
-    container_name: frontend
+    container_name: frontend_dev
     restart: always
     build:
       context: ./frontend
@@ -44,9 +44,9 @@ services:
     networks:
       - app_net
 
-  db:
+  db_dev:
     image: postgres:15
-    container_name: db
+    container_name: db_dev
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -59,14 +59,14 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin
+    container_name: pgadmin_dev
     restart: always
     env_file:
       - .env
     ports:
       - "5050:80"
     depends_on:
-      - db
+      - db_dev
     networks:
       - app_net
 
