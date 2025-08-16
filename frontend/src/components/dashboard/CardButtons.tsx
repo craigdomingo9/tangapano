@@ -1,29 +1,24 @@
 import { Bed, Edit, ImageIcon, List, Trash2 } from "lucide-react";
-import createEntityStore from "@/lib/store/entityStore";
-import { useRoomsDialogState } from "./listings/rooms/RoomsDialog";
 import {
   useAmenitiesDialogState,
-  useSelectedAmenities,
-} from "./listings/amenities/AmenitiesDialog";
-import {
-  useListingDialogOperation,
+  useListingDialogMode,
   useListingDialogState,
-} from "./listings/listing/ListingDialog";
-import { useListingImageDialogState } from "./listings/images/ListingImageDialog";
+  useListingImageDialogState,
+  useRoomsDialogState,
+  useSelectedAmenities,
+  useSelectedListing,
+} from "@/lib/hooks/store";
 
 type Props = {
   listing: Listing;
 };
-
-export const useSelectedListing = createEntityStore<Listing>({} as Listing);
 
 function CardButtons({ listing }: Props) {
   const { setEntities: setAmenitiesDialog } = useAmenitiesDialogState();
   const { setEntities: setListingImageDialog } = useListingImageDialogState();
   const { setEntities: setRoomsDialog } = useRoomsDialogState();
   const { setEntities: setListingDialog } = useListingDialogState();
-  const { setEntities: setListingDialogOperation } =
-    useListingDialogOperation();
+  const { setEntities: setListingDialogOperation } = useListingDialogMode();
   const { setEntities: setSelectedAmenities } = useSelectedAmenities();
   const { setEntities: setSelectedListing } = useSelectedListing();
 

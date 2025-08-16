@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
 import { MoonLoader } from "react-spinners";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useSelectedListing } from "../../CardButtons";
 import { toast } from "sonner";
+import {
+  useRoomsDialogOperation,
+  useSelectedListing,
+  useSelectedRoom,
+} from "@/lib/hooks/store";
 
 function DeleteExistingRoom() {
   const { entities: selectedListing } = useSelectedListing();

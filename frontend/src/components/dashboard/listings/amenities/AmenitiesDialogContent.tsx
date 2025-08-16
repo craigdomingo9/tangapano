@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  useAmenitiesDialogState,
-  useSelectedAmenities,
-} from "./AmenitiesDialog";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import fetchAmenities from "@/lib/services/api/fetchAmenities";
 import axios from "axios";
-import { useSelectedListing } from "../../CardButtons";
 import { MoonLoader } from "react-spinners";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import {
+  useAmenitiesDialogState,
+  useSelectedAmenities,
+  useSelectedListing,
+} from "@/lib/hooks/store";
 
 function AmenitiesDialogContent() {
   const { entities: selectedAmenities } = useSelectedAmenities();
@@ -39,7 +39,7 @@ function AmenitiesDialogContent() {
 
     const response = await axios.patch(
       `/api/landlord-listings/${selectedListing?.id}/amenities`,
-      payload,
+      payload
     );
 
     if (response.status >= 400) {
@@ -61,7 +61,7 @@ function AmenitiesDialogContent() {
         : [
             ...(prev as Amenity[]),
             allAvailableAmenities.find(
-              (item: Amenity) => item.id === amenityId,
+              (item: Amenity) => item.id === amenityId
             )!,
           ];
     });
@@ -84,7 +84,7 @@ function AmenitiesDialogContent() {
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
               ${
                 currentSelectedAmenities?.some(
-                  (item) => item?.id === amenity?.id,
+                  (item) => item?.id === amenity?.id
                 )
                   ? "bg-[var(--lapis-lazuli)] text-white shadow-md"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"

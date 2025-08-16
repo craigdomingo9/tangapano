@@ -1,10 +1,7 @@
 import DialogContainer from "@/components/universal/Dialog/DialogContainer";
-import createEntityStore from "@/lib/store/entityStore";
 import { useEffect } from "react";
 import AmenitiesDialogContent from "./AmenitiesDialogContent";
-
-export const useAmenitiesDialogState = createEntityStore<boolean>(false);
-export const useSelectedAmenities = createEntityStore<Amenity[]>([]);
+import { useAmenitiesDialogState } from "@/lib/hooks/store";
 
 function AmenitiesDialog() {
   const { entities: dialog, setEntities: setDialog } =

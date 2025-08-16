@@ -4,16 +4,18 @@ import InputField from "@/components/universal/Form/Elements/InputField";
 import { z } from "zod";
 import { MoonLoader } from "react-spinners";
 import SelectField from "@/components/HomePage/SelectField";
-import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useRoomsDialogOperation, useSelectedRoom } from "./RoomsDialogContent";
-import { useSelectedListing } from "../../CardButtons";
 import { editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listings/editExisitingRoomForm";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gendersList } from "@/lib/lists";
+import {
+  useRoomsDialogOperation,
+  useSelectedListing,
+  useSelectedRoom,
+} from "@/lib/hooks/store";
 
 function EditExistingRoom() {
   const form = useForm({ resolver: zodResolver(editExitingRoomFormSchema) });

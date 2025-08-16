@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const roomId = context.params.id;
+  const { id: roomId } = await params;
 
   const room = await request.json();
 
@@ -28,10 +28,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const roomId = await params.id;
+  const { id: roomId } = await params;
 
   const res = await axiosInstance.delete(`/listings/rooms/${roomId}/`, {
     headers: {

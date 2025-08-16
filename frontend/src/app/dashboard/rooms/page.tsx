@@ -1,26 +1,24 @@
 "use client";
-import { useSelectedListing } from "@/components/dashboard/CardButtons";
 import DashboardHeader from "@/components/dashboard/Header";
 import HeaderButton from "@/components/dashboard/HeaderButton";
-import RoomsDialog, {
-  useRoomsDialogState,
-} from "@/components/dashboard/listings/rooms/RoomsDialog";
-import { useRoomsDialogOperation } from "@/components/dashboard/listings/rooms/RoomsDialogContent";
+import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
 import RoomsSkeleton from "@/components/dashboard/listings/rooms/RoomsSkeleton";
 import MainContentArea from "@/components/dashboard/MainContentArea";
 import ListingNavigation from "@/components/dashboard/rooms/ListingNavigation";
 import ListingRooms from "@/components/dashboard/rooms/ListingRooms";
 import Loader from "@/components/Loader";
-import createEntityStore from "@/lib/store/entityStore";
+import {
+  useActiveListing,
+  useRoomsDialogOperation,
+  useRoomsDialogState,
+  useSelectedListing,
+} from "@/lib/hooks/store";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { PlusCircle } from "lucide-react";
 
-export const useActiveListing = createEntityStore<Listing>({} as Listing);
-
 function page() {
-  const { entities: operation, setEntities: setOperation } =
-    useRoomsDialogOperation();
+  const { setEntities: setOperation } = useRoomsDialogOperation();
   const { setEntities: setSelectedListing } = useSelectedListing();
   const { entities: activeListing } = useActiveListing();
   const { setEntities: setRoomsDialog } = useRoomsDialogState();
@@ -67,7 +65,6 @@ function page() {
             <MainContentArea className="border-none">
               <div>
                 <ListingNavigation listings={data} />
-                {/* Listing Rooms */}
                 <ListingRooms />
               </div>
             </MainContentArea>

@@ -5,16 +5,18 @@ import { addNewListingImageFormSchema } from "@/lib/services/forms/dashboard/lis
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import z from "zod";
-import { useListingImageDialogOperation } from "./ListingImageDialog";
 import { MoonLoader } from "react-spinners";
 import InputField from "@/components/universal/Form/Elements/InputField";
-import { useSelectedListing } from "../../CardButtons";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  useListingImageDialogMode,
+  useSelectedListing,
+} from "@/lib/hooks/store";
 
 function AddNewListingImage() {
-  const { setEntities: setOperation } = useListingImageDialogOperation();
+  const { setEntities: setOperation } = useListingImageDialogMode();
   const { entities: selectedListing } = useSelectedListing();
 
   const form = useForm<z.infer<typeof addNewListingImageFormSchema>>({
@@ -50,7 +52,7 @@ function AddNewListingImage() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, (errors) =>
-            console.log(errors),
+            console.log(errors)
           )}
         >
           <div className="grid space-y-4 place-items-center">

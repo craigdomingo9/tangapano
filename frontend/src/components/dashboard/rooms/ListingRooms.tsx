@@ -1,13 +1,12 @@
-import { useActiveListing } from "@/app/dashboard/rooms/page";
-import { CheckCircle2, CircleMinus } from "lucide-react";
-import { useRoomsDialogState } from "../listings/rooms/RoomsDialog";
-import { useSelectedListing } from "../CardButtons";
-import {
-  useRoomsDialogOperation,
-  useSelectedRoom,
-} from "../listings/rooms/RoomsDialogContent";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import {
+  useActiveListing,
+  useRoomsDialogOperation,
+  useRoomsDialogState,
+  useSelectedListing,
+  useSelectedRoom,
+} from "@/lib/hooks/store";
 
 const CheckCircleIcon = (props: any) => (
   <svg

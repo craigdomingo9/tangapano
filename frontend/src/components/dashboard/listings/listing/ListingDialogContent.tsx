@@ -1,10 +1,10 @@
+import { useListingDialogMode } from "@/lib/hooks/store";
 import AddNewListing from "./AddNewListing";
 import DeleteExistingListing from "./DeleteExistingListing";
 import EditExistingListing from "./EditExistingListing";
-import { useListingDialogOperation } from "./ListingDialog";
 
 function ListingDialogContent() {
-  const { entities: operation } = useListingDialogOperation();
+  const { entities: operation } = useListingDialogMode();
 
   const renderOperationView = () => {
     switch (operation) {

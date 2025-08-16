@@ -1,8 +1,8 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLandlordDialogState } from "@/lib/hooks/store";
 import { Edit, MapPin, Phone } from "lucide-react";
-import { useLandlordDialogState } from "./LandlordDialog";
 
 function LandlordInfo() {
   const { user } = useAuth();

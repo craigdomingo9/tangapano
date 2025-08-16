@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const listingId = context.params.id;
+  const { id: listingId } = await params;
 
   const { amenities } = await request.json();
 
@@ -18,7 +18,7 @@ export async function PATCH(
       headers: {
         Authorization: `Token ${token}`,
       },
-    },
+    }
   );
 
   if (res.status >= 400) {

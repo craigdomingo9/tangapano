@@ -1,12 +1,7 @@
-import createEntityStore from "@/lib/store/entityStore";
 import DialogContainer from "../universal/Dialog/DialogContainer";
 import { useEffect } from "react";
 import ContactAgentDialogContent from "./ContactAgentDialogContent";
-
-export const useContactAgentDialogState = createEntityStore<boolean>(false);
-export const useSelectedListingByStudent = createEntityStore<Listing>(
-  {} as Listing
-);
+import { useContactAgentDialogState } from "@/lib/hooks/store";
 
 function ContactAgentDialog() {
   const { entities: dialog, setEntities: setDialog } =

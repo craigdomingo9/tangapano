@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const imageId = await params.id;
+  const { id: imageId } = await params;
 
   const res = await axiosInstance.delete(
     `/listings/listing-images/${imageId}/`,
@@ -15,7 +15,7 @@ export async function DELETE(
       headers: {
         Authorization: `Token ${token}`,
       },
-    },
+    }
   );
 
   if (res.status >= 400) {

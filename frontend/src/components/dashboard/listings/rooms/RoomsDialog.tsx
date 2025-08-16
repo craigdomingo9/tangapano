@@ -1,9 +1,7 @@
 import DialogContainer from "@/components/universal/Dialog/DialogContainer";
-import createEntityStore from "@/lib/store/entityStore";
 import { useEffect } from "react";
 import RoomsDialogContent from "./RoomsDialogContent";
-
-export const useRoomsDialogState = createEntityStore<boolean>(false);
+import { useRoomsDialogState } from "@/lib/hooks/store";
 
 function RoomsDialog() {
   const { entities: dialog, setEntities: setDialog } = useRoomsDialogState();

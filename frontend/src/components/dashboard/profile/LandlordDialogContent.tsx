@@ -1,6 +1,5 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { editLandlordFormSchema } from "@/lib/services/forms/dashboard/profile/editLandlordForm";
-import { useLandlordDialogState } from "./LandlordDialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { MoonLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLandlordDialogState } from "@/lib/hooks/store";
 
 function LandlordDialogContent() {
   const form = useForm({ resolver: zodResolver(editLandlordFormSchema) });
@@ -42,7 +42,7 @@ function LandlordDialogContent() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, (errors) =>
-                console.log(errors),
+                console.log(errors)
               )}
             >
               <div className="grid space-y-4 items-center place-items-center">

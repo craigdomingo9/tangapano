@@ -7,12 +7,11 @@ import { MoonLoader } from "react-spinners";
 import SelectField from "@/components/HomePage/SelectField";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useRoomsDialogOperation } from "./RoomsDialogContent";
-import { useSelectedListing } from "../../CardButtons";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gendersList } from "@/lib/lists";
+import { useRoomsDialogOperation, useSelectedListing } from "@/lib/hooks/store";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
@@ -26,7 +25,7 @@ function AddNewRoom() {
     mutationFn: (data: NewRoomData) => {
       return axios.post(
         `/api/landlord-listings/${selectedListing?.id}/rooms`,
-        data,
+        data
       );
     },
     retry: 3,
@@ -59,7 +58,7 @@ function AddNewRoom() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (errors) =>
-              console.log(errors),
+              console.log(errors)
             )}
           >
             <div className="grid grid-cols-2 space-y-2 space-x-2">

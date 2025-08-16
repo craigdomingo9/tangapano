@@ -1,5 +1,5 @@
-import { useActiveListing } from "@/app/dashboard/rooms/page";
 import { Button } from "@/components/ui/button";
+import { useActiveListing } from "@/lib/hooks/store";
 import { useEffect } from "react";
 
 type Props = {

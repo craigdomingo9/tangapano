@@ -1,12 +1,7 @@
 import DialogContainer from "@/components/universal/Dialog/DialogContainer";
 import { useEffect } from "react";
 import ListingImageDialogContent from "./ListingImageDialogContent";
-import createEntityStore from "@/lib/store/entityStore";
-
-export const useListingImageDialogState = createEntityStore<boolean>(false);
-export const useListingImageDialogOperation = createEntityStore<
-  "add" | "list" | "delete"
->("list");
+import { useListingImageDialogState } from "@/lib/hooks/store";
 
 function ListingImageDialog() {
   const { entities: dialog, setEntities: setDialog } =

@@ -1,6 +1,5 @@
 import InputField from "@/components/universal/Form/Elements/InputField";
 import { editExistingListingFormSchema } from "@/lib/services/forms/dashboard/listings/editExistingListingForm";
-import { useSelectedListing } from "../../CardButtons";
 import z from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import fetchCampuses from "@/lib/services/api/fetchCampuses";
@@ -15,6 +14,7 @@ import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelectedListing } from "@/lib/hooks/store";
 
 function EditExistingListing() {
   const form = useForm({
@@ -49,7 +49,7 @@ function EditExistingListing() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, (errors) =>
-            console.log(errors),
+            console.log(errors)
           )}
         >
           <div className="grid space-y-4 place-items-center">

@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { useListingImageDialogOperation } from "./ListingImageDialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useSelectedListing } from "../../CardButtons";
 import { MoonLoader } from "react-spinners";
-import { useSelectedListingImage } from "./ListingImageDialogContent";
 import { toast } from "sonner";
+import {
+  useListingImageDialogMode,
+  useSelectedListing,
+  useSelectedListingImage,
+} from "@/lib/hooks/store";
 
 function DeleteExistingListingImage() {
-  const { setEntities: setOperation } = useListingImageDialogOperation();
+  const { setEntities: setOperation } = useListingImageDialogMode();
   const { entities: selectedListing } = useSelectedListing();
   const { entities: selectedListingImage } = useSelectedListingImage();
 

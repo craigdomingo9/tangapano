@@ -6,11 +6,11 @@ import { editUserFormSchema } from "@/lib/services/forms/dashboard/profile/editU
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import z from "zod";
-import { useUserDialogState } from "./UserDialog";
 import { MoonLoader } from "react-spinners";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useUserDialogState } from "@/lib/hooks/store";
 
 function UserDialogContent() {
   const form = useForm<z.infer<typeof editUserFormSchema>>({
@@ -42,7 +42,7 @@ function UserDialogContent() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, (errors) =>
-                console.log(errors),
+                console.log(errors)
               )}
             >
               <div className="grid space-y-4 items-center place-items-center">

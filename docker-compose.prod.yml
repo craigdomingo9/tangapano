@@ -108,7 +108,7 @@ services:
 
 volumes:
   postgres_data:
-  postgres_backup:
+  postgres_backups:
   static_volume:
   media_volume:
 

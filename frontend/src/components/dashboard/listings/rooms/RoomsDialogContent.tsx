@@ -1,19 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Edit, PlusCircle, Trash2 } from "lucide-react";
-import { useSelectedListing } from "../../CardButtons";
 import AddNewRoom from "./AddNewRoom";
 import DeleteExistingRoom from "./DeleteExistingRoom";
-import createEntityStore from "@/lib/store/entityStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EditExistingRoom from "./EditExistingRoom";
 import { MoonLoader } from "react-spinners";
 import { cn } from "@/lib/utils";
-
-export const useRoomsDialogOperation = createEntityStore<
-  "list" | "add" | "edit" | "delete"
->("list");
-export const useSelectedRoom = createEntityStore<Room>({} as Room);
+import {
+  useRoomsDialogOperation,
+  useSelectedListing,
+  useSelectedRoom,
+} from "@/lib/hooks/store";
 
 function RoomsDialogContent() {
   const { entities: selectedListing } = useSelectedListing();

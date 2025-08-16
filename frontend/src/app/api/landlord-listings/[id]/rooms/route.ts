@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
 
@@ -12,7 +12,7 @@ export async function GET(
     return NextResponse.json({ token: false }, { status: 401 });
   }
 
-  const listingId = await params.id;
+  const { id: listingId } = await params;
 
   const res = await axiosInstance.get(`/listings/rooms/?listing=${listingId}`, {
     headers: {
@@ -31,10 +31,10 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const listingId = await params.id;
+  const { id: listingId } = await params;
   const room = await request.json();
   const postData = { ...room, listing: listingId };
 

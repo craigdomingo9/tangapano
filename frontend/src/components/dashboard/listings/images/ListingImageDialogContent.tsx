@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useSelectedListing } from "../../CardButtons";
-import { useListingImageDialogOperation } from "./ListingImageDialog";
 import { PlusCircle, Trash2 } from "lucide-react";
 import DeleteExistingListingImage from "./DeleteExistingListingImage";
 import AddNewListingImage from "./AddNewListingImage";
@@ -9,20 +7,23 @@ import createEntityStore from "@/lib/store/entityStore";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/services/api/config";
 import { MoonLoader } from "react-spinners";
-
-export const useSelectedListingImage = createEntityStore<Image>({} as Image);
+import {
+  useListingImageDialogMode,
+  useSelectedListing,
+  useSelectedListingImage,
+} from "@/lib/hooks/store";
 
 function ListingImageDialogContent() {
   const { entities: selectedListing } = useSelectedListing();
   const { setEntities: setSelectedListingImage } = useSelectedListingImage();
   const { entities: operation, setEntities: setOperation } =
-    useListingImageDialogOperation();
+    useListingImageDialogMode();
 
   const { data: imagesRes, status } = useQuery({
     queryKey: ["images", selectedListing?.id],
     queryFn: () =>
       axiosInstance.get(
-        `/listings/listing-images/?listing=${selectedListing?.id}`,
+        `/listings/listing-images/?listing=${selectedListing?.id}`
       ),
     enabled: !!selectedListing?.id,
   });

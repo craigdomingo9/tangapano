@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useListingDialogState } from "./ListingDialog";
-import { useSelectedListing } from "../../CardButtons";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MoonLoader } from "react-spinners";
 import { toast } from "sonner";
+import { useSelectedListing } from "@/lib/hooks/store";
 
 function DeleteExistingListing() {
   const { setEntities: setDialog } = useListingDialogState();

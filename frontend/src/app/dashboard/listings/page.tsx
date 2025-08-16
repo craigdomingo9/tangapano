@@ -8,14 +8,12 @@ import axios from "axios";
 import ListingsList from "@/components/dashboard/listings/ListingsList";
 import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
 import AmenitiesDialog from "@/components/dashboard/listings/amenities/AmenitiesDialog";
-import ListingDialog, {
-  useListingDialogOperation,
-  useListingDialogState,
-} from "@/components/dashboard/listings/listing/ListingDialog";
 import ListingImageDialog from "@/components/dashboard/listings/images/ListingImageDialog";
 import { toast } from "sonner";
 import Loader from "@/components/Loader";
 import ListingSkeleton from "@/components/dashboard/listings/ListingSkeleton";
+import { useListingDialogMode, useListingDialogState } from "@/lib/hooks/store";
+import ListingDialog from "@/components/dashboard/listings/listing/ListingDialog";
 
 function Page() {
   const { data, error, status } = useQuery({
@@ -25,8 +23,7 @@ function Page() {
     },
   });
   const { setEntities: setDialog } = useListingDialogState();
-  const { setEntities: setListingDialogOperation } =
-    useListingDialogOperation();
+  const { setEntities: setListingDialogOperation } = useListingDialogMode();
 
   if (status === "error") {
     const message = "Fetching failed. Please try again later.";

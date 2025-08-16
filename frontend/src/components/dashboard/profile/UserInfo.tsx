@@ -1,9 +1,9 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUserDialogState } from "@/lib/hooks/store";
 import { AtSign, Edit, Mail } from "lucide-react";
 import { MoonLoader } from "react-spinners";
-import { useUserDialogState } from "./UserDialog";
 
 function UserInfo() {
   const { user, loading } = useAuth();

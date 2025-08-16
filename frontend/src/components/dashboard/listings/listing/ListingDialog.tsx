@@ -1,16 +1,11 @@
 import DialogContainer from "@/components/universal/Dialog/DialogContainer";
-import createEntityStore from "@/lib/store/entityStore";
 import { useEffect } from "react";
 import ListingDialogContent from "./ListingDialogContent";
-
-export const useListingDialogState = createEntityStore<boolean>(false);
-export const useListingDialogOperation = createEntityStore<
-  "add" | "edit" | "delete"
->("add");
+import { useListingDialogMode, useListingDialogState } from "@/lib/hooks/store";
 
 function ListingDialog() {
   const { entities: dialog, setEntities: setDialog } = useListingDialogState();
-  const { entities: operation } = useListingDialogOperation();
+  const { entities: operation } = useListingDialogMode();
 
   useEffect(() => {}, [dialog]);
 

@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const listingId = context.params.id;
+  const { id: listingId } = await params;
 
   const listing = await request.json();
 
@@ -18,7 +18,7 @@ export async function PATCH(
       headers: {
         Authorization: `Token ${token}`,
       },
-    },
+    }
   );
 
   if (res.status >= 400) {
@@ -32,10 +32,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = await getAuthToken();
-  const listingId = await params.id;
+  const { id: listingId } = await params;
 
   const res = await axiosInstance.delete(
     `/listings/landlord-listings/${listingId}/`,
@@ -43,7 +43,7 @@ export async function DELETE(
       headers: {
         Authorization: `Token ${token}`,
       },
-    },
+    }
   );
 
   if (res.status >= 400) {
