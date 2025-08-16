@@ -1,6 +1,9 @@
 "use client";
 import createEntityStore from "@/lib/store/entityStore";
 
+export const useSelectedListing = createEntityStore<Listing>({} as Listing);
+export const useActiveListing = createEntityStore<Listing>({} as Listing);
+
 /**
  * A custom hook that provides a store for managing the selected `Listing` entity.
  *
@@ -65,6 +68,7 @@ export const useSelectedRoom = createEntityStore<Room>({} as Room);
  * @returns A store instance for the landlord dialog's open/closed state.
  */
 export const useLandlordDialogState = createEntityStore<boolean>(false);
+export const useUserDialogState = createEntityStore<boolean>(false);
 
 /**
  * A custom hook that manages the open/closed state of a user dialog.

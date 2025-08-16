@@ -9,6 +9,5 @@ gunicorn==23.0.0
 python-dotenv
 django-filter==25.1
 tqdm
-filters
 django-extensions
 Werkzeug

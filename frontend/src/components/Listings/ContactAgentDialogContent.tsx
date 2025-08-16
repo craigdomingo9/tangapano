@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useSelectedListingByStudent } from "./ContactAgentDialog";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/services/api/config";
+import { useSelectedListingByStudent } from "@/lib/hooks/store";
 
 function ContactAgentDialogContent() {
   const { entities: selectedListing } = useSelectedListingByStudent();

@@ -14,6 +14,7 @@ services:
     environment:
       - DJANGO_DEBUG=True
       - DJANGO_ENV=development
+      - DB_HOST=db
     env_file:
       - .env
     ports:

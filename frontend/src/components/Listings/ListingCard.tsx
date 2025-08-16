@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useState } from "react";
 import ListingImages from "./ListingImages";
 import {
@@ -18,7 +13,7 @@ import { Button } from "../ui/button";
 import {
   useContactAgentDialogState,
   useSelectedListingByStudent,
-} from "./ContactAgentDialog";
+} from "@/lib/hooks/store";
 
 type Props = {
   listing: Listing;

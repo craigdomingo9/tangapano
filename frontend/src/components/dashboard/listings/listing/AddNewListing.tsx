@@ -1,6 +1,5 @@
 import fetchCampuses from "@/lib/services/api/fetchCampuses";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useListingDialogState } from "./ListingDialog";
 import { addNewListingFormSchema } from "@/lib/services/forms/dashboard/listings/addNewListingForm";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
@@ -13,6 +12,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useListingDialogState } from "@/lib/hooks/store";
 
 function AddNewListing() {
   const form = useForm({ resolver: zodResolver(addNewListingFormSchema) });
@@ -46,7 +46,7 @@ function AddNewListing() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (errors) =>
-              console.log(errors),
+              console.log(errors)
             )}
           >
             <div className="grid space-y-4 items-center place-items-center">

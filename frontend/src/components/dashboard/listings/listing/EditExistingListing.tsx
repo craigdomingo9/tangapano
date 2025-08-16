@@ -6,7 +6,6 @@ import fetchCampuses from "@/lib/services/api/fetchCampuses";
 import CampusSelector from "@/components/HomePage/CampusSelector";
 import NeighborhoodSelector from "@/components/HomePage/NeighborhoodSelector";
 import { Button } from "@/components/ui/button";
-import { useListingDialogState } from "./ListingDialog";
 import axios from "axios";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { MoonLoader } from "react-spinners";
@@ -14,7 +13,7 @@ import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSelectedListing } from "@/lib/hooks/store";
+import { useListingDialogState, useSelectedListing } from "@/lib/hooks/store";
 
 function EditExistingListing() {
   const form = useForm({

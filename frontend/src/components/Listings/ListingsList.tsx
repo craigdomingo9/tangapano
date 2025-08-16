@@ -1,5 +1,4 @@
 import { InfiniteData } from "@tanstack/react-query";
-import SortBySelect from "./SortBySelect";
 import ListingCard from "./ListingCard";
 import React from "react";
 
