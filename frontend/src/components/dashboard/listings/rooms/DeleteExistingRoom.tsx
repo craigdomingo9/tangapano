@@ -17,7 +17,7 @@ function DeleteExistingRoom() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () =>
-      axios.delete(`/api/landlord-listings/rooms/${selectedRoom?.id}`),
+      axios.delete(`/server/api/landlord-listings/rooms/${selectedRoom?.id}`),
     onSuccess: () => {
       setOperation("list");
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });

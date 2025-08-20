@@ -26,7 +26,7 @@ export function LoginForm({
 
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof loginFormSchema>) =>
-      axios.post("/api/auth/login", data),
+      axios.post("/server/api/auth/login", data),
     onSuccess() {
       toast.success("Logged in successfully");
       router.push("/dashboard/listings");

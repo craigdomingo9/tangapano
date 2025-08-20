@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 function ListingSkeleton() {
   return (
-    <div className="mx-4 h-[34rem] w-[21rem]">
+    <div className="h-[34rem] w-[21rem]">
       <Skeleton className="w-full h-5/12 rounded-t-xl rounded-b-none" />
       <div className="px-2">
         <Skeleton className="mt-2 h-10" />

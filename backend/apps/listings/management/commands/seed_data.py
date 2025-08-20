@@ -6,12 +6,15 @@ from faker import Faker
 import random
 import os
 from django.core.files import File
+from dotenv import load_dotenv
 
 from listings.models import Listing, Amenity, Room, ListingImage
 from campuses.models import Campus
 from users.models import Landlord, User
 
 fake = Faker()
+
+load_dotenv()
 
 
 class Command(BaseCommand):
@@ -67,9 +70,9 @@ class Command(BaseCommand):
         # Create admin user
         self.stdout.write(f"👨‍💼 Creating admin user...")
         _ = User.objects.create_superuser(
-            username="admin",
-            email="craigdomingo9@gmail.com",
-            password="connected2005",
+            username=os.getenv("DJANGO_ADMIN_USERNAME"),
+            email=os.getenv("DJANGO_ADMIN_EMAIL"),
+            password=os.getenv("DJANGO_ADMIN_PASSWORD"),
             first_name="Admin",
             last_name="User",
             role="admin"

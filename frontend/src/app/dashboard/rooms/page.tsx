@@ -27,7 +27,7 @@ function page() {
     queryKey: ["landlord-listings"],
     queryFn: () => {
       return axios
-        .get("/api/landlord-listings/")
+        .get("/server/api/landlord-listings/")
         .then((response) => response.data);
     },
   });

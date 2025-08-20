@@ -30,7 +30,7 @@ function EditExistingListing() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof editExistingListingFormSchema>) =>
-      axios.patch(`/api/landlord-listings/${selectedListing?.id}`, data),
+      axios.patch(`/server/api/landlord-listings/${selectedListing?.id}`, data),
     onSuccess: () => {
       form.reset();
       setDialog(false);

@@ -16,6 +16,7 @@ ENTRYPOINT ["/app/entrypoint.sh"]
 # ---------- Development ----------
 FROM base AS development
 COPY . /app/
+RUN python manage.py collectstatic --noinput
 # Use runserver_plus for hot reloading in development
 CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
 

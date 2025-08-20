@@ -38,7 +38,7 @@ function AmenitiesDialogContent() {
     };
 
     const response = await axios.patch(
-      `/api/landlord-listings/${selectedListing?.id}/amenities`,
+      `/server/api/landlord-listings/${selectedListing?.id}/amenities`,
       payload
     );
 

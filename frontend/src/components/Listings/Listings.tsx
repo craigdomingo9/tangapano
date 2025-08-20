@@ -53,7 +53,7 @@ function Listings({ filterParamsURL }: Props) {
           {(status === "pending" || isRefetching) && (
             <div className="flex flex-col justify-center items-center w-full">
               <Loader className="my-2" />
-              <div className="flex flex-col md:flex-row">
+              <div className="flex flex-col md:flex-row gap-x-4">
                 <ListingSkeleton />
                 <ListingSkeleton />
               </div>

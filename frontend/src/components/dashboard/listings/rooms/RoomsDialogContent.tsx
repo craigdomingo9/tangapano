@@ -22,7 +22,7 @@ function RoomsDialogContent() {
   const { data: rooms, status } = useQuery({
     queryKey: ["rooms", selectedListing?.id],
     queryFn: () =>
-      axios.get(`/api/landlord-listings/${selectedListing?.id}/rooms`),
+      axios.get(`/server/api/landlord-listings/${selectedListing?.id}/rooms`),
     enabled: !!selectedListing?.id,
   });
 

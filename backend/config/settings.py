@@ -40,9 +40,11 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
-    'http://localhost:3000',  
-    'http://192.168.43.242:3000',
+    'http://127.0.0.1',
+    'http://localhost:3000',
+    'http://localhost',
 ]
+# CORS_ALLOW_ALL_ORIGINS = True
 
 
 
@@ -53,7 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    # third-party libraries
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',

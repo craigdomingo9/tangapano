@@ -17,7 +17,9 @@ function DeleteExistingListingImage() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () =>
-      axios.delete(`/api/landlord-listings/images/${selectedListingImage.id}`),
+      axios.delete(
+        `/server/api/landlord-listings/images/${selectedListingImage.id}`
+      ),
     onSuccess: () => {
       setOperation("list");
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });

@@ -21,5 +21,5 @@ module.exports = {
     return config;
   },
   devIndicators: false,
-  allowedDevOrigins: ["192.168.43.242"],
+  allowedDevOrigins: ["192.168.43.242", "10.232.241.249"],
 };

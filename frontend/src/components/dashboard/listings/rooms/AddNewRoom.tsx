@@ -24,7 +24,7 @@ function AddNewRoom() {
   const mutation = useMutation({
     mutationFn: (data: NewRoomData) => {
       return axios.post(
-        `/api/landlord-listings/${selectedListing?.id}/rooms`,
+        `/server/api/landlord-listings/${selectedListing?.id}/rooms`,
         data
       );
     },

@@ -40,7 +40,7 @@ function ListingRooms() {
   const { data, status } = useQuery({
     queryKey: ["rooms", activeListing?.id],
     queryFn: () =>
-      axios.get(`/api/landlord-listings/${activeListing?.id}/rooms`),
+      axios.get(`/server/api/landlord-listings/${activeListing?.id}/rooms`),
     enabled: !!activeListing?.id,
   });
 

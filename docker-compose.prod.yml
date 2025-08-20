@@ -34,8 +34,6 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
       - NODE_ENV=production
-    env_file:
-      - .env
     depends_on:
       - backend
     networks:
@@ -110,7 +108,7 @@ services:
   nginx:
     container_name: nginx
     restart: always
-    image: nginx:alpine
+    image: nginx:stable-alpine
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/static

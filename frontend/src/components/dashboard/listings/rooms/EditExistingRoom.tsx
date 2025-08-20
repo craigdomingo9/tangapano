@@ -26,7 +26,10 @@ function EditExistingRoom() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof editExitingRoomFormSchema>) =>
-      axios.patch(`/api/landlord-listings/rooms/${selectedRoom?.id}`, data),
+      axios.patch(
+        `/server/api/landlord-listings/rooms/${selectedRoom?.id}`,
+        data
+      ),
     onSuccess: () => {
       setOperation("list");
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });

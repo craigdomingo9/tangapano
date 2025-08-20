@@ -27,20 +27,26 @@ function NeighborhoodSelector({
   });
 
   const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
-  const [resolvedPlaceholder, setResolvedPlaceholder] = useState(placeholder);
+  // Placeholder can be a derived value based on props, no need for useState
+  const resolvedPlaceholder = source === "searchPage" ? "All" : placeholder;
 
   useEffect(() => {
     const campus = campuses?.find(
       (c) => String(c.id) === String(selectedCampusId)
     );
-    const filtered = campus?.neighborhoods?.filter((n) => n.has_listings) ?? [];
+    // TODO : filter neighborhoods based on has_listings
+    const filtered = campus?.neighborhoods?.filter((n) => n) ?? [];
 
     setNeighborhoods(filtered);
 
+    // Use a single line to set the value. Use logical OR (||) for clarity.
     form.setValue(
       "neighborhood",
-      filtered.length > 0 ? defaultValue ?? filtered[0].id.toString() : ""
+      filtered.length > 0 ? defaultValue || filtered[0].id.toString() : ""
     );
+
+    // Cleanup function can be added if needed to reset state
+    // return () => { ... }
   }, [selectedCampusId, campuses, form, defaultValue]);
 
   const neighborhoodsList = useMemo(() => {
@@ -49,14 +55,13 @@ function NeighborhoodSelector({
       name: n.name,
     }));
 
+    // The 'All' option is now correctly added based on the 'source' prop.
     if (source === "searchPage") {
-      setResolvedPlaceholder("All");
       return [{ id: " ", name: "All" }, ...baseList];
     }
 
     return baseList;
   }, [neighborhoods, source]);
-
   return (
     <SelectField
       form={form}
@@ -66,7 +71,7 @@ function NeighborhoodSelector({
       selectionList={neighborhoodsList}
       defaultValue={defaultValue}
       placeholder={resolvedPlaceholder}
-      disabled={neighborhoods.length === 0}
+      // disabled={neighborhoods.length === 0}
       selectClassName={`${selectClassName} [&>*]:text-black`}
     />
   );

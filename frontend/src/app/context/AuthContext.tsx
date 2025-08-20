@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { status, data } = useQuery({
     queryKey: ["user"],
     queryFn: () =>
-      axios.get("/api/auth/verify-token").then((res) => {
+      axios.get("/server/api/auth/verify-token").then((res) => {
         if (res.status === 200) {
           setIsAuthenticated(true);
         }
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      await axios.post("/api/auth/logout");
+      await axios.post("/server/api/auth/logout");
     } catch {}
     setIsAuthenticated(false);
     router.push("/");

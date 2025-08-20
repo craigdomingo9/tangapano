@@ -16,10 +16,11 @@ import { useListingDialogMode, useListingDialogState } from "@/lib/hooks/store";
 import ListingDialog from "@/components/dashboard/listings/listing/ListingDialog";
 
 function Page() {
+  // TODO: Fetch images seperately
   const { data, error, status } = useQuery({
     queryKey: ["landlord-listings"],
     queryFn: () => {
-      return axios.get("/api/landlord-listings/");
+      return axios.get("/server/api/landlord-listings/");
     },
   });
   const { setEntities: setDialog } = useListingDialogState();

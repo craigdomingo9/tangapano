@@ -26,7 +26,7 @@ function AddNewListingImage() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: FormData) =>
-      axios.post("/api/landlord-listings/images", data),
+      axios.post("/server/api/landlord-listings/images", data),
     onSuccess: () => {
       form.reset();
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });

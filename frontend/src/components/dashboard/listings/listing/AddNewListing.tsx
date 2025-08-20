@@ -27,7 +27,7 @@ function AddNewListing() {
 
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof addNewListingFormSchema>) =>
-      axios.post("/api/landlord-listings", data),
+      axios.post("/server/api/landlord-listings", data),
     onSuccess: () => {
       form.reset();
       setDialog(false);

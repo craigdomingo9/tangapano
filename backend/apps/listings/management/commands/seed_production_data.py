@@ -1,8 +1,13 @@
+import os
 from django.core.management.base import BaseCommand
 
 from listings.models import Amenity
 from users.models import User, Agent
 from campuses.models import Campus, Neighborhood
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class Command(BaseCommand):
     help = 'Seed production data'
@@ -30,7 +35,7 @@ class Command(BaseCommand):
             username = "_".join(name.lower().split(" "))
             agent_user = User.objects.create_user(
                 username=f"agent_{username}",
-                email=f"agent_{username}@example.com",
+                email=f"agent_{username}@tangapano.com",
                 password="password123",
                 first_name="Agent",
                 last_name=name,
@@ -72,3 +77,13 @@ class Command(BaseCommand):
             Amenity.objects.create(**amenity)
         self.stdout.write(self.style.SUCCESS("✅ Amenities created successfully."))
         
+        # Create admin user
+        self.stdout.write(f"👨‍💼 Creating admin user...")
+        _ = User.objects.create_superuser(
+            username=os.getenv("DJANGO_ADMIN_USERNAME"),
+            email=os.getenv("DJANGO_ADMIN_EMAIL"),
+            password=os.getenv("DJANGO_ADMIN_PASSWORD"),
+            first_name="Admin",
+            last_name="User",
+            role="admin"
+        )
