@@ -13,18 +13,19 @@ COPY ./entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-# ---------- Development ----------
+# ---------- Development Stage ----------
+# Build from the base image.
 FROM base AS development
 COPY . /app/
 RUN python manage.py collectstatic --noinput
-# Use runserver_plus for hot reloading in development
+# Use the Django development server for hot reloading.
 CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
 
-# ---------- Production ----------
+
+# ---------- Production Stage ----------
+# Build from the base image.
 FROM base AS production
 COPY . /app/
 RUN python manage.py collectstatic --noinput
-
-
+# Use Gunicorn as the production-ready WSGI server.
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
-

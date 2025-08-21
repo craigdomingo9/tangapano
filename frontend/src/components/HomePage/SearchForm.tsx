@@ -27,7 +27,7 @@ function SearchForm() {
   // TODO: Fetch campuses with listings
   const { data: campuses } = useQuery({
     queryKey: ["campuses"],
-    queryFn: () => fetchCampuses({ params: { has_listings: false } }),
+    queryFn: () => fetchCampuses({ params: { has_listings: true } }),
   });
 
   const router = useRouter();
