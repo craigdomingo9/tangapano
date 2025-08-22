@@ -68,20 +68,21 @@ function AmenitiesDialogContent() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-lg relative">
-      {status === "pending" && (
-        <div className="w-full flex justify-center items-center mt-4">
-          <MoonLoader size={15} />
-        </div>
-      )}
+    <div className="flex justify-center items-center">
+      <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm relative">
+        {status === "pending" && (
+          <div className="w-full flex justify-center items-center mt-4">
+            <MoonLoader size={15} />
+          </div>
+        )}
 
-      <div className="flex flex-wrap gap-2 mb-6 max-h-60 overflow-y-auto pr-2">
-        {allAvailableAmenities?.map((amenity: Amenity) => (
-          <button
-            key={amenity.display_name}
-            type="button"
-            onClick={() => handleToggleAmenity(amenity.id)}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
+        <div className="flex flex-wrap gap-2 mb-6 max-h-60 overflow-y-auto pr-2">
+          {allAvailableAmenities?.map((amenity: Amenity) => (
+            <button
+              key={amenity.display_name}
+              type="button"
+              onClick={() => handleToggleAmenity(amenity.id)}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
               ${
                 currentSelectedAmenities?.some(
                   (item) => item?.id === amenity?.id
@@ -89,25 +90,26 @@ function AmenitiesDialogContent() {
                   ? "bg-[var(--lapis-lazuli)] text-white shadow-md"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
-          >
-            {amenity.display_name}
-          </button>
-        ))}
-      </div>
+            >
+              {amenity.display_name}
+            </button>
+          ))}
+        </div>
 
-      <div className="flex justify-end gap-3">
-        <Button
-          onClick={() => setDialog(false)}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium"
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSave}
-          className="px-4 py-2 rounded-lg text-white font-medium"
-        >
-          {isSaving ? <MoonLoader color="white" size={15} /> : "Save"}
-        </Button>
+        <div className="flex justify-end gap-3">
+          <Button
+            onClick={() => setDialog(false)}
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            className="px-4 py-2 rounded-lg text-white font-medium"
+          >
+            {isSaving ? <MoonLoader color="white" size={15} /> : "Save"}
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -21,5 +21,5 @@ export async function GET() {
 
   const data = res.data;
 
-  return NextResponse.json({ token: true, data });
+  return NextResponse.json({ token: token, data });
 }

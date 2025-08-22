@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listings/editExisitingRoomForm";
 import { toast } from "sonner";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gendersList } from "@/lib/lists";
 import {
@@ -16,6 +16,8 @@ import {
   useSelectedListing,
   useSelectedRoom,
 } from "@/lib/hooks/store";
+import { MinusIcon, Plus, PlusIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 function EditExistingRoom() {
   const form = useForm({ resolver: zodResolver(editExitingRoomFormSchema) });
@@ -40,6 +42,29 @@ function EditExistingRoom() {
     },
   });
 
+  const currentOccupants = useWatch({
+    control: form.control,
+    name: "current_occupants",
+  });
+  const maxOccupants = useWatch({
+    control: form.control,
+    name: "max_occupants",
+  });
+
+  const handleIncrement = () => {
+    const current = Number(currentOccupants);
+    if (current < Number(maxOccupants)) {
+      form.setValue("current_occupants", (current + 1).toString());
+    }
+  };
+
+  const handleDecrement = () => {
+    const current = Number(currentOccupants);
+    if (current > 0) {
+      form.setValue("current_occupants", (current - 1).toString());
+    }
+  };
+
   async function onSubmit(data: z.infer<typeof editExitingRoomFormSchema>) {
     await mutation.mutateAsync(data);
   }
@@ -53,11 +78,11 @@ function EditExistingRoom() {
               console.log(errors)
             )}
           >
-            <div className="grid grid-cols-2 space-y-2 space-x-2">
+            <div className="grid space-y-5 space-x-2">
               <InputField
                 form={form}
                 fieldName="rent_per_month"
-                label="Rent/month ($)"
+                label="Monthly Rent ($)"
                 defaultValue={selectedRoom.rent_per_month}
               />
               <SelectField
@@ -77,16 +102,40 @@ function EditExistingRoom() {
               />
               <InputField
                 form={form}
-                fieldName="current_occupants"
-                label="Current Occupants"
-                defaultValue={selectedRoom.current_occupants.toString()}
-              />
-              <InputField
-                form={form}
                 fieldName="max_occupants"
                 label="Max Students"
                 defaultValue={selectedRoom.max_occupants}
               />
+              <div>
+                <label
+                  htmlFor="current_occupants"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Current Occupants
+                </label>
+                <div className="flex items-center justify-between space-x-4">
+                  <Button
+                    type="button"
+                    className="flex-shrink-0 w-12 h-12 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center transition-colors hover:bg-gray-300"
+                    onClick={handleDecrement}
+                  >
+                    <MinusIcon className="w-6 h-6" />
+                  </Button>
+                  <Input
+                    id="current_occupants"
+                    {...form.register("current_occupants")}
+                    className="text-center"
+                    defaultValue={selectedRoom.current_occupants}
+                  />
+                  <Button
+                    type="button"
+                    className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors hover:bg-blue-700"
+                    onClick={handleIncrement}
+                  >
+                    <PlusIcon className="w-6 h-6" />
+                  </Button>
+                </div>
+              </div>
             </div>
             <div className="flex justify-end gap-3 mt-5">
               <Button

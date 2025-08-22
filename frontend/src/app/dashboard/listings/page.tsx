@@ -14,15 +14,35 @@ import Loader from "@/components/Loader";
 import ListingSkeleton from "@/components/dashboard/listings/ListingSkeleton";
 import { useListingDialogMode, useListingDialogState } from "@/lib/hooks/store";
 import ListingDialog from "@/components/dashboard/listings/listing/ListingDialog";
+import { axiosInstance } from "@/lib/services/api/config";
+import { useState } from "react";
 
 function Page() {
-  // TODO: Fetch images seperately
+  const [authToken, setAuthToken] = useState("");
+
+  async function fetchToken() {
+    try {
+      const response = await axios.get("/server/api/auth/verify-token");
+      setAuthToken(response.data.token);
+      return response.data.token;
+    } catch (error) {
+      console.error("Error fetching API token:", error);
+    }
+  }
+  fetchToken();
+
   const { data, error, status } = useQuery({
     queryKey: ["landlord-listings"],
     queryFn: () => {
-      return axios.get("/server/api/landlord-listings/");
+      return axiosInstance.get("/listings/landlord-listings/", {
+        headers: {
+          Authorization: `Token ${authToken}`,
+        },
+      });
     },
+    enabled: !!authToken,
   });
+
   const { setEntities: setDialog } = useListingDialogState();
   const { setEntities: setListingDialogOperation } = useListingDialogMode();
 

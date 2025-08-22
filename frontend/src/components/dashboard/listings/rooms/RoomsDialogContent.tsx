@@ -116,8 +116,10 @@ function RoomsDialogContent() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-2xl p-4 w-full max-w-lg relative">
-      {renderOperationView()}
+    <div className="flex justify-center items-center">
+      <div className="bg-white rounded-xl shadow-2xl p-4 w-full max-w-sm relative">
+        {renderOperationView()}
+      </div>
     </div>
   );
 }
