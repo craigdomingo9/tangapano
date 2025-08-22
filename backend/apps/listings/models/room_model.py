@@ -15,6 +15,7 @@ class Room(models.Model):
         ('male', 'Male'),
         ('female', 'Female'),
         ('any', 'Any'),
+        ('mixed', 'Mixed')
     ])
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

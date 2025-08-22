@@ -10,19 +10,24 @@ import { editExitingRoomFormSchema } from "@/lib/services/forms/dashboard/listin
 import { toast } from "sonner";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { gendersList } from "@/lib/lists";
 import {
   useRoomsDialogOperation,
   useRoomsDialogState,
   useSelectedListing,
   useSelectedRoom,
 } from "@/lib/hooks/store";
-import { MinusIcon, Plus, PlusIcon } from "lucide-react";
+import { Mars, MinusIcon, PlusIcon, Venus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 type Props = {
   dismissDialogOnAction?: boolean;
 };
+
+const gendersList = [
+  { id: "any", name: "Any" },
+  { id: "male", name: "Male", icon: Mars },
+  { id: "female", name: "Female", icon: Venus },
+];
 
 function EditExistingRoom({ dismissDialogOnAction }: Props) {
   const form = useForm({ resolver: zodResolver(editExitingRoomFormSchema) });

@@ -10,18 +10,24 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { gendersList } from "@/lib/lists";
 import {
   useRoomsDialogOperation,
   useRoomsDialogState,
   useSelectedListing,
 } from "@/lib/hooks/store";
+import { Mars, Shuffle, Venus } from "lucide-react";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
 type Props = {
   dismissDialogOnAction?: boolean;
 };
+
+const gendersList = [
+  { id: "any", name: "Any" },
+  { id: "male", name: "Male", icon: Mars },
+  { id: "female", name: "Female", icon: Venus },
+];
 
 function AddNewRoom({ dismissDialogOnAction }: Props) {
   const form = useForm({ resolver: zodResolver(addNewRoomFormSchema) });
