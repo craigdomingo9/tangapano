@@ -76,11 +76,11 @@ function AddNewRoom({ dismissDialogOnAction }: Props) {
               console.log(errors)
             )}
           >
-            <div className="grid grid-cols-2 space-y-2 space-x-2">
+            <div className="grid space-y-5 space-x-2">
               <InputField
                 form={form}
                 fieldName="rent_per_month"
-                label="Rent/month ($)"
+                label="Monthly Rent ($)"
                 defaultValue=""
               />
               <InputField
