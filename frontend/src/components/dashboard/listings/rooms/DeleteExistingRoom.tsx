@@ -5,26 +5,38 @@ import axios from "axios";
 import { toast } from "sonner";
 import {
   useRoomsDialogOperation,
+  useRoomsDialogState,
   useSelectedListing,
   useSelectedRoom,
 } from "@/lib/hooks/store";
 
-function DeleteExistingRoom() {
+type Props = {
+  dismissDialogOnAction?: boolean;
+};
+
+function DeleteExistingRoom({ dismissDialogOnAction }: Props) {
   const { entities: selectedListing } = useSelectedListing();
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedRoom } = useSelectedRoom();
+  const { setEntities: setDialog } = useRoomsDialogState();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () =>
       axios.delete(`/server/api/landlord-listings/rooms/${selectedRoom?.id}`),
     onSuccess: () => {
-      setOperation("list");
+      toast.success("Room was deleted successfully.");
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });
       queryClient.invalidateQueries({
         queryKey: ["rooms", selectedListing?.id],
       });
-      toast.success("Room was deleted successfully.");
+
+      if (dismissDialogOnAction) {
+        setDialog(false);
+        return;
+      }
+
+      setOperation("list");
     },
   });
 

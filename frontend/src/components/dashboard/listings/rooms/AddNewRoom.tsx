@@ -11,14 +11,23 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gendersList } from "@/lib/lists";
-import { useRoomsDialogOperation, useSelectedListing } from "@/lib/hooks/store";
+import {
+  useRoomsDialogOperation,
+  useRoomsDialogState,
+  useSelectedListing,
+} from "@/lib/hooks/store";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
-function AddNewRoom() {
+type Props = {
+  dismissDialogOnAction?: boolean;
+};
+
+function AddNewRoom({ dismissDialogOnAction }: Props) {
   const form = useForm({ resolver: zodResolver(addNewRoomFormSchema) });
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedListing } = useSelectedListing();
+  const { setEntities: setDialog } = useRoomsDialogState();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -30,13 +39,19 @@ function AddNewRoom() {
     },
     retry: 3,
     onSuccess: () => {
-      setOperation("list");
-      form.reset();
+      toast.success("Room was created successfully.");
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });
       queryClient.invalidateQueries({
         queryKey: ["rooms", selectedListing?.id],
       });
-      toast.success("Room was created successfully.");
+
+      if (dismissDialogOnAction) {
+        setDialog(false);
+        return;
+      }
+
+      setOperation("list");
+      form.reset();
     },
     onError: (err) => {
       console.error("Failed to add room:", err);

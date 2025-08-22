@@ -71,7 +71,7 @@ function page() {
           )}
         </div>
       </div>
-      <RoomsDialog />
+      <RoomsDialog dismissDialogOnAction />
     </>
   );
 }

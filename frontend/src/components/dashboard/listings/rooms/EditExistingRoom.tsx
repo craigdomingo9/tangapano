@@ -13,17 +13,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { gendersList } from "@/lib/lists";
 import {
   useRoomsDialogOperation,
+  useRoomsDialogState,
   useSelectedListing,
   useSelectedRoom,
 } from "@/lib/hooks/store";
 import { MinusIcon, Plus, PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-function EditExistingRoom() {
+type Props = {
+  dismissDialogOnAction?: boolean;
+};
+
+function EditExistingRoom({ dismissDialogOnAction }: Props) {
   const form = useForm({ resolver: zodResolver(editExitingRoomFormSchema) });
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { entities: selectedRoom } = useSelectedRoom();
   const { entities: selectedListing } = useSelectedListing();
+  const { setEntities: setDialog } = useRoomsDialogState();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -33,12 +39,18 @@ function EditExistingRoom() {
         data
       ),
     onSuccess: () => {
-      setOperation("list");
+      toast.success("Room was updated successfully.");
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });
       queryClient.invalidateQueries({
         queryKey: ["rooms", selectedListing?.id],
       });
-      toast.success("Room was updated successfully.");
+
+      if (dismissDialogOnAction) {
+        setDialog(false);
+        return;
+      }
+
+      setOperation("list");
     },
   });
 

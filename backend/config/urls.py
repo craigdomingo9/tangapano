@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', include('django_prometheus.urls'), name="prometheus"),
     path('api/admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
     path('api/campuses/', include('campuses.urls')),

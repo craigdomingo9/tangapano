@@ -36,9 +36,9 @@ class ListingAPIView(generics.ListAPIView):
     ordering_fields = ['price', 'distance']
     
     
-    # @method_decorator(cache_page(settings.CACHE_TTL))
-    # @method_decorator(vary_on_headers('Cookie'))
-    # @method_decorator(vary_on_cookie)
+    @method_decorator(cache_page(settings.CACHE_TTL))
+    @method_decorator(vary_on_headers('Cookie'))
+    @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 

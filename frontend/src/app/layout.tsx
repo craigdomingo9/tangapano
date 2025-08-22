@@ -8,6 +8,9 @@ import ClientLayout from "@/components/ClientLayout";
 export const metadata: Metadata = {
   title: "TangaPano",
   description: "Secure your accommodation now!",
+  icons: {
+    icon: "/brand.jpg",
+  },
 };
 
 export default function RootLayout({

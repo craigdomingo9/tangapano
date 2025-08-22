@@ -15,21 +15,23 @@ import ListingSkeleton from "@/components/dashboard/listings/ListingSkeleton";
 import { useListingDialogMode, useListingDialogState } from "@/lib/hooks/store";
 import ListingDialog from "@/components/dashboard/listings/listing/ListingDialog";
 import { axiosInstance } from "@/lib/services/api/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Page() {
   const [authToken, setAuthToken] = useState("");
 
-  async function fetchToken() {
-    try {
-      const response = await axios.get("/server/api/auth/verify-token");
-      setAuthToken(response.data.token);
-      return response.data.token;
-    } catch (error) {
-      console.error("Error fetching API token:", error);
+  useEffect(() => {
+    async function fetchToken() {
+      try {
+        const response = await axios.get("/server/api/auth/verify-token");
+        setAuthToken(response.data.token);
+        return;
+      } catch (error) {
+        console.error("Error fetching API token:", error);
+      }
     }
-  }
-  fetchToken();
+    fetchToken();
+  }, []);
 
   const { data, error, status } = useQuery({
     queryKey: ["landlord-listings"],

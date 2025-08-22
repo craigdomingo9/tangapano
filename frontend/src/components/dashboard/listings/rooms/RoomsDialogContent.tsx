@@ -13,7 +13,11 @@ import {
   useSelectedRoom,
 } from "@/lib/hooks/store";
 
-function RoomsDialogContent() {
+type Props = {
+  dismissDialogOnAction?: boolean;
+};
+
+function RoomsDialogContent({ dismissDialogOnAction }: Props) {
   const { entities: selectedListing } = useSelectedListing();
   const { entities: operation, setEntities: setOperation } =
     useRoomsDialogOperation();
@@ -105,11 +109,15 @@ function RoomsDialogContent() {
   const renderOperationView = () => {
     switch (operation) {
       case "add":
-        return <AddNewRoom />;
+        return <AddNewRoom dismissDialogOnAction={dismissDialogOnAction} />;
       case "edit":
-        return <EditExistingRoom />;
+        return (
+          <EditExistingRoom dismissDialogOnAction={dismissDialogOnAction} />
+        );
       case "delete":
-        return <DeleteExistingRoom />;
+        return (
+          <DeleteExistingRoom dismissDialogOnAction={dismissDialogOnAction} />
+        );
       default:
         return renderRoomList();
     }
