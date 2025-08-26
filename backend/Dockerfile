@@ -17,6 +17,8 @@ ENTRYPOINT ["/app/entrypoint.sh"]
 # Build from the base image.
 FROM base AS development
 COPY . /app/
+# Reapply execute permissions after copying code
+RUN chmod +x /app/entrypoint.sh
 RUN python manage.py collectstatic --noinput
 # Use the Django development server for hot reloading.
 CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
@@ -26,6 +28,8 @@ CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
 # Build from the base image.
 FROM base AS production
 COPY . /app/
+# Reapply execute permissions after copying code
+RUN chmod +x /app/entrypoint.sh
 RUN python manage.py collectstatic --noinput
 # Use Gunicorn as the production-ready WSGI server.
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
