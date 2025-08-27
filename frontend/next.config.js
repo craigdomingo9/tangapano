@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
@@ -21,5 +22,4 @@ module.exports = {
     return config;
   },
   devIndicators: false,
-  allowedDevOrigins: ["192.168.43.242", "10.232.241.249"],
 };

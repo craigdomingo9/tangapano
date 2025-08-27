@@ -29,7 +29,7 @@ services:
     restart: always
     build:
       context: ./frontend
-      target: production
+      dockerfile: ./Dockerfile.prod
     ports:
       - "3000:3000"
     environment:

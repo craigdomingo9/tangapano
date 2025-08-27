@@ -1,0 +1,32 @@
+# Multi-stage build for optimal size and security
+FROM --platform=linux/amd64 node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copy all files
+COPY . .
+
+
+# Debug: list files to verify components are copied
+RUN ls -la src/components/dashboard/ || echo "No dashboard components found"
+RUN ls -la src/components/dashboard/listings/ || echo "No listings components found"
+
+RUN npm run build
+
+FROM --platform=linux/amd64 node:20-alpine AS runner
+WORKDIR /app
+
+
+# Create non-root user (Alpine compatible)
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001 -G nodejs
+
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+CMD ["npm", "start"]
