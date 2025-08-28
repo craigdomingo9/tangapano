@@ -25,7 +25,7 @@ COPY . /app/
 
 RUN python manage.py collectstatic --noinput
 
-ENTRYPOINT ["sh", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh"]
+# ENTRYPOINT ["sh", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh"]
 # Use the Django development server for hot reloading.
 CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000"]
 
@@ -37,6 +37,6 @@ COPY . /app/
 
 RUN python manage.py collectstatic --noinput
 
-ENTRYPOINT ["sh", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh"]
+# ENTRYPOINT ["sh", "-c", "chmod +x /app/entrypoint.sh && /app/entrypoint.sh"]
 # Use Gunicorn as the production-ready WSGI server.
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

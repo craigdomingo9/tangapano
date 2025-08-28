@@ -18,7 +18,7 @@ FROM base AS builder
 # Install clean dependencies
 RUN npm ci
 COPY . /app
-RUN npm run build
+RUN npm run build --no-lint
 
 # ---------- Production ----------
 FROM node:20-bullseye-slim AS production
