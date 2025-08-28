@@ -20,17 +20,20 @@ class Command(BaseCommand):
 
         self.stdout.write("Creating campuses and neighborhoods...")
         campus_names = [
-            "University of Zimbabwe", "Midlands State University", "Great Zimbabwe University",
-            "Chinhoyi University"
+            "University of Zimbabwe", "Midlands State University", 
+            # "Great Zimbabwe University",
+            # "Chinhoyi University"
         ]
-        cities = ["Harare", "Gweru", "Masvingo", "Chinhoyi"]
+        cities = ["Harare", "Gweru", 
+                #   "Masvingo", "Chinhoyi"
+                  ]
 
         
         ZIM_NEIGHBORHOODS = {
-            "Harare": ["Avondale", "Borrowdale", "Mbare", "Greendale", "Mount Pleasant", "Waterfalls"],
+            "Harare": ["Avondale", "Mbare", "Greendale", "Waterfalls"],
             "Gweru": ["Senga KMP", "Senga CBZ", "Adelaide", "Randolph Park"],
-            "Masvingo": ["Mucheke", "Rujeko", "Rhodes", "Junction", "Runyararo"],
-            "Chinhoyi": ["Cold Stream", "Hunyani", "Gadzema", "Cherima", "Orange Grove"],
+            # "Masvingo": ["Mucheke", "Rujeko", "Rhodes", "Junction", "Runyararo"],
+            # "Chinhoyi": ["Cold Stream", "Hunyani", "Gadzema", "Cherima", "Orange Grove"],
         }
 
         for name, city in zip(campus_names, cities):

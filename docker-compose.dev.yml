@@ -71,7 +71,7 @@ services:
       - app_net
 
   nginx:
-    container_name: nginx
+    container_name: nginx_dev
     restart: always
     image: nginx:stable-alpine
     volumes:
