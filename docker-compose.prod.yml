@@ -24,21 +24,21 @@ services:
     networks:
       - app_net
 
-  frontend:
-    container_name: frontend
-    restart: always
-    build:
-      context: ./frontend
-      dockerfile: ./Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - NODE_ENV=production
-    depends_on:
-      - backend
-    networks:
-      - app_net
+  # frontend:
+  #   container_name: frontend
+  #   restart: always
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+  #     - NODE_ENV=production
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app_net
 
   db:
     image: postgres:15
@@ -119,7 +119,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - frontend
+      # - frontend
       - backend
     networks:
       - app_net
