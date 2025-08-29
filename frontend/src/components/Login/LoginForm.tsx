@@ -29,7 +29,7 @@ export function LoginForm({
       axios.post("/server/api/auth/login", data),
     onSuccess() {
       toast.success("Logged in successfully");
-      router.push("/dashboard/listings");
+      router.push("/dashboard/rooms");
     },
     onError() {
       toast.error("Invalid username or password");

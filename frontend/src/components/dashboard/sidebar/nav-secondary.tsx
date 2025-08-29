@@ -13,13 +13,8 @@ import Link from "next/link";
 const items = [
   {
     title: "Support",
-    url: "#",
+    url: "/dashboard/support",
     icon: LifeBuoy,
-  },
-  {
-    title: "Feedback",
-    url: "#",
-    icon: Send,
   },
 ];
 
