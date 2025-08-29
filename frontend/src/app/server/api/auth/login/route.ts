@@ -11,14 +11,14 @@ export async function POST(req: NextRequest) {
     console.log("Attempting login request to Django backend...");
     const res = await axiosInstance.post(
       "/users/auth/login/",
-      JSON.stringify({ username, password }),
+      JSON.stringify({ username, password })
     );
     console.log("Received response from backend:", res.status);
 
     if (res.status >= 400) {
       return NextResponse.json(
         { error: "Invalid credentials" },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
@@ -30,13 +30,13 @@ export async function POST(req: NextRequest) {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 30, // 30 days
     });
 
     return response;
   } catch (error: unknown) {
     if (!(error instanceof AxiosError)) return;
-    const message = error?.response?.data?.error || "Invalid credentials";
+    const message = error?.response?.data?.error || "Unknown error";
     return NextResponse.json({ error: message }, { status: 401 });
   }
 }
