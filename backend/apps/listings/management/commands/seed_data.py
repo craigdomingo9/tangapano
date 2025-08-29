@@ -22,10 +22,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--landlords', type=int, default=200, help='Number of landlords to create'
+            '--landlords', type=int, default=50, help='Number of landlords to create'
         )
         parser.add_argument(
-            '--listings', type=int, default=5, help='Listings per landlord'
+            '--listings', type=int, default=2, help='Listings per landlord'
         )
 
     @transaction.atomic

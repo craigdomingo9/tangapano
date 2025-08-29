@@ -6,3 +6,5 @@
 *.pyo
 *.pyd
 __pycache__/
+.seeding_done_development
+.seeding_done_production

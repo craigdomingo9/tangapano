@@ -35,3 +35,6 @@ README.md
 htmlcov/
 .pytest_cache/
 *.sqlite3
+.seeding_done_development
+.seeding_done_production
+
