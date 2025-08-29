@@ -2,7 +2,7 @@ name: Tangapano Development Environment
 
 services:
   backend:
-    container_name: backend
+    container_name: backend_dev
     restart: always
     build:
       context: ./backend
@@ -25,7 +25,7 @@ services:
       - app_net
 
   frontend:
-    container_name: frontend
+    container_name: frontend_dev
     restart: always
     build:
       context: ./frontend

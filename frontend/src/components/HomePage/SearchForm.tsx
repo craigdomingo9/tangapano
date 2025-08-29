@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import StudentsPerRoomField from "./StudentsPerRoomField";
 import { useState } from "react";
 import { MoonLoader } from "react-spinners";
+import AmenitiesBadgeSelector from "./AmenitiesBadgeSelector";
 
 function SearchForm() {
   const { data: amenities } = useQuery({
@@ -79,7 +80,7 @@ function SearchForm() {
               </div>
             </div>
 
-            <AmenitiesSelector amenities={amenities} form={form} />
+            <AmenitiesBadgeSelector amenities={amenities} form={form} />
           </div>
 
           <div className="grid mb-6">

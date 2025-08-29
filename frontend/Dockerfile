@@ -9,7 +9,7 @@ COPY package*.json ./
 # ---------- Development ----------
 FROM base AS development
 # Install all dependencies (including dev)
-RUN npm install
+RUN npm install --verbose
 COPY . /app
 CMD ["npm", "run", "dev"]
 
@@ -18,7 +18,7 @@ FROM base AS builder
 # Install clean dependencies
 RUN npm ci
 COPY . /app
-RUN npm run build --no-lint
+RUN npm run build
 
 # ---------- Production ----------
 FROM node:20-bullseye-slim AS production

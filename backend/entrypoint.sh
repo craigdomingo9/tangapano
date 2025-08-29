@@ -18,7 +18,7 @@ if [ "$DJANGO_ENV" = "development" ]; then
 
     echo "Seeding development data..."
     python manage.py seed_campuses
-    python manage.py seed_data
+    python manage.py seed_data --landlords=150
     # Create the marker file to prevent this block from running again.
     touch "$SEEDING_DONE_FILE_DEVELOPMENT"
   fi

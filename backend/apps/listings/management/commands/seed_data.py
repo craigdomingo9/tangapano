@@ -41,18 +41,28 @@ class Command(BaseCommand):
 
         self.stdout.write("🧱 Creating amenities...")
         amenities_data = [
-            {"name": "wifi", "display_name": "WIFI"},
-            {"name": "geyser", "display_name": "Geyser"},
-            {"name": "study_room", "display_name": "Study Room"},
-            {"name": "study_desk", "display_name": "Study Desk"},
-            {"name": "parking", "display_name": "Parking"},
-            {"name": "durawall", "display_name": "Durawall"},
-            {"name": "guard_dog", "display_name": "Guard Dog"},
+            {"name": "wifi", "display_name": "WiFi"},
+            {"name": "air_conditioning", "display_name": "Air Conditioning"},
+            {"name": "study_desk", "display_name": "Study Desk & Chair"},
+            {"name": "wardrobe", "display_name": "Wardrobe or Closet"},
+            {"name": "multiple_bathrooms", "display_name": "Multiple Bathrooms"},
+            {"name": "geyser", "display_name": "24/7 Hot Water"},
+            {"name": "refrigerator", "display_name": "Refrigerator"},
             {"name": "electricity", "display_name": "Electricity"},
             {"name": "no_curfew", "display_name": "No Curfew"},
             {"name": "solar_power", "display_name": "Solar Power"},
-            {"name": "washing_machine", "display_name": "Washing Machine"},
-            {"name": "refrigerator", "display_name": "Refrigerator"},
+            {"name": "shared_kitchen", "display_name": "Shared Full Kitchen"},
+            {"name": "laundry_facility", "display_name": "Washing Machine"},
+            {"name": "study_room", "display_name": "Dedicated Quiet Study Room"},
+            {"name": "common_lounge", "display_name": "Common Lounge Area"},
+            {"name": "parking", "display_name": "Secure Parking"},
+            {"name": "security_gate", "display_name": "Security Gate"},
+            {"name": "cctv", "display_name": "CCTV Surveillance"},
+            {"name": "on_site_guard", "display_name": "On-Site Security Guard"},
+            {"name": "starlink_internet", "display_name": "Starlink Internet"},
+            {"name": "bbq_area", "display_name": "BBQ Area"},
+            {"name": "game_room", "display_name": "Game Room (Pool table, etc.)"},
+            {"name": "disabled_access", "display_name": "Wheelchair Accessible"}
         ]
 
         for amenity in amenities_data:
@@ -122,10 +132,11 @@ class Command(BaseCommand):
                         )
 
                 # Add amenities directly using ManyToMany field
-                selected_amenities = random.sample(amenities, k=random.randint(5, 8))
+                length = len(amenities)
+                selected_amenities = random.sample(amenities, k=random.randint(int(length * 0.6), (length - 1)))
                 listing.amenities.set(selected_amenities)
 
-                for _ in range(random.randint(3, 7)):
+                for _ in range(random.randint(5, 10)):
                     max_occupants = random.choice([1, 2, 3])
                     current_occupants = max_occupants - random.choice([0, 1, 2])
                     if current_occupants > max_occupants or current_occupants < 0: current_occupants = 0
