@@ -55,7 +55,6 @@ services:
       - .env
     deploy:
       resources:
-        limits:
         reservations:
           memory: 4G
           cpus: '3.0'
@@ -74,7 +73,6 @@ services:
       - "5050:80"
     deploy:
       resources:
-        limits:
         reservations:
           memory: 1G
           cpus: '1'
