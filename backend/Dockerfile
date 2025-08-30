@@ -39,7 +39,7 @@ COPY . /app/
 RUN python manage.py collectstatic --noinput
 
 # Make the entrypoint script executable
-ENTRYPOINT ["sh", "-c", "dos2unix /app/entrypoint.sh && /app/entrypoint.sh"]
+# ENTRYPOINT ["sh", "-c", "dos2unix /app/entrypoint.sh && /app/entrypoint.sh"]
 
 # Use Gunicorn as the production-ready WSGI server.
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "7", "--timeout", "120", "--worker-class", "gthread", "--threads", "4", "--max-requests", "1000", "--max-requests-jitter", "100", "--preload", "config.wsgi:application"]
