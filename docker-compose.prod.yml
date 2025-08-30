@@ -74,8 +74,8 @@ services:
     deploy:
       resources:
         reservations:
-          memory: 1G
-          cpus: '1'
+          memory: 2G
+          cpus: '2'
     depends_on:
       - db
     restart: always
