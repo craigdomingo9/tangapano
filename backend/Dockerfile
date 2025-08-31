@@ -42,4 +42,4 @@ RUN python manage.py collectstatic --noinput
 # ENTRYPOINT ["sh", "-c", "dos2unix /app/entrypoint.sh && /app/entrypoint.sh"]
 
 # Use Gunicorn as the production-ready WSGI server.
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "7", "--timeout", "120", "--worker-class", "gthread", "--threads", "4", "--max-requests", "1000", "--max-requests-jitter", "100", "--preload", "config.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "9", "--timeout", "120", "--worker-class", "gthread", "--threads", "4", "--max-requests", "1000", "--max-requests-jitter", "100", "--preload", "config.wsgi:application"]

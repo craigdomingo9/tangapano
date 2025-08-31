@@ -145,6 +145,7 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
         'ATOMIC_REQUESTS': True,
+        'CONN_MAX_AGE': 300,
     }
 }
 

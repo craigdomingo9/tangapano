@@ -17,17 +17,22 @@ class Command(BaseCommand):
         self.stdout.write("🌍 Seeding Zimbabwean campuses and neighborhoods...")
 
         campus_names = [
-            "University of Zimbabwe", "Midlands State University", "Great Zimbabwe University",
-            "Chinhoyi University", "Lupane State University"
+            "University of Zimbabwe", "Midlands State University"
+            # , "Great Zimbabwe University",
+            # "Chinhoyi University", "Lupane State University"
         ]
-        cities = ["Harare", "Gweru", "Masvingo", "Chinhoyi", "Lupane"]
+        
+        cities = [
+            "Harare", "Gweru", 
+            # "Masvingo", "Chinhoyi", "Lupane"
+        ]
         
         ZIM_NEIGHBORHOODS = {
-            "Harare": ["Avondale", "Borrowdale", "Mbare", "Greendale", "Mount Pleasant", "Waterfalls"],
+            "Harare": ["Avondale", "Mbare", "Greendale", "Waterfalls"],
             "Gweru": ["Senga KMP", "Senga CBZ", "Adelaide", "Randolph Park"],
-            "Masvingo": ["Mucheke", "Rujeko", "Rhodes", "Junction", "Runyararo"],
-            "Chinhoyi": ["Cold Stream", "Hunyani", "Gadzema", "Cherima", "Orange Grove"],
-            "Lupane": ["Lupane Center", "Gwayi", "Jotsholo", "Dandanda", "Tshongogwe"],
+            # "Masvingo": ["Mucheke", "Rujeko", "Rhodes", "Junction", "Runyararo"],
+            # "Chinhoyi": ["Cold Stream", "Hunyani", "Gadzema", "Cherima", "Orange Grove"],
+            # "Lupane": ["Lupane Center", "Gwayi", "Jotsholo", "Dandanda", "Tshongogwe"],
         }
 
         # Use get_or_create to prevent creating duplicate campuses and agents.

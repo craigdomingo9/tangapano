@@ -22,6 +22,9 @@ services:
     deploy:
       resources:
         reservations:
+          memory: 3G
+          cpus: '2.0'
+        limits:
           memory: 4G
           cpus: '3.0'
     depends_on:
@@ -47,15 +50,19 @@ services:
       - app_net
 
   db:
-    image: postgres:15
+    image: postgres:17
     container_name: db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
     env_file:
       - .env
     deploy:
       resources:
         reservations:
+          memory: 3G
+          cpus: '2.0'
+        limits:
           memory: 4G
           cpus: '3.0'
     ports:
@@ -74,8 +81,11 @@ services:
     deploy:
       resources:
         reservations:
-          memory: 2G
+          memory: 500M
           cpus: '2'
+        limits:
+          memory: 1.5G
+          cpus: '1.0'
     depends_on:
       - db
     restart: always
@@ -139,8 +149,11 @@ services:
     deploy:
       resources:
         reservations:
-          memory: 1G
+          memory: 500M
           cpus: '2'
+        limits:
+          memory: 1G
+          cpus: '2.0'
     depends_on:
       - frontend
       - backend
@@ -166,8 +179,11 @@ services:
     deploy:
       resources:
         reservations:
+          memory: 500M
+          cpus: '0.5'
+        limits:
           memory: 1G
-          cpus: '2'
+          cpus: '1.0'
     depends_on:
       - backend
     restart: unless-stopped
@@ -187,8 +203,11 @@ services:
     deploy:
       resources:
         reservations:
-          memory: 1G
+          memory: 500M
           cpus: '2'
+        limits:
+          memory: 1G
+          cpus: '3.0'
     depends_on:
       - prometheus
     restart: unless-stopped
