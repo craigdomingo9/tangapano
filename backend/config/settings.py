@@ -44,7 +44,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost',
     'http://185.150.190.138',
-    'http://185.150.190.138:3000'
+    'http://185.150.190.138:3000',
+    'http://tangapano.co.zw',
+    'http://tangapano.co.zw:3000'
 ]
 # CORS_ALLOW_ALL_ORIGINS = True
 
@@ -145,7 +147,11 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
         'ATOMIC_REQUESTS': True,
-        'CONN_MAX_AGE': 300,
+        'CONN_MAX_AGE': 600,
+        'OPTIONS': {
+            'options': '-c statement_timeout=30000',  # 30-second query timeout
+        },
+        'DISABLE_SERVER_SIDE_CURSORS': True,  # Better for large result sets
     }
 }
 

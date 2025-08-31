@@ -43,6 +43,14 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
       - NODE_ENV=production
+    deploy:
+      resources:
+        reservations:
+          memory: 4G
+          cpus: '3.0'
+        limits:
+          memory: 5G
+          cpus: '3.0'
     depends_on:
       - backend
     restart: always
@@ -60,10 +68,10 @@ services:
     deploy:
       resources:
         reservations:
-          memory: 3G
-          cpus: '2.0'
-        limits:
           memory: 4G
+          cpus: '3.0'
+        limits:
+          memory: 5G
           cpus: '3.0'
     ports:
       - "5432:5432"
@@ -81,7 +89,7 @@ services:
     deploy:
       resources:
         reservations:
-          memory: 500M
+          memory: 1G
           cpus: '2'
         limits:
           memory: 1.5G
@@ -94,7 +102,7 @@ services:
 
   backup:
     container_name: postgres_backup
-    image: postgres:15
+    image: postgres:17
     depends_on:
       - db
     env_file:
@@ -130,6 +138,11 @@ services:
         sleep $$sleep_interval;
       done"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+          cpus: '1.0'
     networks:
       - app_net
 
