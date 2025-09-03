@@ -37,84 +37,66 @@ class ListingFilter(filters.FilterSet):
         return queryset.filter(rooms__gender_preference=value)
     
     def filter_amenities(self, queryset, name, value):
-        amenity_names = [a.strip() for a in value.split(',') if a.strip()]
-
-        # If no amenities are provided, return the original queryset
+        amenity_names = {a.strip() for a in value.split(',') if a.strip()}
         if not amenity_names:
             return queryset
         
-        # delete duplicates
-        amenity_names = list(set(amenity_names))
-
-        # Filter by amenities
-        amenity_ids = list(
-            Amenity.objects.filter(name__in=amenity_names)
-            .values_list('id', flat=True)
-        )
-        
-        if not amenity_ids:
+        # Get amenities in single query
+        amenities = Amenity.objects.filter(name__in=amenity_names)
+        if not amenities.exists():
             return queryset.none()
-        
-        min_match_count = max(1, len(amenity_names) // 2)
 
-        # Subquery to count matching amenities for each listing
-        matching_amenities = Listing.amenities.through.objects.filter(
-            listing=OuterRef('pk'),
-            amenity_id__in=amenity_ids
-        ).values('listing').annotate(count=Count('id')).values('count')
-        
-        # Annotate with match count and filter
-        return queryset.annotate(
-            match_count=Coalesce(Subquery(matching_amenities), 0)
-        ).filter(match_count__gte=min_match_count).order_by('-match_count')
+        min_match_count = len(amenity_names) // 2
+
+        # Create direct subquery for matching counts
+        return queryset.filter(
+            amenities__in=amenities
+        ).annotate(
+            match_count=Count('amenities')
+        ).filter(
+            match_count__gte=len(amenity_names) // 2
+        ).order_by('-match_count')
 
 
     def filter_queryset(self, queryset):
-        # Extract request parameters
         params = self.request.query_params
+        has_room_filters = any([
+            params.get('price_min'),
+            params.get('price_max'),
+            params.get('gender'),
+            params.get('max_occupants'),
+            params.get('is_full')
+        ])
 
-        # Extract room-related filter parameters
-        price_min = params.get('price_min')
-        price_max = params.get('price_max')
-        gender = params.get('gender')
-        max_occupants = params.get('max_occupants')
-        is_full = params.get('is_full')
-        
-        # Only build room_filter if we have room-related filters
-        has_room_filters = any([price_min, price_max, gender, max_occupants, is_full])
-        
         if has_room_filters:
-            # Build Q filters for rooms
             room_filter = Q()
-            if price_min:
-                room_filter &= Q(rent_per_month__gte=price_min)
-            if price_max:
-                room_filter &= Q(rent_per_month__lte=price_max)
-            if gender:
-                room_filter &= Q(gender_preference=gender)
-            if max_occupants:
-                room_filter &= Q(max_occupants=max_occupants)
-            if is_full:
+            if params.get('price_min'):
+                room_filter &= Q(rent_per_month__gte=params['price_min'])
+            if params.get('price_max'):
+                room_filter &= Q(rent_per_month__lte=params['price_max'])
+            if params.get('gender'):
+                room_filter &= Q(gender_preference=params['gender'])
+            if params.get('max_occupants'):
+                room_filter &= Q(max_occupants=params['max_occupants'])
+            if params.get('is_full'):
                 room_filter &= Q(current_occupants__lt=F('max_occupants'))
 
-            # ✅ Only include listings where such rooms exist
-            matching_rooms = Room.objects.filter(
-                listing=OuterRef("pk")
-            ).filter(room_filter)
+            # Use subquery instead of JOINs for existence check
+            matching_rooms_subquery = Room.objects.filter(
+                listing_id=OuterRef('id'),
+            ).filter(room_filter).values('id')[:1]
 
-            # Annotate the queryset with a flag indicating if matching rooms exist
             queryset = queryset.annotate(
-                has_matching_rooms=Exists(matching_rooms)
+                has_matching_rooms=Exists(matching_rooms_subquery)
             ).filter(has_matching_rooms=True)
 
-            # Apply filtered prefetch
+            # Use prefetch only if needed for serialization
             queryset = queryset.prefetch_related(
-                Prefetch('rooms', queryset=Room.objects.filter(room_filter).order_by('rent_per_month'))
+                Prefetch('rooms', 
+                    queryset=Room.objects.filter(room_filter).order_by('rent_per_month'),
+                    to_attr='filtered_rooms'
+                )
             )
 
-            # ✅ Exclude listings that will have zero rooms after filtering
-            queryset = queryset.annotate(filtered_room_count=Count('rooms')).exclude(filtered_room_count=0)
-
         return super().filter_queryset(queryset)
-
 

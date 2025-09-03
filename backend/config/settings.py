@@ -110,6 +110,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.User'
 
 CACHE_TTL = 60
+LISTINGS_CACHE_VERSION = 1
 
 if DEBUG == False:
     CACHE_TTL = 60 * 60 * 2
@@ -148,10 +149,6 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT'),
         'ATOMIC_REQUESTS': True,
         'CONN_MAX_AGE': 600,
-        'OPTIONS': {
-            'options': '-c statement_timeout=30000',  # 30-second query timeout
-        },
-        'DISABLE_SERVER_SIDE_CURSORS': True,  # Better for large result sets
     }
 }
 

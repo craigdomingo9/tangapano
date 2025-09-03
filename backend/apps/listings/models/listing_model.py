@@ -36,21 +36,14 @@ class Listing(models.Model):
         verbose_name_plural = "Listings"
         ordering = ["-created_at"]
         indexes = [
-            # Index for campus and neighborhood filters
-            models.Index(fields=['campus', 'neighborhood']),
-            
-            # Composite index for campus with activity status
-            models.Index(fields=['campus', 'is_active']),
-            
-            # Index for created_at (used in ordering)
-            models.Index(fields=['-created_at']),
-            
-            # Partial index for active listings only
+            # Primary composite index (covers both campus/neighborhood and activity)
             models.Index(
-                fields=['campus', 'neighborhood'], 
-                condition=Q(is_active=True),
-                name='active_listings_location_idx'
+                fields=['campus', 'neighborhood', 'is_active', 'created_at'],
+                name='listing_main_filter_idx'
             ),
+            
+            # Single index for created_at (used in ordering)
+            models.Index(fields=['-created_at']),
         ]
 
     def __str__(self):

@@ -24,25 +24,23 @@ class Room(models.Model):
     class Meta:
         verbose_name_plural = "Rooms"
         indexes = [
-            # Composite index for the most common filters
-            models.Index(fields=['listing', 'rent_per_month', 'gender_preference', 'max_occupants']),
+            # Primary composite index for most queries
+            models.Index(
+                fields=['listing', 'rent_per_month', 'gender_preference', 'max_occupants'],
+                name='room_main_filter_idx'
+            ),
             
-            # Index for individual fields that are frequently filtered
-            models.Index(fields=['rent_per_month']),
-            models.Index(fields=['gender_preference']),
-            models.Index(fields=['max_occupants']),
+            # Optimized index for occupancy checks
+            models.Index(
+                fields=['listing', 'max_occupants', 'current_occupants'],
+                name='room_occupancy_check_idx'
+            ),
             
-            # Composite index for occupancy status (is_full filter)
-            models.Index(fields=['max_occupants', 'current_occupants']),
-            
-            # Composite index for listing with activity status
-            models.Index(fields=['listing', 'is_active']),
-            
-            # Partial index for available rooms (not full)
+            # Partial index for available rooms (covers both filtering and ordering)
             models.Index(
                 fields=['rent_per_month', 'gender_preference'],
                 condition=Q(current_occupants__lt=F('max_occupants')),
-                name='available_rooms_filter_idx'
+                name='available_rooms_idx'
             ),
         ]
 
