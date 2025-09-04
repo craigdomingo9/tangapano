@@ -1,7 +1,10 @@
+from django.conf import settings
 from rest_framework import viewsets
 from campuses.models import Campus
 from campuses.serializers import CampusSerializer
 from rest_framework import permissions
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from campuses.filters import CampusFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -27,3 +30,7 @@ class CampusViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [permissions.AllowAny]
         return super().get_permissions()
+
+    @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='campus_list'))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)

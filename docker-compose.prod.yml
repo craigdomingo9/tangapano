@@ -19,14 +19,6 @@ services:
       - .env
     ports:
       - "8000:8000"
-    deploy:
-      resources:
-        reservations:
-          memory: 3G
-          cpus: '2.0'
-        limits:
-          memory: 4G
-          cpus: '3.0'
     depends_on:
       - db
     restart: always
@@ -42,15 +34,8 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+      - CLIENT_API_URL=${CLIENT_API_URL}
       - NODE_ENV=production
-    deploy:
-      resources:
-        reservations:
-          memory: 4G
-          cpus: '3.0'
-        limits:
-          memory: 5G
-          cpus: '3.0'
     depends_on:
       - backend
     restart: always
@@ -62,19 +47,38 @@ services:
     container_name: db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
     env_file:
       - .env
-    deploy:
-      resources:
-        reservations:
-          memory: 4G
-          cpus: '3.0'
-        limits:
-          memory: 5G
-          cpus: '3.0'
     ports:
       - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - app_net
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - app_net
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
     restart: unless-stopped
     networks:
       - app_net
@@ -86,14 +90,6 @@ services:
       - .env
     ports:
       - "5050:80"
-    deploy:
-      resources:
-        reservations:
-          memory: 1G
-          cpus: '2'
-        limits:
-          memory: 1.5G
-          cpus: '1.0'
     depends_on:
       - db
     restart: always
@@ -138,11 +134,6 @@ services:
         sleep $$sleep_interval;
       done"
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 500M
-          cpus: '1.0'
     networks:
       - app_net
 
@@ -159,14 +150,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    deploy:
-      resources:
-        reservations:
-          memory: 500M
-          cpus: '2'
-        limits:
-          memory: 1G
-          cpus: '2.0'
     depends_on:
       - frontend
       - backend
@@ -180,7 +163,7 @@ services:
     ports:
       - "9000:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
@@ -189,14 +172,6 @@ services:
       - "--web.console.templates=/etc/prometheus/consoles"
       - "--storage.tsdb.retention.time=200h"
       - "--web.enable-lifecycle"
-    deploy:
-      resources:
-        reservations:
-          memory: 500M
-          cpus: '0.5'
-        limits:
-          memory: 1G
-          cpus: '1.0'
     depends_on:
       - backend
     restart: unless-stopped
@@ -213,14 +188,6 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
-    deploy:
-      resources:
-        reservations:
-          memory: 500M
-          cpus: '2'
-        limits:
-          memory: 1G
-          cpus: '3.0'
     depends_on:
       - prometheus
     restart: unless-stopped

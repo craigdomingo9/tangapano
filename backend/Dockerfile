@@ -8,8 +8,12 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.txt /app/
 
 # Install dos2unix to handle line endings
-RUN apt-get update && apt-get install -y dos2unix && rm -rf /var/lib/apt/lists/*
-
+RUN apt-get update && apt-get install -y \
+    dos2unix \
+    net-tools \
+    iproute2 \
+    && rm -rf /var/lib/apt/lists/*
+    
 # Install dependencies
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt

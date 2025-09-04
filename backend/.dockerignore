@@ -20,6 +20,7 @@ env
 *.venv/
 # fake-images/
 media/
+migrations/
 
 .git
 .gitignore

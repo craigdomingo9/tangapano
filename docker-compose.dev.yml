@@ -23,6 +23,7 @@ services:
       - db_dev
     networks:
       - app_net
+      - debug_toolbar_network
 
   frontend:
     container_name: frontend_dev
@@ -39,6 +40,7 @@ services:
       - .env
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+      - CLIENT_API_URL=http://localhost:3000/api/
     depends_on:
       - backend
     networks:
@@ -54,6 +56,31 @@ services:
       - .env
     ports:
       - "5432:5432"
+    networks:
+      - app_net
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - app_net
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    restart: unless-stopped
     networks:
       - app_net
 
@@ -75,7 +102,11 @@ volumes:
   static_volume:
   media_volume:
   node_modules_volume:
+  redis_data:
 
 networks:
   app_net:
     driver: bridge
+  debug_toolbar_network:
+    driver: bridge
+    internal: false

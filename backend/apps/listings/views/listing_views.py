@@ -4,10 +4,7 @@ from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_cookie, vary_on_headers
 from django.conf import settings
-import hashlib
-from django.core.cache import cache
 
 # Local
 from listings.serializers import ListingSerializer
@@ -38,7 +35,7 @@ class ListingAPIView(generics.ListAPIView):
     ordering_fields = ['price', 'distance']
     
     
-    @method_decorator(cache_page(settings.CACHE_TTL))
+    @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='listings_list'))
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
-        
+    

@@ -1,0 +1,1 @@
+from .campus_cache_signals import invalidate_campuses_cache

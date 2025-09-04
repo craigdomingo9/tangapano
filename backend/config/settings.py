@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import socket
 from dotenv import load_dotenv
 import sys
+import json
 
 load_dotenv()
 
@@ -30,24 +32,21 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ["*", ]
-
-
 # Add the apps directory to the Python path
 sys.path.append(os.path.join(BASE_DIR, 'apps'))
 
 
+# Allowed hosts
+allowed_hosts = os.environ.get('ALLOWED_HOSTS', '')
+if allowed_hosts:
+    ALLOWED_HOSTS = json.loads(allowed_hosts)
+
+
+# CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1',
-    'http://localhost:3000',
-    'http://localhost',
-    'http://185.150.190.138',
-    'http://185.150.190.138:3000',
-    'http://tangapano.co.zw',
-    'http://tangapano.co.zw:3000'
-]
+cors_allowed_origins = os.environ.get('CORS_ALLOWED_ORIGINS', '')
+if cors_allowed_origins:
+    CORS_ALLOWED_ORIGINS = json.loads(cors_allowed_origins)
 # CORS_ALLOW_ALL_ORIGINS = True
 
 
@@ -66,6 +65,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_extensions',
     'django_prometheus',
+    'debug_toolbar',
     # apps
     'users',
     'listings',
@@ -76,6 +76,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -85,6 +86,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -101,19 +103,14 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'listings': '300/day',
-        'dashboard_listings': '5000/day',
-        'rooms': '500/day',
+        'listings': '100/day',
+        'dashboard_listings': '100/day',
+        'rooms': '100/day',
     }
 }
 
 AUTH_USER_MODEL = 'users.User'
 
-CACHE_TTL = 60
-LISTINGS_CACHE_VERSION = 1
-
-if DEBUG == False:
-    CACHE_TTL = 60 * 60 * 2
 
 ROOT_URLCONF = 'config.urls'
 
@@ -147,7 +144,6 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
-        'ATOMIC_REQUESTS': True,
         'CONN_MAX_AGE': 600,
     }
 }
@@ -196,3 +192,48 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Caching
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379",
+    }
+}
+
+CACHE_TTL = 60 * 60 * 24 * 7  # 1 week
+
+if DEBUG:
+    CACHE_TTL = 60  # 1 minute in development
+
+# Internal IPs
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', 'localhost']
+
+# Use the Docker-specific toolbar callback
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'debug_toolbar.middleware.show_toolbar_with_docker',
+    'SHOW_COLLAPSED': True,
+    'RENDER_PANELS': True,
+}
+
+# Debug Toolbar Panels
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.history.HistoryPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.alerts.AlertsPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+]
+
+
+

@@ -1,4 +1,8 @@
 from rest_framework import viewsets, permissions
+from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 from listings.serializers import AmenitySerializer
 from listings.models import Amenity
 
@@ -20,3 +24,7 @@ class AmenityViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [permissions.AllowAny]
         return super().get_permissions()
+    
+    @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='amenity_list'))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
