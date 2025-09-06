@@ -34,7 +34,8 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - CLIENT_API_URL=${CLIENT_API_URL}
+      - NEXT_PUBLIC_CLIENT_API_URL=${NEXT_PUBLIC_CLIENT_API_URL}
+      - NEXT_PUBLIC_DOMAIN=${DOMAIN}
       - NODE_ENV=production
     depends_on:
       - backend
@@ -56,6 +57,22 @@ services:
     networks:
       - app_net
 
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: pgbouncer
+    volumes:
+      - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
+      - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt
+    env_file:
+      - .env
+    ports:
+      - "6432:6432"
+    depends_on:
+      - db
+    networks:
+      - app_net
+    restart: unless-stopped
+
   redis:
     container_name: redis
     image: redis:latest
@@ -73,6 +90,7 @@ services:
 
   redis-commander:
     image: rediscommander/redis-commander:latest
+    container_name: redis-commander
     environment:
       - REDIS_HOSTS=local:redis:6379
     ports:

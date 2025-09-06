@@ -9,7 +9,6 @@ import CampusSelector from "./CampusSelector";
 import NeighborhoodSelector from "./NeighborhoodSelector";
 import PriceRangeSelector from "./PriceRangeSelector";
 import GenderSelector from "./GenderSelector";
-import AmenitiesSelector from "./AmenitiesSelector";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import buildDynamicSearchParams from "@/lib/services/buildDynamicSearchParams";
@@ -25,7 +24,6 @@ function SearchForm() {
     queryKey: ["amenities"],
     queryFn: () => fetchAmenities({ params: { has_listings: true } }),
   });
-  // TODO: Fetch campuses with listings
   const { data: campuses } = useQuery({
     queryKey: ["campuses"],
     queryFn: () => fetchCampuses({ params: { has_listings: true } }),
@@ -49,16 +47,20 @@ function SearchForm() {
 
     // Append amenities as a comma-separated string
     if (data?.amenities && data.amenities.length > 0) {
-      const amenitiesParams = data.amenities.join(",");
+      // ensure no duplicates
+      const uniqueAmenities = Array.from(new Set(data.amenities));
+      // join into a comma-separated string
+      const amenitiesParams = uniqueAmenities.join(",");
       params.append("amenities", amenitiesParams);
     }
 
     router.push(`/listings?${params.toString()}`);
 
     console.log(data);
+    setIsLoading(false);
   }
 
-  const [IsLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div>
@@ -88,7 +90,7 @@ function SearchForm() {
               type="submit"
               className="mx-auto w-full h-16 text-lg cursor-pointer"
             >
-              {IsLoading ? <MoonLoader color="white" size={15} /> : "Search"}
+              {isLoading ? <MoonLoader color="white" size={15} /> : "Search"}
             </Button>
           </div>
         </form>

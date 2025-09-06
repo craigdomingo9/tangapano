@@ -1,0 +1,2 @@
+; Format: "username" "password"
+"postgres" "root"

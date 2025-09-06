@@ -14,13 +14,13 @@ services:
     environment:
       - DJANGO_DEBUG=True
       - DJANGO_ENV=development
-      - DB_HOST=db_dev
+      - DB_HOST=db
     env_file:
       - .env
     ports:
       - "8000:8000"
     depends_on:
-      - db_dev
+      - db
     networks:
       - app_net
       - debug_toolbar_network
@@ -40,13 +40,13 @@ services:
       - .env
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - CLIENT_API_URL=http://localhost:3000/api/
+      - NEXT_PUBLIC_CLIENT_API_URL=http://localhost:8000/api/
     depends_on:
       - backend
     networks:
       - app_net
 
-  db_dev:
+  db:
     image: postgres:15
     container_name: db_dev
     restart: unless-stopped
@@ -58,6 +58,22 @@ services:
       - "5432:5432"
     networks:
       - app_net
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: pgbouncer_dev
+    volumes:
+      - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
+      - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt
+    env_file:
+      - .env
+    ports:
+      - "6432:6432"
+    depends_on:
+      - db
+    networks:
+      - app_net
+    restart: unless-stopped
 
   redis:
     container_name: redis
@@ -74,6 +90,7 @@ services:
 
   redis-commander:
     image: rediscommander/redis-commander:latest
+    container_name: redis-commander
     environment:
       - REDIS_HOSTS=local:redis:6379
     ports:
@@ -93,7 +110,7 @@ services:
     ports:
       - "5050:80"
     depends_on:
-      - db_dev
+      - db
     networks:
       - app_net
 

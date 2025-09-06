@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/services/api/config";
 import { AxiosError } from "axios";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -25,13 +26,19 @@ export async function POST(req: NextRequest) {
     const { token } = await res.data;
 
     const response = NextResponse.json({ message: "Login successful" });
-    response.cookies.set("auth_token", token, {
-      httpOnly: true,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-    });
+
+    // send request to store-token route
+    const tokenRes = await axios.post(
+      "/server/api/auth/store-token/",
+      JSON.stringify({ token })
+    );
+
+    if (tokenRes.status >= 400) {
+      return NextResponse.json(
+        { error: "Failed to store token" },
+        { status: 500 }
+      );
+    }
 
     return response;
   } catch (error: unknown) {
