@@ -27,18 +27,15 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json({ message: "Login successful" });
 
-    // send request to store-token route
-    const tokenRes = await axios.post(
-      "/server/api/auth/store-token/",
-      JSON.stringify({ token })
-    );
-
-    if (tokenRes.status >= 400) {
-      return NextResponse.json(
-        { error: "Failed to store token" },
-        { status: 500 }
-      );
-    }
+    response.cookies.set("auth_token", token, {
+      httpOnly: true,
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      expires: 1000 * 60 * 60 * 24 * 30, // 30 days
+      domain: process.env.NEXT_PUBLIC_DOMAIN || "tangapano.co.zw",
+    })
 
     return response;
   } catch (error: unknown) {

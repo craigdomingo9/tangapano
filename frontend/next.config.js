@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   output: 'standalone',
+  env: {
+    // This ensures environment variables are available at build time
+    NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
+  },
   images: {
     remotePatterns: [
       {

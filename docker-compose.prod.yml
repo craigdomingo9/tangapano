@@ -34,7 +34,6 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - NEXT_PUBLIC_CLIENT_API_URL=${NEXT_PUBLIC_CLIENT_API_URL}
       - NEXT_PUBLIC_DOMAIN=${DOMAIN}
       - NODE_ENV=production
     depends_on:
@@ -219,6 +218,7 @@ volumes:
   grafana_data:
   static_volume:
   media_volume:
+  redis_data:
 
 networks:
   app_net:
