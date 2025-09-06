@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({ message: "Login successful" });
 
     // Set cookie with proper domain
-    const host = request.headers.get('host') || '';
+    const host = req.headers.get('host') || '';
     const domain = getDomainFromHost(host);
 
     response.cookies.set("auth_token", token, {
