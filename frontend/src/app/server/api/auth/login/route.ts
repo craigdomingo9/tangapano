@@ -30,7 +30,8 @@ export async function POST(req: NextRequest) {
     response.cookies.set("auth_token", token, {
       httpOnly: true,
       path: "/",
-      secure: process.env.NODE_ENV === "production",
+      // TODO: fix secure attribute
+      secure: false, //process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 60 * 60 * 24 * 30, // 30 days
       expires: 1000 * 60 * 60 * 24 * 30, // 30 days
