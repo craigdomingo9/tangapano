@@ -3,6 +3,18 @@ import { AxiosError } from "axios";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
+
+// Helper function to extract domain from host
+function getDomainFromHost(host: string): string | undefined {
+  const domain = host.split(':')[0];
+  
+  if (domain === 'localhost' || domain.startsWith('127.0.0.')) {
+    return undefined;
+  }
+  
+  return domain;
+}
+
 export async function POST(req: NextRequest) {
   try {
     console.log("[API] Login route hit");
@@ -27,15 +39,18 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json({ message: "Login successful" });
 
+    // Set cookie with proper domain
+    const host = request.headers.get('host') || '';
+    const domain = getDomainFromHost(host);
+
     response.cookies.set("auth_token", token, {
       httpOnly: true,
       path: "/",
       // TODO: fix secure attribute
       secure: false, //process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 30, // 30 days
-      expires: 1000 * 60 * 60 * 24 * 30, // 30 days
-      domain: process.env.NEXT_PUBLIC_DOMAIN || "tangapano.co.zw",
+      domain: domain // || process.env.NEXT_PUBLIC_DOMAIN,
     })
 
     return response;
