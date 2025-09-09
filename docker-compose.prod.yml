@@ -219,6 +219,7 @@ volumes:
   grafana_data:
   static_volume:
   media_volume:
+  redis_data:
 
 networks:
   app_net:
