@@ -38,6 +38,8 @@ class ListingFilter(filters.FilterSet):
     
     def filter_amenities(self, queryset, name, value):
         amenity_names = {a.strip() for a in value.split(',') if a.strip()}
+        
+        
         if not amenity_names:
             return queryset
         
@@ -84,7 +86,7 @@ class ListingFilter(filters.FilterSet):
             # Use subquery instead of JOINs for existence check
             matching_rooms_subquery = Room.objects.filter(
                 listing_id=OuterRef('id'),
-            ).filter(room_filter).values('id')[:1]
+            ).filter(room_filter)
 
             queryset = queryset.annotate(
                 has_matching_rooms=Exists(matching_rooms_subquery)
@@ -93,10 +95,10 @@ class ListingFilter(filters.FilterSet):
             # Use prefetch only if needed for serialization
             queryset = queryset.prefetch_related(
                 Prefetch('rooms', 
-                    queryset=Room.objects.filter(room_filter).order_by('rent_per_month'),
-                    to_attr='filtered_rooms'
+                    queryset=Room.objects.filter(room_filter).order_by('rent_per_month')
                 )
             )
 
         return super().filter_queryset(queryset)
 
+    
