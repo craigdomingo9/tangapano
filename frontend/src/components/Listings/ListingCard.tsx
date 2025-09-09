@@ -14,6 +14,7 @@ import {
   useContactAgentDialogState,
   useSelectedListingByStudent,
 } from "@/lib/hooks/store";
+import ListingAmenities from "./ListingAmenities";
 
 type Props = {
   listing: Listing;
@@ -81,14 +82,7 @@ function ListingCard({ listing }: Props) {
             {listing.distance_from_campus} mins from campus
           </p>
           <div className="flex flex-wrap gap-1 mb-3">
-            {listing.amenities.map((amenity) => (
-              <span
-                key={amenity.id}
-                className="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-0.5 rounded-full"
-              >
-                {amenity.display_name}
-              </span>
-            ))}
+            <ListingAmenities amenities={listing.amenities} />
           </div>
         </div>
       </CardContent>

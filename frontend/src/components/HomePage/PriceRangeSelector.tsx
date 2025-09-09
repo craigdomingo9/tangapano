@@ -33,7 +33,7 @@ export default function PriceRangeSelector({ form }: Props) {
   return (
     <div className="space-y-4 shadow-2xl p-3 rounded-md">
       <div>
-        <FormLabel className="font-semibold">Price Range</FormLabel>
+        <FormLabel className="font-semibold">Select Price Range</FormLabel>
       </div>
 
       <div className="flex w-full">
