@@ -18,13 +18,14 @@ import StudentsPerRoomField from "./StudentsPerRoomField";
 import { useState } from "react";
 import { MoonLoader } from "react-spinners";
 import AmenitiesBadgeSelector from "./AmenitiesBadgeSelector";
+import { Skeleton } from "../ui/skeleton";
 
 function SearchForm() {
-  const { data: amenities } = useQuery({
+  const { data: amenities, status: amenitiesQueryStatus } = useQuery({
     queryKey: ["amenities"],
     queryFn: () => fetchAmenities({ params: { has_listings: true } }),
   });
-  const { data: campuses } = useQuery({
+  const { data: campuses, status: campusesQueryStatus } = useQuery({
     queryKey: ["campuses"],
     queryFn: () => fetchCampuses({ params: { has_listings: true } }),
   });
@@ -68,12 +69,26 @@ function SearchForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div>
             <div className="flex flex-col gap-6">
-              <CampusSelector form={form} campuses={campuses} onSearchPage />
-              <NeighborhoodSelector
-                form={form}
-                campuses={campuses}
-                source="searchPage"
-              />
+              {campusesQueryStatus === "success" && (
+                <>
+                  <CampusSelector
+                    form={form}
+                    campuses={campuses}
+                    onSearchPage
+                  />
+                  <NeighborhoodSelector
+                    form={form}
+                    campuses={campuses}
+                    source="searchPage"
+                  />
+                </>
+              )}
+              {campusesQueryStatus !== "success" && (
+                <div>
+                  <Skeleton className="my-1 h-12 w-full mb-10" />
+                  <Skeleton className="my-1 h-12 w-full" />
+                </div>
+              )}
               <PriceRangeSelector form={form} />
 
               <div className="flex justify-between my-3 mb-0">
@@ -82,7 +97,11 @@ function SearchForm() {
               </div>
             </div>
 
-            <AmenitiesBadgeSelector amenities={amenities} form={form} />
+            <AmenitiesBadgeSelector
+              amenitiesQueryStatus={amenitiesQueryStatus}
+              amenities={amenities}
+              form={form}
+            />
           </div>
 
           <div className="grid mb-6">
