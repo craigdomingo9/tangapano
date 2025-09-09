@@ -16,7 +16,7 @@ import {
   useSelectedListing,
   useSelectedRoom,
 } from "@/lib/hooks/store";
-import { Mars, MinusIcon, PlusIcon, Venus } from "lucide-react";
+import { Mars, MinusIcon, PlusIcon, Shuffle, Venus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 };
 
 const gendersList = [
-  { id: "any", name: "Any" },
+  { id: "mixed", name: "Mixed", icon: Shuffle },
   { id: "male", name: "Male", icon: Mars },
   { id: "female", name: "Female", icon: Venus },
 ];
