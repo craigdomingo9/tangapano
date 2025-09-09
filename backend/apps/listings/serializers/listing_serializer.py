@@ -17,6 +17,7 @@ class ListingSerializer(serializers.ModelSerializer):
             'id', 'landlord', 'title', 'description', 'images',
             'amenities',
             'campus', 'neighborhood',
+            'apply_agent_fee', 'is_locked',
             'distance_from_campus', 'is_active', 'rooms',
             'created_at', 'updated_at'
         ]
@@ -41,6 +42,7 @@ class ListingCreateSerializer(serializers.ModelSerializer):
             'id', 'landlord', 'title', 'description', 'images',
             'amenity_ids',
             'campus', 'neighborhood',
+            'apply_agent_fee', 'is_locked',
             'distance_from_campus', 'is_active',
             'created_at', 'updated_at'
         ]

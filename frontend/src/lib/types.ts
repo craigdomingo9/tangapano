@@ -78,6 +78,8 @@ type Listing = {
   neighborhood: Neighborhood;
   distance_from_campus: string;
   rooms: Room[];
+  apply_agent_fee: boolean;
+  is_locked: boolean;
   is_active: boolean;
   is_available: boolean;
   created_at: string;

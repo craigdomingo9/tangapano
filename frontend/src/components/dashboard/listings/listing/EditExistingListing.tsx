@@ -86,9 +86,9 @@ function EditExistingListing() {
             />
             <CheckBoxField
               form={form}
-              fieldName="is_active"
-              label="Is Available"
-              defaultChecked={selectedListing.is_active}
+              fieldName="apply_agent_fee"
+              label="Apply Agent Fee"
+              defaultChecked={selectedListing.apply_agent_fee}
               className="w-64"
             />
           </div>

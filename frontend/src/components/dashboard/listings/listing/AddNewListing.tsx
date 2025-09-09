@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useListingDialogState } from "@/lib/hooks/store";
+import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 
 function AddNewListing() {
   const form = useForm({ resolver: zodResolver(addNewListingFormSchema) });
@@ -77,6 +78,13 @@ function AddNewListing() {
                 placeholder="eg. 15"
                 defaultValue={""}
                 inputClassName="w-64"
+              />
+              <CheckBoxField
+                form={form}
+                fieldName="apply_agent_fee"
+                label="Apply Agent Fee"
+                defaultChecked
+                className="w-64"
               />
             </div>
             <div className="flex justify-end gap-3 mt-5">

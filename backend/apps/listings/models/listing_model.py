@@ -27,6 +27,10 @@ class Listing(models.Model):
         related_name="listings", 
         blank=True
     )
+    # Whether or not agent fee should be applied
+    apply_agent_fee = models.BooleanField(default=True)
+    # Listing edit lock
+    is_locked = models.BooleanField(default=False)
     distance_from_campus = models.FloatField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -74,6 +74,7 @@ class Command(BaseCommand):
                     neighborhood=neighborhood,
                     landlord=landlord,
                     distance_from_campus=random.choice([10, 15, 25, 30, 45, 60]),
+                    apply_agent_fee=fake.boolean(chance_of_getting_true=60)
                 )
 
                 # Assign random image

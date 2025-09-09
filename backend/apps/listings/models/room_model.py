@@ -23,6 +23,7 @@ class Room(models.Model):
 
     class Meta:
         verbose_name_plural = "Rooms"
+        ordering = ["-created_at"]
         indexes = [
             # Primary composite index for most queries
             models.Index(

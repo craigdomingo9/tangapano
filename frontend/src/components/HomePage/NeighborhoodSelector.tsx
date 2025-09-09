@@ -34,8 +34,8 @@ function NeighborhoodSelector({
     const campus = campuses?.find(
       (c) => String(c.id) === String(selectedCampusId)
     );
-    // TODO : filter neighborhoods based on has_listings
-    const filtered = campus?.neighborhoods?.filter((n) => n) ?? [];
+    //Filter neighborhoods based on has_listings
+    const filtered = campus?.neighborhoods?.filter((n) => n.has_listings) ?? [];
 
     setNeighborhoods(filtered);
 

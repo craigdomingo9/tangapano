@@ -57,7 +57,11 @@ function ListingCard({ listing }: Props) {
           </p>
           <p className="text-gray-700 flex items-center font-semibold mb-1">
             <DollarSign size={16} className="mr-2 text-green-600" />{" "}
-            {roomsPriceRange} | ${listing.campus.agent.agent_fee} agent fee
+            {roomsPriceRange} |
+            {listing.apply_agent_fee
+              ? " $" + listing.campus.agent.agent_fee
+              : " No"}{" "}
+            agent fee
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Users size={16} className="mr-2 text-purple-500" />{" "}
