@@ -27,7 +27,7 @@ function Header() {
           {isAuthenticated && (
             <div className="flex items-center gap-4">
               <Link
-                href={"/dashboard/listings"}
+                href={"/dashboard/rooms"}
                 target="_blank"
                 className="hover:scale-110 transition"
                 prefetch

@@ -66,7 +66,7 @@ function NeighborhoodSelector({
     <SelectField
       form={form}
       fieldName="neighborhood"
-      label="Select neighborhood"
+      label="Neighborhood"
       labelClassName={labelClassName}
       selectionList={neighborhoodsList}
       defaultValue={defaultValue}

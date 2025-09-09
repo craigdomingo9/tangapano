@@ -53,7 +53,7 @@ function ListingCard({ listing }: Props) {
             {listing.title}
           </h2>
           <p className="text-gray-600 flex items-center mb-1">
-            <MapPin size={16} className="mr-2 text-indigo-500" />{" "}
+            <MapPin size={16} className="mr-2 text-indigo-500" /> Located in{" "}
             {listing.neighborhood.name}
           </p>
           <p className="text-gray-700 flex items-center font-semibold mb-1">
@@ -61,8 +61,8 @@ function ListingCard({ listing }: Props) {
             {roomsPriceRange} |
             {listing.apply_agent_fee
               ? " $" + listing.campus.agent.agent_fee
-              : " No"}{" "}
-            agent fee
+              : " Zero"}{" "}
+            Agent Fees
           </p>
           <p className="text-gray-700 flex items-center mb-1">
             <Users size={16} className="mr-2 text-purple-500" />{" "}
@@ -75,7 +75,7 @@ function ListingCard({ listing }: Props) {
           <p className="text-gray-700 flex items-center mb-1">
             <Bed size={16} className="mr-2 text-yellow-500" />{" "}
             {listing.rooms.length} room{listing.rooms.length > 1 ? "s" : ""}{" "}
-            available
+            currently available
           </p>
           <p className="text-gray-700 flex items-center mb-3">
             <Ruler size={16} className="mr-2 text-orange-500" />{" "}

@@ -51,7 +51,7 @@ function CampusSelector({
     <SelectField
       form={form}
       fieldName="campus"
-      label="Select campus"
+      label="Campus"
       labelClassName={labelClassName}
       selectionList={campusSelectionList}
       defaultValue={selectedValue}

@@ -14,10 +14,6 @@ function ContactAgentDialogContent() {
   const agentPhoneNumber = selectedListing.campus.agent.phone_number;
   const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id} Rent:${selectedRoom.rent_per_month}\nCan you please provide more details?`;
 
-  // const whatsappUrl = `https://wa.me/${agentPhoneNumber}?text=${encodeURIComponent(
-  //   message
-  // )}`;
-
   const mutation = useMutation({
     mutationFn: (data: { contacted_agent: string; room: string }) =>
       axiosInstance.post("/interests/interests/", data),
@@ -54,14 +50,14 @@ function ContactAgentDialogContent() {
   return (
     <div className="bg-white rounded-xl shadow-2xl p-4 w-full max-w-lg relative">
       <p className="text-gray-800 font-semibold text-center text-sm">
-        Please select the room you're interested in.
+        Select a room to contact the agent.
       </p>
       <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4">
         {selectedListing.rooms?.map((room, index) => {
           const spotsLeft = room.max_occupants - room.current_occupants;
-          const spotsLeftText = `${spotsLeft} spot${
+          const spotsLeftText = `${spotsLeft}/${room.max_occupants} spot${
             spotsLeft > 1 ? "s" : ""
-          } available`;
+          } open`;
 
           return (
             <div

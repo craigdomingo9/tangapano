@@ -48,7 +48,7 @@ function AmenitiesBadgeSelector({
 
   return (
     <div className="flex flex-col max-w-xs my-5 gap-y-4">
-      <Label>Select Perks</Label>
+      <Label>Perks</Label>
       <hr />
 
       {amenitiesQueryStatus !== "success" && (

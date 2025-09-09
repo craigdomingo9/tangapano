@@ -12,7 +12,7 @@ function ContactAgentDialog() {
   return (
     <DialogContainer
       state={dialog}
-      title={"Contact Agent"}
+      title={"Get in Touch"}
       onChange={() => setDialog(!dialog)}
     >
       <ContactAgentDialogContent />
