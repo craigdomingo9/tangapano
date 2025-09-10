@@ -41,7 +41,7 @@ function StudentsPerRoomField({
         >
           <Minus />
         </Button>
-        <div className="h-12 bg-white text-gray-800 w-12 rounded-none flex justify-center items-center select-none">
+        <div className="h-12 bg-white font-semibold text-gray-600 w-12 rounded-none flex justify-center items-center select-none">
           {roomCapacity}
         </div>
         <Button

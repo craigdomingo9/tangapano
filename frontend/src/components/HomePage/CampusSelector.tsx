@@ -57,7 +57,7 @@ function CampusSelector({
       defaultValue={selectedValue}
       placeholder={resolvedPlaceholder}
       disabled={campuses?.length === 0}
-      selectClassName={`${selectClassName} [&>*]:text-black`}
+      selectClassName={`${selectClassName} [&>*]:text-black [&>*]:font-semibold [&>*]:text-gray-700`}
     />
   );
 }

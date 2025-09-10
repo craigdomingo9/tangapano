@@ -20,7 +20,7 @@ function GenderSelector({ form, fieldName = "gender" }: Props) {
       fieldName={fieldName}
       label="Room Gender"
       selectionList={defaultList}
-      selectClassName="w-34 [&>*]:text-black"
+      selectClassName="w-34 [&>*]:text-black [&>*]:font-semibold [&>*]:text-gray-700"
     />
   );
 }

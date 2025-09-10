@@ -71,8 +71,7 @@ function NeighborhoodSelector({
       selectionList={neighborhoodsList}
       defaultValue={defaultValue}
       placeholder={resolvedPlaceholder}
-      // disabled={neighborhoods.length === 0}
-      selectClassName={`${selectClassName} [&>*]:text-black`}
+      selectClassName={`${selectClassName} [&>*]:text-black [&>*]:font-semibold [&>*]:text-gray-700`}
     />
   );
 }

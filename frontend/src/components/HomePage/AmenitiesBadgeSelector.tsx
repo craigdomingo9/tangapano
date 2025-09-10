@@ -63,22 +63,26 @@ function AmenitiesBadgeSelector({
       )}
 
       {amenitiesQueryStatus === "success" && (
-        <div className="flex flex-wrap px-2 gap-2 justify-self-center">
-          {amenities?.map((amenity) => (
-            <div
-              className={`px-3 py-1 rounded-full text-sm cursor-pointer hover:scale-[1.03] font-medium transition-all duration-200 ${
-                selectedAmenities.includes(amenity.name)
-                  ? "bg-[var(--lapis-lazuli)] text-white shadow-md"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-              key={amenity.id}
-              onClick={() => {
-                handleBadgeClick(amenity);
-              }}
-            >
-              {amenity.display_name}
-            </div>
-          ))}
+        <div className="relative">
+          <div className="flex flex-wrap px-2 gap-2 justify-self-center max-h-60 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {amenities?.map((amenity) => (
+              <div
+                className={`px-3 py-1 rounded-full text-sm cursor-pointer hover:scale-[1.03] font-medium transition-all duration-200 ${
+                  selectedAmenities.includes(amenity.name)
+                    ? "bg-[var(--lapis-lazuli)] text-white shadow-md"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+                key={amenity.id}
+                onClick={() => {
+                  handleBadgeClick(amenity);
+                }}
+              >
+                {amenity.display_name}
+              </div>
+            ))}
+          </div>
+          {/* Gradient transition at the bottom */}
+          <div className="absolute -bottom-2 left-0 right-0 h-14 bg-gradient-to-t from-[var(--ou-crimson)] to-transparent pointer-events-none mt-[-24px]"></div>
         </div>
       )}
       <hr />
