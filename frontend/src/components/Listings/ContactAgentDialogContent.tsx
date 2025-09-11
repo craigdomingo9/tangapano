@@ -55,9 +55,7 @@ function ContactAgentDialogContent() {
       <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4">
         {selectedListing.rooms?.map((room, index) => {
           const spotsLeft = room.max_occupants - room.current_occupants;
-          const spotsLeftText = `${spotsLeft}/${room.max_occupants} spot${
-            spotsLeft > 1 ? "s" : ""
-          } open`;
+          const spotsLeftText = `${spotsLeft}/${room.max_occupants} spots open`;
 
           return (
             <div
