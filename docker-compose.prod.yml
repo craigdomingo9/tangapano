@@ -9,7 +9,6 @@ services:
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media
-      - ./backups/images:/app/media
     environment:
       - DJANGO_DEBUG=False
       - DJANGO_ENV=production
@@ -114,45 +113,53 @@ services:
       - app_net
 
   backup:
+    build: ./backup
     container_name: postgres_backup
-    image: postgres:17
     depends_on:
       - db
     env_file:
       - .env
-    environment:
-      - PGPASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - postgres_backups:/backups
-      - ./backups/db:/backups
-    command: |
-      sh -c "
-      # Wait for the database to be ready.
-      until pg_isready -h db -U postgres; do
-        echo 'Waiting for database to be ready...'
-        sleep 2
-      done
-
-      echo 'Database is ready. Starting backup service.'
-
-      # Change directory to the backups volume.
-      cd /backups
-
-      # Define a local variable to ensure the sleep interval is available.
-      sleep_interval=\"$${DB_BACKUP_SLEEP_INTERVAL}\" &&
-
-      # Start the backup loop.
-      while true; do
-        TIMESTAMP=$$(date +\\%F_\\%H-%M-%S)
-        backup_name=backup_$$TIMESTAMP.sql
-        pg_dump -h db -U postgres -d $${POSTGRES_DB} > $$backup_name
-        ls -1t *.sql | tail -n +$${DB_BACKUP_KEEP_ONLY_LAST} | xargs -r rm --
-        echo 'Backup created. Name: ' $$backup_name
-        sleep $$sleep_interval;
-      done"
+      - postgres_data:/backups/db
+      - media_volume:/app/media
     restart: unless-stopped
     networks:
       - app_net
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  db-restore:
+    build: ./restore
+    container_name: db_restore
+    env_file:
+      - .env
+    environment:
+      - PGPASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - app_net
+    command: ["/app/docker-db-restore.sh"]
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    profiles: ["restore"]
+
+  images-restore:
+    build: ./restore
+    container_name: images_restore
+    env_file:
+      - .env
+    volumes:
+      - media_volume:/app/media
+    networks:
+      - app_net
+    command: ["/app/docker-images-restore.sh"]
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    profiles: ["restore"]
 
   nginx:
     container_name: nginx
@@ -161,7 +168,6 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/static
       - media_volume:/app/media
-      - ./backups/db:/app/backups:ro
     env_file:
       - .env
     ports:
@@ -213,7 +219,6 @@ services:
 
 volumes:
   postgres_data:
-  postgres_backups:
   prometheus_data:
   grafana_data:
   static_volume:
