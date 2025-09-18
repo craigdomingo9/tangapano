@@ -114,7 +114,7 @@ services:
 
   backup:
     build: ./backup
-    container_name: postgres_backup
+    container_name: backup
     depends_on:
       - db
     env_file:

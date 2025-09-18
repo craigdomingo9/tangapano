@@ -46,7 +46,7 @@ services:
       - app_net
 
   db:
-    image: postgres:15
+    image: postgres:17
     container_name: db_dev
     restart: unless-stopped
     volumes:

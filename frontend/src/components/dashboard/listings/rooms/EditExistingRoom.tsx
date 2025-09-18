@@ -18,6 +18,9 @@ import {
 } from "@/lib/hooks/store";
 import { Mars, MinusIcon, PlusIcon, Shuffle, Venus } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import IntegerInputWithButton from "@/components/universal/Form/Elements/IntegerInputWithButton";
+import RadioGroupSelector from "@/components/universal/Form/Elements/RadioGroupSelector";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
   dismissDialogOnAction?: boolean;
@@ -59,28 +62,10 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
     },
   });
 
-  const currentOccupants = useWatch({
-    control: form.control,
-    name: "current_occupants",
-  });
   const maxOccupants = useWatch({
     control: form.control,
     name: "max_occupants",
   });
-
-  const handleIncrement = () => {
-    const current = Number(currentOccupants);
-    if (current < Number(maxOccupants)) {
-      form.setValue("current_occupants", (current + 1).toString());
-    }
-  };
-
-  const handleDecrement = () => {
-    const current = Number(currentOccupants);
-    if (current > 0) {
-      form.setValue("current_occupants", (current - 1).toString());
-    }
-  };
 
   async function onSubmit(data: z.infer<typeof editExitingRoomFormSchema>) {
     await mutation.mutateAsync(data);
@@ -96,63 +81,45 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
             )}
           >
             <div className="grid space-y-5 space-x-2">
-              <InputField
+              <IntegerInputWithButton
                 form={form}
                 fieldName="rent_per_month"
                 label="Monthly Rent ($)"
-                defaultValue={selectedRoom.rent_per_month}
+                defaultValue={Number(selectedRoom.rent_per_month)}
+                min={0}
+                max={250}
+                step={5}
               />
-              <SelectField
+
+              <RadioGroupSelector
                 form={form}
                 fieldName="gender_preference"
+                groupItems={gendersList}
                 label="Gender"
                 defaultValue={selectedRoom.gender_preference}
-                selectionList={gendersList}
-                placeholder={
-                  gendersList
-                    .filter(
-                      (option) => option.id == selectedRoom.gender_preference
-                    )
-                    .at(0)?.name
-                }
-                selectClassName="w-full rounded-lg min-h-10 [&>*]:text-black"
               />
-              <InputField
+
+              <IntegerInputWithButton
                 form={form}
                 fieldName="max_occupants"
                 label="Max Students"
-                defaultValue={selectedRoom.max_occupants}
+                defaultValue={Number(selectedRoom.max_occupants)}
+                className="[&>button]:bg-amber-300"
+                min={1}
+                max={5}
+                step={1}
               />
-              <div>
-                <label
-                  htmlFor="current_occupants"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Current Occupants
-                </label>
-                <div className="flex items-center justify-between space-x-4">
-                  <Button
-                    type="button"
-                    className="flex-shrink-0 w-12 h-12 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center transition-colors hover:bg-gray-300"
-                    onClick={handleDecrement}
-                  >
-                    <MinusIcon className="w-6 h-6" />
-                  </Button>
-                  <Input
-                    id="current_occupants"
-                    {...form.register("current_occupants")}
-                    className="text-center"
-                    defaultValue={selectedRoom.current_occupants}
-                  />
-                  <Button
-                    type="button"
-                    className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors hover:bg-blue-700"
-                    onClick={handleIncrement}
-                  >
-                    <PlusIcon className="w-6 h-6" />
-                  </Button>
-                </div>
-              </div>
+              <Separator className="my-4" />
+              <IntegerInputWithButton
+                form={form}
+                fieldName="current_occupants"
+                label="Current Occupants"
+                defaultValue={Number(selectedRoom.current_occupants)}
+                className="[&>button]:bg-amber-300"
+                min={0}
+                max={parseInt(maxOccupants) || 5}
+                step={1}
+              />
             </div>
             <div className="flex justify-end gap-3 mt-5">
               <Button

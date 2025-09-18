@@ -109,7 +109,7 @@ class Command(BaseCommand):
                         rent_per_month=rent,
                         max_occupants=max_occupants,
                         current_occupants=current_occupants,
-                        gender_preference=random.choice(["male", "female", "any"]),
+                        gender_preference=random.choice(["male", "female", "mixed"]),
                     )
 
         self.stdout.write(self.style.SUCCESS("✅ Database seeded successfully!"))
