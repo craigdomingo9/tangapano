@@ -3,8 +3,8 @@ set -e
 
 # Run migrations first. This should always happen to keep the database schema in sync.
 echo "Running migrations..."
-python manage.py makemigrations --noinput
-python manage.py migrate --noinput
+python manage.py makemigrations
+python manage.py migrate
 
 # Define a marker file to check if the seeding has been completed.
 SEEDING_DONE_FILE_DEVELOPMENT="/app/.seeding_done_development"
@@ -17,8 +17,10 @@ if [ "$DJANGO_ENV" = "development" ]; then
     echo "First-time setup: Seeding data..."
 
     echo "Seeding development data..."
-    python manage.py seed_campuses
-    python manage.py seed_data --landlords=150
+    # python manage.py seed_campuses
+    python manage.py seed_production_data
+
+    python manage.py seed_listings --landlords=20 --listings=100
     # Create the marker file to prevent this block from running again.
     touch "$SEEDING_DONE_FILE_DEVELOPMENT"
   fi

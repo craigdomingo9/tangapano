@@ -16,6 +16,7 @@ import {
   useSelectedListing,
 } from "@/lib/hooks/store";
 import { Mars, Shuffle, Venus } from "lucide-react";
+import RoomFormMask from "./RoomFormMask";
 
 type NewRoomData = z.infer<typeof addNewRoomFormSchema>;
 
@@ -76,56 +77,12 @@ function AddNewRoom({ dismissDialogOnAction }: Props) {
   return (
     <div>
       <div>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit, (errors) =>
-              console.log(errors)
-            )}
-          >
-            <div className="grid space-y-5 space-x-2">
-              <InputField
-                form={form}
-                fieldName="rent_per_month"
-                label="Monthly Rent ($)"
-                defaultValue=""
-              />
-              <InputField
-                form={form}
-                fieldName="max_occupants"
-                label="Max Students"
-                defaultValue={1}
-              />
-
-              <SelectField
-                form={form}
-                fieldName="gender_preference"
-                label="Gender"
-                defaultValue={gendersList.at(0)?.id}
-                selectionList={gendersList}
-                placeholder={gendersList.at(0)?.name}
-                selectClassName="w-full rounded-lg min-h-10"
-              />
-            </div>
-            <div className="flex justify-end gap-3 mt-5">
-              <Button
-                onClick={() => setOperation("list")}
-                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg text-gray-800 font-medium"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="px-4 py-2 rounded-lg text-white font-medium"
-              >
-                {mutation.isPending ? (
-                  <MoonLoader color="white" size={15} />
-                ) : (
-                  "Save"
-                )}
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <RoomFormMask
+          form={form}
+          editMode={false}
+          onSubmitFn={onSubmit}
+          mutationIsPending={mutation.isPending}
+        />
       </div>
     </div>
   );

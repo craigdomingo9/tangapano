@@ -21,16 +21,11 @@ import { Input } from "@/components/ui/input";
 import IntegerInputWithButton from "@/components/universal/Form/Elements/IntegerInputWithButton";
 import RadioGroupSelector from "@/components/universal/Form/Elements/RadioGroupSelector";
 import { Separator } from "@/components/ui/separator";
+import RoomFormMask from "./RoomFormMask";
 
 type Props = {
   dismissDialogOnAction?: boolean;
 };
-
-const gendersList = [
-  { id: "mixed", name: "Mixed", icon: Shuffle },
-  { id: "male", name: "Male", icon: Mars },
-  { id: "female", name: "Female", icon: Venus },
-];
 
 function EditExistingRoom({ dismissDialogOnAction }: Props) {
   const form = useForm({ resolver: zodResolver(editExitingRoomFormSchema) });
@@ -62,19 +57,15 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
     },
   });
 
-  const maxOccupants = useWatch({
-    control: form.control,
-    name: "max_occupants",
-  });
-
   async function onSubmit(data: z.infer<typeof editExitingRoomFormSchema>) {
+    // console.log(data);
     await mutation.mutateAsync(data);
   }
 
   return (
     <div>
       <div>
-        <Form {...form}>
+        {/* <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (errors) =>
               console.log(errors)
@@ -89,6 +80,7 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
                 min={0}
                 max={250}
                 step={5}
+                buttonColor="bg-emerald-500"
               />
 
               <RadioGroupSelector
@@ -102,7 +94,7 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
               <IntegerInputWithButton
                 form={form}
                 fieldName="max_occupants"
-                label="Max Students"
+                label="Students Allowed In Room"
                 defaultValue={Number(selectedRoom.max_occupants)}
                 className="[&>button]:bg-amber-300"
                 min={1}
@@ -113,7 +105,7 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
               <IntegerInputWithButton
                 form={form}
                 fieldName="current_occupants"
-                label="Current Occupants"
+                label="Students Currently In Room"
                 defaultValue={Number(selectedRoom.current_occupants)}
                 className="[&>button]:bg-amber-300"
                 min={0}
@@ -140,7 +132,13 @@ function EditExistingRoom({ dismissDialogOnAction }: Props) {
               </Button>
             </div>
           </form>
-        </Form>
+        </Form> */}
+        <RoomFormMask
+          form={form}
+          onSubmitFn={onSubmit}
+          editMode
+          mutationIsPending={mutation.isPending}
+        />
       </div>
     </div>
   );

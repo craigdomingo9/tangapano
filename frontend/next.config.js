@@ -18,7 +18,7 @@ module.exports = {
   webpack: (config) => {
     if (process.env.NODE_ENV === "development") {
       config.watchOptions = {
-        poll: 100,
+        poll: 250,
         aggregateTimeout: 0,
         ignored: ["**/node_modules"],
       };

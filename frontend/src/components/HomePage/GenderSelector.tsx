@@ -1,7 +1,5 @@
-import { UseFormReturn, useWatch } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import SelectField from "./SelectField";
-import { useEffect, useState } from "react";
-import { Mars, Shuffle, Venus } from "lucide-react";
 import { gendersList } from "@/lib/lists";
 
 type Props = {
@@ -10,7 +8,10 @@ type Props = {
 };
 
 function GenderSelector({ form, fieldName = "gender" }: Props) {
-  const defaultList = gendersList;
+  const defaultList = gendersList.map((gender) => ({
+    id: gender.id,
+    name: gender.name + " " + gender.emoji,
+  }));
 
   return (
     <SelectField

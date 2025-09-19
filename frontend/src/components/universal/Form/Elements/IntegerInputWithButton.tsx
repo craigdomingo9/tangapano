@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { Minus, Plus } from "lucide-react";
 import { useEffect } from "react";
 import { UseFormReturn, useWatch } from "react-hook-form";
@@ -13,6 +14,7 @@ type Props = {
   max?: number;
   step?: number;
   className?: string;
+  buttonColor?: string;
 };
 
 function IntegerInputWithButton({
@@ -24,6 +26,7 @@ function IntegerInputWithButton({
   max = 100,
   step = 1,
   className = "",
+  buttonColor = "bg-[var(--lapis-lazuli)]",
   ...inputProps
 }: Props) {
   const formValue = useWatch({
@@ -57,13 +60,15 @@ function IntegerInputWithButton({
       <Label htmlFor={fieldName}>{label}</Label>
       <div className="flex justify-between items-center space-2 mt-2">
         <Button
-          className="h-12 bg-[var(--lapis-lazuli)] text-white rounded-r-none cursor-pointer"
+          className={cn(
+            "h-12 text-white rounded-r-none cursor-pointer",
+            buttonColor
+          )}
           type="button"
           onClick={() => handleValueChange("decrement")}
           disabled={
             formValue !== undefined ? formValue <= min : defaultValue <= min
           }
-          variant="outline"
         >
           <Minus />
         </Button>
@@ -74,11 +79,13 @@ function IntegerInputWithButton({
           {formValue !== undefined ? formValue : defaultValue}
         </div>
         <Button
-          className="h-12 bg-[var(--lapis-lazuli)] text-white rounded-l-none cursor-pointer"
+          className={cn(
+            "h-12 text-white rounded-l-none cursor-pointer",
+            buttonColor
+          )}
           type="button"
           onClick={() => handleValueChange("increment")}
           disabled={formValue >= max}
-          variant="outline"
         >
           <Plus />
         </Button>

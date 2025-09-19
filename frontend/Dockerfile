@@ -1,5 +1,5 @@
 # ---------- Base ----------
-FROM node:20-bullseye AS base
+FROM node:20-bullseye-slim AS base
 WORKDIR /app
 # Install dependencies for building native modules
 RUN apt-get update && apt-get install -y libc6-dev && rm -rf /var/lib/apt/lists/*
