@@ -8,6 +8,7 @@ export const editExitingRoomFormSchema = z
     gender_preference: z.enum(["any", "mixed", "male", "female"]),
   })
   .refine((data) => data.current_occupants <= data.max_occupants, {
-    message: "Current Occupants cannot be greater than Max Students in room",
+    message:
+      "Current Occupants cannot be greater than Students Allowed In Room",
     path: ["current_occupants"],
   });
