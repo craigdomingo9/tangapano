@@ -15,9 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useListingDialogState } from "@/lib/hooks/store";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
+import { Input } from "@/components/ui/input";
 
 function AddNewListing() {
-  const form = useForm({ resolver: zodResolver(addNewListingFormSchema) });
+  const form = useForm({
+    resolver: zodResolver(addNewListingFormSchema),
+    defaultValues: { title: "" },
+  });
 
   const queryClient = useQueryClient();
   const { setEntities: setDialog } = useListingDialogState();
@@ -65,6 +69,7 @@ function AddNewListing() {
                 campuses={campuses}
                 labelClassName="text-black"
                 selectClassName="w-64"
+                defaultValue={""}
               />
               <NeighborhoodSelector
                 form={form}
