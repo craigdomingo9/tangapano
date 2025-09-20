@@ -33,7 +33,7 @@ function Page() {
     fetchToken();
   }, []);
 
-  const { data, error, status } = useQuery({
+  const { data, error, status, isPending, isFetching } = useQuery({
     queryKey: ["landlord-listings"],
     queryFn: () => {
       return axiosInstance.get("/listings/landlord-listings/", {
@@ -67,33 +67,35 @@ function Page() {
   return (
     <>
       <div className="flex justify-center">
-        <div className="px-2 md:px-14 max-w-4xl w-full [&>div]:w-full [&>div]:px-2 flex flex-col gap-y-6 sm:gap-y-10">
+        <div className="px-2 md:px-14 max-w-4xl w-full [&>div]:w-full [&>div]:px-2 flex flex-col sm:gap-y-2">
           <DashboardHeader
             HeaderText={{
               title: "Listings",
               description: "Manage your listings here",
             }}
             Action={
-              <HeaderButton
-                onClick={() => {
-                  setDialog(true);
-                  setListingDialogOperation("add");
-                }}
-              >
-                <PlusCircle size={20} /> Add New Listing
-              </HeaderButton>
+              <div className="flex items-center gap-x-2">
+                <HeaderButton
+                  onClick={() => {
+                    setDialog(true);
+                    setListingDialogOperation("add");
+                  }}
+                >
+                  <PlusCircle size={20} /> Add New Listing
+                </HeaderButton>
+              </div>
             }
           />
-          {status === "pending" && (
+          {(status !== "success" || isPending || isFetching) && (
             <div className="flex flex-col justify-center items-center w-full">
               <Loader className="my-2" />
-              <div className="flex flex-col md:flex-row space-x-8">
+              <div className="flex flex-col md:flex-row md:space-x-8">
                 <ListingSkeleton />
                 <ListingSkeleton />
               </div>
             </div>
           )}
-          {data && status === "success" && (
+          {listings?.length > 0 && status === "success" && (
             <MainContentArea
               HeaderTitle={`Your Listings (${listings?.length})`}
             >

@@ -106,7 +106,7 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'listings': '100/day',
         'dashboard_listings': '500/day',
-        'rooms': '100/day',
+        'rooms': '500/day',
     }
 }
 

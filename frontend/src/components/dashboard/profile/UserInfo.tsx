@@ -1,4 +1,5 @@
 import { useAuth } from "@/app/context/AuthContext";
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUserDialogState } from "@/lib/hooks/store";
@@ -12,7 +13,7 @@ function UserInfo() {
   if (loading) {
     return (
       <div className="flex justify-center">
-        <MoonLoader size={20} color="var(--ou-crimson)" />
+        <Loader />
       </div>
     );
   }

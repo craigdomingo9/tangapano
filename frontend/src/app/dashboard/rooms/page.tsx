@@ -23,7 +23,7 @@ function page() {
   const { entities: activeListing } = useActiveListing();
   const { setEntities: setRoomsDialog } = useRoomsDialogState();
 
-  const { data, error, status } = useQuery({
+  const { data, error, status, isPending, isFetching } = useQuery({
     queryKey: ["landlord-listings"],
     queryFn: () => {
       return axios
@@ -55,7 +55,7 @@ function page() {
               </div>
             }
           />
-          {status === "pending" && (
+          {(status !== "success" || isPending || isFetching) && (
             <div className="flex flex-col justify-center items-center w-full">
               <Loader />
               <RoomsSkeleton />
