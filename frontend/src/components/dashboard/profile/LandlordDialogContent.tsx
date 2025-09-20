@@ -11,11 +11,20 @@ import { MoonLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLandlordDialogState } from "@/lib/hooks/store";
+import { useEffect } from "react";
 
 function LandlordDialogContent() {
-  const form = useForm({ resolver: zodResolver(editLandlordFormSchema) });
+  const form = useForm({
+    resolver: zodResolver(editLandlordFormSchema),
+    defaultValues: {
+      company_name: "",
+      phone_number: "",
+      address: "",
+    },
+  });
   const { user } = useAuth();
-  const { setEntities: setDialog } = useLandlordDialogState();
+  const { setEntities: setDialog, entities: dialogState } =
+    useLandlordDialogState();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -32,6 +41,14 @@ function LandlordDialogContent() {
   async function onSubmit(data: z.infer<typeof editLandlordFormSchema>) {
     await mutation.mutateAsync(data);
   }
+
+  useEffect(() => {
+    return () => {
+      form.unregister();
+      form.clearErrors();
+      form.reset();
+    };
+  }, [dialogState]);
 
   const landlordProfile = user?.landlord_profile;
 

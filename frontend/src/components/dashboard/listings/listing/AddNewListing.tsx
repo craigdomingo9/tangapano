@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useListingDialogState } from "@/lib/hooks/store";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
 import { Input } from "@/components/ui/input";
+import { useEffect } from "react";
 
 function AddNewListing() {
   const form = useForm({
@@ -24,7 +25,8 @@ function AddNewListing() {
   });
 
   const queryClient = useQueryClient();
-  const { setEntities: setDialog } = useListingDialogState();
+  const { setEntities: setDialog, entities: dialogState } =
+    useListingDialogState();
 
   const { data: campuses } = useQuery({
     queryKey: ["campuses"],
@@ -45,6 +47,14 @@ function AddNewListing() {
   async function onSubmit(data: z.infer<typeof addNewListingFormSchema>) {
     await mutation.mutateAsync(data);
   }
+
+  useEffect(() => {
+    return () => {
+      form.unregister();
+      form.clearErrors();
+      form.reset();
+    };
+  }, [dialogState]);
 
   return (
     <div>

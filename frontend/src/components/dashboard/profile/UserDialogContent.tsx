@@ -11,13 +11,21 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserDialogState } from "@/lib/hooks/store";
+import { useEffect } from "react";
 
 function UserDialogContent() {
   const form = useForm<z.infer<typeof editUserFormSchema>>({
     resolver: zodResolver(editUserFormSchema),
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      email: "",
+      username: "",
+    },
   });
   const { user } = useAuth();
-  const { setEntities: setDialog } = useUserDialogState();
+  const { setEntities: setDialog, entities: dialogState } =
+    useUserDialogState();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -34,6 +42,14 @@ function UserDialogContent() {
   async function onSubmit(data: z.infer<typeof editUserFormSchema>) {
     await mutation.mutateAsync(data);
   }
+
+  useEffect(() => {
+    return () => {
+      form.unregister();
+      form.clearErrors();
+      form.reset();
+    };
+  }, [dialogState]);
 
   return (
     <div className="bg-white rounded-xl shadow-2xl p-4 w-full max-w-lg relative">

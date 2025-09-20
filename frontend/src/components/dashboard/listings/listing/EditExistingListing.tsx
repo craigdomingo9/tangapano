@@ -14,13 +14,15 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useListingDialogState, useSelectedListing } from "@/lib/hooks/store";
+import { useEffect } from "react";
 
 function EditExistingListing() {
   const form = useForm({
     resolver: zodResolver(editExistingListingFormSchema),
   });
   const { entities: selectedListing } = useSelectedListing();
-  const { setEntities: setDialog } = useListingDialogState();
+  const { setEntities: setDialog, entities: dialogState } =
+    useListingDialogState();
 
   const { data: campuses } = useQuery({
     queryKey: ["campuses"],
@@ -42,6 +44,14 @@ function EditExistingListing() {
   async function onSubmit(data: z.infer<typeof editExistingListingFormSchema>) {
     await mutation.mutateAsync(data);
   }
+
+  useEffect(() => {
+    return () => {
+      form.unregister();
+      form.clearErrors();
+      form.reset();
+    };
+  }, [dialogState]);
 
   return (
     <div>
