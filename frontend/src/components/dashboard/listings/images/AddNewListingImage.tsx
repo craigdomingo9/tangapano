@@ -6,7 +6,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import z from "zod";
 import { MoonLoader } from "react-spinners";
-import InputField from "@/components/universal/Form/Elements/InputField";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +13,7 @@ import {
   useListingImageDialogMode,
   useSelectedListing,
 } from "@/lib/hooks/store";
+import SelectField from "@/components/HomePage/SelectField";
 
 function AddNewListingImage() {
   const { setEntities: setOperation } = useListingImageDialogMode();
@@ -61,13 +61,29 @@ function AddNewListingImage() {
               fieldName="image"
               label="Listing Image"
             />
-            <InputField
+            <SelectField
+              form={form}
+              fieldName="caption"
+              label="Image Caption (Optional)"
+              selectClassName="w-64"
+              selectionList={[
+                { id: "Bedroom", name: "Bedroom" },
+                { id: "Kitchen", name: "Kitchen" },
+                { id: "Bathroom", name: "Bathroom" },
+                { id: "Dining Area", name: "Dining Area" },
+                { id: "Living Room", name: "Living Room" },
+                { id: "Outdoor Area", name: "Outdoor Area" },
+                { id: "Front View", name: "Front View" },
+                { id: "Other", name: "Other" },
+              ]}
+            />
+            {/* <InputField
               form={form}
               fieldName="caption"
               label="Image Caption (Optional)"
               inputClassName="w-64"
               defaultValue={" "}
-            />
+            /> */}
           </div>
           <div className="flex justify-end gap-3 mt-5">
             <Button

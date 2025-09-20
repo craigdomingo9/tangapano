@@ -48,11 +48,11 @@ function ListingImageDialogContent() {
           No images added for this listing yet.
         </p>
       ) : (
-        <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4 grid sm:grid-cols-2">
+        <div className="space-y-4 scrollbar-hide max-h-80 overflow-y-auto items-center place-items-center pr-2 mt-4 grid sm:grid-cols-2">
           {images?.map((image) => (
             <div
               key={image.id}
-              className="relative group border border-gray-200 rounded-lg overflow-hidden shadow-sm sm:max-w-48"
+              className="relative w-64 group border border-gray-200 rounded-lg overflow-hidden shadow-sm sm:max-w-48"
             >
               <Avatar className="w-full h-32 rounded-none">
                 <AvatarImage src={image.image} />
