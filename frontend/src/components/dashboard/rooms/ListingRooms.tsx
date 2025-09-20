@@ -88,7 +88,7 @@ function ListingRooms() {
                 }}
                 className={`
                     bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden
-                    transition-all duration-300
+                    transition-all duration-300 cursor-pointer
                     hover:shadow-xl hover:scale-105
                     ${
                       room.is_full

@@ -21,11 +21,16 @@ function ListingImages({ listing }: Props) {
       <CarouselContent>
         {listing.images.map((image) => (
           <CarouselItem key={image.id}>
-            <Avatar className="w-full rounded-none h-56">
+            <Avatar className="w-full rounded-none h-56 relative">
               <AvatarImage className="rounded-t-xl" src={image.image} />
               <AvatarFallback className="rounded-none rounded-t-xl">
                 {listing.title}
               </AvatarFallback>
+              {image.caption && (
+                <div className="absolute z-50 bottom-2 right-2 bg-[var(--lapis-lazuli)] bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                  {image.caption}
+                </div>
+              )}
             </Avatar>
           </CarouselItem>
         ))}

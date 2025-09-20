@@ -20,7 +20,7 @@ if [ "$DJANGO_ENV" = "development" ]; then
     # python manage.py seed_campuses
     python manage.py seed_production_data
 
-    python manage.py seed_listings --landlords=20 --listings=100
+    python manage.py seed_listings --landlords=20 --listings=5
     # Create the marker file to prevent this block from running again.
     touch "$SEEDING_DONE_FILE_DEVELOPMENT"
   fi
