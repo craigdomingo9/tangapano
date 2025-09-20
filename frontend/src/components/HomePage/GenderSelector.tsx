@@ -7,7 +7,7 @@ type Props = {
   fieldName?: string;
 };
 
-function GenderSelector({ form, fieldName = "gender_preference" }: Props) {
+function GenderSelector({ form, fieldName = "gender" }: Props) {
   const defaultList = gendersList;
 
   return (

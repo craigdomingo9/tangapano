@@ -37,7 +37,7 @@ function SearchForm() {
       max_occupants: "2",
       campus: "",
       neighborhood: " ",
-      gender: "any",
+      gender: "mixed",
       amenities: [],
     },
   });
@@ -66,7 +66,7 @@ function SearchForm() {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
           <div>
             <div className="flex flex-col gap-6">
               {campusesQueryStatus === "success" && (
