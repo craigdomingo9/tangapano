@@ -50,7 +50,10 @@ function RoomFormMask({
           <RadioGroupSelector
             form={form}
             name="gender_preference"
-            items={gendersList}
+            items={gendersList.map((item) => ({
+              ...item,
+              name: item.name.split(" ")[0],
+            }))}
             label="Gender"
             defaultValue={
               editMode

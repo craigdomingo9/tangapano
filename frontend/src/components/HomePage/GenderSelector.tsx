@@ -7,11 +7,8 @@ type Props = {
   fieldName?: string;
 };
 
-function GenderSelector({ form, fieldName = "gender" }: Props) {
-  const defaultList = gendersList.map((gender) => ({
-    id: gender.id,
-    name: gender.name + " " + gender.emoji,
-  }));
+function GenderSelector({ form, fieldName = "gender_preference" }: Props) {
+  const defaultList = gendersList;
 
   return (
     <SelectField
