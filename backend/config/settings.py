@@ -102,9 +102,10 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.ScopedRateThrottle',
     ],
+    # TODO: Adjust throttle rates as necessary
     'DEFAULT_THROTTLE_RATES': {
         'listings': '100/day',
-        'dashboard_listings': '100/day',
+        'dashboard_listings': '500/day',
         'rooms': '100/day',
     }
 }

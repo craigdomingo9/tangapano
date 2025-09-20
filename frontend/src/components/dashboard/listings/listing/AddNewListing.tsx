@@ -6,6 +6,7 @@ import { Form } from "@/components/ui/form";
 import InputField from "@/components/universal/Form/Elements/InputField";
 import CampusSelector from "@/components/HomePage/CampusSelector";
 import NeighborhoodSelector from "@/components/HomePage/NeighborhoodSelector";
+import IntegerInputWithButton from "@/components/universal/Form/Elements/IntegerInputWithButton";
 import { Button } from "@/components/ui/button";
 import { MoonLoader } from "react-spinners";
 import axios from "axios";
@@ -71,13 +72,14 @@ function AddNewListing() {
                 labelClassName="text-black"
                 selectClassName="w-64"
               />
-              <InputField
+              <IntegerInputWithButton
                 form={form}
                 fieldName="distance_from_campus"
-                label="Distance From Campus (in minutes)"
-                placeholder="eg. 15"
-                defaultValue={""}
-                inputClassName="w-64"
+                label="Distance from campus"
+                defaultValue={15}
+                min={1}
+                max={120}
+                step={1}
               />
               <CheckBoxField
                 form={form}
