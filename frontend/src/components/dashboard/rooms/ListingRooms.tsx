@@ -38,7 +38,7 @@ function ListingRooms() {
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { setEntities: setSelectedRoom } = useSelectedRoom();
 
-  const { data, status, isPending, isFetching } = useQuery({
+  const { data, status, isPending } = useQuery({
     queryKey: ["rooms", activeListing?.id],
     queryFn: () =>
       axios.get(`/server/api/landlord-listings/${activeListing?.id}/rooms`),
@@ -49,7 +49,7 @@ function ListingRooms() {
     return null;
   }
 
-  if (status !== "success" || isPending || isFetching) {
+  if (status !== "success" || isPending) {
     return (
       <div className="flex flex-col justify-start w-full">
         <div>
