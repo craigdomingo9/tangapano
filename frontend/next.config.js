@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   output: "standalone",
-  env: {
-    NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
-  },
   images: {
     remotePatterns: [
       {
