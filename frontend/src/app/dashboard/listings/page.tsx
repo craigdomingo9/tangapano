@@ -95,6 +95,16 @@ function Page() {
               </div>
             </div>
           )}
+          {status === "success" && listings?.length === 0 && (
+            <MainContentArea HeaderTitle="Your Listings (0)">
+              <div className="w-full h-48 flex flex-col justify-center items-center">
+                <p className="text-gray-500">
+                  You have no listings yet. Click the button above to add your
+                  first listing.
+                </p>
+              </div>
+            </MainContentArea>
+          )}
           {listings?.length > 0 && status === "success" && (
             <MainContentArea
               HeaderTitle={`Your Listings (${listings?.length})`}
