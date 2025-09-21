@@ -1,5 +1,5 @@
 module.exports = {
-  siteUrl: 'https://tangapano.co.zw',
+  siteUrl: 'http://tangapano.co.zw',
   generateRobotsTxt: true,
   sitemapSize: 7000,
   outDir: './public',
