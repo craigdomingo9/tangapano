@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useListingDialogState, useSelectedListing } from "@/lib/hooks/store";
 import { useEffect } from "react";
+import IntegerInputWithButton from "@/components/universal/Form/Elements/IntegerInputWithButton";
 
 function EditExistingListing() {
   const form = useForm({
@@ -86,13 +87,15 @@ function EditExistingListing() {
               defaultValue={selectedListing.neighborhood.id.toString()}
               placeholder={selectedListing.neighborhood.name}
             />
-            <InputField
+            <IntegerInputWithButton
               form={form}
               fieldName="distance_from_campus"
-              label="Distance From Campus (in minutes)"
-              placeholder="eg. 15"
-              defaultValue={selectedListing.distance_from_campus}
-              inputClassName="w-64"
+              label="Distance from campus (in minutes)"
+              defaultValue={Number(selectedListing.distance_from_campus)}
+              min={1}
+              max={120}
+              step={1}
+              className="max-w-64"
             />
             <CheckBoxField
               form={form}

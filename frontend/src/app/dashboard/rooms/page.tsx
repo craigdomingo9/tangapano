@@ -49,6 +49,7 @@ function page() {
                     setSelectedListing(activeListing);
                     setRoomsDialog(true);
                   }}
+                  disabled={!activeListing.id}
                 >
                   <PlusCircle size={20} /> Add New Room
                 </HeaderButton>

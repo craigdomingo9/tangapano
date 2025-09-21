@@ -35,11 +35,12 @@ function RoomFormMask({
           console.log(errors)
         )}
       >
-        <div className="grid space-y-5 space-x-2">
+        <div className="grid place-items-center items-center space-y-5 space-x-2">
           <IntegerInputWithButton
             form={form}
             fieldName="rent_per_month"
             label="Monthly Rent ($)"
+            className="max-w-64"
             defaultValue={editMode ? Number(selectedRoom.rent_per_month) : 50}
             min={50}
             max={250}
@@ -55,6 +56,7 @@ function RoomFormMask({
               name: item.name.split(" ")[0],
             }))}
             label="Gender"
+            className="min-w-64"
             defaultValue={
               editMode
                 ? selectedRoom.gender_preference
@@ -67,7 +69,7 @@ function RoomFormMask({
             fieldName="max_occupants"
             label="Students Allowed In Room"
             defaultValue={editMode ? Number(selectedRoom.max_occupants) : 2}
-            className="[&>button]:bg-amber-300"
+            className="max-w-64"
             min={1}
             max={5}
             step={1}
@@ -78,7 +80,7 @@ function RoomFormMask({
             fieldName="current_occupants"
             label="Students Currently In Room"
             defaultValue={editMode ? Number(selectedRoom.current_occupants) : 0}
-            className="[&>button]:bg-amber-300"
+            className="max-w-64"
             min={0}
             max={parseInt(maxOccupants) || 5}
             step={1}

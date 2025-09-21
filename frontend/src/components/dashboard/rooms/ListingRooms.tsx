@@ -81,6 +81,16 @@ function ListingRooms() {
           </p>
         </h3>
 
+        {rooms.length === 0 && (
+          <div className="text-center p-10 bg-white dark:bg-gray-800 rounded-lg shadow">
+            <p className="text-gray-500 text-sm">
+              No rooms available for this listing.
+              <br />
+              Add some rooms to get started.
+            </p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {rooms.map((room: Room, indx: number) => {
             const studentsLeft = room.max_occupants - room.current_occupants;

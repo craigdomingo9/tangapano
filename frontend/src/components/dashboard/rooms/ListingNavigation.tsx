@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useActiveListing } from "@/lib/hooks/store";
 import { useEffect } from "react";
+import Link from "next/link";
+import HeaderButton from "../HeaderButton";
 
 type Props = {
   listings: Listing[];
@@ -21,7 +23,14 @@ function ListingNavigation({ listings }: Props) {
   }, [listings]);
 
   if (listings.length === 0) {
-    return <div className="text-gray-500">No rooms available yet.</div>;
+    return (
+      <div className="flex flex-col items-center gap-4 mb-6">
+        <div className="text-gray-500 text-center">You have 0 listings.</div>
+        <HeaderButton>
+          <Link href="/dashboard/listings">Create a listing</Link>
+        </HeaderButton>
+      </div>
+    );
   }
 
   return (

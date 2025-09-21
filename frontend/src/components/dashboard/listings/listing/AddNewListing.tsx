@@ -15,7 +15,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useListingDialogState } from "@/lib/hooks/store";
 import CheckBoxField from "@/components/universal/Form/Elements/CheckBoxField";
-import { Input } from "@/components/ui/input";
 import { useEffect } from "react";
 
 function AddNewListing() {
@@ -90,11 +89,12 @@ function AddNewListing() {
               <IntegerInputWithButton
                 form={form}
                 fieldName="distance_from_campus"
-                label="Distance from campus"
+                label="Distance from campus (in minutes)"
                 defaultValue={15}
                 min={1}
                 max={120}
                 step={1}
+                className="max-w-64"
               />
               <CheckBoxField
                 form={form}

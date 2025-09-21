@@ -65,7 +65,7 @@ function AddNewListingImage() {
               form={form}
               fieldName="caption"
               label="Image Caption (Optional)"
-              selectClassName="w-64"
+              selectClassName="w-64 [&>*]:text-black"
               selectionList={[
                 { id: "Bedroom", name: "Bedroom" },
                 { id: "Kitchen", name: "Kitchen" },
@@ -76,6 +76,8 @@ function AddNewListingImage() {
                 { id: "Front View", name: "Front View" },
                 { id: "Other", name: "Other" },
               ]}
+              defaultValue="Bedroom"
+              placeholder="Bedroom"
             />
             {/* <InputField
               form={form}
