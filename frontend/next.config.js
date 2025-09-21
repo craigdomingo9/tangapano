@@ -31,4 +31,19 @@ module.exports = {
     return config;
   },
   devIndicators: false,
+  // Enable SSR for better SEO
+  trailingSlash: true, // Helps with URL consistency
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-robots-tag',
+            value: 'index, follow',
+          },
+        ],
+      },
+    ];
+  },
 };
