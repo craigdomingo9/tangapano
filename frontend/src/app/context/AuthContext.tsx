@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
-  const { status, data, isPending, isFetching } = useQuery({
+  const { status, data, isPending } = useQuery({
     queryKey: ["user"],
     queryFn: () =>
       axios.get("/server/api/auth/verify-token").then((res) => {
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         user: data,
         isAuthenticated,
-        loading: status === "pending" || isPending || isFetching,
+        loading: status === "pending" || isPending,
         logout,
       }}
     >

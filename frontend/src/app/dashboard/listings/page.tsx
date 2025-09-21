@@ -33,7 +33,7 @@ function Page() {
     fetchToken();
   }, []);
 
-  const { data, error, status, isPending, isFetching } = useQuery({
+  const { data, error, status, isPending } = useQuery({
     queryKey: ["landlord-listings"],
     queryFn: () => {
       return axiosInstance.get("/listings/landlord-listings/", {
@@ -86,7 +86,7 @@ function Page() {
               </div>
             }
           />
-          {(status !== "success" || isPending || isFetching) && (
+          {(status !== "success" || isPending) && (
             <div className="flex flex-col justify-center items-center w-full">
               <Loader className="my-2" />
               <div className="flex flex-col md:flex-row md:space-x-8">
