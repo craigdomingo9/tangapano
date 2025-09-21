@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/dashboard/",
     },
-    sitemap: "https://tangapano.co.zw/sitemap.xml",
+    sitemap: "http://tangapano.co.zw/sitemap-0.xml",
   };
 }
