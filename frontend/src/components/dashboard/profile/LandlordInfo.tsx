@@ -19,7 +19,7 @@ function LandlordInfo() {
       <CardHeader className="flex justify-between">
         <CardTitle className="my-auto">Landlord Information</CardTitle>
         <Button
-          className="rounded-sm h-10 shadow-md bg-blue-500"
+          className="rounded-sm h-10 shadow-md bg-[var(--lapis-lazuli)]"
           onClick={() => setDialog(true)}
         >
           <Edit size={20} /> Edit Landlord Info
