@@ -10,6 +10,7 @@ type Props = {
   defaultValue?: string;
   placeholder?: string;
   source?: string;
+  filterHasListings?: boolean;
 };
 
 function NeighborhoodSelector({
@@ -20,6 +21,7 @@ function NeighborhoodSelector({
   placeholder = "",
   defaultValue = " ",
   labelClassName = "text-white",
+  filterHasListings,
 }: Props) {
   const selectedCampusId = useWatch({
     control: form.control,
@@ -34,8 +36,11 @@ function NeighborhoodSelector({
     const campus = campuses?.find(
       (c) => String(c.id) === String(selectedCampusId)
     );
-    //Filter neighborhoods based on has_listings
-    const filtered = campus?.neighborhoods?.filter((n) => n.has_listings) ?? [];
+    // Filter neighborhoods based on has_listings
+    const filtered =
+      campus?.neighborhoods?.filter((n) =>
+        filterHasListings ? n.has_listings : n
+      ) ?? [];
 
     setNeighborhoods(filtered);
 

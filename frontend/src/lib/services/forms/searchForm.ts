@@ -7,7 +7,7 @@ export const searchFormSchema = z
     price_min: z.number().min(0).optional(),
     price_max: z.number().min(0).optional(),
     max_occupants: z.string().optional(),
-    gender: z.enum(["male", "female", "mixed"]),
+    gender: z.enum(["male", "female"]),
     amenities: z.array(z.string()).optional(),
   })
   .refine(

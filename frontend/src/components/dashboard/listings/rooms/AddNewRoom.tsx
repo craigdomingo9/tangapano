@@ -25,7 +25,7 @@ type Props = {
 };
 
 const gendersList = [
-  { id: "mixed", name: "Mixed", icon: Shuffle },
+  // { id: "mixed", name: "Mixed", icon: Shuffle },
   { id: "male", name: "Male", icon: Mars },
   { id: "female", name: "Female", icon: Venus },
 ];

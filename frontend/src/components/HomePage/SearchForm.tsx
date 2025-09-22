@@ -37,7 +37,7 @@ function SearchForm() {
       max_occupants: "2",
       campus: "",
       neighborhood: " ",
-      gender: "mixed",
+      gender: "male",
       amenities: [],
     },
   });
@@ -80,6 +80,7 @@ function SearchForm() {
                     form={form}
                     campuses={campuses}
                     source="searchPage"
+                    filterHasListings
                   />
                 </>
               )}

@@ -60,7 +60,7 @@ function RoomFormMask({
             defaultValue={
               editMode
                 ? selectedRoom.gender_preference
-                : gendersList.at(0)?.id || "mixed"
+                : gendersList.at(0)?.id || "male"
             }
           />
 

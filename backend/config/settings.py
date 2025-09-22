@@ -204,9 +204,6 @@ CACHES = {
 
 CACHE_TTL = 60 * 60 * 24 * 7  # 1 week
 
-if DEBUG:
-    CACHE_TTL = 60  # 1 minute in development
-
 # Internal IPs
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', 'localhost']
