@@ -10,6 +10,8 @@ import {
   useSelectedAmenities,
   useSelectedListing,
 } from "@/lib/hooks/store";
+import { Lock } from "lucide-react";
+import Link from "next/link";
 
 function AmenitiesDialogContent() {
   const { entities: selectedAmenities } = useSelectedAmenities();
@@ -76,25 +78,45 @@ function AmenitiesDialogContent() {
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2 mb-6 max-h-60 overflow-y-auto pr-2">
-          {allAvailableAmenities?.map((amenity: Amenity) => (
-            <button
-              key={amenity.display_name}
-              type="button"
-              onClick={() => handleToggleAmenity(amenity.id)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
-              ${
-                currentSelectedAmenities?.some(
-                  (item) => item?.id === amenity?.id
-                )
-                  ? "bg-[var(--lapis-lazuli)] text-white shadow-md"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {amenity.display_name}
-            </button>
-          ))}
-        </div>
+        {status === "success" && (
+          <div className="flex flex-wrap gap-2 mb-6 max-h-60 overflow-y-auto pr-2">
+            {selectedListing?.is_locked ? (
+              <div className="w-full h-60 flex flex-col justify-center items-center text-center p-4 bg-yellow-100 text-yellow-800 rounded-lg">
+                <div>
+                  <Lock size={32} className="mx-auto mb-2" />
+                </div>
+                <p>
+                  This listing is currently locked. To make changes to the
+                  amenities, please{" "}
+                  <Link className="underline" href="/dashboard/support">
+                    Contact Support
+                  </Link>
+                  .
+                </p>
+              </div>
+            ) : (
+              <>
+                {allAvailableAmenities?.map((amenity: Amenity) => (
+                  <button
+                    key={amenity.display_name}
+                    type="button"
+                    onClick={() => handleToggleAmenity(amenity.id)}
+                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200
+                  ${
+                    currentSelectedAmenities?.some(
+                      (item) => item?.id === amenity?.id
+                    )
+                      ? "bg-[var(--lapis-lazuli)] text-white shadow-md"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                  >
+                    {amenity.display_name}
+                  </button>
+                ))}
+              </>
+            )}
+          </div>
+        )}
 
         <div className="flex justify-end gap-3">
           <Button
@@ -105,6 +127,9 @@ function AmenitiesDialogContent() {
           </Button>
           <Button
             onClick={handleSave}
+            disabled={
+              isSaving || status === "pending" || selectedListing?.is_locked
+            }
             className="px-4 py-2 rounded-lg text-white font-medium"
           >
             {isSaving ? <MoonLoader color="white" size={15} /> : "Save"}

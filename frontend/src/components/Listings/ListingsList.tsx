@@ -12,10 +12,8 @@ function ListingsList({ listings }: Props) {
   return (
     <>
       <div className="mt-4" />
-      {/* <SortBySelect />
-      <div className="mt-4" /> */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 px-2 items-center space-y-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 px-2 place-items-center items-center space-y-12">
         {listings?.pages.map((page, index) => (
           <React.Fragment key={index}>
             {page?.results?.map((listing: Listing) => (

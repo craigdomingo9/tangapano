@@ -1,5 +1,7 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { cn } from "@/lib/utils";
 import {
   useActiveListing,
   useRoomsDialogOperation,
@@ -8,6 +10,17 @@ import {
   useSelectedRoom,
 } from "@/lib/hooks/store";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from "react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CheckCircleIcon = (props: any) => (
   <svg
@@ -37,6 +50,17 @@ function ListingRooms() {
   const { setEntities: setSelectedListing } = useSelectedListing();
   const { setEntities: setOperation } = useRoomsDialogOperation();
   const { setEntities: setSelectedRoom } = useSelectedRoom();
+
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (isMobile) setItemsPerPage(4);
+    else setItemsPerPage(6);
+  }, [isMobile]);
+
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6); // You can adjust this number
 
   const { data, status, isPending } = useQuery({
     queryKey: ["rooms", activeListing?.id],
@@ -71,10 +95,16 @@ function ListingRooms() {
 
   const rooms = data?.data || [];
 
+  // Pagination logic
+  const totalPages = Math.ceil(rooms.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedRooms = rooms.slice(startIndex, endIndex);
+
   return (
-    <div className="mb-5">
+    <div className="mb-10">
       <main>
-        <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-3">
+        <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-6">
           {activeListing.title} - Rooms
           <p className="text-sm text-gray-500 mb-2">
             Click a room to view details
@@ -91,8 +121,8 @@ function ListingRooms() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {rooms.map((room: Room, indx: number) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 sm:h-[350px] md:h-[500px] lg:grid-cols-3 lg:h-[350px] place-items-center gap-6">
+          {paginatedRooms.map((room: Room, indx: number) => {
             const studentsLeft = room.max_occupants - room.current_occupants;
             const statusInfo =
               room.is_full === true
@@ -119,6 +149,7 @@ function ListingRooms() {
                 }}
                 className={`
                     bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden
+                    w-[340px] sm:w-[280px] lg:w-[250px]
                     transition-all duration-300 cursor-pointer
                     hover:shadow-xl hover:scale-105
                     ${
@@ -159,6 +190,50 @@ function ListingRooms() {
             );
           })}
         </div>
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <Pagination className="justify-center mt-6">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  className={cn(
+                    "cursor-pointer",
+                    currentPage === 1 && "opacity-50"
+                  )}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                />
+              </PaginationItem>
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <PaginationItem key={index} className="cursor-pointer">
+                  <PaginationLink
+                    isActive={currentPage === index + 1}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              {totalPages > 5 && currentPage < totalPages - 2 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+              <PaginationItem>
+                <PaginationNext
+                  className={cn(
+                    "cursor-pointer",
+                    currentPage === totalPages && "opacity-50"
+                  )}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </main>
     </div>
   );
