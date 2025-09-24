@@ -20,25 +20,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import UserEmailFields, { useUserExists } from "./UserEmailFields";
 
 function SignUpForm() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    trigger,
-    getValues,
-    reset,
-  } = useForm<z.infer<typeof signupFormSchema>>({
+  const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+    },
   });
+  const { entities: userExists } = useUserExists();
 
   const handleNext = async () => {
     let isValid = false;
     if (currentStep === 1) {
-      isValid = await trigger([
+      isValid = await form.trigger([
         "first_name",
         "last_name",
         "email",
@@ -65,7 +64,7 @@ function SignUpForm() {
         headers: { "Content-Type": "application/json" },
       }),
     onSuccess() {
-      reset();
+      form.reset();
       toast.success("Signed up successfully");
       router.push("/login");
     },
@@ -105,10 +104,16 @@ function SignUpForm() {
       <CardContent>
         <div className="flex justify-between mb-6 text-gray-500">
           <div
-            className={`flex flex-col items-center flex-1 ${currentStep >= 1 ? "text-indigo-600 font-semibold" : ""}`}
+            className={`flex flex-col items-center flex-1 ${
+              currentStep >= 1 ? "text-indigo-600 font-semibold" : ""
+            }`}
           >
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 1 ? "border-indigo-600 bg-indigo-100" : "border-gray-300"}`}
+              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                currentStep >= 1
+                  ? "border-indigo-600 bg-indigo-100"
+                  : "border-gray-300"
+              }`}
             >
               {currentStep > 1 ? <CheckCircle size={18} /> : <User size={18} />}
             </div>
@@ -116,14 +121,22 @@ function SignUpForm() {
           </div>
           <div className="flex items-center justify-center flex-1">
             <div
-              className={`h-0.5 w-full ${currentStep > 1 ? "bg-indigo-600" : "bg-gray-300"}`}
+              className={`h-0.5 w-full ${
+                currentStep > 1 ? "bg-indigo-600" : "bg-gray-300"
+              }`}
             ></div>
           </div>
           <div
-            className={`flex flex-col items-center flex-1 ${currentStep >= 2 ? "text-indigo-600 font-semibold" : ""}`}
+            className={`flex flex-col items-center flex-1 ${
+              currentStep >= 2 ? "text-indigo-600 font-semibold" : ""
+            }`}
           >
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${currentStep >= 2 ? "border-indigo-600 bg-indigo-100" : "border-gray-300"}`}
+              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                currentStep >= 2
+                  ? "border-indigo-600 bg-indigo-100"
+                  : "border-gray-300"
+              }`}
             >
               {currentStep > 2 ? (
                 <CheckCircle size={18} />
@@ -135,7 +148,7 @@ function SignUpForm() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           {currentStep === 1 && (
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-gray-800 mb-4">
@@ -151,13 +164,13 @@ function SignUpForm() {
                 <Input
                   type="text"
                   id="first_name"
-                  {...register("first_name")}
+                  {...form.register("first_name")}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="John"
                 />
-                {errors.first_name && (
+                {form.formState.errors.first_name && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.first_name.message}
+                    {form.formState.errors.first_name.message}
                   </p>
                 )}
               </div>
@@ -171,56 +184,19 @@ function SignUpForm() {
                 <Input
                   type="text"
                   id="last_name"
-                  {...register("last_name")}
+                  {...form.register("last_name")}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="Doe"
                 />
-                {errors.last_name && (
+                {form.formState.errors.last_name && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.last_name.message}
+                    {form.formState.errors.last_name.message}
                   </p>
                 )}
               </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  id="email"
-                  {...register("email")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="you@example.com"
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Username
-                </label>
-                <Input
-                  type="text"
-                  id="username"
-                  {...register("username")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="tinashedivi"
-                />
-                {errors.username && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.username.message}
-                  </p>
-                )}
-              </div>
+              {/* User and Email Fields */}
+              <UserEmailFields form={form} />
+
               <div>
                 <label
                   htmlFor="password"
@@ -231,13 +207,13 @@ function SignUpForm() {
                 <Input
                   type="password"
                   id="password"
-                  {...register("password")}
+                  {...form.register("password")}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="••••••••"
                 />
-                {errors.password && (
+                {form.formState.errors.password && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.password.message}
+                    {form.formState.errors.password.message}
                   </p>
                 )}
               </div>
@@ -251,18 +227,19 @@ function SignUpForm() {
                 <Input
                   type="password"
                   id="confirm_password"
-                  {...register("confirm_password")}
+                  {...form.register("confirm_password")}
                   className="mt-1 block w-full px-3 py-2"
                   placeholder="••••••••"
                 />
-                {errors.confirm_password && (
+                {form.formState.errors.confirm_password && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.confirm_password.message}
+                    {form.formState.errors.confirm_password.message}
                   </p>
                 )}
               </div>
               <Button
                 onClick={handleNext}
+                disabled={userExists}
                 className="w-full flex items-center justify-center py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
               >
                 Next Step <ArrowRight size={20} />
@@ -285,13 +262,13 @@ function SignUpForm() {
                 <Input
                   type="text"
                   id="company_name"
-                  {...register("company_name")}
+                  {...form.register("company_name")}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., Harare Student Homes Ltd."
                 />
-                {errors.company_name && (
+                {form.formState.errors.company_name && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.company_name.message}
+                    {form.formState.errors.company_name.message}
                   </p>
                 )}
               </div>
@@ -305,13 +282,13 @@ function SignUpForm() {
                 <Input
                   type="text"
                   id="phone_number"
-                  {...register("phone_number")}
+                  {...form.register("phone_number")}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., +263771234567 or 0771234567"
                 />
-                {errors.phone_number && (
+                {form.formState.errors.phone_number && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.phone_number.message}
+                    {form.formState.errors.phone_number.message}
                   </p>
                 )}
               </div>
@@ -324,14 +301,14 @@ function SignUpForm() {
                 </label>
                 <Textarea
                   id="address"
-                  {...register("address")}
+                  {...form.register("address")}
                   rows={3}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md resize-y"
                   placeholder="123 Main St, Harare"
                 ></Textarea>
-                {errors.address && (
+                {form.formState.errors.address && (
                   <p className="mt-1 text-sm text-red-600">
-                    {errors.address.message}
+                    {form.formState.errors.address.message}
                   </p>
                 )}
               </div>

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegistrationView, UserProfileView, UserListView, LoginView, LogoutView, VerifyTokenView, LandlordRetrieveUpdateView
+from .views import UserRegistrationView, UserProfileView, UserListView, LoginView, LogoutView, VerifyTokenView, LandlordRetrieveUpdateView, UserLookupView
 
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path("auth/logout/", LogoutView.as_view(), name="user-logout"),
     path("auth/login/", LoginView.as_view(), name="user-login"),
     path("auth/verify-token/", VerifyTokenView.as_view(), name="user-verify-token"),
+    path("lookup/", UserLookupView.as_view(), name="user-lookup"),
     path("landlords/", LandlordRetrieveUpdateView.as_view(), name="landlord-detail"),
 ]
 # This file defines the URL patterns for the user-related views in the application.
