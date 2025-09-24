@@ -45,19 +45,9 @@ function SearchForm() {
   function onSubmit(data: z.infer<typeof searchFormSchema>) {
     setIsLoading(true);
     const params = buildDynamicSearchParams(data);
-
-    // Append amenities as a comma-separated string
-    if (data?.amenities && data.amenities.length > 0) {
-      // ensure no duplicates
-      const uniqueAmenities = Array.from(new Set(data.amenities));
-      // join into a comma-separated string
-      const amenitiesParams = uniqueAmenities.join(",");
-      params.append("amenities", amenitiesParams);
-    }
-
     router.push(`/listings?${params.toString()}`);
 
-    console.log(data);
+    // console.log(data);
     setIsLoading(false);
   }
 

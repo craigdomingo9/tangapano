@@ -23,6 +23,8 @@ function AmenitiesBadgeSelector({
       }
       return [...prev, amenity.name];
     });
+    // Sort the amenities alphabetically after updating to ensure efficient caching
+    setSelectedAmenities((prev) => [...prev].sort());
   }
 
   useEffect(() => {

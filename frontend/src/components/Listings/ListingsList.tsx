@@ -7,7 +7,7 @@ type Props = {
 };
 
 function ListingsList({ listings }: Props) {
-  console.log(listings);
+  // console.log(listings);
 
   return (
     <>
