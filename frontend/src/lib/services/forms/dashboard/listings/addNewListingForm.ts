@@ -5,5 +5,5 @@ export const addNewListingFormSchema = z.object({
   campus: z.string().min(1, "Campus is required"),
   neighborhood: z.string().min(1, "Neighborhood is required"),
   distance_from_campus: z.string().transform((val) => Number(val)),
-  apply_agent_fee: z.boolean().optional().default(true),
+  apply_agent_fee: z.boolean().optional().default(false),
 });
