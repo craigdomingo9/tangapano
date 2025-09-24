@@ -54,8 +54,16 @@ function ListingRooms() {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (isMobile) setItemsPerPage(4);
-    else setItemsPerPage(6);
+    const handleResize = (event: Event) => {
+      if (isMobile) setItemsPerPage(4);
+      else setItemsPerPage(6);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [isMobile]);
 
   // State for pagination
