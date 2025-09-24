@@ -116,6 +116,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -126,11 +127,15 @@
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 .scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
+  /* Chrome/Safari */
 }
 
 :root {
@@ -145,12 +150,21 @@
 
 :root {
   --headerHeight: 88px;
+  --dashboardHeaderHeight: 64px;
 }
 
 .headerHeight {
   height: var(--headerHeight);
 }
 
+.dashboardHeaderHeight {
+  height: var(--dashboardHeaderHeight);
+}
+
 .fullHeight {
   height: calc(100vh - var(--headerHeight));
+}
+
+.dashboardFullHeight {
+  height: calc(100vh - var(--dashboardHeaderHeight));
 }

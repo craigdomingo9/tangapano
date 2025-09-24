@@ -9,7 +9,7 @@ export default function CustomSidebarInset({
 }) {
   return (
     <SidebarInset className="">
-      <header className="flex h-16 shrink-0 items-center gap-2 border border-gray-200 min-w-full sticky top-0 z-30 bg-neutral-100">
+      <header className="flex dashboardHeaderHeight shrink-0 items-center gap-2 border border-gray-200 min-w-full sticky top-0 z-30 bg-neutral-50">
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator
