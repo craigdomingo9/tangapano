@@ -34,7 +34,7 @@ function page() {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center bg-neutral-100">
         <div className="px-2 md:px-14 max-w-4xl w-full [&>div]:w-full [&>div]:px-2 flex flex-col sm:gap-y-2">
           <DashboardHeader
             HeaderText={{
