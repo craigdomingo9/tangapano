@@ -30,6 +30,7 @@ function SignUpForm() {
     defaultValues: {
       username: "",
       email: "",
+      company_name: "",
     },
   });
   const { entities: userExists } = useUserExists();

@@ -39,7 +39,7 @@ class UserLookupView(APIView):
             user_exists = User.objects.filter(username=username).exists()
             field = "username" if user_exists else None
             
-            # Cache the result for 5 minutes
+            # Cache the result for 7 days
             if user_exists:
                 cache.set(cache_key, {'exists': True, 'field': field}, timeout=60*60*24*7)
         

@@ -105,8 +105,8 @@ REST_FRAMEWORK = {
     # TODO: Adjust throttle rates as necessary
     'DEFAULT_THROTTLE_RATES': {
         'listings': '100/day',
-        'dashboard_listings': '500/day',
-        'rooms': '1000/day',
+        'dashboard_listings': '250/day',
+        'rooms': '300/day',
     }
 }
 

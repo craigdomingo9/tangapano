@@ -18,13 +18,15 @@ function AmenitiesBadgeSelector({
 
   function handleBadgeClick(amenity: Amenity) {
     setSelectedAmenities((prev) => {
+      let newAmenities;
       if (prev.includes(amenity.name)) {
-        return prev.filter((name) => name !== amenity.name);
+        newAmenities = prev.filter((name) => name !== amenity.name);
+      } else {
+        newAmenities = [...prev, amenity.name];
       }
-      return [...prev, amenity.name];
+      // Sort the amenities alphabetically in a single operation
+      return newAmenities.sort((a, b) => a.localeCompare(b));
     });
-    // Sort the amenities alphabetically after updating to ensure efficient caching
-    setSelectedAmenities((prev) => [...prev].sort());
   }
 
   useEffect(() => {
@@ -40,8 +42,9 @@ function AmenitiesBadgeSelector({
     };
 
     const randomAmenities = randomSelection(amenities, 5).map((a) => a.name);
-    // console.log("Randomly selected amenities:", randomAmenities);
-    setSelectedAmenities(randomAmenities);
+    // Sort the initial selection as well
+    const sortedAmenities = randomAmenities.sort((a, b) => a.localeCompare(b));
+    setSelectedAmenities(sortedAmenities);
   }, [amenities, amenitiesQueryStatus]);
 
   useEffect(() => {
