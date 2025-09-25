@@ -50,8 +50,7 @@ function RoomsDialogContent({ dismissDialogOnAction }: Props) {
         </p>
       ) : (
         <div className="space-y-6 max-h-80 overflow-y-auto pr-2 pt-6">
-          {roomsData?.map((room, index) => {
-            const roomNumber = index + 1;
+          {roomsData?.map((room) => {
             const studentsLeft = room.max_occupants - room.current_occupants;
             const roomStatus = room.is_full
               ? "Occupied"
@@ -72,7 +71,7 @@ function RoomsDialogContent({ dismissDialogOnAction }: Props) {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">
-                    Room {roomNumber}
+                    Room {room.room_number}
                   </p>
                   <p className="text-gray-600 text-sm">
                     ${parseFloat(room.rent_per_month).toFixed(2)} / month

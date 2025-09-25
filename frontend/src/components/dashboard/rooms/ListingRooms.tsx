@@ -164,7 +164,7 @@ function ListingRooms() {
                   className={`${statusInfo.color} p-4 flex items-center justify-between`}
                 >
                   <h2 className="text-xl font-bold text-white">
-                    Room {indx + 1}
+                    Room {room.room_number}
                   </h2>
                   {statusInfo.icon}
                 </div>

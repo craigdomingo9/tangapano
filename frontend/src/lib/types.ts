@@ -56,6 +56,7 @@ interface Image {
 
 interface Room {
   id: string;
+  room_number: number;
   listing: number;
   max_occupants: number;
   current_occupants: number;

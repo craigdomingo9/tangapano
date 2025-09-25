@@ -23,7 +23,7 @@ class Room(models.Model):
 
     class Meta:
         verbose_name_plural = "Rooms"
-        ordering = ["-created_at"]
+        ordering = ["created_at"]
         indexes = [
             # Primary composite index for most queries
             models.Index(
@@ -51,4 +51,22 @@ class Room(models.Model):
     @property
     def is_full(self):
         return self.current_occupants >= self.max_occupants
+    
+    @property
+    def room_number(self):
+        """
+        Alternative: Use room sequence as the room id.
+        """
+        if not self.id:
+            return "TBD"
+
+        from django.db.models import Count
+        
+        # Get room sequence within listing
+        room_sequence = Room.objects.filter(
+            listing_id=self.listing_id,
+            id__lte=self.id
+        ).aggregate(sequence=Count('id'))['sequence']
+            
+        return room_sequence
     
