@@ -64,7 +64,7 @@ function page() {
             </div>
           )}
           {data && status === "success" && (
-            <MainContentArea className="border-none mt-3">
+            <MainContentArea className="border-none shadow-none mt-3">
               <div>
                 <ListingNavigation listings={data} />
                 <ListingRooms />

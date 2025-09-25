@@ -19,7 +19,7 @@ function page() {
             }}
           />
 
-          <MainContentArea className="flex flex-col gap-4">
+          <MainContentArea className="flex flex-col gap-4 shadow-none border-none">
             <UserInfo />
             <LandlordInfo />
             <div className="h-12 border border-transparent"></div>

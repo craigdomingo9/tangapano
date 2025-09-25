@@ -100,7 +100,7 @@ function AddNewListing() {
                 form={form}
                 fieldName="apply_agent_fee"
                 label="Apply Agent Fee"
-                defaultChecked
+                defaultChecked={false}
                 className="w-64"
               />
             </div>
