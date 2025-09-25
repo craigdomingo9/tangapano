@@ -31,7 +31,11 @@ function DeleteExistingListing() {
       </p>
       <div className="flex gap-2">
         <Button onClick={() => setDialog(false)}>Cancel</Button>
-        <Button variant={"destructive"} onClick={handleDeleteListing}>
+        <Button
+          variant={"destructive"}
+          disabled={mutation.isPending}
+          onClick={handleDeleteListing}
+        >
           {mutation.isPending ? (
             <MoonLoader color="white" size={15} />
           ) : (

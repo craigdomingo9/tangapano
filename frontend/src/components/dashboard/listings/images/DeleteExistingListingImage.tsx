@@ -41,7 +41,11 @@ function DeleteExistingListingImage() {
       </p>
       <div className="flex gap-2">
         <Button onClick={() => setOperation("list")}>Cancel</Button>
-        <Button variant={"destructive"} onClick={handleDeleteImage}>
+        <Button
+          variant={"destructive"}
+          disabled={mutation.isPending}
+          onClick={handleDeleteImage}
+        >
           {mutation.isPending ? (
             <MoonLoader color="white" size={15} />
           ) : (

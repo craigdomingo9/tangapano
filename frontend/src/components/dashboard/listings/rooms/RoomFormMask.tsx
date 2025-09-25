@@ -95,6 +95,7 @@ function RoomFormMask({
           </Button>
           <Button
             type="submit"
+            disabled={mutationIsPending}
             className="px-4 py-2 rounded-lg text-white font-medium"
           >
             {mutationIsPending ? (

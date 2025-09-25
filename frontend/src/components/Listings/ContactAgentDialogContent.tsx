@@ -68,7 +68,9 @@ function ContactAgentDialogContent() {
               onClick={() => setSelectedRoom(room)}
             >
               <div>
-                <p className="font-semibold text-gray-800">Room {index + 1}</p>
+                <p className="font-semibold text-gray-800">
+                  Room {room.room_number}
+                </p>
                 <p className="text-gray-600 text-sm">
                   ${parseFloat(room.rent_per_month).toFixed(2)}/month &middot;{" "}
                   {spotsLeftText}

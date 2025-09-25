@@ -70,7 +70,11 @@ export function LoginForm({
                   />
                 </div>
                 <div className="flex flex-col gap-3">
-                  <Button type="submit" className="w-full">
+                  <Button
+                    type="submit"
+                    disabled={mutation.isPending}
+                    className="w-full"
+                  >
                     {mutation.isPending ? (
                       <MoonLoader color="white" size={15} />
                     ) : (

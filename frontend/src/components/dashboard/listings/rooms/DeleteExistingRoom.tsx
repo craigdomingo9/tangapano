@@ -51,7 +51,11 @@ function DeleteExistingRoom({ dismissDialogOnAction }: Props) {
       </p>
       <div className="flex gap-2">
         <Button onClick={() => setOperation("list")}>Cancel</Button>
-        <Button variant={"destructive"} onClick={handleDeleteRoom}>
+        <Button
+          variant={"destructive"}
+          disabled={mutation.isPending}
+          onClick={handleDeleteRoom}
+        >
           {mutation.isPending ? (
             <MoonLoader color="white" size={15} />
           ) : (

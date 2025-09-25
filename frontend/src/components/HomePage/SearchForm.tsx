@@ -98,6 +98,7 @@ function SearchForm() {
           <div className="grid mb-6">
             <Button
               type="submit"
+              disabled={isLoading}
               className="mx-auto w-full h-16 text-lg cursor-pointer"
             >
               {isLoading ? <MoonLoader color="white" size={15} /> : "Search"}
