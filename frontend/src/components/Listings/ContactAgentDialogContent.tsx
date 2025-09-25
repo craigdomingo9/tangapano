@@ -12,7 +12,7 @@ function ContactAgentDialogContent() {
   );
 
   const agentPhoneNumber = selectedListing.campus.agent.phone_number;
-  const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id} Rent:${selectedRoom.rent_per_month}\nCan you please provide more details?`;
+  const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id}\nRoom Number: ${selectedRoom.room_number}\nUniversity: ${selectedListing.campus.name}\nNeighborhood: ${selectedListing.neighborhood.name}\nCan you please provide more details?`;
 
   const mutation = useMutation({
     mutationFn: (data: { contacted_agent: string; room: string }) =>
@@ -50,7 +50,7 @@ function ContactAgentDialogContent() {
   return (
     <div className="bg-white rounded-xl shadow-2xl p-4 w-full max-w-lg relative">
       <p className="text-gray-800 font-semibold text-center text-sm">
-        Select a room to contact the agent.
+        Select Your Preferred Room
       </p>
       <div className="space-y-4 max-h-80 overflow-y-auto pr-2 mt-4">
         {selectedListing.rooms?.map((room, index) => {
@@ -82,7 +82,7 @@ function ContactAgentDialogContent() {
       </div>
       <div className="mt-2">
         <Button className="h-12 w-full bg-af-blue" onClick={handleClick}>
-          Contact Agent
+          Send Interest Request
         </Button>
       </div>
     </div>

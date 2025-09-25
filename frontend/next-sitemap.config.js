@@ -11,5 +11,5 @@ module.exports = {
       { userAgent: '*', allow: '/' , disallow: ['/dashboard', '/dashboard/*', '/register']},
     ],
   },
-  exclude: ['/dashboard', '/dashboard/*', '/register'],
+  exclude: ['/dashboard', '/_next', '/dashboard/*', '/register'],
 };

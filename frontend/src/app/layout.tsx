@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   category: "technology",
   manifest: "https://tangapano.co.zw/manifest.json",
   icons: {
-    icon: "/brand.jpg",
+    icon: "/web-app-manifest-512x512.png",
   },
 };
 

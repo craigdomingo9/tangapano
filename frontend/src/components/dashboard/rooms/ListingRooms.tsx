@@ -30,6 +30,10 @@ export function ListingRooms() {
     setItemsPerPage(isMobile ? 4 : 6);
   }, [isMobile]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeListing]);
+
   const { data, status, isPending } = useQuery({
     queryKey: ["rooms", activeListing?.id],
     queryFn: () =>

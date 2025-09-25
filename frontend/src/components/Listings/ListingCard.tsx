@@ -95,7 +95,7 @@ function ListingCard({ listing }: Props) {
           }}
         >
           <MessageCircle size={20} />
-          Contact Agent
+          Express Interest
         </Button>
       </>
     </Card>
