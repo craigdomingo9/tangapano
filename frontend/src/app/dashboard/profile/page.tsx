@@ -9,7 +9,7 @@ import UserInfo from "@/components/dashboard/profile/UserInfo";
 function page() {
   return (
     <>
-      <div className="flex justify-center bg-neutral-100 dashboardFullHeight">
+      <div className="flex justify-center bg-neutral-100 dashboardFullHeight overflow-y-auto">
         <div className="h-1"></div>
         <div className="px-2 md:px-14 max-w-4xl w-full [&>div]:w-full flex-1 [&>div]:px-2 flex flex-col gap-y-6 sm:gap-y-10">
           <DashboardHeader

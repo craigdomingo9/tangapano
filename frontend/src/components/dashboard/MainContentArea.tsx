@@ -1,17 +1,24 @@
+import { cn } from "@/lib/utils";
+
 type Props = {
   children: React.ReactNode;
   HeaderTitle?: string;
+  className?: string;
 };
 
 function MainContentArea({
   children,
   HeaderTitle,
+  className,
   ...props
 }: React.ComponentProps<"div"> & Props) {
   return (
     <>
       <div
-        className="flex flex-col flex-1 gap-2 shadow-xl rounded-lg border-t border-slate-200"
+        className={cn(
+          "flex flex-col flex-1 gap-2 shadow-xl rounded-lg border-t border-slate-200",
+          className
+        )}
         {...props}
       >
         {HeaderTitle && (

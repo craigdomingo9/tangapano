@@ -66,7 +66,7 @@ function Page() {
 
   return (
     <>
-      <div className="flex justify-center dashboardFullHeight bg-neutral-100">
+      <div className="flex justify-center dashboardFullHeight bg-neutral-100 overflow-y-auto">
         <div className="h-1"></div>
         <div className="px-2 md:px-14 flex-1 max-w-4xl w-full [&>div]:w-full [&>div]:px-2 flex flex-col sm:gap-y-2">
           <DashboardHeader
@@ -109,6 +109,7 @@ function Page() {
           {listings?.length > 0 && status === "success" && (
             <MainContentArea
               HeaderTitle={`Your Listings (${listings?.length})`}
+              className="mt-4"
             >
               <ListingsList listings={listings} />
             </MainContentArea>

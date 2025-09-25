@@ -31,7 +31,7 @@ const supportStaff = [
 
 const Page = () => {
   return (
-    <div className="min-h-screen bg-neutral-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-[Inter]">
+    <div className="dashboardFullHeight overflow-y-auto bg-neutral-100 dark:bg-gray-900 py-6 px-4 sm:px-6 lg:px-8 font-[Inter]">
       <div className="max-w-sm mx-auto text-center">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl rounded-lg">
           Need help? Contact our support team.
