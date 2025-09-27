@@ -7,19 +7,22 @@ import { getBaseUrl } from "@/lib/utils/urls";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   try {
+    // Await the params promise
+    const { slug } = await params;
+
     // Fetch listing data on the server
     const response = await axiosInstance.get(
-      `/listings/listing/${params.slug}?is_full=true`
+      `/listings/listing/${slug}?is_full=true`
     );
     const listing = response.data;
 
     const baseUrl = await getBaseUrl();
     const imageUrl =
       listing.images?.[0]?.image || `${baseUrl}/default-listing.jpg`;
-    const pageUrl = `${baseUrl}/listing/${params.slug}`;
+    const pageUrl = `${baseUrl}/listing/${slug}`;
 
     const title = listing.title || "Student Boarding House";
     const description = listing.neighborhood
@@ -57,7 +60,8 @@ export async function generateMetadata({
   } catch (error) {
     console.error("Error generating metadata:", error);
 
-    // Fallback metadata
+    // Fallback metadata - need to await params here too
+    const { slug } = await params;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     return {
@@ -67,7 +71,7 @@ export async function generateMetadata({
         title: "Student Accommodation",
         description: "Find the perfect student boarding house",
         images: [`${baseUrl}/default-listing.jpg`],
-        url: `${baseUrl}/listing/${params.slug}`,
+        url: `${baseUrl}/listing/${slug}`,
         type: "website",
       },
     };
@@ -78,16 +82,19 @@ export async function generateMetadata({
 export default async function ListingPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   try {
+    // Await the params promise
+    const { slug } = await params;
+
     // Fetch listing data on the server
     const response = await axiosInstance.get(
-      `/listings/listing/${params.slug}?is_full=true`
+      `/listings/listing/${slug}?is_full=true`
     );
     const listing = response.data;
 
-    return <ListingClient listing={listing} slug={params.slug} />;
+    return <ListingClient listing={listing} slug={slug} />;
   } catch (error) {
     console.error("Error fetching listing:", error);
 
