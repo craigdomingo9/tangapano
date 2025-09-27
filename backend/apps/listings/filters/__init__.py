@@ -2,3 +2,4 @@ from .listing_filter import ListingFilter
 from .listing_ordering_filter import AliasedOrderingFilter
 from .room_filter import RoomFilter
 from .listing_image_filter import ListingImageFIlter
+from .retrieve_listing_filter import RoomFilter as RetrieveRoomFilter

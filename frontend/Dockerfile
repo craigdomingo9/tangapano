@@ -1,6 +1,7 @@
 # ---------- Base ----------
 FROM node:20-bullseye-slim AS base
 WORKDIR /app
+
 # Install dependencies for building native modules
 RUN apt-get update && apt-get install -y libc6-dev && rm -rf /var/lib/apt/lists/*
 
@@ -11,6 +12,10 @@ FROM base AS development
 # Install all dependencies (including dev)
 RUN npm install --verbose
 COPY . /app
+
+# Fix permissions for .next directory
+RUN mkdir -p /app/.next && chmod -R 777 /app/.next
+
 CMD ["npm", "run", "dev"]
 
 # ---------- Builder (for production only) ----------

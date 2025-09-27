@@ -12,7 +12,7 @@ function ListingCard({ listing }: Props) {
     <>
       <Card className="py-0 mx-2 min-h-[34rem] w-[330px] flex flex-col gap-0 hover:scale-[1.025] transition border-0">
         <CardHeader className="px-0">
-          <ListingImages listing={listing} />
+          <ListingImages listing={listing} showLinkCopy />
         </CardHeader>
         <CardContent className="flex-1 px-3">
           <div className="[&>p]:text-sm">

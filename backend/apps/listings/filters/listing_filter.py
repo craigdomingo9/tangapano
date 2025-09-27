@@ -1,9 +1,7 @@
 from django_filters import rest_framework as filters
 from listings.models import Listing, Room, Amenity
-from django.db.models.functions import Coalesce
 from django.db.models import (
     Count, 
-    Subquery, 
     OuterRef, 
     Q, 
     Count, 
@@ -48,7 +46,7 @@ class ListingFilter(filters.FilterSet):
         if not amenities.exists():
             return queryset.none()
 
-        min_match_count = len(amenity_names) // 2
+        min_match_count = len(amenity_names) // 3
 
         # Create direct subquery for matching counts
         return queryset.filter(
@@ -56,7 +54,7 @@ class ListingFilter(filters.FilterSet):
         ).annotate(
             match_count=Count('amenities')
         ).filter(
-            match_count__gte=len(amenity_names) // 2
+            match_count__gte=len(amenity_names) // min_match_count
         ).order_by('-match_count')
 
 
