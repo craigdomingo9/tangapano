@@ -5,14 +5,14 @@ from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.cache import cache
 from django.conf import settings
-from listings.serializers import ListingSerializer
+from listings.serializers import RetrieveListingSerializer
 from listings.models import Listing
 from listings.filters import RetrieveRoomFilter
 
 
 class ListingRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
+    serializer_class = RetrieveListingSerializer
     permission_classes = [AllowAny,]
     filterset_class = RetrieveRoomFilter
     throttle_scope = "listing"
@@ -25,6 +25,9 @@ class ListingRetrieveAPIView(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         
         return super().get(request, *args, **kwargs)
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
     
     def get_cache_key(self):
         listing_id = self.kwargs.get('pk')

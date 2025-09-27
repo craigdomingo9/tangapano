@@ -19,10 +19,19 @@ export async function generateMetadata({
     );
     const listing = response.data;
 
-    const baseUrl = await getBaseUrl();
+    const ImageBaseUrl =
+      process.env.NODE_ENV === "production"
+        ? "http://tangapano.co.zw"
+        : "http://localhost:8000";
     const imageUrl =
-      listing.images?.[0]?.image || `${baseUrl}/default-listing.jpg`;
-    const pageUrl = `${baseUrl}/listing/${slug}`;
+      `${ImageBaseUrl}${listing.images?.[0]?.image}` ||
+      `${ImageBaseUrl}/default-listing.jpg`;
+
+    const pageUrl = `${
+      process.env.NODE_ENV === "production"
+        ? "https://tangapano.co.zw"
+        : "http://localhost:3000"
+    }/listing/${slug}`;
 
     const title = listing.title || "Student Boarding House";
     const description = listing.neighborhood

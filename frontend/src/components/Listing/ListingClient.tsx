@@ -29,6 +29,21 @@ export default function ListingClient({
 
   const listing = response?.data;
 
+  const fixedListing = {
+    ...listing,
+    images:
+      listing?.images &&
+      listing?.images.map((image: any) => ({
+        ...image,
+        image:
+          process.env.NODE_ENV === "production"
+            ? `http://tangapano.co.zw${image.image}`
+            : `http://localhost:8000${image.image}`,
+      })),
+  };
+
+  // console.log(fixedListing);
+
   if (status === "pending") {
     return (
       <div className="flex justify-center overflow-y-auto fullHeight bg-neutral-100 py-6">
@@ -57,7 +72,7 @@ export default function ListingClient({
       <main className="flex-1 w-full max-w-4xl flex flex-col items-center justify-center px-4">
         {status === "success" && (
           <div className="w-full flex flex-col items-center">
-            <ListingCard listing={listing} />
+            <ListingCard listing={fixedListing} />
             <div className="flex justify-center my-5">
               <Link href={"/"}>
                 <Button className="bg-[var(--ou-crimson)] mt-4 w-[340px] h-14 rounded-b-none cursor-pointer sm:hover:scale-[1.03] transition">
