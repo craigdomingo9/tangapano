@@ -31,7 +31,6 @@ if [ "$DJANGO_ENV" = "production" ]; then
     echo "First-time setup: Seeding data..."
 
     echo "Seeding production data..."
-    # TODO Seed prod data
     python manage.py seed_production_data
 
     # Create the marker file to prevent this block from running again.
