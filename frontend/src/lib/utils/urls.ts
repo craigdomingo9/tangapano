@@ -23,7 +23,7 @@ export async function getBaseUrl(): Promise<string> {
     return (
       process.env.NEXT_PUBLIC_BASE_URL ||
       (process.env.NODE_ENV === "production"
-          "https://tangapano.co.zw"
+        ? "https://tangapano.co.zw"
         : "http://localhost:3000")
     );
   }

@@ -54,9 +54,8 @@
 
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-
 import { cn } from "@/lib/utils";
-import { getImageProps } from "next/image";
+import { getImageProps, ImageProps } from "next/image";
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
@@ -73,31 +72,40 @@ const Avatar = React.forwardRef<
 ));
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
-function AvatarImage(
-  props: React.ComponentProps<typeof AvatarPrimitive.Image>
-) {
-  const { src, alt, width, height, ...rest } = props;
+// Use proper types for AvatarImage
+interface AvatarImageProps extends Omit<React.ComponentProps<typeof AvatarPrimitive.Image>, 'src'> {
+  src?: string;
+  width?: number;
+  height?: number;
+}
 
+const AvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  AvatarImageProps
+>(({ src, alt, width, height, ...props }, ref) => {
   if (!src) {
-    // fallback to the original behavior
-    return <AvatarPrimitive.Image {...props} />;
+    return <AvatarPrimitive.Image ref={ref} alt={alt} {...props} />;
   }
 
-  const size =
-    width && height
-      ? { width: Number(width), height: Number(height) }
-      : { fill: true };
+  const size = width && height 
+    ? { width: Number(width), height: Number(height) } 
+    : { fill: true };
 
-  // This is the key line that makes Next.js image optimization take effect
-  const { props: nextOptimizedProps } = getImageProps({
-    src,
-    alt: String(alt),
-    ...size,
-    ...rest,
-  });
+  try {
+    const { props: nextOptimizedProps } = getImageProps({
+      src,
+      alt: alt || "",
+      ...size,
+      ...props,
+    } as ImageProps);
 
-  return <AvatarPrimitive.Image {...nextOptimizedProps} />;
-}
+    return <AvatarPrimitive.Image ref={ref} {...nextOptimizedProps} />;
+  } catch (error) {
+    // Fallback to regular image if getImageProps fails
+    console.warn('Failed to optimize image with Next.js, using fallback:', error);
+    return <AvatarPrimitive.Image ref={ref} src={src} alt={alt} {...props} />;
+  }
+});
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
 const AvatarFallback = React.forwardRef<
