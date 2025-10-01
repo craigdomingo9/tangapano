@@ -3,35 +3,10 @@
 set -e
 
 DOMAIN="tangapano.co.zw"
-LOG_FILE="/srv/tangapano/ssl-renewal.log"
+LOG_FILE="/srv/tangapano/scripts/ssl-renewal.log"
 TIMEOUT=300  # 5 minute timeout
 
 echo "=== SSL Certificate Renewal Started: $(date) ===" | tee -a $LOG_FILE
-
-# Function to handle timeouts
-timeout_command() {
-    local timeout=$1
-    shift
-    local command=("$@")
-    
-    # Start the command
-    "${command[@]}" &
-    local pid=$!
-    
-    # Timeout counter
-    local count=0
-    while kill -0 $pid 2>/dev/null; do
-        sleep 1
-        count=$((count + 1))
-        if [ $count -gt $timeout ]; then
-            echo "❌ Command timed out after ${timeout} seconds" | tee -a $LOG_FILE
-            kill $pid 2>/dev/null
-            return 1
-        fi
-    done
-    wait $pid
-    return $?
-}
 
 # Check if renewal is needed (avoid unnecessary renewals)
 echo "Checking if renewal is needed..." | tee -a $LOG_FILE
@@ -103,3 +78,6 @@ echo "Certificate expiration info:" | tee -a $LOG_FILE
 docker run --rm -v $(pwd)/data/certbot/conf:/etc/letsencrypt certbot/certbot certificates 2>&1 | grep -A 10 "$DOMAIN" | tee -a $LOG_FILE
 
 echo "=== SSL Certificate Renewal Completed: $(date) ===" | tee -a $LOG_FILE
+
+echo "=== Restarting Server: $(date) ==="
+docker compose -f docker-compose.prod.yml up -d

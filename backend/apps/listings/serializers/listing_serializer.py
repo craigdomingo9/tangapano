@@ -4,12 +4,22 @@ from .room_serializer import RoomSerializer
 from campuses.serializers import CampusSerializer
 from campuses.models import Campus, Neighborhood
 from .amenity_serializer import AmenitySerializer
-
+from .listing_image_serializer import ListingImageSerializer
 
 class ListingSerializer(serializers.ModelSerializer):
     amenities = AmenitySerializer(many=True)
     rooms = RoomSerializer(many=True, read_only=True)
     campus = CampusSerializer(read_only=True)
+    images = serializers.SerializerMethodField()
+    
+    def get_images(self, obj):
+        request = self.context.get('request')
+        return ListingImageSerializer(
+            obj.images.all(), 
+            many=True, 
+            context={'request': request}
+        ).data
+    
     
     class Meta:
         model = Listing
