@@ -20,3 +20,4 @@ django-debug-toolbar
 redis
 django-redis
 celery
+django-imagekit

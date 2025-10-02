@@ -3,17 +3,14 @@ from listings.models import Listing, ListingImage
 from .room_serializer import RoomSerializer
 from campuses.serializers import CampusSerializer
 from .amenity_serializer import AmenitySerializer
-from django.conf import settings
+from .listing_image_serializer import ListingImageSerializer
+
 
 class RetrieveListingSerializer(serializers.ModelSerializer):
     amenities = AmenitySerializer(many=True)
     rooms = RoomSerializer(many=True, read_only=True)
     campus = CampusSerializer(read_only=True)
-    images = serializers.SerializerMethodField()
-
-    def get_images(self, obj):
-        request = self.context.get('request')    
-        return ListingImageSerializer(obj.images.all(), many=True, context={'request': request}).data
+    images = ListingImageSerializer(many=True, read_only=True)
     
     class Meta:
         model = Listing
@@ -29,17 +26,17 @@ class RetrieveListingSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class ListingImageSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+# class ListingImageSerializer(serializers.ModelSerializer):
+#     image = serializers.SerializerMethodField()
 
-    class Meta:
-        model = ListingImage
-        fields = ['id', 'image', 'caption']
+#     class Meta:
+#         model = ListingImage
+#         fields = ['id', 'image', 'caption']
 
-    def get_image(self, obj):
-        if obj.image:
-            print(obj.image)
-            return obj.image.url.replace(f'http://{self.context.get("request").get_host()}', '')
-        return None
+#     def get_image(self, obj):
+#         if obj.image:
+#             print(obj.image)
+#             return obj.image.url.replace(f'http://{self.context.get("request").get_host()}', '')
+#         return None
 
 

@@ -1,6 +1,6 @@
 from django.db import models
-
-
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class ListingImage(models.Model):
@@ -10,6 +10,15 @@ class ListingImage(models.Model):
         related_name="images"
     )
     image = models.ImageField(upload_to="listing_images/")
+    
+    # On-the-fly processed versions (no database storage)
+    display_image = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(1200, 800)],
+        format='WEBP',
+        options={'quality': 85}
+    )
+    
     caption = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

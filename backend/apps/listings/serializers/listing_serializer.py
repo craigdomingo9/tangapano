@@ -4,13 +4,15 @@ from .room_serializer import RoomSerializer
 from campuses.serializers import CampusSerializer
 from campuses.models import Campus, Neighborhood
 from .amenity_serializer import AmenitySerializer
+from .listing_image_serializer import ListingImageSerializer
 
 
 class ListingSerializer(serializers.ModelSerializer):
     amenities = AmenitySerializer(many=True)
     rooms = RoomSerializer(many=True, read_only=True)
     campus = CampusSerializer(read_only=True)
-    
+    images = ListingImageSerializer(many=True, read_only=True)
+
     class Meta:
         model = Listing
         fields = [

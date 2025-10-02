@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_prometheus',
     'debug_toolbar',
+    'imagekit',
     # apps
     'users',
     'listings',
@@ -199,10 +200,15 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://redis:6379",
-    }
+    },
 }
 
 CACHE_TTL = 60 * 60 * 24 * 7  # 1 week
+
+# ImageKit Configuration
+IMAGEKIT_DEFAULT_IMAGE_KIT_ENGINE = 'imagekit.engines.Pillow'
+IMAGEKIT_CACHE_BACKEND = 'default'
+IMAGEKIT_CACHE_TIMEOUT = 3600  # 1 hour
 
 # Internal IPs
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
