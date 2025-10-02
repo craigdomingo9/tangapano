@@ -11,7 +11,6 @@ class ListingImage(models.Model):
     )
     image = models.ImageField(upload_to="listing_images/")
     
-    # On-the-fly processed versions (no database storage)
     display_image = ImageSpecField(
         source='image',
         processors=[ResizeToFill(1200, 800)],

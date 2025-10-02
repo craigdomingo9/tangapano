@@ -38,7 +38,7 @@ export default function ListingClient({
         image:
           process.env.NODE_ENV === "production"
             ? `http://tangapano.co.zw${image.image}`
-            : `http://localhost:8000${image.image}`,
+            : `http://localhost${image.image}`,
       })),
   };
 

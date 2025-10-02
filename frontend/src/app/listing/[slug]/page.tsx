@@ -21,7 +21,7 @@ export async function generateMetadata({
     const ImageBaseUrl =
       process.env.NODE_ENV === "production"
         ? "http://tangapano.co.zw"
-        : "http://localhost:8000";
+        : "http://localhost";
     const imageUrl =
       `${ImageBaseUrl}${listing.images?.[0]?.image}` ||
       `${ImageBaseUrl}/default-listing.jpg`;
@@ -29,7 +29,7 @@ export async function generateMetadata({
     const pageUrl = `${
       process.env.NODE_ENV === "production"
         ? "https://tangapano.co.zw"
-        : "http://localhost:3000"
+        : "http://localhost"
     }/listing/${slug}`;
 
     const title = listing.title || "Student Boarding House";
@@ -70,7 +70,7 @@ export async function generateMetadata({
 
     // Fallback metadata - need to await params here too
     const { slug } = await params;
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost";
 
     return {
       title: "Student Boarding House Listing",

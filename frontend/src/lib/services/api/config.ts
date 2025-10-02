@@ -5,7 +5,7 @@ const BASE_URL =
     ? process.env.NEXT_PUBLIC_API_URL // server-side in Docker
     : process.env.NODE_ENV == "production"
     ? `${window.location.origin}/api` // client-side in browser during production
-    : `http://localhost:8000/api`; // client-side in browser during development
+    : `http://localhost/api`; // client-side in browser during development
 
 export const apiConfig = {
   baseURL: BASE_URL,

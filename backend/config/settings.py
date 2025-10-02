@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 import socket
@@ -210,12 +211,18 @@ CACHES = {
     },
 }
 
-CACHE_TTL = 60 * 60 * 24 * 7  # 1 week
+CACHE_TTL = timedelta(days=7).total_seconds()  # 1 week
 
 # ImageKit Configuration
 IMAGEKIT_DEFAULT_IMAGE_KIT_ENGINE = 'imagekit.engines.Pillow'
 IMAGEKIT_CACHE_BACKEND = 'default'
-IMAGEKIT_CACHE_TIMEOUT = 3600  # 1 hour
+IMAGEKIT_CACHE_TIMEOUT = timedelta(days=30).total_seconds()
+
+# Specify the cache directory
+IMAGEKIT_CACHEFILE_DIR = 'CACHE/images'
+
+# Ensure the cache directory exists
+os.makedirs(os.path.join(MEDIA_ROOT, 'CACHE/images'), exist_ok=True)
 
 # Internal IPs
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())

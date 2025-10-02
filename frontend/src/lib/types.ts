@@ -51,6 +51,7 @@ interface Landlord {
 interface Image {
   id: string;
   image: string;
+  display_image: string;
   caption: string;
 }
 

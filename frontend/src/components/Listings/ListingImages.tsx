@@ -32,7 +32,7 @@ function ListingImages({ listing, showLinkCopy }: Props) {
         {listing.images.map((image) => (
           <CarouselItem key={image.id}>
             <Avatar className="w-full rounded-none h-56 relative">
-              <AvatarImage className="rounded-t-xl" src={image.image} />
+              <AvatarImage className="rounded-t-xl" src={image.display_image} />
               <AvatarFallback className="rounded-none rounded-t-xl">
                 {listing.title}
               </AvatarFallback>
@@ -41,14 +41,14 @@ function ListingImages({ listing, showLinkCopy }: Props) {
                   {image.caption}
                 </div>
               )}
-              {showLinkCopy && (
+              {/* {showLinkCopy && (
                 <div
                   className="absolute z-50 cursor-pointer top-2 right-2 bg-[var(--lapis-lazuli)] hover:scale-[1.03] bg-opacity-50 text-white px-2 py-1 rounded"
                   onClick={copyLinkToClipboard}
                 >
                   <Link size={16} strokeWidth={1.25} />
                 </div>
-              )}
+              )} */}
             </Avatar>
           </CarouselItem>
         ))}

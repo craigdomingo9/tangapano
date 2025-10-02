@@ -100,6 +100,26 @@ services:
     networks:
       - app_net
 
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/static
+      - media_volume:/app/media
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    restart: always
+    networks:
+      - app_net
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin_dev
