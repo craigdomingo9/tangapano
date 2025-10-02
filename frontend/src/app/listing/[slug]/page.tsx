@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { axiosInstance } from "@/lib/services/api/config";
 import ListingClient from "@/components/Listing/ListingClient";
-import { getBaseUrl } from "@/lib/utils/urls";
 
 // Server-side function to generate metadata
 export async function generateMetadata({

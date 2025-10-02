@@ -17,15 +17,13 @@ export async function getBaseUrl(): Promise<string> {
     }
 
     // Construct base URL
-    // TODO: Change to https
-    return `http://${host}`;
+    return `${protocol}://${host}`;
   } catch (error) {
     // Fallback to environment variable or default
     return (
       process.env.NEXT_PUBLIC_BASE_URL ||
       (process.env.NODE_ENV === "production"
-        ? // TODO: Change to https
-          "http://tangapano.co.zw"
+        ? "https://tangapano.co.zw"
         : "http://localhost:3000")
     );
   }

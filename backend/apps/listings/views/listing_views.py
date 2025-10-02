@@ -35,6 +35,10 @@ class ListingAPIView(generics.ListAPIView):
     ordering_fields = ['price', 'distance']
     
     
+    def get_serializer_context(self):
+        return {'request': self.request}
+    
+    
     @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='listings_list'))
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

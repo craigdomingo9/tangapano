@@ -6,7 +6,6 @@ from campuses.models import Campus, Neighborhood
 from .amenity_serializer import AmenitySerializer
 from .listing_image_serializer import ListingImageSerializer
 
-
 class ListingSerializer(serializers.ModelSerializer):
     amenities = AmenitySerializer(many=True)
     rooms = RoomSerializer(many=True, read_only=True)

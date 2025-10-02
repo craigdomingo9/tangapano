@@ -22,6 +22,15 @@ class ListingImageSerializer(serializers.ModelSerializer):
             return obj.image.url.replace(f'http://{self.context.get("request").get_host()}', '').replace(f'https://{self.context.get("request").get_host()}', '')
         return None
     
+    # def get_image(self, obj):
+    #     request = self.context.get('request')
+    #     if not request:
+    #         return obj.image
+        
+    #     if obj.image:
+    #         return obj.image.url.replace(f'https://{self.context.get("request").get_host()}', '').replace(f'http://{self.context.get("request").get_host()}', '')
+    #     return None
+    
     def validate(self, attrs):
         if not attrs.get('image'):
             raise serializers.ValidationError("Image field is required.")

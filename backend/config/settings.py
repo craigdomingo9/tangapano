@@ -35,7 +35,6 @@ DEBUG = os.environ.get('DJANGO_DEBUG') == 'True'
 # Add the apps directory to the Python path
 sys.path.append(os.path.join(BASE_DIR, 'apps'))
 
-
 # Allowed hosts
 allowed_hosts = os.environ.get('ALLOWED_HOSTS', '')
 if allowed_hosts:
@@ -47,8 +46,16 @@ CORS_ALLOW_CREDENTIALS = True
 cors_allowed_origins = os.environ.get('CORS_ALLOWED_ORIGINS', '')
 if cors_allowed_origins:
     CORS_ALLOWED_ORIGINS = json.loads(cors_allowed_origins)
-# CORS_ALLOW_ALL_ORIGINS = True
 
+
+if not DEBUG:
+    # Security settings for behind proxy
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    CSRF_COOKIE_SECURE = True
+    CSRF_TRUSTED_ORIGINS = [
+        'https://tangapano.co.zw',
+        'https://www.tangapano.co.zw',
+    ]
 
 
 INSTALLED_APPS = [

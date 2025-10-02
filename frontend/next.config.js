@@ -9,7 +9,15 @@ module.exports = {
         port: "8000",
         pathname: "/**",
       },
+      {
+        protocol: 'https',
+        hostname: 'tangapano.co.zw',
+        port: '',
+        pathname: '/media/**',
+      },
     ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   webpack: (config) => {
     if (process.env.NODE_ENV === "development") {
@@ -28,7 +36,6 @@ module.exports = {
     return config;
   },
   devIndicators: false,
-  // Enable SSR for better SEO
   trailingSlash: true, // Helps with URL consistency
   async headers() {
     return [

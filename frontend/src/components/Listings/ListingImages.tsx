@@ -43,7 +43,7 @@ function ListingImages({ listing, showLinkCopy }: Props) {
               )}
               {showLinkCopy && (
                 <div
-                  className="absolute z-50 top-2 right-2 bg-[var(--lapis-lazuli)] bg-opacity-50 text-white px-2 py-1 rounded"
+                  className="absolute z-50 cursor-pointer top-2 right-2 bg-[var(--lapis-lazuli)] hover:scale-[1.03] bg-opacity-50 text-white px-2 py-1 rounded"
                   onClick={copyLinkToClipboard}
                 >
                   <Link size={16} strokeWidth={1.25} />
