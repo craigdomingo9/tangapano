@@ -31,9 +31,9 @@ function ListingImages({ listing, showLinkCopy }: Props) {
       <CarouselContent>
         {listing.images.map((image) => (
           <CarouselItem key={image.id}>
-            <Avatar className="w-full rounded-none h-56 relative">
+            <Avatar className="w-full rounded-none h-56 relative overflow-hidden">
               <AvatarImage className="rounded-t-xl" src={image.display_image} />
-              <AvatarFallback className="rounded-none rounded-t-xl">
+              <AvatarFallback className="rounded-none rounded-t-xl w-full">
                 {listing.title}
               </AvatarFallback>
               {image.caption && (
