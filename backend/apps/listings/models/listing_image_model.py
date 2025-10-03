@@ -1,6 +1,6 @@
 from django.db import models
 from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
+from imagekit.processors import ResizeToFill, Transpose
 
 
 class ListingImage(models.Model):
@@ -13,7 +13,7 @@ class ListingImage(models.Model):
     
     display_image = ImageSpecField(
         source='image',
-        processors=[ResizeToFill(1200, 800)],
+        processors=[Transpose(), ResizeToFill(1200, 800)],
         format='WEBP',
         options={'quality': 85}
     )

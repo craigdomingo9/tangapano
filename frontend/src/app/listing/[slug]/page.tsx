@@ -16,7 +16,7 @@ export async function generateMetadata({
     const response = await axiosInstance.get(
       `/listings/listing/${slug}?is_full=true`
     );
-    const listing = response.data;
+    const listing: Listing = response.data;
 
     const baseUrl =
       process.env.NODE_ENV === "production"
