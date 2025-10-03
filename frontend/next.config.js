@@ -23,7 +23,7 @@ module.exports = {
       },
     ],
   },
-  webpackDevMiddleware: (config) => {
+  webpack: (config) => {
     if (process.env.NODE_ENV === "development") {
       config.watchOptions = {
         poll: 2000,

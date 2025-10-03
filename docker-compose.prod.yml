@@ -12,7 +12,6 @@ services:
     environment:
       - DJANGO_DEBUG=False
       - DJANGO_ENV=production
-      - DB_HOST=db
       - PROMETHEUS_METRICS_EXPORT_PORT=8000
     env_file:
       - .env
@@ -56,7 +55,7 @@ services:
       - app_net
 
   pgbouncer:
-    image: edoburu/pgbouncer:latest
+    image: edoburu/pgbouncer:v1.24.0-p0
     container_name: pgbouncer
     volumes:
       - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
@@ -73,7 +72,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:latest
+    image: redis:8.2.1
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - redis_data:/data
@@ -183,8 +182,8 @@ services:
     restart: always
     networks:
       - app_net
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-  
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
   certbot:
     image: certbot/certbot
     volumes:
@@ -192,7 +191,8 @@ services:
       - ./data/certbot/www:/var/www/certbot
     depends_on:
       - nginx
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; done;'"
+    command: "renew --webroot -w /var/www/certbot --quiet"
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done;'"
 
   prometheus:
     container_name: prometheus

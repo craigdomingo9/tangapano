@@ -18,24 +18,20 @@ export async function generateMetadata({
     );
     const listing = response.data;
 
-    const ImageBaseUrl =
-      process.env.NODE_ENV === "production"
-        ? "http://tangapano.co.zw"
-        : "http://localhost";
-    const imageUrl =
-      `${ImageBaseUrl}${listing.images?.[0]?.image}` ||
-      `${ImageBaseUrl}/default-listing.jpg`;
-
-    const pageUrl = `${
+    const baseUrl =
       process.env.NODE_ENV === "production"
         ? "https://tangapano.co.zw"
-        : "http://localhost"
-    }/listing/${slug}`;
+        : "http://localhost";
+    const imageUrl =
+      `${baseUrl}${listing.images?.[0]?.display_image}` ||
+      `${baseUrl}/default-listing.jpg`;
+
+    const pageUrl = `${baseUrl}/listing/${slug}`;
 
     const title = listing.title || "Student Boarding House";
     const description = listing.neighborhood
-      ? `${listing.neighborhood.name} - ${listing.rooms.length} rooms available - ${listing.campus.name} .`
-      : "Student accommodation listing";
+      ? `${listing.neighborhood.name} - ${listing.rooms.length} rooms available - ${listing.campus.name}.`
+      : "Student accommodation listing.";
 
     return {
       title: title,
@@ -47,7 +43,7 @@ export async function generateMetadata({
           {
             url: imageUrl,
             width: 1200,
-            height: 630,
+            height: 800,
             alt: title,
           },
         ],
