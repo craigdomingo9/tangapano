@@ -21,9 +21,8 @@ class ListingRetrieveAPIView(generics.RetrieveAPIView):
         DjangoFilterBackend,
     ]
 
-    @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='listings_list'))
+    @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='listing'))
     def get(self, request, *args, **kwargs):
-        
         return super().get(request, *args, **kwargs)
     
     def get_serializer_context(self):
