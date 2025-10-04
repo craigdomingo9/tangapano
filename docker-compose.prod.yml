@@ -119,14 +119,10 @@ services:
     env_file:
       - .env
     volumes:
-      - postgres_data:/backups/db
       - media_volume:/app/media
     restart: unless-stopped
     networks:
       - app_net
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     profiles: ["backup"]
 
   db-restore:
