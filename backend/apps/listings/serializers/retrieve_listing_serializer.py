@@ -25,18 +25,3 @@ class RetrieveListingSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at', 'updated_at')
         depth = 1
 
-
-# class ListingImageSerializer(serializers.ModelSerializer):
-#     image = serializers.SerializerMethodField()
-
-#     class Meta:
-#         model = ListingImage
-#         fields = ['id', 'image', 'caption']
-
-#     def get_image(self, obj):
-#         if obj.image:
-#             print(obj.image)
-#             return obj.image.url.replace(f'http://{self.context.get("request").get_host()}', '')
-#         return None
-
-
