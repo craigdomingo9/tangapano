@@ -1,15 +1,19 @@
 from rest_framework import serializers
 from listings.models import Listing, Amenity
 from .room_serializer import RoomSerializer
-from campuses.serializers import CampusSerializer
+from campuses.serializers import CampusSerializer, NeighborhoodSerializer
 from campuses.models import Campus, Neighborhood
 from .amenity_serializer import AmenitySerializer
 from .listing_image_serializer import ListingImageSerializer
+from users.serializers import LandlordSerializer
+
 
 class ListingSerializer(serializers.ModelSerializer):
     amenities = AmenitySerializer(many=True)
     rooms = RoomSerializer(many=True, read_only=True)
     campus = CampusSerializer(read_only=True)
+    landlord = LandlordSerializer(read_only=True)
+    neighborhood = NeighborhoodSerializer(read_only=True)
     images = ListingImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -23,7 +27,6 @@ class ListingSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ('id', 'created_at', 'updated_at')
-        depth = 1
 
 
 class ListingCreateSerializer(serializers.ModelSerializer):

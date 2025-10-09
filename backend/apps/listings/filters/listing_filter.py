@@ -37,7 +37,6 @@ class ListingFilter(filters.FilterSet):
     def filter_amenities(self, queryset, name, value):
         amenity_names = {a.strip() for a in value.split(',') if a.strip()}
         
-        
         if not amenity_names:
             return queryset
         
@@ -98,5 +97,3 @@ class ListingFilter(filters.FilterSet):
             )
 
         return super().filter_queryset(queryset)
-
-    

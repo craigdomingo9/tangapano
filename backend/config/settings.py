@@ -53,10 +53,11 @@ if not DEBUG:
     # Security settings for behind proxy
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     CSRF_COOKIE_SECURE = True
-    CSRF_TRUSTED_ORIGINS = [
-        'https://tangapano.co.zw',
-        'https://www.tangapano.co.zw',
-    ]
+    csrf_trusted_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
+    if csrf_trusted_origins:
+        CSRF_TRUSTED_ORIGINS = json.loads(csrf_trusted_origins)
+    else:
+        CSRF_TRUSTED_ORIGINS = []
 
 
 INSTALLED_APPS = [
@@ -73,28 +74,32 @@ INSTALLED_APPS = [
     'django_filters',
     'django_extensions',
     'django_prometheus',
-    'debug_toolbar',
     'imagekit',
     # apps
     'users',
     'listings',
     'campuses',
     'interests'
-]
+] + ['debug_toolbar' if DEBUG else '']
+
+
+
 
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
-]
+] + ['debug_toolbar.middleware.DebugToolbarMiddleware'] if DEBUG else []
+
+
 
 
 REST_FRAMEWORK = {
@@ -102,7 +107,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -116,6 +121,9 @@ REST_FRAMEWORK = {
         'listing': '100/day',
         'dashboard_listings': '250/day',
         'rooms': '300/day',
+        'user_lookup': '35/hour',
+        'anon': '50/hour',  # Global anonymous throttle
+        'user': '1000/hour',  # Global authenticated throttle
     }
 }
 
@@ -154,7 +162,11 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'root'),
         'HOST': os.environ.get('POSTGRES_HOST', 'pgbouncer'),
         'PORT': os.environ.get('POSTGRES_PORT', 6432),
-        'CONN_MAX_AGE': 0,  # Important: Let PgBouncer handle connection pooling
+        'CONN_MAX_AGE': 300,  # 5 minutes - let PgBouncer handle pooling
+        'OPTIONS': {
+            'connect_timeout': 10,
+            'application_name': 'django_app',
+        }
     }
 }
 
@@ -206,8 +218,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Caching
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://redis:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     },
 }
 

@@ -30,6 +30,11 @@ class CampusViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [permissions.AllowAny]
         return super().get_permissions()
+    
+    def get_queryset(self):
+        return Campus.objects.select_related('agent').prefetch_related(
+            'neighborhoods', 'campus_listings'
+        ).all()
 
     @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='campus_list'))
     def list(self, request, *args, **kwargs):

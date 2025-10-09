@@ -7,8 +7,8 @@ from users.models import User
 
 
 class UserLookupView(APIView):
-    # Fixed typo: permissions_classes -> permission_classes
     permission_classes = [permissions.AllowAny]
+    throttle_scope = "user_lookup"
 
     def get(self, request, *args, **kwargs):
         """
@@ -23,7 +23,6 @@ class UserLookupView(APIView):
                 status=400
             )
 
-        # More efficient approach using database queries with caching
         cache_key = None
         user_exists = False
         field = None
