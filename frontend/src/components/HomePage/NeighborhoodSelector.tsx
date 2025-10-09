@@ -33,26 +33,26 @@ function NeighborhoodSelector({
   const resolvedPlaceholder = source === "searchPage" ? "All" : placeholder;
 
   useEffect(() => {
+    if (!selectedCampusId) return;
+
     const campus = campuses?.find(
       (c) => String(c.id) === String(selectedCampusId)
     );
-    // Filter neighborhoods based on has_listings
-    const filtered =
+    const neighborhoods =
       campus?.neighborhoods?.filter((n) =>
         filterHasListings ? n.has_listings : n
       ) ?? [];
+    setNeighborhoods(neighborhoods);
 
-    setNeighborhoods(filtered);
-
-    // Use a single line to set the value. Use logical OR (||) for clarity.
-    form.setValue(
-      "neighborhood",
-      filtered.length > 0 ? defaultValue || filtered[0].id.toString() : ""
-    );
-
-    // Cleanup function can be added if needed to reset state
-    // return () => { ... }
-  }, [selectedCampusId, campuses, form, defaultValue]);
+    // Only set default if no neighborhood is currently selected
+    const currentNeighborhood = form.getValues("neighborhood");
+    if (!currentNeighborhood && neighborhoods.length > 0) {
+      form.setValue(
+        "neighborhood",
+        defaultValue || neighborhoods[0].id.toString()
+      );
+    }
+  }, [selectedCampusId, campuses, form, defaultValue, filterHasListings]);
 
   const neighborhoodsList = useMemo(() => {
     const baseList = neighborhoods.map((n) => ({

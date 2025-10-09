@@ -7,32 +7,20 @@ interface Props {
 async function page({ searchParams }: Props) {
   const params = await searchParams;
 
-  // Extract amenities (could be string or string[])
-  const amenities = params.amenity;
-  delete params.amenity;
+  const newParams = new URLSearchParams();
 
-  const filters = new URLSearchParams();
-
-  // Append the remaining filters
   Object.entries(params).forEach(([key, value]) => {
     if (Array.isArray(value)) {
-      value.forEach((v) => filters.append(key, v));
+      value.forEach((v) => newParams.append(key, v));
     } else if (value) {
-      filters.append(key, value);
+      newParams.append(key, value);
     }
   });
-
-  // Append amenities separately
-  if (amenities) {
-    (Array.isArray(amenities) ? amenities : [amenities]).forEach((amenity) => {
-      filters.append("amenity", amenity);
-    });
-  }
 
   return (
     <div className="flex justify-center flex-col items-center [&>div]:w-full bg-neutral-100">
       <div />
-      <Listings filterParamsURL={filters.toString()} />
+      <Listings filterParamsURL={newParams.toString()} />
     </div>
   );
 }

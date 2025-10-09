@@ -14,7 +14,32 @@ function AmenitiesBadgeSelector({
   form,
   amenitiesQueryStatus,
 }: Props) {
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(() => {
+    const saved =
+      typeof window !== "undefined"
+        ? localStorage.getItem("preferred-amenities")
+        : null;
+    return saved
+      ? JSON.parse(saved)
+      : [
+          "wifi",
+          "study_desk",
+          "multiple_bathrooms",
+          "shared_kitchen",
+          "refrigerator",
+          "solar_power",
+          "security_gate",
+          "starlink_internet",
+        ];
+  });
+
+  // Persist changes
+  useEffect(() => {
+    localStorage.setItem(
+      "preferred-amenities",
+      JSON.stringify(selectedAmenities)
+    );
+  }, [selectedAmenities]);
 
   function handleBadgeClick(amenity: Amenity) {
     setSelectedAmenities((prev) => {
@@ -28,24 +53,6 @@ function AmenitiesBadgeSelector({
       return newAmenities.sort((a, b) => a.localeCompare(b));
     });
   }
-
-  useEffect(() => {
-    if (!amenities || amenities.length === 0) return;
-
-    const randomSelection = (array: Amenity[], count: number) => {
-      const shuffled = [...array];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled.slice(0, Math.min(count, shuffled.length));
-    };
-
-    const randomAmenities = randomSelection(amenities, 5).map((a) => a.name);
-    // Sort the initial selection as well
-    const sortedAmenities = randomAmenities.sort((a, b) => a.localeCompare(b));
-    setSelectedAmenities(sortedAmenities);
-  }, [amenities, amenitiesQueryStatus]);
 
   useEffect(() => {
     form.setValue("amenities", selectedAmenities);

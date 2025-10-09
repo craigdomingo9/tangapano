@@ -2,6 +2,7 @@ import { UseFormReturn, useWatch } from "react-hook-form";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Minus, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 function StudentsPerRoomField({
   form,
@@ -17,17 +18,20 @@ function StudentsPerRoomField({
   });
 
   const setRoomCapacity = (mode: "increment" | "decrement") => {
-    const value =
+    let nextValue =
       mode === "increment"
-        ? // increment logic: not greater than 5
-          roomCapacity === "5"
-          ? "5"
-          : Number(roomCapacity) + 1
-        : // decrement logic: no negative values
-        roomCapacity === "1"
-        ? "1"
+        ? Number(roomCapacity) + 1
         : Number(roomCapacity) - 1;
-    form.setValue(fieldName, value.toString());
+
+    if (nextValue > 5) {
+      nextValue = 5;
+      toast.error("Students per room cannot be greater than 5");
+    } else if (nextValue < 1) {
+      nextValue = 1;
+      toast.error("Students per room cannot be less than 1");
+    }
+
+    form.setValue(fieldName, nextValue.toString());
   };
 
   return (
