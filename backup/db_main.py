@@ -4,9 +4,9 @@ from datetime import datetime
 from db_backup.env_file import DB_BACKUP_DIR, DB_BACKUP_INTERVAL
 from db_backup.wait_for_db import wait_for_database
 from db_backup.upload_to_mega import upload_to_mega
-from db_backup.utils import logger
+from db_backup.utils import get_logger
 
-logger = logger()
+logger = get_logger()
 
 def main():
     """

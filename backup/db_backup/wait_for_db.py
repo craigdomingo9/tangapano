@@ -3,9 +3,9 @@ import time
 import subprocess
 from dotenv import load_dotenv
 from .create_pgpass_file import create_pgpass_file
-from .utils import logger
+from .utils import get_logger
 
-logger = logger()
+logger = get_logger()
 
 # Load environment variables from a .env file if present
 load_dotenv()

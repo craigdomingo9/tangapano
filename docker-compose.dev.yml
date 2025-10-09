@@ -20,6 +20,8 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - pgbouncer
+      - redis
     networks:
       - app_net
       - debug_toolbar_network
@@ -83,12 +85,49 @@ services:
     environment:
       - MEGA_DB_FOLDER=db-daily-backups-test
       - MEGA_IMAGES_FOLDER=media-weekly-backups-test
+      - PACK_ALL_INTO_ONE_ZIP=false
     volumes:
       - media_volume:/app/media
     restart: unless-stopped
     networks:
       - app_net
     profiles: ["backup"]
+
+  db-restore:
+    build: ./restore
+    container_name: db_restore
+    env_file:
+      - .env
+    environment:
+      - MEGA_DB_FOLDER=db-daily-backups-test
+      - MEGA_IMAGES_FOLDER=media-weekly-backups-test
+    depends_on:
+      - db
+    networks:
+      - app_net
+    command: ["/app/docker-db-restore.sh"]
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    profiles: ["restore"]
+
+  images-restore:
+    build: ./restore
+    container_name: images_restore
+    env_file:
+      - .env
+    environment:
+      - MEGA_DB_FOLDER=db-daily-backups-test
+      - MEGA_IMAGES_FOLDER=media-weekly-backups-test
+    volumes:
+      - media_volume:/app/media
+    networks:
+      - app_net
+    command: ["/app/docker-images-restore.sh"]
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    profiles: ["restore"]
 
   redis:
     container_name: redis

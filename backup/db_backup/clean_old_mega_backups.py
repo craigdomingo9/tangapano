@@ -1,7 +1,7 @@
-from .utils import logger
+from .utils import get_logger
 from .env_file import DB_BACKUP_KEEP_COUNT
 
-logger = logger()
+logger = get_logger()
 
 def clean_old_mega_backups(mega_instance, folder_id):
     """

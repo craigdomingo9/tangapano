@@ -23,7 +23,7 @@ RUN dos2unix ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 
 # Create backup directories
-RUN mkdir -p /app/backups/db /backups/images
+RUN mkdir -p /app/backups/db /app/backups/images
 
 # Run the backup services
 CMD ["./entrypoint.sh"]

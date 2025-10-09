@@ -2,14 +2,14 @@ import os
 import time
 from mega_utils import login_mega
 from mega_utils import get_or_create_folder
-from .utils import logger
+from .utils import get_logger
 from .perform_backup import perform_backup
 from .clean_old_mega_backups import clean_old_mega_backups
 from .env_file import MEGA_EMAIL, MEGA_PASSWORD, MEGA_DB_FOLDER
 from requests.exceptions import ConnectionError, Timeout, RequestException
 
 
-logger = logger()
+logger = get_logger()
 
 def upload_to_mega():
     """

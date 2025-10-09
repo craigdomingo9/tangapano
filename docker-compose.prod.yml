@@ -118,11 +118,16 @@ services:
       - db
     env_file:
       - .env
+    environment:
+      - PACK_ALL_INTO_ONE_ZIP=false
     volumes:
       - media_volume:/app/media
     restart: unless-stopped
     networks:
       - app_net
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     profiles: ["backup"]
 
   db-restore:
@@ -130,8 +135,6 @@ services:
     container_name: db_restore
     env_file:
       - .env
-    environment:
-      - PGPASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       - db
     networks:

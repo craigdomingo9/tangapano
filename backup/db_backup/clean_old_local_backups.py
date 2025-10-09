@@ -1,8 +1,8 @@
 import os
 from .env_file import DB_BACKUP_DIR, DB_BACKUP_KEEP_COUNT
-from .utils import logger
+from .utils import get_logger
 
-logger = logger()
+logger = get_logger()
 
 def clean_old_local_backups():
     """
@@ -13,12 +13,15 @@ def clean_old_local_backups():
     beyond the configured keep count.
     """
     try:
-        # Get all backup zip files sorted by modification time (newest first)
-        backups = [
-            os.path.join(DB_BACKUP_DIR, f)
-            for f in os.listdir(DB_BACKUP_DIR)
-            if f.startswith('db_backup_') and f.endswith('.zip')
-        ]
+        if not os.path.exists(DB_BACKUP_DIR):
+            return
+            
+        backups = []
+        for f in os.listdir(DB_BACKUP_DIR):
+            if f.startswith('db_backup_') and f.endswith('.zip'):
+                file_path = os.path.join(DB_BACKUP_DIR, f)
+                mod_time = os.path.getmtime(file_path)
+                backups.append((mod_time, file_path, f))
         
         # Sort by modification time (newest first)
         backups.sort(key=lambda x: x[0], reverse=True)
@@ -27,8 +30,7 @@ def clean_old_local_backups():
         if len(backups) > DB_BACKUP_KEEP_COUNT:
             for i in range(DB_BACKUP_KEEP_COUNT, len(backups)):
                 os.remove(backups[i][1])
-                if logger:
-                    logger.info(f'Removed old local backup: {backups[i][2]}')
+                logger.info(f'Removed old local backup: {backups[i][2]}')
                 
     except Exception as e:
         logger.error(f'Error cleaning old local backups: {e}')

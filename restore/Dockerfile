@@ -16,14 +16,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 
 # Copy restore scripts
-COPY restore_db.py .
-COPY restore_images.py .
-# Copy wrapper scripts
-COPY docker-db-restore.sh .
-COPY docker-images-restore.sh .
+COPY . .
 
 # Set execution permissions
-RUN chmod +x restore_db.py restore_images.py docker-db-restore.sh docker-images-restore.sh
+RUN chmod +x docker-db-restore.sh docker-images-restore.sh
 
 # Convert to unix file
 RUN dos2unix ./docker-db-restore.sh
