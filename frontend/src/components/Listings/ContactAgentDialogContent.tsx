@@ -24,7 +24,7 @@ function ContactAgentDialogContent() {
   async function handleClick() {
     setIsRedirecting(true);
     await mutation.mutateAsync({
-      contacted_agent: selectedListing.campus.agent.id,
+      contacted_agent: selectedListing.campus.agent,
       room: selectedRoom.id,
     });
 
