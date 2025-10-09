@@ -2,6 +2,13 @@ import { Metadata } from "next";
 import { axiosInstance } from "@/lib/services/api/config";
 import ListingClient from "@/components/Listing/ListingClient";
 
+async function getListingData(slug: string) {
+  const response = await axiosInstance.get(
+    `/listings/listing/${slug}?is_full=true`
+  );
+  return response.data;
+}
+
 // Server-side function to generate metadata
 export async function generateMetadata({
   params,
@@ -13,10 +20,7 @@ export async function generateMetadata({
     const { slug } = await params;
 
     // Fetch listing data on the server
-    const response = await axiosInstance.get(
-      `/listings/listing/${slug}?is_full=true`
-    );
-    const listing: Listing = response.data;
+    const listing = await getListingData(slug);
 
     const baseUrl =
       process.env.NODE_ENV === "production"
@@ -92,13 +96,9 @@ export default async function ListingPage({
     // Await the params promise
     const { slug } = await params;
 
-    // Fetch listing data on the server
-    const response = await axiosInstance.get(
-      `/listings/listing/${slug}?is_full=true`
-    );
-    const listing = response.data;
+    const listing = await getListingData(slug); // This can be cached
 
-    return <ListingClient listing={listing} slug={slug} />;
+    return <ListingClient listing={listing} />;
   } catch (error) {
     console.error("Error fetching listing:", error);
 

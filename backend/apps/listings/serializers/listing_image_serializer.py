@@ -11,8 +11,11 @@ class ListingImageSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'display_image', 'created_at', 'updated_at')
     
     def get_display_image(self, obj):
-        if obj.display_image:
-            return obj.display_image.url
+        try:
+            if obj.display_image:
+                return obj.display_image.url
+        except Exception as e:
+            print(e)
         return obj.image.url
     
     def get_image(self, obj):

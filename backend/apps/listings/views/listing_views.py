@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.conf import settings
+from django.db.models import Prefetch
 
 # Local
 from listings.serializers import ListingSerializer
@@ -12,6 +13,9 @@ from listings.models import Listing
 from listings.pagination import StandardResultsSetPagination
 from listings.filters import ListingFilter
 from listings.filters import AliasedOrderingFilter
+from listings.models import Room, ListingImage
+
+
 
 
 class ListingAPIView(generics.ListAPIView):
@@ -37,6 +41,13 @@ class ListingAPIView(generics.ListAPIView):
     
     def get_serializer_context(self):
         return {'request': self.request}
+    
+    def get_queryset(self):
+        return Listing.objects.select_related(
+            'landlord', 'campus', 'neighborhood'
+        ).prefetch_related(
+            Prefetch('images', queryset=ListingImage.objects.select_related('listing'))
+        ).all()
     
     
     @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='listings_list'))

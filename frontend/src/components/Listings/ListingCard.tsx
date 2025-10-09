@@ -43,7 +43,10 @@ function ListingCard({ listing }: Props) {
       : `$${minRoomPrice}/month`;
 
   return (
-    <Card className="py-0 mx-2 min-h-[34rem] w-[340px] flex flex-col gap-0 cursor-pointer hover:scale-[1.025] transition">
+    <Card
+      aria-label={`Listing: ${listing.title} in ${listing.neighborhood.name}`}
+      className="py-0 mx-2 min-h-[34rem] w-[340px] flex flex-col gap-0 cursor-pointer hover:scale-[1.025] transition"
+    >
       <CardHeader className="px-0">
         <ListingImages listing={listing} />
       </CardHeader>

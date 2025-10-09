@@ -77,6 +77,10 @@ export default function PriceRangeSelector({ form }: Props) {
             onChange={(e) =>
               setMinValue(Math.min(Number(e.target.value), maxValue - 10))
             }
+            aria-label="Minimum price"
+            aria-valuenow={minValue}
+            aria-valuemin={min}
+            aria-valuemax={max}
           />
 
           {/* Max range */}
@@ -103,6 +107,10 @@ export default function PriceRangeSelector({ form }: Props) {
             onChange={(e) =>
               setMaxValue(Math.max(Number(e.target.value), minValue + 10))
             }
+            aria-label="Maximum price"
+            aria-valuenow={maxValue}
+            aria-valuemin={min}
+            aria-valuemax={max}
           />
         </div>
 

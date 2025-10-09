@@ -4,12 +4,14 @@ import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/services/api/config";
 import { useSelectedListingByStudent } from "@/lib/hooks/store";
+import { MoonLoader } from "react-spinners";
 
 function ContactAgentDialogContent() {
   const { entities: selectedListing } = useSelectedListingByStudent();
   const [selectedRoom, setSelectedRoom] = useState<Room>(
     selectedListing.rooms.at(0) as Room
   );
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const agentPhoneNumber = selectedListing.campus.agent.phone_number;
   const message = `Hello, I'm interested in the accommodation "${selectedListing.title}" listed on your platform.\nRoom ID: ${selectedRoom.id}\nRoom Number: ${selectedRoom.room_number}\nUniversity: ${selectedListing.campus.name}\nNeighborhood: ${selectedListing.neighborhood.name}\nCan you please provide more details?`;
@@ -20,6 +22,7 @@ function ContactAgentDialogContent() {
   });
 
   async function handleClick() {
+    setIsRedirecting(true);
     await mutation.mutateAsync({
       contacted_agent: selectedListing.campus.agent.id,
       room: selectedRoom.id,
@@ -82,7 +85,8 @@ function ContactAgentDialogContent() {
       </div>
       <div className="mt-2">
         <Button className="h-12 w-full bg-af-blue" onClick={handleClick}>
-          Send Interest Request
+          {!isRedirecting && "Send Interest Request"}
+          {isRedirecting && <MoonLoader size={15} color="white" />}
         </Button>
       </div>
     </div>
