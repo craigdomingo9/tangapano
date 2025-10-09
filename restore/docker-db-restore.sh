@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Build command
-CMD="python /app/restore_db.py --source $SOURCE"
+CMD="python /app/db_main.py --source $SOURCE"
 
 if [[ -n "$BACKUP" ]]; then
   CMD="$CMD --backup $BACKUP"

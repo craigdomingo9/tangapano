@@ -40,7 +40,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Build command
-CMD="python /app/restore_images.py --source $SOURCE"
+CMD="python /app/image_main.py --source $SOURCE"
 
 if [[ ${#BACKUPS[@]} -gt 0 ]]; then
   CMD="$CMD --backups ${BACKUPS[@]}"

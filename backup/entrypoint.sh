@@ -3,11 +3,11 @@
 
 # Start the database backup service in the background
 echo "Starting database backup service"
-python /app/backup_db.py &
+python /app/db_main.py &
 
 # Start the image backup service in the background
 echo "Starting image backup service"
-python /app/backup_images.py &
+python /app/image_main.py &
 
 # Wait for all background processes to complete
 wait
