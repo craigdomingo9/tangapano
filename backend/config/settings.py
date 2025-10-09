@@ -74,14 +74,14 @@ INSTALLED_APPS = [
     'django_filters',
     'django_extensions',
     'django_prometheus',
+    'debug_toolbar',
     'imagekit',
     # apps
     'users',
     'listings',
     'campuses',
     'interests'
-] + ['debug_toolbar' if DEBUG else '']
-
+] 
 
 
 
@@ -91,13 +91,14 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
-] + ['debug_toolbar.middleware.DebugToolbarMiddleware'] if DEBUG else []
+] 
 
 
 
