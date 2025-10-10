@@ -163,11 +163,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'root'),
         'HOST': os.environ.get('POSTGRES_HOST', 'pgbouncer'),
         'PORT': os.environ.get('POSTGRES_PORT', 6432),
-        'CONN_MAX_AGE': 300,  # 5 minutes - let PgBouncer handle pooling
-        'OPTIONS': {
-            'connect_timeout': 10,
-            'application_name': 'django_app',
-        }
+        'CONN_MAX_AGE': 0,
     }
 }
 
