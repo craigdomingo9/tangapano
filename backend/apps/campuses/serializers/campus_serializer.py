@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from campuses.models import Campus
 from campuses.serializers.neighborhood_serializer import NeighborhoodSerializer
+from users.serializers import AgentSerializer
 
 
 class CampusSerializer(serializers.ModelSerializer):
     neighborhoods = NeighborhoodSerializer(many=True, required=False)
+    agent = AgentSerializer(read_only=True)
     
     class Meta:
         model = Campus
