@@ -44,6 +44,10 @@ def perform_backup():
         logger.info("Checking for new images...")
         # Walk through source directory and find new image files.
         for root, _, files in os.walk(IMAGES_SOURCE_DIR):
+            # Ignore files in the /CACHE/ subdirectory
+            if 'CACHE' in root.split(os.sep):
+                continue
+            
             for file in files:
                 # Quick filter for image extensions
                 if not file.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp')):
