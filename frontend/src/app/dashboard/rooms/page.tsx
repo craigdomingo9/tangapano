@@ -1,6 +1,7 @@
 "use client";
 import DashboardHeader from "@/components/dashboard/Header";
 import HeaderButton from "@/components/dashboard/HeaderButton";
+import ListingDialog from "@/components/dashboard/listings/listing/ListingDialog";
 import RoomsDialog from "@/components/dashboard/listings/rooms/RoomsDialog";
 import RoomsSkeleton from "@/components/dashboard/listings/rooms/RoomsSkeleton";
 import MainContentArea from "@/components/dashboard/MainContentArea";

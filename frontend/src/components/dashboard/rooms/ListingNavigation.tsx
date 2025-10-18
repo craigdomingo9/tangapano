@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useActiveListing } from "@/lib/hooks/store";
+import {
+  useActiveListing,
+  useListingDialogMode,
+  useListingDialogState,
+} from "@/lib/hooks/store";
 import { useEffect } from "react";
 import Link from "next/link";
 import HeaderButton from "../HeaderButton";
@@ -11,6 +15,8 @@ type Props = {
 function ListingNavigation({ listings }: Props) {
   const { entities: activeListing, setEntities: setActiveListing } =
     useActiveListing();
+  const { setEntities: setListingDialogOperation } = useListingDialogMode();
+  const { setEntities: setDialog } = useListingDialogState();
 
   const handleListingChange = (listing: Listing) => {
     setActiveListing(listing);
@@ -26,7 +32,12 @@ function ListingNavigation({ listings }: Props) {
     return (
       <div className="flex flex-col items-center gap-4 mb-6">
         <div className="text-gray-500 text-center">You have 0 listings.</div>
-        <HeaderButton>
+        <HeaderButton
+          onClick={() => {
+            setListingDialogOperation("add");
+            setDialog(true);
+          }}
+        >
           <Link href="/dashboard/listings">Create a listing</Link>
         </HeaderButton>
       </div>

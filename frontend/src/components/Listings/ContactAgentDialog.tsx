@@ -13,9 +13,7 @@ function ContactAgentDialog() {
     <DialogContainer
       state={dialog}
       title={"Express Interest"}
-      description={
-        "Choose the room you'd like to live in and we'll connect you with the landlord. FREE OF CHARGE."
-      }
+      description={"Choose the room you'd like to live in"}
       onChange={() => setDialog(!dialog)}
     >
       <ContactAgentDialogContent />
