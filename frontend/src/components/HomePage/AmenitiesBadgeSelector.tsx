@@ -23,7 +23,6 @@ function AmenitiesBadgeSelector({
       ? JSON.parse(saved)
       : [
           "wifi",
-          "study_desk",
           "multiple_bathrooms",
           "shared_kitchen",
           "refrigerator",
