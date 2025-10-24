@@ -117,7 +117,11 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.ScopedRateThrottle',
     ],
-    'DEFAULT_THROTTLE_RATES': {
+    
+}
+
+if not DEBUG:
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
         'listings': '100/day',
         'listing': '100/day',
         'dashboard_listings': '250/day',
@@ -126,7 +130,17 @@ REST_FRAMEWORK = {
         'anon': '50/hour',  # Global anonymous throttle
         'user': '1000/hour',  # Global authenticated throttle
     }
-}
+else:
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
+        'listings': '1000/hour',
+        'listing': '1000/hour',
+        'dashboard_listings': '1000/hour',
+        'rooms': '1000/hour',
+        'user_lookup': '1000/hour',
+        'anon': '1000/hour',  # Global anonymous throttle
+        'user': '1000/hour',  # Global authenticated throttle
+    }
+
 
 AUTH_USER_MODEL = 'users.User'
 
