@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/button";
 import {
-  useContactAgentDialogState,
+  useExpressInterestDialogState,
   useSelectedListingByStudent,
 } from "@/lib/hooks/store";
 import ListingAmenities from "./ListingAmenities";
@@ -21,7 +21,7 @@ type Props = {
 };
 
 function ListingCard({ listing }: Props) {
-  const { setEntities: setDialog } = useContactAgentDialogState();
+  const { setEntities: setDialog } = useExpressInterestDialogState();
   const { setEntities: setSelectedListing } = useSelectedListingByStudent();
 
   const [room, _] = useState(listing.rooms[0]);

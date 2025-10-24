@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ContactAgentDialog from "@/components/Listings/ContactAgentDialog";
+import ExpressInterestDialog from "../express-interest/ExpressInterestDialog";
 
 interface ListingClientProps {
   listing: any;
@@ -38,7 +39,8 @@ export default function ListingClient({
         </div>
       </main>
       {/* Express Interest Dialog */}
-      <ContactAgentDialog />
+      {/* <ContactAgentDialog /> */}
+      <ExpressInterestDialog />
     </div>
   );
 }

@@ -79,6 +79,7 @@ export const useUserDialogState = createEntityStore<boolean>(false);
  * @returns An entity store for the user dialog's open state.
  */
 export const useContactAgentDialogState = createEntityStore<boolean>(false);
+export const useExpressInterestDialogState = createEntityStore<boolean>(false);
 
 /**
  * Custom hook that creates and returns a store for managing the selected `Listing` entity by a student.

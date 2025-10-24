@@ -8,6 +8,7 @@ import Loader from "../Loader";
 import ListingSkeleton from "./ListingSkeleton";
 import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
+import ExpressInterestDialog from "@/components/express-interest/ExpressInterestDialog";
 
 type Props = {
   filterParamsURL: string;
@@ -88,7 +89,8 @@ function Listings({ filterParamsURL }: Props) {
         </div>
       </div>
       {/* Dialogs */}
-      <ContactAgentDialog />
+      {/* <ContactAgentDialog /> */}
+      <ExpressInterestDialog />
     </>
   );
 }
