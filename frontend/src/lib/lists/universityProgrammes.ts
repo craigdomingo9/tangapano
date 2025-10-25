@@ -112,5 +112,5 @@ export const universityProgrammes: Record<string, string[]> = {
     "Event Management",
     "Culinary Arts",
   ],
-  Others: ["Other Programmes"],
+  Other: ["Other Programmes"],
 };

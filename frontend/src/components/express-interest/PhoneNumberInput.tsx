@@ -43,7 +43,9 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
         className={error ? "border-red-500" : ""}
         data-testid="phone-input"
       />
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && (
+        <p className="text-red-500 border-destructive text-sm">{error}</p>
+      )}
     </>
   );
 };

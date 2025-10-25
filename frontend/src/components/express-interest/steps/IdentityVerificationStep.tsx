@@ -22,7 +22,7 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
   const canProceed = validationResult.isValid;
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    onUpdate({ [field]: value });
+    onUpdate({ [field]: value.trim() });
 
     // Real-time validation
     const newErrors = { ...errors };
@@ -33,7 +33,7 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
         error = ValidationService.validateFullName(value);
         break;
       case "studentId":
-        error = ValidationService.validateStudentId(value);
+        error = ValidationService.validateStudentId(value.trim());
         break;
       case "whatsappNumber":
         error = ValidationService.validateWhatsAppNumber(value);
