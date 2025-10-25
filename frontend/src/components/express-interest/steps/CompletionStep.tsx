@@ -58,7 +58,7 @@ export const CompletionStep: React.FC<CompletionStepProps> = ({
           Ready to Connect!
         </h3>
         <p className="text-gray-600 mt-2 text-sm">
-          Review your details before sending to the landlord
+          Review your details before sending to the operator
         </p>
       </div>
 
@@ -134,7 +134,6 @@ export const CompletionStep: React.FC<CompletionStepProps> = ({
               <li>• We'll open WhatsApp with a pre-filled message</li>
               <li>• Review and send the message to our operator</li>
               <li>• Our operator will refer you to the landlord</li>
-              <li>• Remember: You pay ZERO agent fees through TangaPano</li>
             </ul>
           </div>
         </CardContent>
