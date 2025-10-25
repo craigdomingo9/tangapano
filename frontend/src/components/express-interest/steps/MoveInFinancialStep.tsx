@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { StepProps } from "@/lib/types/express-interest";
 import { OptionSelectionCard } from "../OptionSelectionCard";
@@ -61,8 +60,10 @@ export const MoveInFinancialStep: React.FC<StepProps> = ({
 
   return (
     <div data-testid="move-in-financial-step">
-      <div className="text-center pt-4 pb-2 mb-4">
-        <h3 className="text-lg font-semibold">🎯 Timeline & Readiness</h3>
+      <div className="text-center pb-3">
+        <h3 className="text-lg font-semibold text-start">
+          🎯 Timeline & Readiness
+        </h3>
       </div>
       <div className="space-y-6">
         <OptionSelectionCard

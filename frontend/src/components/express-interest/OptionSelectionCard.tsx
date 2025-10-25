@@ -25,8 +25,8 @@ export const OptionSelectionCard: React.FC<OptionSelectionCardProps> = ({
 }) => {
   return (
     <Card>
-      <CardContent className="pt-6">
-        <h4 className="font-medium mb-4">{title}</h4>
+      <CardContent>
+        <h4 className="font-medium mb-4 text-gray-700">{title}</h4>
         <p className="text-sm text-gray-600 mb-4">{description}</p>
 
         <div
@@ -43,7 +43,7 @@ export const OptionSelectionCard: React.FC<OptionSelectionCardProps> = ({
               }`}
               data-testid={`option-${option.value}`}
             >
-              <div className="font-medium">{option.label}</div>
+              <div className="font-medium text-gray-800">{option.label}</div>
               {showDescriptions && option.description && (
                 <div className="text-sm text-gray-600 mt-1">
                   {option.description}

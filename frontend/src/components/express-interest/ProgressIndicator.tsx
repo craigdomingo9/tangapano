@@ -20,32 +20,17 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   const progress = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="space-y-2" data-testid="progress-indicator">
+    <div className="space-y-2 mx-4" data-testid="progress-indicator">
       <div className="flex justify-between text-sm text-gray-600">
-        <span>
+        <span className="font-semibold text-[var(--air-force-blue)]">
           Step {currentStep} of {totalSteps}
         </span>
-        <span>{STEPS[currentStep - 1]}</span>
+        <span className="font-semibold text-gray-700">
+          {STEPS[currentStep - 1]}
+        </span>
       </div>
 
       <Progress value={progress} className="w-full" />
-
-      {/* Visual Step Indicators */}
-      <div className="flex justify-center space-x-2">
-        {STEPS.slice(0, totalSteps).map((_, index) => (
-          <div
-            key={index}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              index + 1 === currentStep
-                ? "bg-blue-600"
-                : index + 1 < currentStep
-                ? "bg-green-500"
-                : "bg-gray-300"
-            }`}
-            aria-label={`Step ${index + 1}: ${STEPS[index]}`}
-          />
-        ))}
-      </div>
     </div>
   );
 };

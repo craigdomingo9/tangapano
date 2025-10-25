@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useSelectedListingByStudent } from "@/lib/hooks/store";
@@ -58,17 +57,19 @@ export const CompletionStep: React.FC<CompletionStepProps> = ({
         <h3 className="text-lg font-semibold text-green-700">
           Ready to Connect!
         </h3>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-600 mt-2 text-sm">
           Review your details before sending to the landlord
         </p>
       </div>
 
       <Card>
-        <CardContent className="pt-6 space-y-6">
+        <CardContent className="space-y-6">
           {/* Property & Room Info */}
           <div className="border-b pb-4">
-            <h4 className="font-semibold text-lg">{listingName}</h4>
-            <p className="text-gray-600">
+            <h4 className="font-semibold text-lg text-gray-700">
+              {listingName}
+            </h4>
+            <p className="text-gray-600 text-sm">
               {selectedListing.campus?.name} •{" "}
               {selectedListing.neighborhood?.name}
             </p>

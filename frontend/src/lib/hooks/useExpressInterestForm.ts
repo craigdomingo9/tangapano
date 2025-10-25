@@ -8,14 +8,14 @@ import { StorageService } from "../services/storageService";
 
 const INITIAL_FORM_DATA: FormData = {
   selectedRoomId: null,
-  moveInTimeline: "",
-  depositReadiness: "",
-  paymentMethod: "",
+  moveInTimeline: "immediately",
+  depositReadiness: "ready_now",
+  paymentMethod: "cash",
   fullName: "",
   studentId: "",
   whatsappNumber: "",
   program: "",
-  yearOfStudy: "",
+  yearOfStudy: "1",
   agreeToTerms: false,
 };
 
@@ -38,7 +38,7 @@ export const useExpressInterestForm = () => {
 
   const resetForm = useCallback(() => {
     setFormData(INITIAL_FORM_DATA);
-    StorageService.clearFormData();
+    // StorageService.clearFormData();
     setCurrentStep(1);
   }, []);
 

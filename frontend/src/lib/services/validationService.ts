@@ -10,7 +10,7 @@ export interface ValidationResult {
 
 export class ValidationService {
   static validateFullName(name: string): string | null {
-    if (!name || name.length < 2) {
+    if (!name || name.length < 2 || name.trim().split(" ").length < 2) {
       return "Please enter your full name";
     }
     return null;

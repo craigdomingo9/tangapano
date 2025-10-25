@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -60,20 +60,22 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
 
   return (
     <div className="space-y-6" data-testid="identity-verification-step">
-      <div className="text-center">
+      <div className="text-start">
         <h3 className="text-lg font-semibold">📋 Let's Get You Verified</h3>
       </div>
 
       <Card>
-        <CardContent className="pt-6 space-y-6">
+        <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="fullName">4. Full Legal Name</Label>
+            <Label htmlFor="fullName" className="text-gray-700">
+              4. Full Legal Name
+            </Label>
             <Input
               id="fullName"
               placeholder="As it appears on your student ID"
               value={formData.fullName}
               onChange={(e) => handleInputChange("fullName", e.target.value)}
-              className={errors.fullName ? "border-red-500" : ""}
+              className={errors.fullName ? "border-red-500" : "text-sm"}
               data-testid="full-name-input"
             />
             {errors.fullName && (
@@ -81,7 +83,7 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
             )}
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 text-gray-700">
             <Label htmlFor="studentId">5. Student ID Number</Label>
             <Input
               id="studentId"
@@ -90,7 +92,7 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
               onChange={(e) =>
                 handleInputChange("studentId", e.target.value.toUpperCase())
               }
-              className={errors.studentId ? "border-red-500" : ""}
+              className={errors.studentId ? "border-red-500" : "text-sm"}
               data-testid="student-id-input"
             />
             {errors.studentId && (
@@ -99,7 +101,9 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="whatsappNumber">6. WhatsApp Number</Label>
+            <Label htmlFor="whatsappNumber" className="text-gray-700">
+              6. WhatsApp Number
+            </Label>
             <PhoneNumberInput
               value={formData.whatsappNumber}
               onChange={(value) => handleInputChange("whatsappNumber", value)}

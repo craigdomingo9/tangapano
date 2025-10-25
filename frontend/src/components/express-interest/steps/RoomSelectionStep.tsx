@@ -29,12 +29,14 @@ export const RoomSelectionStep: React.FC<StepProps> = ({
 
   return (
     <div className="space-y-3" data-testid="room-selection-step">
-      <div className="text-center pt-4 pb-2 mb-4">
-        <h3 className="text-lg font-semibold">🏠 Select Your Preferred Room</h3>
+      <div className="text-center">
+        <h3 className="text-lg font-semibold text-start">
+          🏠 Select Your Preferred Room
+        </h3>
       </div>
 
       <Card>
-        <CardContent className="pt-2">
+        <CardContent>
           <div className="space-y-3 max-h-64 overflow-y-auto pr-2 scrollbar-hide">
             {rooms.length === 0 ? (
               <div className="text-center py-8 text-gray-500">

@@ -1,4 +1,3 @@
-// components/express-interest/steps/academic-information-step.tsx
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,12 +6,17 @@ import { FormData } from "@/lib/types/express-interest";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { universityProgrammes } from "@/lib/lists/universityProgrammes";
+import { Fragment } from "react";
 
 interface AcademicInformationStepProps {
   formData: FormData;
@@ -20,20 +24,6 @@ interface AcademicInformationStepProps {
   onNext: () => void;
   onBack: () => void;
 }
-
-const PROGRAMS = [
-  "Accounting",
-  "Business Management",
-  "Computer Science",
-  "Economics",
-  "Engineering",
-  "Law",
-  "Medicine",
-  "Nursing",
-  "Psychology",
-  "Sociology",
-  "Other",
-];
 
 export function AcademicInformationStep({
   formData,
@@ -46,40 +36,49 @@ export function AcademicInformationStep({
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
+      <div className="text-start">
         <h3 className="text-lg font-semibold">
           🎓 Final Step: Academic Details
         </h3>
       </div>
 
       <Card>
-        <CardContent className="pt-6 space-y-6">
+        <CardContent className="space-y-6">
           {/* Program Selection */}
-          <div className="space-y-2">
-            <Label htmlFor="program">7. Program of Study</Label>
+          <div className="w-full max-w-xs space-y-2 [&>*]:font-semibold [&>*]:text-gray-700">
+            <Label htmlFor="program" className="font-medium">
+              7. Program of Study
+            </Label>
             <Select
               value={formData.program}
               onValueChange={(value) => onUpdate({ program: value })}
             >
-              <SelectTrigger
-                id="program"
-                className="w-full focus-visible:border-indigo-500 focus-visible:ring-indigo-500/20 dark:focus-visible:ring-indigo-500/40"
-              >
+              <SelectTrigger id="program" className="w-full">
                 <SelectValue placeholder="Select program" />
               </SelectTrigger>
               <SelectContent>
-                {PROGRAMS.map((program) => (
-                  <SelectItem key={program} value={program}>
-                    {program}
-                  </SelectItem>
-                ))}
+                <SelectGroup>
+                  {Object.keys(universityProgrammes).map((category) => (
+                    <Fragment key={category}>
+                      <SelectLabel>{category}</SelectLabel>
+                      {universityProgrammes[category].map((programme) => (
+                        <SelectItem key={programme} value={programme}>
+                          {programme}
+                        </SelectItem>
+                      ))}
+                    </Fragment>
+                  ))}
+                </SelectGroup>
+                {Object.keys(universityProgrammes).length > 1 && (
+                  <SelectSeparator />
+                )}
               </SelectContent>
             </Select>
           </div>
 
           {/* Year of Study */}
           <fieldset className="w-full max-w-96 space-y-4">
-            <legend className="text-foreground text-sm leading-none font-medium">
+            <legend className="text-sm leading-none font-medium text-gray-700">
               Year of Study
             </legend>
             <RadioGroup
@@ -96,7 +95,7 @@ export function AcademicInformationStep({
                 <label
                   key={`${item.value}`}
                   className={cn(
-                    "border-input cursor-pointer has-data-[state=checked]:border-primary/80 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex flex-col items-center gap-3 rounded-md border px-2 py-3 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px] has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50",
+                    "border-input text-gray-700 cursor-pointer has-data-[state=checked]:border-primary/80 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex flex-col items-center gap-3 rounded-md border px-2 py-3 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px] has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50",
                     formData.yearOfStudy === item.value
                       ? "border-blue-500 bg-blue-50"
                       : "border-gray-200 hover:border-gray-300"
