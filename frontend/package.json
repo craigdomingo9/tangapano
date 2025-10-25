@@ -51,6 +51,7 @@
     "input-otp": "^1.4.2",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "lucide-react": "^0.525.0",
     "next": "15.3.5",
     "next-sitemap": "^4.2.3",
@@ -72,11 +73,13 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.20",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "9.32.0",
     "eslint-config-next": "15.4.4",
+    "lodash-webpack-plugin": "^0.11.6",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"

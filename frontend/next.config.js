@@ -1,3 +1,5 @@
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   output: "standalone",
@@ -24,6 +26,7 @@ module.exports = {
     ],
   },
   webpack: (config) => {
+    config.plugins.push(new LodashModuleReplacementPlugin());
     if (process.env.NODE_ENV === "development") {
       config.watchOptions = {
         poll: 2000,
@@ -54,4 +57,9 @@ module.exports = {
       },
     ];
   },
+  experimental: {
+    optimizePackageImports: ["lodash", "lodash-es"],
+  },
+  // Enable transpilation for lodash-es if needed
+  transpilePackages: ["lodash-es"],
 };

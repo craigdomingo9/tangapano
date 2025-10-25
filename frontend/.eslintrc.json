@@ -6,6 +6,23 @@
     "react/no-unescaped-entities": "off",
     "jsx-a11y/alt-text": "off",
     "react-hooks/exhaustive-deps": "off",
-    "react-hooks/rules-of-hooks": "off"
+    "react-hooks/rules-of-hooks": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "lodash",
+            "message": "Please import from '@/lib/lodash' for tree-shaking and consistent usage."
+          }
+        ],
+        "patterns": [
+          {
+            "group": ["lodash/*"],
+            "message": "Please import from '@/lib/lodash' for tree-shaking and consistent usage."
+          }
+        ]
+      }
+    ]
   }
 }
