@@ -19,6 +19,11 @@ const INITIAL_FORM_DATA: FormData = {
   agreeToTerms: false,
 };
 
+/**
+ * Custom Hook for Express Interest Form State Management and Data Persistence
+ *  @returns Form state and handlers
+ */
+
 export const useExpressInterestForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(() => {
@@ -37,8 +42,15 @@ export const useExpressInterestForm = () => {
   }, []);
 
   const resetForm = useCallback(() => {
-    setFormData(INITIAL_FORM_DATA);
-    // StorageService.clearFormData();
+    const savedData = StorageService.getFormData(); // Retain saved data for persistence
+    StorageService.setItem(StorageService.STORAGE_KEYS.INTEREST_FORM, {
+      ...savedData,
+      selectedRoomId: INITIAL_FORM_DATA.selectedRoomId,
+      moveInTimeline: INITIAL_FORM_DATA.moveInTimeline,
+      depositReadiness: INITIAL_FORM_DATA.depositReadiness,
+      paymentMethod: INITIAL_FORM_DATA.paymentMethod,
+      agreeToTerms: INITIAL_FORM_DATA.agreeToTerms,
+    });
     setCurrentStep(1);
   }, []);
 

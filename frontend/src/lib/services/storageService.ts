@@ -8,6 +8,10 @@ const STORAGE_KEYS = {
 } as const;
 
 export class StorageService {
+  // Storage Keys
+  static STORAGE_KEYS = STORAGE_KEYS;
+
+  // Generic storage methods
   static getItem<T>(key: string): T | null {
     try {
       const item = localStorage.getItem(key);

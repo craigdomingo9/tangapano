@@ -108,7 +108,10 @@ export const ExpressInterestDialogContent: React.FC<
   return (
     <StepContainer
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        resetForm();
+        onClose();
+      }}
       currentStep={currentStep}
       listingName={listingName}
     >

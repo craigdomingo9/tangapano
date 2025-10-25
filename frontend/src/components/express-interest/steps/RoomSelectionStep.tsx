@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { StepProps } from "@/lib/types/express-interest";
-import { useSelectedListingByStudent } from "@/lib/hooks/store";
+import {
+  useExpressInterestDialogState,
+  useSelectedListingByStudent,
+} from "@/lib/hooks/store";
+import { useEffect } from "react";
 
 /**
  * First step: Room selection from available rooms in the listing
@@ -13,6 +17,7 @@ export const RoomSelectionStep: React.FC<StepProps> = ({
   onNext,
 }) => {
   const { entities: selectedListing } = useSelectedListingByStudent();
+  const { entities: isDialogOpen } = useExpressInterestDialogState();
 
   const rooms = selectedListing?.rooms || [];
 
@@ -26,6 +31,12 @@ export const RoomSelectionStep: React.FC<StepProps> = ({
     const spotsLeft = room.max_occupants - room.current_occupants;
     return `${spotsLeft}/${room.max_occupants} spots open`;
   };
+
+  useEffect(() => {
+    if (!isDialogOpen || !rooms.length) return;
+
+    onUpdate({ selectedRoomId: rooms[0].id });
+  }, [isDialogOpen]);
 
   return (
     <div className="space-y-3" data-testid="room-selection-step">
@@ -44,7 +55,9 @@ export const RoomSelectionStep: React.FC<StepProps> = ({
               </div>
             ) : (
               rooms.map((room) => {
-                const isSelected = formData.selectedRoomId === room.id;
+                const isSelected =
+                  formData.selectedRoomId === room.id &&
+                  formData.selectedRoomId !== null;
 
                 return (
                   <div
