@@ -57,21 +57,19 @@ export function AcademicInformationStep({
                 <SelectValue placeholder="Select program" />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup>
-                  {Object.keys(universityProgrammes).map((category) => (
-                    <Fragment key={category}>
+                {Object.keys(universityProgrammes).map((category) => (
+                  <Fragment key={category}>
+                    <SelectGroup>
                       <SelectLabel>{category}</SelectLabel>
                       {universityProgrammes[category].map((programme) => (
                         <SelectItem key={programme} value={programme}>
                           {programme}
                         </SelectItem>
                       ))}
-                    </Fragment>
-                  ))}
-                </SelectGroup>
-                {Object.keys(universityProgrammes).length > 1 && (
-                  <SelectSeparator />
-                )}
+                    </SelectGroup>
+                    {category !== "Other" && <SelectSeparator />}
+                  </Fragment>
+                ))}
               </SelectContent>
             </Select>
           </div>
