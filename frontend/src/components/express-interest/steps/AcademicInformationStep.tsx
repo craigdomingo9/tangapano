@@ -53,7 +53,10 @@ export function AcademicInformationStep({
               value={formData.program}
               onValueChange={(value) => onUpdate({ program: value })}
             >
-              <SelectTrigger id="program" className="w-full">
+              <SelectTrigger
+                id="program"
+                className="w-full [&>span]:text-ellipsis max-w-3xs"
+              >
                 <SelectValue placeholder="Select program" />
               </SelectTrigger>
               <SelectContent>
@@ -62,7 +65,13 @@ export function AcademicInformationStep({
                     <SelectGroup>
                       <SelectLabel>{category}</SelectLabel>
                       {universityProgrammes[category].map((programme) => (
-                        <SelectItem key={programme} value={programme}>
+                        <SelectItem
+                          key={programme}
+                          value={programme}
+                          className="max-w-3xs truncate"
+                        >
+                          {/* {programme.slice(0, 22)}
+                          {programme.length > 22 ? "..." : ""} */}
                           {programme}
                         </SelectItem>
                       ))}

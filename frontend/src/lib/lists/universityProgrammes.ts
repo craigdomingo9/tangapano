@@ -9,7 +9,7 @@ export const universityProgrammes: Record<string, string[]> = {
     "International Business",
     "Supply Chain Management",
     "Economics",
-    "Risk Management & Insurance",
+    "Risk Management & Insurance Management & Audit Management",
     "Audit and Risk Management",
   ],
 
