@@ -22,7 +22,7 @@ export const IdentityVerificationStep: React.FC<StepProps> = ({
   const canProceed = validationResult.isValid;
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    onUpdate({ [field]: value.trim() });
+    onUpdate({ [field]: value });
 
     // Real-time validation
     const newErrors = { ...errors };
