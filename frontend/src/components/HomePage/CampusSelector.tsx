@@ -1,6 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 import SelectField from "./SelectField";
 import { useEffect, useMemo, useState } from "react";
+import { map, get, head, isEmpty } from "lodash-es";
 
 type Props = {
   form: UseFormReturn<any, any, any>;
@@ -28,24 +29,24 @@ function CampusSelector({
 }: Props) {
   const campusSelectionList: ListItem[] = useMemo(
     () =>
-      campuses?.map((campus) => ({
-        id: campus.id,
-        name: campus.name,
-      })) ?? [],
+      map(campuses, (campus: Campus) => ({
+        id: get(campus, "id", ""),
+        name: get(campus, "name", ""),
+      })),
     [campuses]
   );
 
   const [defaultCampus, setDefaultCampus] = useState<ListItem | undefined>();
 
   useEffect(() => {
-    if (onSearchPage && campusSelectionList.length > 0) {
-      setDefaultCampus(campusSelectionList[0]);
+    if (onSearchPage && !isEmpty(campusSelectionList)) {
+      setDefaultCampus(head(campusSelectionList));
     }
-  }, [campuses]);
+  }, [campuses, onSearchPage, campusSelectionList]);
 
-  const selectedValue = defaultValue ?? defaultCampus?.id.toString();
+  const selectedValue = defaultValue ?? get(defaultCampus, "id.toString()", "");
 
-  const resolvedPlaceholder = placeholder || defaultCampus?.name || "";
+  const resolvedPlaceholder = placeholder || get(defaultCampus, "name", "");
 
   return (
     <SelectField
@@ -56,7 +57,7 @@ function CampusSelector({
       selectionList={campusSelectionList}
       defaultValue={selectedValue}
       placeholder={resolvedPlaceholder}
-      disabled={campuses?.length === 0}
+      disabled={isEmpty(campuses)}
       selectClassName={`${selectClassName} [&>*]:text-black [&>*]:font-semibold [&>*]:text-gray-700`}
     />
   );

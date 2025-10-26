@@ -1,6 +1,7 @@
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import SelectField from "./SelectField"; // Assuming this path is correct for your SelectField component
+import SelectField from "./SelectField";
+import { find, filter, map, get, isEmpty, isEqual } from "lodash-es";
 
 type Props = {
   form: UseFormReturn<any, any, any>;
@@ -29,35 +30,39 @@ function NeighborhoodSelector({
   });
 
   const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
-  // Placeholder can be a derived value based on props, no need for useState
   const resolvedPlaceholder = source === "searchPage" ? "All" : placeholder;
 
   useEffect(() => {
     if (!selectedCampusId) return;
 
-    const campus = campuses?.find(
-      (c) => String(c.id) === String(selectedCampusId)
+    const campus = find(campuses, (c) =>
+      isEqual(String(c.id), String(selectedCampusId))
     );
-    const neighborhoods =
-      campus?.neighborhoods?.filter((n) =>
-        filterHasListings ? n.has_listings : n
-      ) ?? [];
-    setNeighborhoods(neighborhoods);
+
+    let filteredNeighborhoods = get(campus, "neighborhoods", []);
+
+    if (filterHasListings) {
+      filteredNeighborhoods = filter(filteredNeighborhoods, "has_listings");
+    }
+
+    setNeighborhoods(filteredNeighborhoods);
 
     // Only set default if no neighborhood is currently selected
     const currentNeighborhood = form.getValues("neighborhood");
-    if (!currentNeighborhood && neighborhoods.length > 0) {
-      form.setValue(
-        "neighborhood",
-        defaultValue || neighborhoods[0].id.toString()
+    if (isEmpty(currentNeighborhood) && !isEmpty(filteredNeighborhoods)) {
+      const defaultNeighborhoodId = get(
+        filteredNeighborhoods,
+        "[0].id.toString()",
+        defaultValue
       );
+      form.setValue("neighborhood", defaultNeighborhoodId);
     }
   }, [selectedCampusId, campuses, form, defaultValue, filterHasListings]);
 
   const neighborhoodsList = useMemo(() => {
-    const baseList = neighborhoods.map((n) => ({
-      id: n.id,
-      name: n.name,
+    const baseList = map(neighborhoods, (n) => ({
+      id: get(n, "id", ""),
+      name: get(n, "name", ""),
     }));
 
     // The 'All' option is now correctly added based on the 'source' prop.
@@ -67,6 +72,7 @@ function NeighborhoodSelector({
 
     return baseList;
   }, [neighborhoods, source]);
+
   return (
     <SelectField
       form={form}

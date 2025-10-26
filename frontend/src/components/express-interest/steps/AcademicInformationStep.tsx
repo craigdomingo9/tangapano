@@ -73,8 +73,6 @@ export function AcademicInformationStep({
                           value={programme}
                           className="max-w-[15rem] truncate"
                         >
-                          {/* {programme.slice(0, 22)}
-                          {programme.length > 22 ? "..." : ""} */}
                           {programme}
                         </SelectItem>
                       ))}
@@ -107,7 +105,7 @@ export function AcademicInformationStep({
                   className={cn(
                     "border-input text-gray-700 cursor-pointer has-data-[state=checked]:border-primary/80 has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex flex-col items-center gap-3 rounded-md border px-2 py-3 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px] has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50",
                     formData.yearOfStudy === item.value
-                      ? "border-blue-500 bg-blue-50"
+                      ? "border-blue-500 bg-blue-50 ring-blue-500"
                       : "border-gray-200 hover:border-gray-300"
                   )}
                 >
@@ -115,7 +113,7 @@ export function AcademicInformationStep({
                     id={`${item.value}`}
                     value={item.value}
                     className={cn(
-                      "sr-only after:absolute focus-visible:border-blue-500 focus-visible:bg-blue-50 after:inset-0 p-3 text-center rounded-lg border-2 transition-all"
+                      "sr-only after:absolute after:inset-0 p-3 text-center rounded-lg border-2 transition-all"
                     )}
                     aria-label={`size-radio-${item.value}`}
                   />
