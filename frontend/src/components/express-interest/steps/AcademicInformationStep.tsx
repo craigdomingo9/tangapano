@@ -57,7 +57,10 @@ export function AcademicInformationStep({
                 id="program"
                 className="w-full [&>span]:truncate [&>span]:max-w-3xs [&>span]:text-ellipsis max-w-3xs"
               >
-                <SelectValue placeholder="Select program" />
+                <SelectValue
+                  placeholder="Select program"
+                  className="truncate text-ellipsis"
+                />
               </SelectTrigger>
               <SelectContent>
                 {Object.keys(universityProgrammes).map((category) => (
