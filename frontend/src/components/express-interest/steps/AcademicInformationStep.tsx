@@ -55,7 +55,7 @@ export function AcademicInformationStep({
             >
               <SelectTrigger
                 id="program"
-                className="w-full [&>span]:text-ellipsis max-w-3xs"
+                className="w-full [&>span]:truncate [&>span]:max-w-3xs [&>span]:text-ellipsis max-w-3xs"
               >
                 <SelectValue placeholder="Select program" />
               </SelectTrigger>
