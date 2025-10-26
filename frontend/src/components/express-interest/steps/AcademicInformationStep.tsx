@@ -55,7 +55,7 @@ export function AcademicInformationStep({
             >
               <SelectTrigger
                 id="program"
-                className="w-full [&>span]:truncate [&>span]:max-w-3xs [&>span]:text-ellipsis max-w-3xs"
+                className="w-full [&>span]:truncate [&>span]:max-w-[15rem] [&>span]:text-ellipsis max-w-[15rem] grow-0 shrink-0"
               >
                 <SelectValue
                   placeholder="Select program"
@@ -71,7 +71,7 @@ export function AcademicInformationStep({
                         <SelectItem
                           key={programme}
                           value={programme}
-                          className="max-w-3xs truncate"
+                          className="max-w-[15rem] truncate"
                         >
                           {/* {programme.slice(0, 22)}
                           {programme.length > 22 ? "..." : ""} */}

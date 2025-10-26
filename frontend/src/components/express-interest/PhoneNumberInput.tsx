@@ -40,7 +40,7 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
         placeholder="0771 234 567"
         value={value}
         onChange={handleChange}
-        className={error ? "border-red-500" : ""}
+        className={error ? "border-red-500" : "text-sm"}
         data-testid="phone-input"
       />
       {error && (
