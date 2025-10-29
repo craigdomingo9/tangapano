@@ -28,24 +28,24 @@ function CampusSelector({
 }: Props) {
   const campusSelectionList: ListItem[] = useMemo(
     () =>
-      map(campuses, (campus: Campus) => ({
-        id: get(campus, "id", ""),
-        name: get(campus, "name", ""),
-      })),
+      campuses?.map((campus) => ({
+        id: campus.id,
+        name: campus.name,
+      })) ?? [],
     [campuses]
   );
 
   const [defaultCampus, setDefaultCampus] = useState<ListItem | undefined>();
 
   useEffect(() => {
-    if (onSearchPage && !isEmpty(campusSelectionList)) {
-      setDefaultCampus(head(campusSelectionList));
+    if (onSearchPage && campusSelectionList.length > 0) {
+      setDefaultCampus(campusSelectionList[0]);
     }
-  }, [campuses, onSearchPage, campusSelectionList]);
+  }, [campuses]);
 
-  const selectedValue = defaultValue ?? get(defaultCampus, "id.toString()", "");
+  const selectedValue = defaultValue ?? defaultCampus?.id.toString();
 
-  const resolvedPlaceholder = placeholder || get(defaultCampus, "name", "");
+  const resolvedPlaceholder = placeholder || defaultCampus?.name || "";
 
   return (
     <SelectField
@@ -56,7 +56,7 @@ function CampusSelector({
       selectionList={campusSelectionList}
       defaultValue={selectedValue}
       placeholder={resolvedPlaceholder}
-      disabled={isEmpty(campuses)}
+      disabled={campuses?.length === 0}
       selectClassName={`${selectClassName} [&>*]:text-black [&>*]:font-semibold [&>*]:text-gray-700`}
     />
   );
