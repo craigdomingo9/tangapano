@@ -82,7 +82,7 @@ function SelectField({
               ))}
             </SelectContent>
           </Select>
-          <FormMessage />
+          <FormMessage className="text-xs" />
         </FormItem>
       )}
     />

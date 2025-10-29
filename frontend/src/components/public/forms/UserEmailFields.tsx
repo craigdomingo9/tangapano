@@ -1,10 +1,11 @@
 import { axiosInstance } from "@/lib/services/api/config";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import createEntityStore from "@/lib/store/entityStore";
+import InputField from "./InputField";
 
 type Props = {
   form: UseFormReturn<any, any, any>;
@@ -38,49 +39,29 @@ function UserEmailFields({ form }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Email
-        </label>
-        <Input
-          type="email"
-          id="email"
-          {...form.register("email")}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="you@example.com"
+        <InputField
+          title="Email"
+          form={form}
+          fieldName="email"
+          placeholder="arnoldmukwati03@example.com"
         />
-        {form.formState.errors.email && (
-          <p className="mt-1 text-sm text-red-600">
-            {form.formState.errors.email.message as string}
-          </p>
-        )}
         {userExists && response?.data.field === "email" && (
-          <p className="mt-1 text-sm text-red-600">{response.data.message}</p>
+          <p className="text-destructive text-xs mt-2">
+            {response.data.message}
+          </p>
         )}
       </div>
       <div>
-        <label
-          htmlFor="username"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Username
-        </label>
-        <Input
-          type="text"
-          id="username"
-          {...form.register("username")}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="tinashedivi"
+        <InputField
+          title="Username"
+          form={form}
+          fieldName="username"
+          placeholder="arnoldmukwati"
         />
-        {form.formState.errors.username && (
-          <p className="mt-1 text-sm text-red-600">
-            {form.formState.errors.username.message as string}
-          </p>
-        )}
         {userExists && response?.data.field === "username" && (
-          <p className="mt-1 text-sm text-red-600">{response.data.message}</p>
+          <p className="text-destructive text-xs mt-2">
+            {response.data.message}
+          </p>
         )}
       </div>
     </div>

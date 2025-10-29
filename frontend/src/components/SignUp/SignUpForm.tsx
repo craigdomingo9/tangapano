@@ -18,9 +18,12 @@ import { MoonLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import UserEmailFields, { useUserExists } from "./UserEmailFields";
+import UserEmailFields, {
+  useUserExists,
+} from "../public/forms/UserEmailFields";
+import PasswordField from "../public/forms/PasswordField";
+import InputField from "../public/forms/InputField";
 
 function SignUpForm() {
   const router = useRouter();
@@ -98,9 +101,7 @@ function SignUpForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-center text-2xl text-[var(--lapis-lazuli)]">
-          Sign Up
-        </CardTitle>
+        <CardTitle className="text-center text-lg">Sign Up</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex justify-between mb-6 text-gray-500">
@@ -156,92 +157,42 @@ function SignUpForm() {
                 Step 1: Account Information
               </h3>
               <div>
-                <label
-                  htmlFor="first_name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  First Name
-                </label>
-                <Input
-                  type="text"
-                  id="first_name"
-                  {...form.register("first_name")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="John"
+                <InputField
+                  title="First Name"
+                  fieldName="first_name"
+                  form={form}
+                  placeholder="Arnold"
                 />
-                {form.formState.errors.first_name && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.first_name.message}
-                  </p>
-                )}
               </div>
               <div>
-                <label
-                  htmlFor="last_name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Last Name
-                </label>
-                <Input
-                  type="text"
-                  id="last_name"
-                  {...form.register("last_name")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="Doe"
+                <InputField
+                  title="Last Name"
+                  fieldName="last_name"
+                  form={form}
+                  placeholder="Mukwati"
                 />
-                {form.formState.errors.last_name && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.last_name.message}
-                  </p>
-                )}
               </div>
               {/* User and Email Fields */}
               <UserEmailFields form={form} />
 
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <Input
-                  type="password"
-                  id="password"
-                  {...form.register("password")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="••••••••"
+                <PasswordField
+                  title="Password"
+                  fieldName="password"
+                  form={form}
                 />
-                {form.formState.errors.password && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.password.message}
-                  </p>
-                )}
               </div>
               <div>
-                <label
-                  htmlFor="confirm_password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Confirm Password
-                </label>
-                <Input
-                  type="password"
-                  id="confirm_password"
-                  {...form.register("confirm_password")}
-                  className="mt-1 block w-full px-3 py-2"
-                  placeholder="••••••••"
+                <PasswordField
+                  title="Confirm Password"
+                  fieldName="confirm_password"
+                  form={form}
                 />
-                {form.formState.errors.confirm_password && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.confirm_password.message}
-                  </p>
-                )}
               </div>
               <Button
                 onClick={handleNext}
                 disabled={userExists}
-                className="w-full flex items-center justify-center py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
+                className="w-full flex items-center h-12 justify-center py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
               >
                 Next Step <ArrowRight size={20} />
               </Button>
@@ -254,44 +205,20 @@ function SignUpForm() {
                 Step 2: Landlord Details (Optional)
               </h3>
               <div>
-                <label
-                  htmlFor="company_name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Company Name
-                </label>
-                <Input
-                  type="text"
-                  id="company_name"
-                  {...form.register("company_name")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="e.g., Harare Student Homes Ltd."
+                <InputField
+                  title="Company Name"
+                  fieldName="company_name"
+                  form={form}
+                  placeholder="e.g., John Doe Company"
                 />
-                {form.formState.errors.company_name && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.company_name.message}
-                  </p>
-                )}
               </div>
               <div>
-                <label
-                  htmlFor="phone_number"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Phone Number
-                </label>
-                <Input
-                  type="text"
-                  id="phone_number"
-                  {...form.register("phone_number")}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="e.g., +263771234567 or 0771234567"
+                <InputField
+                  title="Phone Number"
+                  fieldName="phone_number"
+                  form={form}
+                  placeholder="e.g., +263 123 456 789"
                 />
-                {form.formState.errors.phone_number && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {form.formState.errors.phone_number.message}
-                  </p>
-                )}
               </div>
               <div>
                 <label
@@ -316,14 +243,14 @@ function SignUpForm() {
               <div className="flex justify-between gap-4">
                 <Button
                   onClick={handleBack}
-                  className="flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white"
+                  className="flex-1 h-12 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white"
                 >
                   <ArrowLeft size={20} /> Back
                 </Button>
                 <Button
                   type="submit"
                   disabled={mutation.isPending}
-                  className="flex-1 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white"
+                  className="flex-1 flex items-center h-12 justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white"
                 >
                   {mutation.isPending ? (
                     <MoonLoader color="white" size={15} />

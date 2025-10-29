@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { loginFormSchema } from "@/lib/services/forms/loginForm";
 import { Form } from "../ui/form";
-import InputField from "../universal/Form/Elements/InputField";
 import { useRouter } from "next/navigation";
 import { MoonLoader } from "react-spinners";
 import axios from "axios";
@@ -14,6 +13,8 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import InputField from "../public/forms/InputField";
+import PasswordField from "../public/forms/PasswordField";
 
 export function LoginForm({
   className,
@@ -44,7 +45,9 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">Login to your account</CardTitle>
+          <CardTitle className="text-center text-lg">
+            Login to your account
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -54,26 +57,22 @@ export function LoginForm({
                   <InputField
                     form={form}
                     fieldName="username"
-                    label="Username"
+                    title="Username"
                     placeholder="craigkd"
-                    defaultValue=""
                   />
                 </div>
                 <div className="grid gap-3">
-                  <InputField
+                  <PasswordField
                     form={form}
                     fieldName="password"
-                    label="Password"
-                    type="password"
-                    placeholder="**********"
-                    defaultValue=""
+                    title="Password"
                   />
                 </div>
                 <div className="flex flex-col gap-3">
                   <Button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="w-full"
+                    className="w-full h-12 text-sm"
                   >
                     {mutation.isPending ? (
                       <MoonLoader color="white" size={15} />
@@ -83,17 +82,24 @@ export function LoginForm({
                   </Button>
                 </div>
               </div>
-              <div className="mt-3 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link href="/signup" className="underline underline-offset-4">
+              <p className="text-sm text-gray-600 mt-3 text-center">
+                Don't have an account?{" "}
+                <Link
+                  href="/signup"
+                  className="text-sky-600 font-semibold hover:text-sky-700 hover:underline"
+                >
                   Sign up
                 </Link>
-              </div>
-              <div className="mt-2 text-center text-sm">
-                <Link href="/support" className="underline underline-offset-4">
+              </p>
+
+              <p className="text-sm mt-2 text-center">
+                <Link
+                  href="/support"
+                  className="text-gray-500 hover:text-gray-700 hover:underline"
+                >
                   Get Support
                 </Link>
-              </div>
+              </p>
             </form>
           </Form>
         </CardContent>
