@@ -1,7 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import SelectField from "./SelectField";
 import { useEffect, useMemo, useState } from "react";
-import { map, get, head, isEmpty } from "lodash-es";
 
 type Props = {
   form: UseFormReturn<any, any, any>;
