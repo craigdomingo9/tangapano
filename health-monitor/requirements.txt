@@ -1,0 +1,4 @@
+apscheduler
+PyYAML
+requests
+docker  # The Python Docker SDK

@@ -80,7 +80,8 @@ INSTALLED_APPS = [
     'users',
     'listings',
     'campuses',
-    'interests'
+    'interests',
+    'health',
 ] 
 
 

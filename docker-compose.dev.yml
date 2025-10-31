@@ -1,8 +1,8 @@
-name: Tangapano Development Environment
+name: Tangapano
 
 services:
   backend:
-    container_name: backend_dev
+    container_name: backend
     restart: always
     build:
       context: ./backend
@@ -27,7 +27,7 @@ services:
       - debug_toolbar_network
 
   frontend:
-    container_name: frontend_dev
+    container_name: frontend
     restart: always
     build:
       context: ./frontend
@@ -48,7 +48,7 @@ services:
 
   db:
     image: postgres:17
-    container_name: db_dev
+    container_name: db
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -61,7 +61,7 @@ services:
 
   pgbouncer:
     image: edoburu/pgbouncer:v1.24.0-p0
-    container_name: pgbouncer_dev
+    container_name: pgbouncer
     volumes:
       - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
       - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt
@@ -176,7 +176,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin_dev
+    container_name: pgadmin
     restart: always
     env_file:
       - .env

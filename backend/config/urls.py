@@ -22,6 +22,7 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('', include('django_prometheus.urls'), name="prometheus"),
+    path('health', include('health.urls')),
     path('api/admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
     path('api/campuses/', include('campuses.urls')),

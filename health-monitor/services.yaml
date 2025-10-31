@@ -1,0 +1,56 @@
+services:
+  # --- CHECK 1: The TCP Port (Process Health) - Backend ---
+  - name: "django-api-ping"
+    type: "ping"
+    check_target: "backend:8000"
+    restart_label: "com.tangapano.service=backend"
+    interval_seconds: 60
+    cooldown_seconds: 15
+
+  # --- CHECK 2: The HTTP Endpoint (Application Health) - Backend ---
+  - name: "django-api-http"
+    type: "http"
+    check_target: "http://backend:8000/health"
+    restart_label: "com.tangapano.service=backend"
+    interval_seconds: 90
+    cooldown_seconds: 15
+
+  # --- CHECK 3: The TCP Port (Process Health) - Frontend ---
+  - name: "nextjs-frontend"
+    type: "ping"
+    check_target: "frontend:3000"
+    restart_label: "com.tangapano.service=frontend"
+    interval_seconds: 60
+    cooldown_seconds: 15
+
+  # --- CHECK 4: The TCP Port (Process Health) - Database ---
+  - name: "postgres"
+    type: "ping"
+    check_target: "db:5432"
+    restart_label: "com.tangapano.service=db"
+    interval_seconds: 60
+    cooldown_seconds: 15
+
+  # --- CHECK 5: The TCP Port (Process Health) - Pgbouncer ---
+  - name: "pgbouncer"
+    type: "ping"
+    check_target: "pgbouncer:6432"
+    restart_label: "com.tangapano.service=pgbouncer"
+    interval_seconds: 60
+    cooldown_seconds: 15
+
+  # --- CHECK 6: The TCP Port (Process Health) - Cache ---
+  - name: "redis"
+    type: "ping"
+    check_target: "redis:6379"
+    restart_label: "com.tangapano.service=redis"
+    interval_seconds: 60
+    cooldown_seconds: 15
+
+  # --- CHECK 7: The TCP Port (Process Health) - Nginx ---
+  - name: "nginx"
+    type: "ping"
+    check_target: "nginx:80"
+    restart_label: "com.tangapano.service=nginx"
+    interval_seconds: 60
+    cooldown_seconds: 15

@@ -1,8 +1,7 @@
-name: Tangapano Production Environment
+name: Tangapano
 
 services:
   backend:
-    container_name: backend
     build:
       context: ./backend
       target: production
@@ -22,9 +21,10 @@ services:
     restart: always
     networks:
       - app_net
+    labels:
+      "com.tangapano.service": "backend"
 
   frontend:
-    container_name: frontend
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
@@ -39,10 +39,11 @@ services:
     restart: always
     networks:
       - app_net
+    labels:
+      "com.tangapano.service": "frontend"
 
   db:
     image: postgres:17
-    container_name: db
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
@@ -53,10 +54,11 @@ services:
     restart: unless-stopped
     networks:
       - app_net
+    labels:
+      "com.tangapano.service": "db"
 
   pgbouncer:
     image: edoburu/pgbouncer:v1.24.0-p0
-    container_name: pgbouncer
     volumes:
       - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
       - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt
@@ -69,9 +71,10 @@ services:
     networks:
       - app_net
     restart: unless-stopped
+    labels:
+      "com.tangapano.service": "pgbouncer"
 
   redis:
-    container_name: redis
     image: redis:8.2.1
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
@@ -84,10 +87,11 @@ services:
       - db
     networks:
       - app_net
+    labels:
+      "com.tangapano.service": "redis"
 
   redis-commander:
     image: rediscommander/redis-commander:latest
-    container_name: redis-commander
     environment:
       - REDIS_HOSTS=local:redis:6379
     ports:
@@ -97,9 +101,10 @@ services:
     restart: unless-stopped
     networks:
       - app_net
+    labels:
+      "com.tangapano.service": "redis-commander"
 
   pgadmin:
-    container_name: pgadmin
     image: dpage/pgadmin4
     env_file:
       - .env
@@ -110,10 +115,11 @@ services:
     restart: always
     networks:
       - app_net
+    labels:
+      "com.tangapano.service": "pgadmin"
 
   backup:
     build: ./backup
-    container_name: backup
     depends_on:
       - db
     env_file:
@@ -129,10 +135,11 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     profiles: ["backup"]
+    labels:
+      "com.tangapano.service": "backup"
 
   db-restore:
     build: ./restore
-    container_name: db_restore
     env_file:
       - .env
     depends_on:
@@ -144,10 +151,11 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     profiles: ["restore"]
+    labels:
+      "com.tangapano.service": "db-restore"
 
   images-restore:
     build: ./restore
-    container_name: images_restore
     env_file:
       - .env
     volumes:
@@ -159,13 +167,15 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     profiles: ["restore"]
+    labels:
+      "com.tangapano.service": "images-restore"
 
   nginx:
-    container_name: nginx
     image: nginx:stable-alpine
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf # dev
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - static_volume:/app/static
@@ -182,6 +192,8 @@ services:
     networks:
       - app_net
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    labels:
+      "com.tangapano.service": "nginx"
 
   certbot:
     image: certbot/certbot
@@ -192,9 +204,10 @@ services:
       - nginx
     command: "renew --webroot -w /var/www/certbot --quiet"
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done;'"
+    labels:
+      "com.tangapano.service": "certbot"
 
   prometheus:
-    container_name: prometheus
     image: prom/prometheus:latest
     ports:
       - "9000:9090"
@@ -214,9 +227,10 @@ services:
     networks:
       - app_net
     profiles: ["metrics"]
+    labels:
+      "com.tangapano.service": "prometheus"
 
   grafana:
-    container_name: grafana
     image: grafana/grafana:latest
     ports:
       - "9001:3000"
@@ -231,6 +245,30 @@ services:
     networks:
       - app_net
     profiles: ["metrics"]
+    labels:
+      "com.tangapano.service": "grafana"
+
+  # --- MONITOR SERVICE ---
+  health-monitor:
+    build: ./health-monitor
+    restart: always
+    volumes:
+      # 1. This is the "Docker-out-of-Docker" (DooD) magic:
+      #    It maps the host's Docker socket into the container,
+      #    giving the Python 'docker' library control over
+      #    its sibling containers.
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      # 2. Mount the config file so you can change it without rebuilding
+      - ./health-monitor/services.yaml:/app/services.yaml:ro
+
+      # 3. Mount the log file for persistence
+      - ./health-monitor/monitor.log:/app/monitor.log
+
+    networks:
+      - app_net
+    labels:
+      "com.tangapano.service": "health-monitor"
 
 volumes:
   postgres_data:
