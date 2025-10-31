@@ -197,7 +197,6 @@ services:
   cert-renewer:
     build:
       context: ./cert-renewer
-    container_name: cert-renewer-service
     volumes:
       # Share the same volumes
       - ./data/certbot/conf:/etc/letsencrypt
