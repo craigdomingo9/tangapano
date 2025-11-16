@@ -7,7 +7,7 @@ class ListingImageSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ListingImage
-        fields = ['id', 'image', 'display_image', 'caption', 'created_at', 'updated_at']
+        fields = ['id', 'image', 'is_face_image', 'display_image', 'caption', 'created_at', 'updated_at']
         read_only_fields = ('id', 'display_image', 'created_at', 'updated_at')
     
     def get_display_image(self, obj):
