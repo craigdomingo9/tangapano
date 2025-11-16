@@ -14,7 +14,11 @@ class ListingSerializer(serializers.ModelSerializer):
     campus = CampusSerializer(read_only=True)
     landlord = LandlordSerializer(read_only=True)
     neighborhood = NeighborhoodSerializer(read_only=True)
-    images = ListingImageSerializer(many=True, read_only=True)
+    images = ListingImageSerializer(
+        many=True, 
+        read_only=True, 
+        source='ordered_images'
+    )
 
     class Meta:
         model = Listing

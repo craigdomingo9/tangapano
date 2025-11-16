@@ -27,9 +27,7 @@ class Listing(models.Model):
         related_name="listings", 
         blank=True
     )
-    # Whether or not agent fee should be applied
     apply_agent_fee = models.BooleanField(default=True)
-    # Listing edit lock
     is_locked = models.BooleanField(default=False)
     distance_from_campus = models.FloatField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -40,15 +38,21 @@ class Listing(models.Model):
         verbose_name_plural = "Listings"
         ordering = ["-created_at"]
         indexes = [
-            # Primary composite index (covers both campus/neighborhood and activity)
             models.Index(
                 fields=['campus', 'neighborhood', 'is_active', 'created_at'],
                 name='listing_main_filter_idx'
             ),
-            
-            # Single index for created_at (used in ordering)
             models.Index(fields=['-created_at']),
         ]
 
     def __str__(self):
         return self.title
+
+    @property
+    def ordered_images(self):
+        """
+        Returns a queryset of all images for this listing,
+        with the face image (if any) appearing first.
+        """
+        return self.images.all().order_by('-is_face_image', 'created_at')
+
