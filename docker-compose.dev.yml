@@ -14,6 +14,7 @@ services:
     environment:
       - DJANGO_DEBUG=True
       - DJANGO_ENV=development
+      - ELASTICSEARCH_HOST=elasticsearch
     env_file:
       - .env
     ports:
@@ -142,6 +143,22 @@ services:
     networks:
       - app_net
 
+  # --- Elasticsearch Service ---
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    labels:
+      "com.tangapano.service": "elasticsearch"
+    networks:
+      - app_net
+
   redis-commander:
     image: rediscommander/redis-commander:latest
     container_name: redis-commander
@@ -228,6 +245,7 @@ services:
 
 volumes:
   postgres_data:
+  es_data:
   prometheus_data:
   grafana_data:
   static_volume:

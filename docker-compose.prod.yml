@@ -12,6 +12,8 @@ services:
       - DJANGO_DEBUG=False
       - DJANGO_ENV=production
       - PROMETHEUS_METRICS_EXPORT_PORT=8000
+      - ELASTICSEARCH_HOST=elasticsearch
+      - REBUILD_SEARCH_INDEX=on
     env_file:
       - .env
     ports:
@@ -89,6 +91,22 @@ services:
       - app_net
     labels:
       "com.tangapano.service": "redis"
+
+  # --- Elasticsearch Service ---
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=true
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    labels:
+      "com.tangapano.service": "elasticsearch"
+    networks:
+      - app_net
 
   redis-commander:
     image: rediscommander/redis-commander:latest
@@ -283,6 +301,7 @@ services:
 
 volumes:
   postgres_data:
+  es_data:
   prometheus_data:
   grafana_data:
   static_volume:
