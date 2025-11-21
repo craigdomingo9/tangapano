@@ -1,0 +1,16 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.py text
+*.js text
+*.html text
+*.css text
+
+# -------------------------------------------------------------------
+# FORCE UNIX LINE ENDINGS (LF) FOR SHELL SCRIPTS
+# -------------------------------------------------------------------
+# This is the critical part for Docker. It tells Git:
+# "Even if the user is on Windows, treat .sh files as Unix files."
+*.sh text eol=lf
