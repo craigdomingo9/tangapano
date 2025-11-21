@@ -1,99 +1,72 @@
-from django_filters import rest_framework as filters
-from listings.models import Listing, Room, Amenity
-from django.db.models import (
-    Count, 
-    OuterRef, 
-    Q, 
-    Count, 
-    Prefetch, 
-    OuterRef, 
-    Exists, 
-    F
-)
+from django_elasticsearch_dsl_drf.filter_backends import BaseSearchFilterBackend
+from elasticsearch_dsl.query import Q, Bool
 
+class RoomCompositeFilterBackend(BaseSearchFilterBackend):
+    """
+    Handles the complexity of finding a listing where ONE specific room
+    meets criteria A, B, C, and D simultaneously.
+    """
+    def filter_queryset(self, request, queryset, view):
+        params = request.query_params
+        must_conditions = []
 
-class ListingFilter(filters.FilterSet):
-    campus = filters.CharFilter(field_name='campus')
-    neighborhood = filters.CharFilter(field_name='neighborhood')
-    price_min = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='gte')
-    price_max = filters.NumberFilter(field_name='rooms__rent_per_month', lookup_expr='lte')
-    gender = filters.CharFilter(method='filter_gender', label='Gender')
-    max_occupants = filters.NumberFilter(field_name='rooms__max_occupants')
-    is_full = filters.BooleanFilter(method='filter_is_full')
-    amenities = filters.CharFilter(method='filter_amenities')
-    
-    class Meta:
-        model = Listing
-        fields = []
-    
-    def filter_is_full(self, queryset, name, value):
-        if value:
-            return queryset.filter(rooms__current_occupants__lt=F('max_occupants'))
-        return queryset
-    
-    def filter_gender(self, queryset, name, value):
-        return queryset.filter(rooms__gender_preference=value)
-    
-    def filter_amenities(self, queryset, name, value):
-        amenity_names = {a.strip() for a in value.split(',') if a.strip()}
+        # 1. Build the conditions
+        if 'price_min' in params:
+            must_conditions.append(Q('range', rooms__rent_per_month={'gte': params['price_min']}))
         
+        if 'price_max' in params:
+            must_conditions.append(Q('range', rooms__rent_per_month={'lte': params['price_max']}))
+            
+        if 'gender' in params:
+            must_conditions.append(Q('term', rooms__gender_preference=params['gender']))
+            
+        if 'max_occupants' in params:
+            must_conditions.append(Q('term', rooms__max_occupants=params['max_occupants']))
+            
+        if params.get('is_full') == 'true':
+            # Uses the pre-calculated boolean from Step 2
+            must_conditions.append(Q('term', rooms__has_vacancy=True))
+
+        if not must_conditions:
+            return queryset
+
+        # 2. Wrap in Nested Query
+        # "path='rooms'" tells ES to look inside the nested objects
+        nested_query = Q('nested', path='rooms', query=Bool(must=must_conditions))
+        
+        return queryset.query(nested_query)
+
+class AmenityDynamicMatchBackend(BaseSearchFilterBackend):
+    """
+    Replicates the Python math logic: 
+    matches listings containing ~33% of requested amenities.
+    """
+    def filter_queryset(self, request, queryset, view):
+        amenities_str = request.query_params.get('amenities')
+        if not amenities_str:
+            return queryset
+
+        amenity_names = [a.strip() for a in amenities_str.split(',') if a.strip()]
         if not amenity_names:
             return queryset
+
+        # Replicating your original logic:
+        # min_match_count = len // 3
+        length = len(amenity_names)
         
-        # Get amenities in single query
-        amenities = Amenity.objects.filter(name__in=amenity_names)
-        if not amenities.exists():
-            return queryset.none()
+        if length < 3:
+            # If user asks for 1 or 2 amenities, we usually require ALL of them
+            min_should_match = length
+        else:
+            denom = length // 3
+            min_should_match = int(length // denom) # This approximates your original math
 
-        min_match_count = len(amenity_names) // 3
-
-        # Create direct subquery for matching counts
-        return queryset.filter(
-            amenities__in=amenities
-        ).annotate(
-            match_count=Count('amenities')
-        ).filter(
-            match_count__gte=len(amenity_names) // min_match_count
-        ).order_by('-match_count')
-
-
-    def filter_queryset(self, queryset):
-        params = self.request.query_params
-        has_room_filters = any([
-            params.get('price_min'),
-            params.get('price_max'),
-            params.get('gender'),
-            params.get('max_occupants'),
-            params.get('is_full')
-        ])
-
-        if has_room_filters:
-            room_filter = Q()
-            if params.get('price_min'):
-                room_filter &= Q(rent_per_month__gte=params['price_min'])
-            if params.get('price_max'):
-                room_filter &= Q(rent_per_month__lte=params['price_max'])
-            if params.get('gender'):
-                room_filter &= Q(gender_preference=params['gender'])
-            if params.get('max_occupants'):
-                room_filter &= Q(max_occupants=params['max_occupants'])
-            if params.get('is_full'):
-                room_filter &= Q(current_occupants__lt=F('max_occupants'))
-
-            # Use subquery instead of JOINs for existence check
-            matching_rooms_subquery = Room.objects.filter(
-                listing_id=OuterRef('id'),
-            ).filter(room_filter)
-
-            queryset = queryset.annotate(
-                has_matching_rooms=Exists(matching_rooms_subquery)
-            ).filter(has_matching_rooms=True)
-
-            # Use prefetch only if needed for serialization
-            queryset = queryset.prefetch_related(
-                Prefetch('rooms', 
-                    queryset=Room.objects.filter(room_filter).order_by('rent_per_month')
-                )
-            )
-
-        return super().filter_queryset(queryset)
+        # 3. Construct the Query
+        should_conditions = [Q('term', amenities=name) for name in amenity_names]
+        
+        bool_query = Bool(
+            should=should_conditions,
+            minimum_should_match=min_should_match
+        )
+        
+        return queryset.query(bool_query)

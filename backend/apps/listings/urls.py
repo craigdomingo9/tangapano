@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from listings.views import (
     AmenityViewSet, 
     ListingImageViewSet, 
-    ListingAPIView, 
+    ListingSearchViewSet, 
     ListingRetrieveAPIView, 
     RoomViewSet, 
     LandlordListingViewSet
@@ -15,8 +15,9 @@ router.register(r'amenities', AmenityViewSet, basename='amenities')
 router.register(r'listing-images', ListingImageViewSet, basename='listing-images')
 router.register(r'landlord-listings', LandlordListingViewSet, basename='landlord-listings')
 router.register(r'rooms', RoomViewSet, basename='rooms')
+router.register(r'listings-search', ListingSearchViewSet, basename='listing-search')
 
 urlpatterns = [
-    path('listings/', ListingAPIView.as_view(), name='listings'),
+    # path('listings/', ListingAPIView.as_view(), name='listings'),
     path('listing/<int:pk>/', ListingRetrieveAPIView.as_view(), name='listing')
 ] + router.urls

@@ -1,44 +1,36 @@
 #!/bin/bash
-set -e
 
-# Run migrations first. This should always happen to keep the database schema in sync.
-echo "Running migrations..."
-python manage.py makemigrations
+# entrypoint.sh
+
+# 1. Wait for Database (Postgres example)
+# Adjust 'db' and '5432' if using a different database host/port
+echo "Waiting for Database..."
+while ! nc -z db 5432; do
+  sleep 0.5
+done
+echo "Database started"
+
+# 2. Wait for Elasticsearch
+# We check the actual HTTP status, not just the TCP port, 
+# because ES takes a few seconds to initialize internal Java processes.
+echo "Waiting for Elasticsearch..."
+until curl -s http://es:9200 >/dev/null; do
+    sleep 2
+done
+echo "Elasticsearch started"
+
+# 3. Standard Django Setup
+echo "Running Migrations..."
 python manage.py migrate
 
-# Define a marker file to check if the seeding has been completed.
-SEEDING_DONE_FILE_DEVELOPMENT="/app/.seeding_done_development"
-SEEDING_DONE_FILE_PRODUCTION="/app/.seeding_done_production"
+# 4. The Baked-in Populate Command
+# --rebuild: deletes and creates the index
+# -f: force (no "are you sure?" prompt)
+# We run this every time to ensure consistency between code and index.
+# For massive production datasets, you might move this to a separate cron job.
+echo "Rebuilding Search Index..."
+python manage.py search_index --rebuild -f
 
-
-
-if [ "$DJANGO_ENV" = "development" ]; then
-  if [ ! -f "$SEEDING_DONE_FILE_DEVELOPMENT" ]; then
-    echo "First-time setup: Seeding data..."
-
-    echo "Seeding development data..."
-    # python manage.py seed_campuses
-    python manage.py seed_production_data
-
-    python manage.py seed_listings --landlords=20 --listings=5
-    # Create the marker file to prevent this block from running again.
-    touch "$SEEDING_DONE_FILE_DEVELOPMENT"
-  fi
-fi
-
-if [ "$DJANGO_ENV" = "production" ]; then
-  if [ ! -f "$SEEDING_DONE_FILE_PRODUCTION" ]; then
-    echo "First-time setup: Seeding data..."
-
-    echo "Seeding production data..."
-    python manage.py seed_production_data
-
-    # Create the marker file to prevent this block from running again.
-    touch "$SEEDING_DONE_FILE_PRODUCTION"
-  fi
-fi
-
-
-# The "$@" command ensures the original command from the Dockerfile is executed.
-echo "Setup complete. Starting the application..."
-exec "$@"
+# 5. Start Server
+# echo "Starting Server..."
+# python manage.py runserver 0.0.0.0:8000

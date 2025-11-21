@@ -76,6 +76,8 @@ INSTALLED_APPS = [
     'django_prometheus',
     'debug_toolbar',
     'imagekit',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
     # apps
     'users',
     'listings',
@@ -84,6 +86,12 @@ INSTALLED_APPS = [
     'health',
 ] 
 
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': f"{os.environ.get('ELASTICSEARCH_HOST', 'localhost')}:9200"
+    },
+}
 
 
 MIDDLEWARE = [

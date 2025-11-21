@@ -1,56 +1,38 @@
-# Standard Library
-from rest_framework import generics
-from rest_framework import permissions
-from django_filters.rest_framework import DjangoFilterBackend
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.conf import settings
-from django.db.models import Prefetch
+# listings/views.py
 
-# Local
-from listings.serializers import ListingSerializer
-from listings.models import Listing
-from listings.pagination import StandardResultsSetPagination
-from listings.filters import ListingFilter
-from listings.filters import AliasedOrderingFilter
-from listings.models import Room, ListingImage
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from django_elasticsearch_dsl_drf.filter_backends import (
+    FilteringFilterBackend,
+    OrderingFilterBackend,
+    DefaultOrderingFilterBackend,
+)
+from .documents import ListingDocument
+from .serializers import ListingDocumentSerializer
+from .filters import RoomCompositeFilterBackend, AmenityDynamicMatchBackend
 
-
-
-
-class ListingAPIView(generics.ListAPIView):
-    """
-    A viewset for viewing
-    Supports filtering, pagination, and ordering by room price, distance, etc.
-    """
+class ListingSearchViewSet(DocumentViewSet):
+    document = ListingDocument
+    serializer_class = ListingDocumentSerializer
+    lookup_field = 'id'
     
-    queryset = Listing.objects.all().distinct()
-    serializer_class = ListingSerializer
-    permission_classes = [permissions.AllowAny]
-    pagination_class = StandardResultsSetPagination
-    filterset_class = ListingFilter
-    throttle_scope = "listings"
-    
+    # The order of backends is important!
     filter_backends = [
-        DjangoFilterBackend, 
-        AliasedOrderingFilter
+        FilteringFilterBackend,       # For standard exact matches
+        OrderingFilterBackend,        # For sorting
+        DefaultOrderingFilterBackend,
+        RoomCompositeFilterBackend,   # Our custom complex nested logic
+        AmenityDynamicMatchBackend,   # Our custom amenity logic
     ]
 
-    ordering_fields = ['price', 'distance']
-    
-    
-    def get_serializer_context(self):
-        return {'request': self.request}
-    
-    def get_queryset(self):
-        return Listing.objects.select_related(
-            'landlord', 'campus', 'neighborhood'
-        ).prefetch_related(
-            Prefetch('images', queryset=ListingImage.objects.select_related('listing'))
-        ).all()
-    
-    
-    @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='listings_list'))
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+    # Define standard fields for FilteringFilterBackend
+    filter_fields = {
+        'campus': 'campus',
+        'neighborhood': 'neighborhood',
+    }
+
+    # Define sorting
+    ordering_fields = {
+        'id': 'id',
+    }
+    ordering = ('id',)
     
