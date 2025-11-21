@@ -54,3 +54,11 @@ services:
     restart_label: "com.tangapano.service=nginx"
     interval_seconds: 60
     cooldown_seconds: 15
+
+  # --- CHECK 8: The TCP Port (Process Health) - ElasticSearch ---
+  - name: "elasticsearch"
+    type: "ping"
+    check_target: "elasticsearch:9200"
+    restart_label: "com.tangapano.service=elasticsearch"
+    interval_seconds: 60
+    cooldown_seconds: 15
