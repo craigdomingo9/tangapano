@@ -1,0 +1,124 @@
+from rest_framework import serializers
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from listings.documents import ListingDocument
+
+
+# 1. Create a Custom List Serializer
+class ListingListSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        # Process the list of data using the standard ListingDocumentSerializer logic
+        results = super().to_representation(data)
+        
+        # 2. The Filter Logic
+        # Iterate over the serialized results and keep ONLY listings
+        # that have at least one room.
+        cleaned_results = [
+            item for item in results 
+            if item.get('rooms') and len(item['rooms']) > 0
+        ]
+        
+        return cleaned_results
+    
+
+class ListingDocumentSerializer(DocumentSerializer):
+    # Passthrough fields (The Document has already formatted them as JSON)
+    landlord = serializers.DictField()
+    campus = serializers.DictField()
+    neighborhood = serializers.DictField()
+    images = serializers.ListField(child=serializers.DictField())
+    amenities = serializers.ListField(child=serializers.DictField())
+    rooms = serializers.SerializerMethodField()
+
+    class Meta:
+        document = ListingDocument
+        # This tells DRF: "When serializing a list (many=True), use this class"
+        list_serializer_class = ListingListSerializer
+        fields = (
+            'id',
+            'landlord',
+            'title',
+            'description',
+            'images',
+            'amenities',
+            'campus',
+            'neighborhood',
+            'apply_agent_fee',
+            'is_locked',
+            'distance_from_campus',
+            'is_active',
+            'rooms',
+            'created_at',
+            'updated_at'
+        )
+    
+    def get_rooms(self, obj):
+        """
+        Manually filter rooms based on the Query Params.
+        If we don't do this, ES returns ALL rooms for a matched listing.
+        """
+        all_rooms = []
+        if hasattr(obj, 'rooms'):
+            all_rooms = obj.rooms
+
+        # 1. Get Query Params from the View Context
+        request = self.context.get('request')
+        params = request.query_params if request else {}
+
+        filtered_rooms = []
+
+        for r in all_rooms:
+            # --- Filter: Vacancy (Default to showing only available rooms?) ---
+            # If is_full=false (or default logic), exclude full rooms
+            # Adjust logic: If user explicitly wants full rooms, show them. 
+            # Otherwise, hide full rooms.
+            if params.get('is_full') == 'false' or not params.get('is_full'):
+                if not r.has_vacancy:
+                    continue
+
+            # --- Filter: Price Min ---
+            if params.get('price_min'):
+                try:
+                    if r.rent_value < float(params['price_min']):
+                        continue
+                except (ValueError, TypeError):
+                    pass # Ignore invalid params
+
+            # --- Filter: Price Max ---
+            if params.get('price_max'):
+                try:
+                    if r.rent_value > float(params['price_max']):
+                        continue
+                except (ValueError, TypeError):
+                    pass
+
+            # --- Filter: Gender ---
+            if params.get('gender'):
+                # specific gender OR "mixed/any" logic if you have it
+                if r.gender_preference.lower() != params['gender'].lower():
+                    continue
+            
+            # --- Filter: Max Occupants ---
+            if params.get('max_occupants'):
+                try:
+                    if r.max_occupants != int(params['max_occupants']):
+                        continue
+                except (ValueError, TypeError):
+                    pass
+
+            # If it survived all checks, add to output
+            filtered_rooms.append({
+                'id': r.id,
+                'room_number': r.room_number,
+                'rent_value': r.rent_value,
+                'is_full': r.is_full,
+                'created_at': r.created_at,
+                'updated_at': r.updated_at,
+                'rent_per_month': r.rent_per_month,
+                'max_occupants': r.max_occupants,
+                'is_active': r.is_active,
+                'gender_preference': r.gender_preference,
+                'current_occupants': r.current_occupants,
+                'has_vacancy': r.has_vacancy
+            })
+
+        return filtered_rooms

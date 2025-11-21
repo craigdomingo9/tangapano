@@ -89,10 +89,9 @@ INSTALLED_APPS = [
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': f"{os.environ.get('ELASTICSEARCH_HOST', 'localhost')}:9200"
+        'hosts': f"http://{os.environ.get('ELASTICSEARCH_HOST', 'localhost')}:9200"
     },
 }
-
 
 MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
