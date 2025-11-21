@@ -89,7 +89,8 @@ INSTALLED_APPS = [
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': f"http://{os.environ.get('ELASTICSEARCH_HOST', 'localhost')}:9200"
+        'hosts': f"http://{os.environ.get('ELASTICSEARCH_HOST', 'localhost')}:9200",
+        'timeout': 90
     },
 }
 

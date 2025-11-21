@@ -4,7 +4,7 @@ services:
     type: "ping"
     check_target: "backend:8000"
     restart_label: "com.tangapano.service=backend"
-    interval_seconds: 60
+    interval_seconds: 180
     cooldown_seconds: 15
 
   # --- CHECK 2: The HTTP Endpoint (Application Health) - Backend ---
@@ -12,7 +12,7 @@ services:
     type: "http"
     check_target: "http://backend:8000/health"
     restart_label: "com.tangapano.service=backend"
-    interval_seconds: 90
+    interval_seconds: 300
     cooldown_seconds: 15
 
   # --- CHECK 3: The TCP Port (Process Health) - Frontend ---
@@ -60,5 +60,5 @@ services:
     type: "ping"
     check_target: "elasticsearch:9200"
     restart_label: "com.tangapano.service=elasticsearch"
-    interval_seconds: 60
-    cooldown_seconds: 15
+    interval_seconds: 600
+    cooldown_seconds: 180

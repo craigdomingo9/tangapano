@@ -13,7 +13,7 @@ ES_PORT=${ES_PORT:-9200}
 # 1. Wait for Database
 echo "Waiting for Postgres at $DB_HOST:$DB_PORT..."
 while ! nc -z $DB_HOST $DB_PORT; do
-  sleep 0.5
+  sleep 5
 done
 echo "Postgres started"
 
@@ -37,10 +37,11 @@ python manage.py migrate
 # 4. Search Index (Conditional)
 # Only rebuild if we specifically ask for it, OR if we are in Development mode.
 # Assuming you have a DEBUG env var (standard in Django)
-if [ "$REBUILD_SEARCH_INDEX" = "on" ]; then
-    echo "Rebuilding Search Index (Forced via Env Var)..."
-    python manage.py search_index --rebuild -f
-elif [ "$DJANGO_ENV" = "development" ]; then
+# if [ "$REBUILD_SEARCH_INDEX" = "on" ]; then
+    # echo "Rebuilding Search Index (Forced via Env Var)..."
+    # python manage.py search_index --rebuild -f
+# el
+if [ "$DJANGO_ENV" = "development" ]; then
     echo "Development mode detected: Rebuilding Search Index..."
     python manage.py search_index --rebuild -f
 else

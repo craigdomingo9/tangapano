@@ -98,13 +98,18 @@ services:
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
-      - xpack.security.enabled=true
+      - xpack.security.enabled=false
+      - xpack.ml.enabled=false     
+      - xpack.graph.enabled=false  
+      - xpack.watcher.enabled=false
     ports:
       - "9200:9200"
     volumes:
       - es_data:/usr/share/elasticsearch/data
     labels:
       "com.tangapano.service": "elasticsearch"
+    devices:
+      - /dev/urandom:/dev/random
     networks:
       - app_net
 
