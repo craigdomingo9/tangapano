@@ -291,8 +291,8 @@ services:
       # 2. Mount the config file so you can change it without rebuilding
       - ./health-monitor/services.yaml:/app/services.yaml:ro
 
-      # 3. Mount the log file for persistence
-      - ./health-monitor/monitor.log:/app/monitor.log
+      # 3. Mount the log folder for persistence
+      - .health-monitor/logs:/app/logs
 
     networks:
       - app_net
