@@ -5,7 +5,7 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Image, Link } from "lucide-react";
+import { Image } from "lucide-react";
 import { toast } from "sonner";
 
 type Props = {
@@ -21,6 +21,11 @@ function ListingImages({ listing, showLinkCopy }: Props) {
       .then(() => toast.success("Link has been copied to clipboard."))
       .catch(() => toast.error("Failed to copy link to clipboard."));
   }
+
+  // sort images by is_face_image first, then by display_image
+  listing.images.sort(
+    (a, b) => Number(b.is_face_image) - Number(a.is_face_image)
+  );
 
   return (
     <Carousel

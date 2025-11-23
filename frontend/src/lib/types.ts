@@ -53,6 +53,7 @@ interface Image {
   image: string;
   display_image: string;
   caption: string;
+  is_face_image: boolean;
 }
 
 interface Room {

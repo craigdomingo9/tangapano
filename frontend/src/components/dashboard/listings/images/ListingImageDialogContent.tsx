@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Trash2 } from "lucide-react";
 import DeleteExistingListingImage from "./DeleteExistingListingImage";
@@ -11,6 +12,8 @@ import {
   useSelectedListing,
   useSelectedListingImage,
 } from "@/lib/hooks/store";
+import { ListingImageCard } from "./ListingImageCard";
+import ListingImagesList from "./ListingImagesList";
 
 function ListingImageDialogContent() {
   const { entities: selectedListing } = useSelectedListing();
@@ -49,32 +52,12 @@ function ListingImageDialogContent() {
       ) : (
         <div className="space-y-4 max-h-80 overflow-y-auto items-center place-items-center pr-2 mt-4 grid">
           {images?.map((image) => (
-            <div
+            <ListingImageCard
               key={image.id}
-              className="relative cursor-pointer border border-gray-200 rounded-lg overflow-auto shadow-sm w-64"
-            >
-              <Avatar className="w-full h-32 rounded-none">
-                <AvatarImage src={image.image} />
-                <AvatarFallback className="rounded-md">
-                  {selectedListing.title}
-                </AvatarFallback>
-              </Avatar>
-              {image.caption && (
-                <p className="absolute bottom-0 left-0 right-0 bg-gray-500 text-white text-xs p-1 text-center">
-                  {image.caption}
-                </p>
-              )}
-              <button
-                className="absolute top-2 right-2 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full opacity-100 transition-opacity duration-200"
-                title="Delete Image"
-                onClick={() => {
-                  setOperation("delete");
-                  setSelectedListingImage(image);
-                }}
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
+              image={image}
+              onDelete={(id: string) => setOperation("delete")}
+              onSelectFace={(id: string) => setSelectedListingImage(image)}
+            />
           ))}
         </div>
       )}
@@ -88,7 +71,7 @@ function ListingImageDialogContent() {
       case "delete":
         return <DeleteExistingListingImage />;
       default:
-        return renderRoomList();
+        return <ListingImagesList />;
     }
   };
 
