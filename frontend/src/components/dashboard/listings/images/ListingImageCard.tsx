@@ -71,7 +71,7 @@ export const ListingImageCard: React.FC<ListingImageCardProps> = ({
           {image.is_face_image ? (
             <>
               <Icons.Star filled={true} />
-              <span>Face Img</span>
+              <span>Face Image</span>
             </>
           ) : (
             <>

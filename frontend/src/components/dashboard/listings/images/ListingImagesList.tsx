@@ -50,12 +50,22 @@ function ListingImagesList() {
   const images: Image[] = imagesRes?.data;
 
   function onDelete(id: string) {
+    const targetImage = images?.find((i) => i.id === id);
+
+    // Guard clause: If image isn't found, stop here.
+    if (!targetImage) return;
+
     setOperation("delete");
-    setSelectedListingImage(images?.find((i) => i.id === id)!);
+    setSelectedListingImage(targetImage);
   }
 
   async function onSelectFace(id: string) {
-    setSelectedListingImage(images?.find((i) => i.id === id)!);
+    const targetImage = images?.find((i) => i.id === id);
+
+    // Guard clause
+    if (!targetImage) return;
+
+    setSelectedListingImage(targetImage);
     await mutation.mutate(id);
   }
 
