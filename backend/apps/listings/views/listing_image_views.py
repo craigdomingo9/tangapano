@@ -16,7 +16,7 @@ class ListingImageViewSet(viewsets.ModelViewSet):
     ]
     
     def get_serializer_class(self):
-        if self.action in ["create", "update"]:
+        if self.action in ["create", "partial_update", "update"]:
             return ListingImageCreateSerializer
         return ListingImageSerializer
     

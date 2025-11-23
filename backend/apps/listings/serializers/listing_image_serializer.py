@@ -37,4 +37,5 @@ class ListingImageCreateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ListingImage
-        fields = ['listing', 'image', 'caption']
+        fields = ['listing', 'is_face_image', 'image', 'caption']
+
