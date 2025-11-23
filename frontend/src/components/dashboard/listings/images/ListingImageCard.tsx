@@ -1,6 +1,8 @@
 import { MoonLoader } from "react-spinners";
 import { Icons } from "./extras/Icons";
 import { useState } from "react";
+import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ListingImageCardProps {
   image: Image;
@@ -28,11 +30,12 @@ export const ListingImageCard: React.FC<ListingImageCardProps> = ({
     >
       {/* Image Container */}
       <div className="relative aspect-4/3 w-full bg-gray-100">
-        <img
-          src={image.display_image}
-          alt={image.caption}
-          className="w-full h-full object-cover"
-        />
+        <Avatar className="w-full h-full rounded-none">
+          <AvatarImage src={image.image} className="h-full w-full" />
+          <AvatarFallback className="rounded-md">
+            {image.caption.toUpperCase() || "Property Image"}
+          </AvatarFallback>
+        </Avatar>
 
         {/* Delete Button - Top Right */}
         <button
