@@ -27,14 +27,34 @@ services:
       - app_net
       - debug_toolbar_network
 
-  frontend:
-    container_name: frontend
+  # frontend:
+  #   container_name: frontend
+  #   restart: always
+  #   build:
+  #     context: ./frontend
+  #     target: development
+  #   volumes:
+  #     - ./frontend:/app
+  #     - node_modules_volume:/app/node_modules
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app_net
+
+  frontend_v2:
+    container_name: frontend_v2
     restart: always
     build:
-      context: ./frontend
+      context: ./frontend_v2
       target: development
     volumes:
-      - ./frontend:/app
+      - ./frontend_v2:/app
       - node_modules_volume:/app/node_modules
     ports:
       - "3000:3000"
@@ -42,6 +62,8 @@ services:
       - .env
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
     networks:
@@ -184,7 +206,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - frontend
+      # - frontend
       - backend
     restart: always
     networks:
