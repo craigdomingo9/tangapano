@@ -4,6 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* -------------------------- */
+  /* 1. System / Shadcn Colors  */
+  /* -------------------------- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -41,6 +44,37 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* -------------------------- */
+  /* 2. Brand Colors (Custom)   */
+  /* -------------------------- */
+
+  /* Crimson */
+  /* Maps to: bg-crimson, text-crimson-foreground */
+  --color-crimson: #880d1e;
+  --color-crimson-foreground: #ffffff;
+
+  /* Lapis Lazuli */
+  /* Maps to: bg-lapis, bg-lapis-hover, text-lapis-foreground */
+  --color-lapis: #0c6291;
+  --color-lapis-hover: #0a5075;
+  --color-lapis-foreground: #ffffff;
+
+  /* Air Force Blue */
+  /* Maps to: bg-airforce, bg-airforce-light, text-airforce-foreground */
+  --color-airforce: #4b89ab;
+  --color-airforce-light: #ecf4f8;
+  --color-airforce-foreground: #ffffff;
+
+  /* -------------------------- */
+  /* 3. Legacy Variable Aliases */
+  /* -------------------------- */
+  --color-ou-crimson: var(--ou-crimson);
+  --color-lapis-lazuli: var(--lapis-lazuli);
+  --color-air-force-blue: var(--air-force-blue);
+  /* Overrides the default 'font-sans' utility.
+    Matches: fontFamily: { sans: ["var(--font-inter)", "sans-serif"] } 
+  */
+  --font-sans: var(--font-inter), sans-serif;
 }
 
 :root {
@@ -76,6 +110,8 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  --font-inter: "Inter", sans-serif;
 }
 
 .dark {
