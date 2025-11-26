@@ -43,7 +43,7 @@ python manage.py migrate
 # el
 if [ "$DJANGO_ENV" = "development" ]; then
     echo "Development mode detected: Rebuilding Search Index..."
-    python manage.py search_index --rebuild -f
+    # python manage.py search_index --rebuild -f
 else
     echo "Skipping Search Index Rebuild (Production Safety)"
 fi
