@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   sticky?: boolean;
@@ -9,6 +10,7 @@ interface HeaderProps {
   variant: "student" | "business";
   containerClassName?: string;
   children: React.ReactNode;
+  logoLinkRoute?: string;
 }
 
 function Header({
@@ -16,8 +18,10 @@ function Header({
   className,
   containerClassName,
   variant = "student",
+  logoLinkRoute = "/student",
   children,
 }: HeaderProps) {
+  const router = useRouter();
   const isBusiness = variant === "business";
   const { setTheme, theme } = useTheme();
   const isDark = theme === "dark";
@@ -64,7 +68,10 @@ function Header({
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-3 group hover:cursor-pointer">
+            <div
+              className="flex items-center gap-3 group hover:cursor-pointer"
+              onClick={() => router.push(logoLinkRoute)}
+            >
               <div className="flex flex-col">
                 <span className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-none drop-shadow-md">
                   TangaPano

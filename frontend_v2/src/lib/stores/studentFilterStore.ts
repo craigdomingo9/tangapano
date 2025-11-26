@@ -16,7 +16,7 @@ const useStudentFilters = createEntityStore<StudentFilters>({
   selectedPerks: [],
   minPrice: 60,
   maxPrice: 150,
-  roommates: 1,
+  roommates: 2,
   gender: "female",
 });
 

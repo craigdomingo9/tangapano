@@ -29,29 +29,51 @@ export function parseSearchParams(params: {
     return ""; // Default to empty string
   };
 
-  // --- Helper 4: Handle Nullable Strings (Gender) ---
-  const parseNullableString = (
-    val: string | string[] | undefined
-  ): string | null => {
-    if (typeof val === "string") return val;
-    if (Array.isArray(val) && val.length > 0) return val[0];
-    return null;
-  };
-
   return {
     // 1. Explicitly map every field. Do not use ...params
     campus: parseString(params.campus),
     neighborhood: parseString(params.neighborhood),
 
     // 2. Correctly map specific keys to their logic
-    selectedPerks: parseArray(params.perks), // assuming URL is ?perks=wifi
+    selectedPerks: parseArray(params.amenities), // assuming URL is ?perks=wifi
 
-    minPrice: parseNumber(params.min),
-    maxPrice: parseNumber(params.max),
-    roommates: parseNumber(params.roommates),
+    minPrice: parseNumber(params.price_min),
+    maxPrice: parseNumber(params.price_max),
+    roommates: parseNumber(params.max_occupants),
 
-    gender: parseNullableString(params.gender),
+    gender: params.gender as "male" | "female",
 
     page: parseNumber(params.page) || 1,
   };
+}
+
+export function hasActiveFilters(filters: StudentFilters): boolean {
+  return (
+    !!filters.campus ||
+    !!filters.neighborhood ||
+    filters.selectedPerks.length > 0 ||
+    filters.minPrice !== null ||
+    filters.maxPrice !== null ||
+    filters.roommates !== null ||
+    !!filters.gender
+  );
+}
+
+export function hasNoParams(params: {
+  [key: string]: string | string[] | undefined;
+}): boolean {
+  // Check if params object is empty or has no meaningful values
+  const keys = Object.keys(params);
+
+  if (keys.length === 0) return true;
+
+  // Check if all values are empty/undefined
+  return keys.every((key) => {
+    const value = params[key];
+    return (
+      value === undefined ||
+      value === "" ||
+      (Array.isArray(value) && value.length === 0)
+    );
+  });
 }
