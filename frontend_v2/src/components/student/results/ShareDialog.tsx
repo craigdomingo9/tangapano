@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Check, Copy, Share, XIcon } from "lucide-react";
+import { Check, Copy, Share2, XIcon } from "lucide-react";
 import { useState } from "react";
 
 interface ShareDialogProps {
@@ -18,7 +18,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
   if (!isOpen || !listing) return null;
 
   // Simulate a public URL for the listing
-  const shareUrl = `https://tangapano.com/view/${listing.id}`;
+  const shareUrl = `https://tangapano.co.zw/listing/${listing.id}`;
 
   const handleCopy = async () => {
     try {
@@ -43,20 +43,20 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors z-10"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors z-10 cursor-pointer"
         >
           <XIcon className="w-5 h-5" />
         </button>
 
         <div className="pt-8 pb-4 px-6 text-center border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
           <div className="mx-auto w-12 h-12 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center shadow-sm mb-3 border border-slate-100 dark:border-slate-700 text-lapis dark:text-sky-400">
-            <Share className="w-6 h-6" />
+            <Share2 className="w-6 h-6" />
           </div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white">
             Share Property
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-            Share this listing with prospective tenants.
+            Share this listing with friends.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
               </div>
               <Button
                 onClick={handleCopy}
-                className={`shrink-0 min-w-[100px] transition-all ${
+                className={`shrink-0 min-w-[100px] transition-all cursor-pointer ${
                   copied
                     ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                     : "bg-lapis hover:bg-lapis-hover dark:bg-sky-600 dark:hover:bg-sky-500 text-white"
@@ -98,7 +98,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
           <div className="pt-2">
             <Button
               variant="brandOutline"
-              className="w-full dark:border-sky-700 dark:text-sky-400 dark:hover:bg-sky-900/20 dark:bg-slate-900"
+              className="w-full dark:border-sky-700 dark:text-sky-400 dark:hover:bg-sky-900/20 dark:bg-slate-900 cursor-pointer"
               onClick={onClose}
             >
               Done
