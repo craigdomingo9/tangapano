@@ -5,7 +5,7 @@
 
 @theme inline {
   /* -------------------------- */
-  /* 1. System / Shadcn Colors  */
+  /* System / Shadcn Colors  */
   /* -------------------------- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,8 +44,26 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   /* -------------------------- */
-  /* 2. Brand Colors (Custom)   */
+  /* Text Sizes (Custom)   */
+  /* -------------------------- */
+  --text-xxs: 0.625rem; /* 10px */
+  --text-xsm: 0.8rem; /* 14px */
+
+  /* -------------------------- */
+  /* App Colors (Shadcn)   */
+  /* -------------------------- */
+  --color-app-bg: #020617; /* Slate 950 */
+  --color-app-header: #0f172a; /* Slate 900 */
+  --color-app-surface: #0f172a; /* Slate 900 */
+  --color-app-input: #1e293b; /* Slate 800 */
+  --color-app-accent: #3b82f6; /* Blue 500 */
+  --color-app-text: #f8fafc; /* Slate 50 */
+  --color-app-muted: #94a3b8; /* Slate 400 */
+
+  /* -------------------------- */
+  /* Brand Colors (Custom)   */
   /* -------------------------- */
 
   /* Crimson */
@@ -66,7 +84,7 @@
   --color-airforce-foreground: #ffffff;
 
   /* -------------------------- */
-  /* 3. Legacy Variable Aliases */
+  /* Legacy Variable Aliases */
   /* -------------------------- */
   --color-ou-crimson: var(--ou-crimson);
   --color-lapis-lazuli: var(--lapis-lazuli);

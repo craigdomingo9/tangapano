@@ -10,14 +10,19 @@ export interface StudentFilters {
   gender: "female" | "male";
 }
 
-const useStudentFilters = createEntityStore<StudentFilters>({
-  campus: null,
-  neighborhood: null,
-  selectedPerks: [],
-  minPrice: 60,
-  maxPrice: 150,
-  roommates: 2,
-  gender: "female",
-});
+const useStudentFilters = createEntityStore<StudentFilters>(
+  {
+    campus: null,
+    neighborhood: null,
+    selectedPerks: [],
+    minPrice: 60,
+    maxPrice: 150,
+    roommates: 2,
+    gender: "female",
+  },
+  {
+    name: "student-filters",
+  }
+);
 
 export default useStudentFilters;

@@ -47,6 +47,12 @@ export function parseSearchParams(params: {
   };
 }
 
+export function hasExpressParams(params: {
+  [key: string]: string | string[] | undefined;
+}): boolean {
+  return params.expressInterest === "true" && params.listing !== undefined;
+}
+
 export function hasActiveFilters(filters: StudentFilters): boolean {
   return (
     !!filters.campus ||

@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import DarkThemeToggle from "../ui/DarkThemeToggle";
 
 interface HeaderProps {
   sticky?: boolean;
@@ -23,12 +24,6 @@ function Header({
 }: HeaderProps) {
   const router = useRouter();
   const isBusiness = variant === "business";
-  const { setTheme, theme } = useTheme();
-  const isDark = theme === "dark";
-
-  function toggleTheme() {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }
 
   return (
     <header
@@ -76,7 +71,7 @@ function Header({
                 <span className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-none drop-shadow-md">
                   TangaPano
                 </span>
-                <span className="text-white/80 text-xs font-bold tracking-wide mt-0.5 uppercase opacity-90">
+                <span className="text-white/80 text-[0.675rem] sm:text-xs font-bold tracking-wide mt-0.5 uppercase opacity-90">
                   Student Housing
                 </span>
               </div>
@@ -86,22 +81,7 @@ function Header({
 
         {/* Actions Section */}
         <div className="flex items-center gap-4 sm:gap-6">
-          <button
-            onClick={toggleTheme}
-            className={cn(
-              "p-2 rounded-full transition-colors hover:cursor-pointer",
-              isBusiness
-                ? "text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-                : "text-white/80 hover:bg-white/10"
-            )}
-            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          >
-            {isDark ? (
-              <Sun className="w-5 h-5" />
-            ) : (
-              <Moon className="w-5 h-5" />
-            )}
-          </button>
+          <DarkThemeToggle />
           {children}
         </div>
       </div>

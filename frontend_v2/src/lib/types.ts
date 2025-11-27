@@ -88,3 +88,17 @@ type Listing = {
   created_at: string;
   updated_at: string;
 };
+
+interface Interest {
+  room: any;
+  contacted_agent: string;
+  full_name: string;
+  student_id: string;
+  phone_number: string;
+  year_of_study: string;
+  program: string;
+  move_in_timeline: "immediately" | "2_weeks" | "1_month" | "next_semester";
+  deposit_readiness: "ready_now" | "within_24h" | "need_time";
+  payment_method: "cash" | "mobile" | "bank_transfer";
+  agree_to_terms: boolean;
+}

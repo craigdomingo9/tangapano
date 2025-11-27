@@ -1,7 +1,6 @@
 import { AxiosError } from "axios";
 import { axiosInstance } from "./config";
 
-// 1. Standalone fetcher that works on Server and Client
 export const fetchListings = async ({
   pageParam = 1,
   queryString,
@@ -19,5 +18,14 @@ export const fetchListings = async ({
       throw new Error(`Failed to fetch properties: ${error.message}`);
     }
     throw error;
+  }
+};
+
+export const fetchListingById = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`/listings/listing/${id}/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to fetch listing ${id}`);
   }
 };

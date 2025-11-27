@@ -10,7 +10,7 @@ export default function useListings(params: string) {
     queryFn: ({ pageParam }) =>
       fetchListings({ pageParam, queryString: params }),
 
-    staleTime: Infinity,
+    staleTime: 1000 * 60 * 20,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       if (!allPages) return undefined;

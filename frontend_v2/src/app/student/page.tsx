@@ -1,4 +1,5 @@
 import { SearchPageWrapper } from "@/components/student/SearchPageWrapper";
+import ExpressInterest from "@/components/student/interest/ExpressInterest";
 import SearchPortal from "@/components/student/portal/SearchPortal";
 import SearchResults from "@/components/student/results/SearchResults";
 import { Metadata } from "next";
@@ -18,6 +19,7 @@ async function Page({
       searchParams={searchParams}
       PortalComponent={SearchPortal}
       ResultsComponent={SearchResults}
+      InterestComponent={ExpressInterest}
     />
   );
 }

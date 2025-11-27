@@ -11,6 +11,7 @@ import ResultsGrid from "./ResultsGrid";
 import LoadMoreButton from "./LoadMoreButton";
 import EndOfResults from "./states/EndOfResults";
 import EmptyState from "./states/EmptyState";
+import useStudentFilters from "@/lib/stores/studentFilterStore";
 
 interface SearchResultsProps {
   queryString: string;
@@ -26,6 +27,7 @@ function SearchResultsClient({ queryString }: SearchResultsProps) {
     hasNextPage,
     isFetchingNextPage,
   } = useListings(queryString);
+  const { reset } = useStudentFilters();
 
   const router = useRouter();
 
@@ -49,6 +51,7 @@ function SearchResultsClient({ queryString }: SearchResultsProps) {
   }
 
   function onClearSearch() {
+    reset();
     router.push("/student");
   }
 

@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y libc6-dev && rm -rf /var/lib/apt/lists/
 # ---------- Dependencies (New Stage) ----------
 # This stage exists solely to cache dependencies
 FROM base AS deps
-COPY package.json ./
+COPY package.json package-lock.json ./
 
 # 1. Use --mount to cache the npm cache directory (/root/.npm)
 # 2. Use 'npm ci' instead of 'npm install' for exact version matching from lockfile
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM base AS development
 # Enable polling for hot reload (Critical for Docker on Windows/Mac)
 ENV WATCHPACK_POLLING=true
-ENV CHOKIDAR_USEPOLLING=true
+
 ENV NODE_ENV=development
 
 # Copy node_modules from the cached deps stage

@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/providers/react-query-providers";
 import { ThemeProvider } from "@/providers/theme-provider";
+import localFont from "next/font/local";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+// 2. Configure the local font
+const inter = localFont({
+  src: "../fonts/Inter-Variable.ttf",
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "TangaPano",
