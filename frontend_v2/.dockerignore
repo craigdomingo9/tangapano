@@ -1,5 +1,32 @@
+# Dependencies
 node_modules
+npm-debug.log
+
+# Next.js build output
 .next
-dist
+
+# Git metadata (can be huge)
 .git
-.pnpm-store
+.gitignore
+
+# Environment variables (SECURITY RISK if copied into image)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker configuration files (usually not needed inside the container)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDE/Editor specifics
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db

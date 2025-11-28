@@ -1,7 +1,9 @@
-import { Image, Share2 } from "lucide-react";
+import { Image as ImageIcon, Share2 } from "lucide-react";
 import CarouselControls from "./CarouselControls";
 import PaginationDots from "./PaginationDots";
 import ImageOverlay from "./ImageOverlay";
+import Image from "next/image";
+import myImageLoader from "@/lib/images/image-loader";
 
 interface ImageCarouselProps {
   images: any[];
@@ -29,14 +31,17 @@ export default function ImageCarousel({
     <div className="relative aspect-16/10 bg-slate-100 dark:bg-slate-800 overflow-hidden">
       {/* Image Display */}
       {currentImage ? (
-        <img
+        <Image
           src={currentImage.display_image}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-700"
+          loader={myImageLoader}
+          width={100}
+          height={100}
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
-          <Image className="w-12 h-12" />
+          <ImageIcon className="w-12 h-12" />
         </div>
       )}
 

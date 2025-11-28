@@ -19,10 +19,6 @@ RUN --mount=type=cache,target=/root/.npm \
 
 # ---------- Development ----------
 FROM base AS development
-# Enable polling for hot reload (Critical for Docker on Windows/Mac)
-ENV WATCHPACK_POLLING=true
-
-ENV NODE_ENV=development
 
 # Copy node_modules from the cached deps stage
 COPY --from=deps /app/node_modules ./node_modules
@@ -34,7 +30,7 @@ COPY . .
 # Fix permissions for Next.js cache
 RUN mkdir -p /app/.next && chmod -R 777 /app/.next
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev", "--", "--turbopack"]
 
 # ---------- Builder ----------
 FROM base AS builder

@@ -47,27 +47,30 @@ services:
   #   networks:
   #     - app_net
 
-  frontend_v2:
-    container_name: frontend_v2
-    restart: always
-    build:
-      context: ./frontend_v2
-      target: development
-    volumes:
-      - ./frontend_v2:/app
-      - node_modules_volume:/app/node_modules
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - WATCHPACK_POLLING=true
-      - CHOKIDAR_USEPOLLING=true
-    depends_on:
-      - backend
-    networks:
-      - app_net
+  # frontend_v2:
+  #   container_name: frontend_v2
+  #   restart: always
+  #   build:
+  #     context: ./frontend_v2
+  #     target: development
+  #   volumes:
+  #     - ./frontend_v2:/app
+  #     - node_modules_volume:/app/node_modules
+  #     # Persists the Next.js build cache so restarts are faster
+  #     - /app/.next
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - WATCHPACK_POLLING=true
+  #     - CHOKIDAR_USEPOLLING=true
+  #     - NODE_ENV=development
+  #     - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app_net
 
   db:
     image: postgres:17
@@ -272,7 +275,7 @@ volumes:
   grafana_data:
   static_volume:
   media_volume:
-  node_modules_volume:
+  # node_modules_volume:
   redis_data:
 
 networks:
