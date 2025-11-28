@@ -4,12 +4,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 import { axiosInstance } from "@/lib/api/config";
-import { RegisterSchema } from "@/lib/validations/partner-signup";
 import { PartnerSignupDataStore } from "@/lib/stores/partnerSignupDataStore";
+import { registrationSchema } from "@/lib/validations/partner-signup";
 
 export async function signup(rawData: PartnerSignupDataStore, domain?: string) {
   // 1. Validate Input
-  const validatedFields = RegisterSchema.safeParse(rawData);
+  const validatedFields = registrationSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
     return {

@@ -5,7 +5,7 @@ import { FullScreenView } from "@/components/ui/FullScreenView";
 import ListingNotFound from "./states/ListingNotFound";
 import LoadingScreen from "./states/LoadingScreen";
 import StepsOrchestrator from "./StepsOrchestrator";
-import DarkThemeToggle from "@/components/ui/DarkThemeToggle";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function ExpressInterestView({
   listingId,
@@ -32,7 +32,7 @@ export default function ExpressInterestView({
     <FullScreenView
       title={`Express Interest ${isSuccess && "in " + listing.title}`}
       onBack={() => window.history.back()}
-      action={<DarkThemeToggle className="text-slate-900 dark:text-white/80" />}
+      action={<ThemeToggle className="text-slate-900 dark:text-white/80" />}
     >
       <StepsOrchestrator listing={listing} />
     </FullScreenView>

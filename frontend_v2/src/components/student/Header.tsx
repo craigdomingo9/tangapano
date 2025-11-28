@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import DarkThemeToggle from "../ui/DarkThemeToggle";
+import ThemeToggle from "../ui/ThemeToggle";
 
 interface HeaderProps {
   sticky?: boolean;
@@ -81,7 +81,7 @@ function Header({
 
         {/* Actions Section */}
         <div className="flex items-center gap-4 sm:gap-6">
-          <DarkThemeToggle />
+          <ThemeToggle />
           {children}
         </div>
       </div>

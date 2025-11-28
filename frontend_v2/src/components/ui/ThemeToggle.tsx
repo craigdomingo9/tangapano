@@ -4,15 +4,12 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-interface DarkThemeToggleProps {
+interface ThemeToggleProps {
   isBusiness?: boolean;
   className?: string;
 }
 
-function DarkThemeToggle({
-  isBusiness = false,
-  className,
-}: DarkThemeToggleProps) {
+function ThemeToggle({ isBusiness = false, className }: ThemeToggleProps) {
   const [mounted, setMounted] = useState(false);
   const { setTheme, theme } = useTheme();
   const isDark = theme === "dark";
@@ -48,4 +45,4 @@ function DarkThemeToggle({
   );
 }
 
-export default DarkThemeToggle;
+export default ThemeToggle;

@@ -4,7 +4,7 @@ import ListingNotFound from "../interest/states/ListingNotFound";
 import LoadingScreen from "../interest/states/LoadingScreen";
 import { useQuery } from "@tanstack/react-query";
 import Header from "../Header";
-import DarkThemeToggle from "@/components/ui/DarkThemeToggle";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import HeroImageCarousel from "./HeroImageCarousel";
 import ListingInfo from "./ListingInfo";
 import ListingFooter from "./ListingFooter";
