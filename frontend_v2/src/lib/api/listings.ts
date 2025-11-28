@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { axiosInstance } from "./config";
+import { cache } from "react";
 
 export const fetchListings = async ({
   pageParam = 1,
@@ -29,3 +30,11 @@ export const fetchListingById = async (id: string) => {
     throw new Error(`Failed to fetch listing ${id}`);
   }
 };
+
+// 1. Wrap in 'cache' to dedupe requests between Metadata and Page
+export const getListingData = cache(async (slug: string) => {
+  const response = await axiosInstance.get(
+    `/listings/listing/${slug}?is_full=true`
+  );
+  return response.data;
+});

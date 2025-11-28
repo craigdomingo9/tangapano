@@ -1,3 +1,4 @@
+"use client";
 import { AlertCircle, Home, RefreshCw, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 

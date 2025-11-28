@@ -10,7 +10,7 @@ export default function CarouselControls({
   onNext,
 }: CarouselControlsProps) {
   const buttonClass =
-    "absolute top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors backdrop-blur-sm z-20 md:opacity-0 md:group-hover:opacity-100 cursor-pointer";
+    "absolute top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors backdrop-blur-sm z-20 lg:opacity-0 lg:group-hover:opacity-100 cursor-pointer";
 
   return (
     <>
@@ -21,7 +21,7 @@ export default function CarouselControls({
         }}
         className={`${buttonClass} left-2`}
       >
-        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={(e) => {
@@ -30,7 +30,7 @@ export default function CarouselControls({
         }}
         className={`${buttonClass} right-2`}
       >
-        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        <ChevronRight className="w-5 h-5" />
       </button>
     </>
   );

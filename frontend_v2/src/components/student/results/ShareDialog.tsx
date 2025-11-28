@@ -18,7 +18,8 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
   if (!isOpen || !listing) return null;
 
   // Simulate a public URL for the listing
-  const shareUrl = `https://tangapano.co.zw/listing/${listing.id}`;
+  const domain = window.location.origin;
+  const shareUrl = `${domain}/listing/${listing.id}`;
 
   const handleCopy = async () => {
     try {

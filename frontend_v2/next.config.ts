@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
         destination: "/student",
         permanent: true,
       },
+      {
+        source: "/listing/:slug",
+        destination: "/student/listing/:slug",
+        permanent: true,
+      },
     ];
   },
 };

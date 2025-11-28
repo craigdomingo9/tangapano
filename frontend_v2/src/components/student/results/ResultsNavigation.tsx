@@ -12,7 +12,7 @@ function ResultsNavigation() {
     >
       <Button
         variant="ghost"
-        className="text-slate-500 text-sm hover:text-crimson dark:text-slate-400 dark:hover:text-red-400 hover:bg-crimson/5 dark:hover:bg-red-900/10 -ml-2 cursor-pointer"
+        className="text-slate-500 bg-slate-200/80 dark:bg-app-input text-sm hover:text-crimson dark:text-slate-400 dark:hover:text-red-400 hover:bg-crimson/5 dark:hover:bg-red-900/10 -ml-2 cursor-pointer"
       >
         <ChevronLeft className="w-5 h-5 mr-1" />
         Back to filters
