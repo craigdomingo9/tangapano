@@ -1,6 +1,4 @@
-import { useState } from "react";
 import z from "zod";
-import { PartnerSignupDataStore } from "../stores/partnerSignupDataStore";
 
 export const RegisterSchema = z
   .object({
