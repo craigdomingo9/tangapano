@@ -4,6 +4,7 @@ import PaginationDots from "./PaginationDots";
 import ImageOverlay from "./ImageOverlay";
 import Image from "next/image";
 import myImageLoader from "@/lib/images/image-loader";
+import { getShimmerUrl } from "@/lib/images/shimmer";
 
 interface ImageCarouselProps {
   images: any[];
@@ -38,6 +39,8 @@ export default function ImageCarousel({
           loader={myImageLoader}
           width={100}
           height={100}
+          placeholder="blur"
+          blurDataURL={getShimmerUrl(700, 475)}
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">

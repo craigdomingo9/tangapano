@@ -1,4 +1,7 @@
+import myImageLoader from "@/lib/images/image-loader";
+import { getShimmerUrl } from "@/lib/images/shimmer";
 import { ChevronLeft, ChevronRight, MapPin, Share2 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface HeroImageCarouselProps {
@@ -43,18 +46,28 @@ function HeroImageCarousel({ listing }: HeroImageCarouselProps) {
     >
       {/* Main Image */}
       <div className="w-full h-full relative">
-        <img
+        <Image
           src={images[currentImageIndex].display_image}
           alt={`Property view ${currentImageIndex + 1}`}
+          loader={myImageLoader}
+          width={100}
+          height={100}
+          placeholder="blur"
+          blurDataURL={getShimmerUrl(700, 475)}
           className={`w-full h-full object-cover transition-transform duration-1500 ease-out ${
             isAnimating ? "scale-105" : "scale-100"
           }`}
         />
         {/* Preload next image */}
-        <img
+        <Image
           src={images[(currentImageIndex + 1) % images.length].display_image}
           className="hidden"
           alt="preload"
+          loader={myImageLoader}
+          width={100}
+          height={100}
+          placeholder="blur"
+          blurDataURL={getShimmerUrl(700, 475)}
         />
       </div>
 

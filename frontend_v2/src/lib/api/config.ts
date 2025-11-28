@@ -1,15 +1,21 @@
 import axios from "axios";
 
-// TODO: Update to match the base URL
-const BASE_URL = "http://localhost/api";
-// typeof window === "undefined"
-//   ? process.env.NEXT_PUBLIC_API_URL // server-side in Docker
-//   : process.env.NODE_ENV == "production"
-//   ? `${window.location.origin}/api` // client-side in browser during production
-//   : `http://localhost/api`; // client-side in browser during development
+// Function to select the correct URL based on the environment
+const getBaseUrl = () => {
+  // 1. SERVER-SIDE (SSR)
+  // When Next.js fetches data on the server, it needs an absolute internal URL.
+  // In Docker, this might be "http://backend_container:8000/api"
+  if (typeof window === "undefined") {
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+  }
+
+  // 2. CLIENT-SIDE (Browser)
+  // The browser uses the public URL.
+  return process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:8000/api";
+};
 
 export const apiConfig = {
-  baseURL: BASE_URL,
+  baseURL: getBaseUrl(),
   headers: {
     "Content-Type": "application/json",
   },
