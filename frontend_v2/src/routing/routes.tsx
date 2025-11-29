@@ -1,110 +1,85 @@
-import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
-import { Route, when } from "./store";
 import dynamic from "next/dynamic";
+import { ComponentType } from "react";
+import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
+
+// Make sure you import User from where you defined it!
+import { Route, when } from "./store";
 import { AppParams, RouteProps } from "./types";
 
-const Overview = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/Overview"),
-  {
+/* -------------------------------------------------------------------------- */
+/* Dynamic Imports Helper                            */
+/* -------------------------------------------------------------------------- */
+
+// Simplification: We know ALL pages must accept RouteProps.
+// We don't need this to be generic anymore.
+const withLoader = (importer: () => Promise<any>) =>
+  dynamic<RouteProps>(importer, {
     loading: () => <LoadingScreen />,
-  }
-);
+  });
 
-const RoomManagement = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/RoomManagement"),
-  {
-    loading: () => <LoadingScreen />,
-  }
-);
+/* -------------------------------------------------------------------------- */
+/* Page Definitions                             */
+/* -------------------------------------------------------------------------- */
 
-const ImageManagement = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/ImageManagement"),
-  {
-    loading: () => <LoadingScreen />,
-  }
-);
+export const pages = {
+  overview: withLoader(
+    () => import("@/components/partner/dashboard/pages/Overview")
+  ),
+  rooms: withLoader(
+    () => import("@/components/partner/dashboard/pages/RoomManagement")
+  ),
+  images: withLoader(
+    () => import("@/components/partner/dashboard/pages/ImageManagement")
+  ),
+  profile: withLoader(
+    () => import("@/components/partner/dashboard/pages/ProfileManagement")
+  ),
+  amenities: withLoader(
+    () => import("@/components/partner/dashboard/pages/AmenitiesManagement")
+  ),
+  listings: withLoader(
+    () => import("@/components/partner/dashboard/pages/ListingManagement")
+  ),
+  support: withLoader(
+    () => import("@/components/partner/dashboard/pages/Support")
+  ),
+};
 
-const ProfileManagement = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/ProfileManagement"),
-  {
-    loading: () => <LoadingScreen />,
-  }
-);
+/* -------------------------------------------------------------------------- */
+/* Route Builder                               */
+/* -------------------------------------------------------------------------- */
 
-const AmenitiesManagement = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/AmenitiesManagement"),
-  {
-    loading: () => <LoadingScreen />,
-  }
-);
+// FIX: This helper must enforce that 'component' accepts RouteProps
+const route = (
+  id: string,
+  matcher: (params: AppParams) => boolean,
+  component: ComponentType<RouteProps> // <--- CRITICAL FIX
+): Route<AppParams, User> => ({
+  id,
+  matcher,
+  component,
+});
 
-const ListingManagement = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/ListingManagement"),
-  {
-    loading: () => <LoadingScreen />,
-  }
-);
+/* -------------------------------------------------------------------------- */
+/* Application Routes                             */
+/* -------------------------------------------------------------------------- */
 
-const Support = dynamic<RouteProps>(
-  () => import("@/components/partner/dashboard/pages/Support"),
-  {
-    loading: () => <LoadingScreen />,
-  }
-);
+export const appRoutes: Route<AppParams, User>[] = [
+  route(
+    "overview",
+    (p) => p.page === "overview" || when.empty(p),
+    pages.overview
+  ),
 
-// 2. The Configuration
-// Order matters! Top routes are checked first.
-export const appRoutes: Route<AppParams>[] = [
-  // Priority 1: Specific User Profile
-  // Matches: ?page=users&userId=123
-  {
-    id: "overview",
-    matcher: (p) => p.page === "overview" || when.empty(p),
-    component: Overview,
-  },
+  route("rooms", when.params({ page: "rooms" }), pages.rooms),
 
-  // Priority 2: Settings page
-  // Matches: ?page=settings
-  {
-    id: "rooms",
-    matcher: when.params({ page: "rooms" }),
-    component: RoomManagement,
-  },
+  route("images", (p) => p.page === "images", pages.images),
 
-  // Priority 3: Dashboard (Fallback)
-  // Matches: ?page=dashboard OR empty URL
-  {
-    id: "images",
-    matcher: (p) => p.page === "images" || when.empty(p),
-    component: ImageManagement,
-  },
+  route("profile", (p) => p.page === "profile", pages.profile),
 
-  // Priority 4: Dashboard (Fallback)
-  // Matches: ?page=dashboard OR empty URL
-  {
-    id: "profile",
-    matcher: (p) => p.page === "profile",
-    component: ProfileManagement,
-  },
+  route("amenities", (p) => p.page === "amenities", pages.amenities),
 
-  // Priority 4: Dashboard (Fallback)
-  // Matches: ?page=dashboard OR empty URL
-  {
-    id: "amenities",
-    matcher: (p) => p.page === "amenities",
-    component: AmenitiesManagement,
-  },
+  route("listings", (p) => p.page === "listings", pages.listings),
 
-  // Priority 4: Dashboard (Fallback)
-  // Matches: ?page=dashboard OR empty URL
-  {
-    id: "listings",
-    matcher: (p) => p.page === "listings",
-    component: ListingManagement,
-  },
-  {
-    id: "support",
-    matcher: (p) => p.page === "support",
-    component: Support,
-  },
+  route("support", (p) => p.page === "support", pages.support),
 ];

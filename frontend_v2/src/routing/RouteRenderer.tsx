@@ -21,11 +21,16 @@ const transition = {
   type: "tween",
   ease: "easeInOut",
   duration: 0.2,
-} as const; // <--- FIX: "as const" satisfies the literal type requirement
+} as const; // <--- FIX: "as const" satisfies the literal type requirement: research
 
-export function RouteRenderer() {
+interface RouteRendererProps {
+  userContext: ServerContext;
+}
+
+export function RouteRenderer({ userContext }: RouteRendererProps) {
   const searchParams = useSearchParams();
   const { activeRoute, resolve } = useRouterStore();
+  console.log(userContext);
 
   // 1. Convert URL Params to Object
   const currentParams = useMemo(() => {
@@ -52,7 +57,10 @@ export function RouteRenderer() {
             transition={transition}
             className="w-full"
           >
-            <activeRoute.component params={currentParams} />
+            <activeRoute.component
+              params={currentParams}
+              serverData={userContext}
+            />
           </motion.div>
         ) : (
           <div className="p-4 text-gray-500">404: No View Found</div>

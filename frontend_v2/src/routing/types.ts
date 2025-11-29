@@ -6,4 +6,5 @@ export interface AppParams {
 // This is the standard signature for ALL your route components
 export interface RouteProps {
   params: AppParams;
+  serverData: ServerContext;
 }
