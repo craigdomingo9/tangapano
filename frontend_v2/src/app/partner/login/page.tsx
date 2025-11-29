@@ -22,7 +22,7 @@ export default function LoginPage() {
       </div>
 
       <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-500">
-        <ThemeToggle className="absolute top-0 right-0 p-3 rounded-full bg-card border border-border text-text hover:text-primary shadow-lg transition-all z-50 focus:outline-none" />
+        <ThemeToggle className="absolute top-0 right-0 p-3 rounded-full bg-card border border-border hover:text-primary shadow-lg transition-all z-50 focus:outline-none" />
 
         {/* Brand Header */}
         <header className="text-center mb-8">

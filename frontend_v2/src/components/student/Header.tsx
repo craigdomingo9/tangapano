@@ -56,7 +56,7 @@ function Header({
                 </span>
                 <div className="flex items-center gap-1.5 mt-0.5 sm:mt-1">
                   <span className="h-1.5 w-1.5 rounded-full bg-lapis dark:bg-sky-400 animate-pulse"></span>
-                  <span className="text-slate-500 dark:text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+                  <span className="text-slate-500 dark:text-slate-400 font-bold text-xxs uppercase tracking-widest">
                     Partner Portal
                   </span>
                 </div>
@@ -81,7 +81,7 @@ function Header({
 
         {/* Actions Section */}
         <div className="flex items-center gap-4 sm:gap-6">
-          <ThemeToggle />
+          <ThemeToggle isBusiness={isBusiness} />
           {children}
         </div>
       </div>

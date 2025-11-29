@@ -102,3 +102,12 @@ interface Interest {
   payment_method: "cash" | "mobile" | "bank_transfer";
   agree_to_terms: boolean;
 }
+
+// This is the shape of the data passed from page.tsx
+interface ServerContext {
+  user: User;
+  accessToken: string; // Needed for client-side fetching!
+  // Add other globals here later:
+  // notificationsCount?: number;
+  // theme?: 'light' | 'dark';
+}

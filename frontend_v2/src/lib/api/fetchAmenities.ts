@@ -12,6 +12,6 @@ export default function fetchAmenities({
   const searchParams = new URLSearchParams(params);
 
   return axiosInstance
-    .get("/listings/amenities" + "?" + searchParams.toString())
+    .get("/listings/amenities/" + "?" + searchParams.toString())
     .then((response) => response.data);
 }

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { FormInput } from "@/components/partner/common/form-input";
+import { FormInput } from "@/components/partner/common-components/form-input";
 import {
   loginSchema,
   type LoginFormData,

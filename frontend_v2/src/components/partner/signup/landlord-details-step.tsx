@@ -3,7 +3,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Building, Phone, MapPin, ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { FormInput } from "../common/form-input";
+import { FormInput } from "../common-components/form-input";
 import { Step2FormData } from "@/lib/validations/partner-signup";
 
 interface LandlordDetailsStepProps {
