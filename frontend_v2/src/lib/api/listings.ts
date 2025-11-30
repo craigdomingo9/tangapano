@@ -50,3 +50,31 @@ export const updateAmenities = async (
     { headers: { Authorization: `Token ${accessToken}` } }
   );
 };
+
+export interface ListingPayload {
+  title: string;
+  campus: string; // Send ID, not object
+  neighborhood: string; // Send ID, not object
+  distance_from_campus: number;
+  apply_agent_fee: boolean;
+}
+
+export const api = {
+  create: async (data: ListingPayload, token: string) => {
+    const response = await axiosInstance.post<Listing>(
+      `/listings/landlord-listings/`,
+      data,
+      { headers: { Authorization: `Token ${token}` } }
+    );
+    return response.data;
+  },
+
+  update: async (id: string, data: Partial<ListingPayload>, token: string) => {
+    const response = await axiosInstance.patch<Listing>(
+      `/listings/landlord-listings/${id}/`,
+      data,
+      { headers: { Authorization: `Token ${token}` } }
+    );
+    return response.data;
+  },
+};

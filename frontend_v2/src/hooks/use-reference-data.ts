@@ -30,10 +30,10 @@ export function useCampuses({
     staleTime: 1000 * 60 * 60,
   });
 }
-export function useListingDetail(listingId: string) {
+export function useListingDetail(listingId: string, enabled: boolean = true) {
   return useQuery({
     queryKey: ["listing", listingId],
     queryFn: () => fetchListingById(listingId),
-    enabled: !!listingId,
+    enabled: !!listingId && enabled,
   });
 }

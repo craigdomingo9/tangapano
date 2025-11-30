@@ -204,7 +204,7 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
 
               <RouterLink
                 className="flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:text-lapis dark:hover:text-white hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-all active:scale-[0.98]"
-                to={{ page: "listings", mode: "edit" }}
+                to={{ page: "listings", mode: "edit", listingId: listing.id }}
               >
                 <Edit className="w-4 h-4 opacity-70" />
                 <span>Details</span>
