@@ -13,10 +13,10 @@ export default async function Page() {
   const user = await getUser();
   // console.log(user);
 
-  if (!user || !token) redirect("/login");
+  if (!user || !token) redirect("/partner/login");
 
   if (user.role !== "landlord") {
-    redirect("/login");
+    redirect("/partner/login");
   }
 
   // 2. Construct the Context

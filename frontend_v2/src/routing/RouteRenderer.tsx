@@ -30,7 +30,7 @@ interface RouteRendererProps {
 export function RouteRenderer({ userContext }: RouteRendererProps) {
   const searchParams = useSearchParams();
   const { activeRoute, resolve } = useRouterStore();
-  console.log(userContext);
+  // console.log(userContext);
 
   // 1. Convert URL Params to Object
   const currentParams = useMemo(() => {
@@ -47,7 +47,7 @@ export function RouteRenderer({ userContext }: RouteRendererProps) {
   return (
     <div className="relative w-full h-full">
       <AnimatePresence mode="wait">
-        {activeRoute ? (
+        {activeRoute && (
           <motion.div
             key={activeRoute.id}
             initial="initial"
@@ -62,8 +62,6 @@ export function RouteRenderer({ userContext }: RouteRendererProps) {
               serverData={userContext}
             />
           </motion.div>
-        ) : (
-          <div className="p-4 text-gray-500">404: No View Found</div>
         )}
       </AnimatePresence>
     </div>

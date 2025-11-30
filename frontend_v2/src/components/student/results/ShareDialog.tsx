@@ -6,12 +6,14 @@ interface ShareDialogProps {
   isOpen: boolean;
   onClose: () => void;
   listing: Listing | null;
+  isPartner?: boolean;
 }
 
 export const ShareDialog: React.FC<ShareDialogProps> = ({
   isOpen,
   onClose,
   listing,
+  isPartner,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -57,7 +59,9 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
             Share Property
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-            Share this listing with friends.
+            {isPartner
+              ? "Share this link with potential tenants."
+              : "Share this link with friends."}
           </p>
         </div>
 
@@ -67,7 +71,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
               Property Link
             </label>
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-600 dark:text-slate-300 font-medium truncate select-all">
+              <div className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 text-xsm text-slate-600 dark:text-slate-300 font-medium truncate select-all">
                 {shareUrl}
               </div>
               <Button

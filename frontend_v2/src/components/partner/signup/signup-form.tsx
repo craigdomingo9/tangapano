@@ -14,6 +14,7 @@ import {
   RegistrationFormData,
   registrationSchema,
 } from "@/lib/validations/partner-signup";
+import { errorToast, successToast } from "@/lib/toast";
 
 export function SignupForm() {
   const [isPending, startTransition] = useTransition();
@@ -66,7 +67,7 @@ export function SignupForm() {
     const isValid = await form.trigger();
 
     if (!isValid) {
-      toast.error("Please fix the errors before submitting");
+      errorToast("Please fix the errors before submitting");
       return;
     }
 
@@ -78,15 +79,15 @@ export function SignupForm() {
 
         if (result && !result.success) {
           setServerErrors(result.errors);
-          toast.error("Registration failed. Please check the errors.");
+          errorToast("Registration failed. Please check the errors.");
         } else {
-          toast.success("Account created successfully!");
+          successToast("Account created successfully!");
           form.reset();
           resetSteps();
           // Redirect or handle success
         }
       } catch (error) {
-        toast.error("An unexpected error occurred. Please try again.");
+        errorToast("An unexpected error occurred. Please try again.");
         console.error("Signup error:", error);
       }
     });

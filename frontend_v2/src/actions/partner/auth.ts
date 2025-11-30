@@ -1,90 +1,101 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
-// Assuming you have an axios config, or you can use standard fetch
 import { axiosInstance } from "@/lib/api/config";
 import { z } from "zod";
+import { redirect } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
-// 1. Validation Schema
+// --- Configuration ---
+
 const LoginSchema = z.object({
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
 
-export type LoginState = {
-  success?: boolean;
-  errors?: {
-    username?: string[];
-    password?: string[];
-    general?: any;
-  };
+// Map HTTP Status Codes to User-Friendly Messages
+const LOGIN_ERRORS: Record<number, string> = {
+  400: "Invalid request data. Please check your inputs.",
+  401: "Incorrect username or password.", // Unauthorized
+  403: "Access denied. Your account may be inactive or suspended.", // Forbidden
+  404: "Account not found.", // Not Found (Optional: usually better to treat as 401 for security)
+  429: "Too many login attempts. Please try again in a few minutes.",
+  500: "Our servers are experiencing issues. Please try again later.",
+  502: "Bad Gateway. Please try again later.",
+  503: "Service unavailable. We are performing maintenance.",
 };
+
+const DEFAULT_ERROR = "An unexpected error occurred. Please try again.";
+
+// --- Action ---
 
 export async function login(
   data: { username: string; password: string },
   domain?: string
 ) {
-  // 1. Validate Input
   const validatedFields = LoginSchema.safeParse(data);
 
   if (!validatedFields.success) {
     return {
       success: false,
-      errors: validatedFields.error.message,
+      errors: validatedFields.error.flatten().fieldErrors,
     };
   }
 
   const { username, password } = validatedFields.data;
 
   try {
-    // 2. Call your Backend API (Django/External)
-    // We assume your backend returns { access: string, refresh: string }
     const response = await axiosInstance.post("/users/auth/login/", {
       username,
       password,
     });
 
     const { token } = response.data;
-
-    // 3. Set Session Cookies
-    // Security Note: HttpOnly prevents JavaScript from reading the token (XSS protection)
     const cookieStore = await cookies();
 
-    // Auth Token
     cookieStore.set("auth_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 7 days
-      domain: domain,
+      maxAge: 60 * 60 * 24 * 30, // 30 days
     });
+
+    redirect("/partner/dashboard");
   } catch (error) {
-    // 4. Handle Errors
+    // 1. Redirect Check (Critical)
+    if (isRedirectError(error)) {
+      throw error;
+    }
+
+    // 2. Axios Error Handling (Status Code Mapping)
     if (error instanceof AxiosError) {
-      const errorMessage =
-        error.response?.data?.detail ||
-        "Invalid credentials. Please try again.";
+      const status = error.response?.status;
+
+      // Look up the error message, fallback to backend detail, or default
+      const friendlyMessage =
+        (status && LOGIN_ERRORS[status]) || // 1. Check our map
+        error.response?.data?.detail || // 2. Check backend specific message
+        DEFAULT_ERROR; // 3. Fallback
+
+      console.error(`Login Failed [${status}]:`, friendlyMessage);
 
       return {
         success: false,
         errors: {
-          general: errorMessage,
+          general: friendlyMessage,
         },
       };
     }
 
+    // 3. Unknown System Errors
+    console.error("Unhandled Login Error:", error);
     return {
       success: false,
       errors: {
-        general: "Something went wrong. Please try again later.",
+        general: DEFAULT_ERROR,
       },
     };
   }
-
-  // 5. Redirect (Must be outside try/catch)
-  // In Next.js Server Actions, redirect() throws an error internally to switch pages
-  redirect("/partner/dashboard");
 }

@@ -4,7 +4,6 @@ import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, User, Lock } from "lucide-react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -16,11 +15,10 @@ import {
 } from "@/lib/validations/partner-auth";
 import { login } from "@/actions/partner/auth";
 import { PasswordInput } from "./password-input";
+import { errorToast, infoToast, successToast } from "@/lib/toast";
 
 export function LoginForm() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string>();
 
   const form = useForm<LoginFormData>({
@@ -44,17 +42,14 @@ export function LoginForm() {
             (result.errors?.general as string) ||
             "Login failed. Please check your credentials.";
           setServerError(errorMessage);
-          toast.error(errorMessage);
+          errorToast(errorMessage);
         } else {
-          toast.success("Login successful!");
-          // Redirect will be handled by the server action
-          // or you can manually redirect here
-          // router.push("/partner/dashboard");
+          successToast("Login successful!");
         }
       } catch (error) {
         const errorMessage = "An unexpected error occurred. Please try again.";
         setServerError(errorMessage);
-        toast.error(errorMessage);
+        // errorToast(errorMessage);
         console.error("Login error:", error);
       }
     });
@@ -86,7 +81,7 @@ export function LoginForm() {
           form={form}
           name="password"
           // showForgotPassword
-          onForgotPassword={() => toast.info("Password reset coming soon!")}
+          onForgotPassword={() => infoToast("Password reset coming soon!")}
           disabled={isPending}
         />
 

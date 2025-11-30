@@ -115,8 +115,8 @@ function HeroImageCarousel({ listing }: HeroImageCarouselProps) {
 
       {/* Content Overlay */}
       <div className="absolute bottom-4 left-0 right-0 px-6 z-10">
-        <div className="max-w-3xl mx-auto space-y-1">
-          <h2 className="text-xl sm:text-3xl font-semibold leading-tight text-white drop-shadow-md">
+        <div className="max-w-3xl mx-auto space-y-0">
+          <h2 className="text-lg sm:text-2xl font-semibold leading-tight text-white drop-shadow-md">
             {listing.title}
           </h2>
           <div className="flex items-center gap-1.5 text-gray-200">

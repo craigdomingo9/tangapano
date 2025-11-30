@@ -23,10 +23,10 @@ function ListingInfo({ listing }: ListingInfoProps) {
             <Home size={20} className="text-blue-600 dark:text-blue-400" />
           </div>
           <div className="min-w-0">
-            <p className="font-bold text-slate-900 dark:text-white text-sm truncate">
+            <p className="font-bold text-slate-900 dark:text-white text-xsm sm:text-sm truncate">
               {listing.rooms.length} Rooms Available
             </p>
-            <p className="text-xxs font-bold text-blue-400 dark:text-blue-300 uppercase tracking-wider">
+            <p className="text-xxs sm:text-xs font-bold text-blue-400 dark:text-blue-300 uppercase tracking-wider">
               CAPACITY
             </p>
           </div>
@@ -38,10 +38,10 @@ function ListingInfo({ listing }: ListingInfoProps) {
             <LinkIcon size={20} className="text-blue-600 dark:text-blue-400" />
           </div>
           <div className="min-w-0">
-            <p className="font-bold text-slate-900 dark:text-white text-sm">
+            <p className="font-bold text-slate-900 dark:text-white text-xsm sm:text-sm">
               30 mins
             </p>
-            <p className="text-xxs font-bold text-blue-400 dark:text-blue-300 uppercase tracking-wider">
+            <p className="text-xxs sm:text-xs font-bold text-blue-400 dark:text-blue-300 uppercase tracking-wider">
               TO CAMPUS
             </p>
           </div>
@@ -50,7 +50,7 @@ function ListingInfo({ listing }: ListingInfoProps) {
 
       {/* Amenities Section - Green Pills */}
       <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wide">
+        <h3 className="text-xsm font-bold text-slate-800 dark:text-white uppercase tracking-wide">
           AMENITIES
         </h3>
 

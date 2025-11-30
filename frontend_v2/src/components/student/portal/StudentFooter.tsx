@@ -1,5 +1,4 @@
 import { MessageCircleMore } from "lucide-react";
-import React from "react";
 
 function StudentFooter() {
   return (

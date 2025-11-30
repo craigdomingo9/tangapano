@@ -46,7 +46,7 @@ function ListingFooter({ listing }: ListingFooterProps) {
             onClick={() =>
               router.push(`/student?expressInterest=true&listing=${listing.id}`)
             }
-            className="px-8 cursor-pointer py-3.5 rounded-lg bg-[#0e7490] hover:bg-[#0891b2] dark:bg-[#0e7490] dark:hover:bg-[#06b6d4] text-white font-bold text-base shadow-sm active:scale-[0.98] transition-all"
+            className="px-4 sm:px-8 cursor-pointer py-3.5 rounded-lg bg-[#0e7490] hover:bg-[#0891b2] dark:bg-[#0e7490] dark:hover:bg-[#06b6d4] text-white font-bold text-sm sm:text-base shadow-sm active:scale-[0.98] transition-all"
           >
             Express Interest
           </button>

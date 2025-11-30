@@ -78,7 +78,7 @@ function PartnerHeaderContent({ user }: { user: User }) {
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-56 rounded-xl space-y-2">
+        <DropdownMenuContent align="end" className="w-56 rounded-xl space-y-0">
           <DropdownMenuLabel className="font-normal p-3">
             <div className="flex flex-col space-y-1">
               <p className="text-base font-semibold leading-none">
@@ -90,7 +90,7 @@ function PartnerHeaderContent({ user }: { user: User }) {
             </div>
           </DropdownMenuLabel>
 
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="my-1" />
 
           {/* Using asChild allows the RouterLink to handle the navigation while maintaining menu semantics */}
           <DropdownMenuItem asChild className="cursor-pointer">
@@ -103,7 +103,7 @@ function PartnerHeaderContent({ user }: { user: User }) {
             </RouterLink>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild className="cursor-pointer pt-0 pb-2">
+          <DropdownMenuItem asChild className="cursor-pointer p-2">
             <RouterLink
               to={{ page: "support" }}
               className="w-full flex items-center gap-2"
@@ -117,7 +117,7 @@ function PartnerHeaderContent({ user }: { user: User }) {
 
           <DropdownMenuItem
             onClick={handleLogout}
-            className="text-crimson focus:bg-red-50 cursor-pointer gap-2 font-medium py-2"
+            className="text-crimson focus:bg-red-50 dark:focus:bg-airforce cursor-pointer gap-2 font-medium py-2"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>

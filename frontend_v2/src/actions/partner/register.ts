@@ -4,10 +4,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 import { axiosInstance } from "@/lib/api/config";
-import { PartnerSignupDataStore } from "@/lib/stores/partnerSignupDataStore";
 import { registrationSchema } from "@/lib/validations/partner-signup";
 
-export async function signup(rawData: PartnerSignupDataStore, domain?: string) {
+export async function signup(rawData: any, domain?: string) {
   // 1. Validate Input
   const validatedFields = registrationSchema.safeParse(rawData);
 
@@ -20,7 +19,6 @@ export async function signup(rawData: PartnerSignupDataStore, domain?: string) {
 
   const {
     username,
-    email,
     password,
     first_name,
     last_name,
@@ -33,7 +31,6 @@ export async function signup(rawData: PartnerSignupDataStore, domain?: string) {
     // 2. REGISTER User (Call Django Backend)
     await axiosInstance.post("/users/register/", {
       username,
-      email,
       password,
       first_name,
       last_name,
@@ -61,7 +58,7 @@ export async function signup(rawData: PartnerSignupDataStore, domain?: string) {
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 30, // 30 days
-      domain: domain,
+      // domain: domain,
     });
   } catch (error) {
     // 5. Error Handling
