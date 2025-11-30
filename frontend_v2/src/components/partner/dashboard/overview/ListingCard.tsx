@@ -134,14 +134,20 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
                   Amenities
                 </span>
               </div>
-              <RouterLink className="justify-center" to={{ page: "amenities" }}>
+              <RouterLink
+                className="justify-center"
+                to={{ page: "amenities", listingId: listing.id }}
+              >
                 <button className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-lapis hover:text-white transition-all border border-slate-100 dark:border-slate-800 hover:border-lapis hover:shadow-sm cursor-pointer">
                   Edit
                 </button>
               </RouterLink>
             </div>
 
-            <RouterLink className="justify-center" to={{ page: "amenities" }}>
+            <RouterLink
+              className="justify-center"
+              to={{ page: "amenities", listingId: listing.id }}
+            >
               <div className="flex flex-wrap gap-2 cursor-pointer">
                 {listing?.amenities?.length === 0 ? (
                   <button className="w-full py-3 px-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-lapis/30 hover:text-lapis flex items-center justify-center gap-2 text-xs text-slate-400 font-bold transition-all group/empty cursor-pointer">
@@ -179,25 +185,32 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
           {/* Action Buttons Area */}
           <div className="mt-auto pt-4 space-y-3 border-t border-slate-50 dark:border-slate-800">
             {/* Primary Action */}
-            <button className="w-full bg-lapis hover:bg-lapis-hover text-white py-3 rounded-xl font-bold text-xsm shadow-md shadow-lapis/20 transition-all flex items-center justify-center gap-2 active:scale-[0.98] group/btn hover:shadow-lg hover:shadow-lapis/30">
+            <RouterLink
+              className="w-full bg-lapis hover:bg-lapis-hover text-white py-3 rounded-xl font-bold text-xsm shadow-md shadow-lapis/20 transition-all flex items-center justify-center gap-2 active:scale-[0.98] group/btn hover:shadow-lg hover:shadow-lapis/30"
+              to={{ page: "images" }}
+            >
               <ImageIcon className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
               <span>Manage Photos</span>
-            </button>
-
+            </RouterLink>
             {/* Secondary Action Grid */}
             <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:text-lapis dark:hover:text-white hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-all active:scale-[0.98]">
+              <RouterLink
+                className="flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:text-lapis dark:hover:text-white hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-all active:scale-[0.98]"
+                to={{ page: "rooms" }}
+              >
                 <Bed className="w-4 h-4 opacity-70" />
                 <span>Rooms</span>
-              </button>
+              </RouterLink>
 
-              <button className="flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:text-lapis dark:hover:text-white hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-all active:scale-[0.98]">
+              <RouterLink
+                className="flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:text-lapis dark:hover:text-white hover:shadow-md hover:shadow-slate-200/50 dark:hover:shadow-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 transition-all active:scale-[0.98]"
+                to={{ page: "listings", mode: "edit" }}
+              >
                 <Edit className="w-4 h-4 opacity-70" />
                 <span>Details</span>
-              </button>
+              </RouterLink>
             </div>
 
-            {/* Footer Delete */}
             {/* Footer Delete */}
             <div className="flex justify-end pt-2">
               <button

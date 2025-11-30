@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import * as React from "react";
 
@@ -60,7 +61,10 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
               </button>
               <button
                 onClick={onConfirm}
-                className="px-6 py-2.5 text-sm rounded-lg bg-crimson dark:bg-red-700 text-white font-bold hover:bg-red-800 dark:hover:bg-red-600 transition-colors shadow-sm cursor-pointer"
+                className={cn(
+                  "px-6 py-2.5 text-sm rounded-lg bg-crimson dark:bg-red-700 text-white font-bold hover:bg-red-800 dark:hover:bg-red-600 transition-colors shadow-sm cursor-pointer",
+                  isDeleting && "opacity-50 cursor-not-allowed"
+                )}
                 disabled={isDeleting}
               >
                 {isDeleting ? "Deleting..." : "Delete"}

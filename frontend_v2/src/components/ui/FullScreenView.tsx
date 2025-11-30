@@ -45,7 +45,7 @@ export function FullScreenView({
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 pb-20">{children}</div>
+        <div className="max-w-5xl mx-auto p-4 sm:p-6 pb-20">{children}</div>
       </div>
     </div>
   );

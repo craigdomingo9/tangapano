@@ -4,12 +4,12 @@ import { RouteProps } from "@/routing/types";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/api/config";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
-import { ListingsErrorPage } from "../overview/ListingErrorPage";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import fetchLandlordListings from "@/lib/api/partner/fetchLandlordListings";
 import OverviewListings from "../overview/OverviewListings";
 import OverviewFooter from "../overview/OverviewFooter";
+import { ErrorPage } from "../overview/ErrorPage";
 
 function Overview({ serverData }: RouteProps) {
   const { user, accessToken } = serverData;
@@ -29,11 +29,10 @@ function Overview({ serverData }: RouteProps) {
   if (isError || !data) {
     const status = error?.response?.status; // e.g., 404, 500, 401
 
-    if (status === 404)
-      return <ListingsErrorPage type="404" refreshFn={refetch} />;
+    if (status === 404) return <ErrorPage type="404" refreshFn={refetch} />;
     if (status === 403 || status === 401 || status === 400)
-      return <ListingsErrorPage type="access" refreshFn={refetch} />;
-    return <ListingsErrorPage type="500" refreshFn={refetch} />;
+      return <ErrorPage type="access" refreshFn={refetch} />;
+    return <ErrorPage type="500" refreshFn={refetch} />;
   }
 
   return (

@@ -1,15 +1,13 @@
 "use client";
-import { getListingData } from "@/lib/api/listings";
 import ListingNotFound from "../interest/states/ListingNotFound";
 import LoadingScreen from "../interest/states/LoadingScreen";
-import { useQuery } from "@tanstack/react-query";
 import Header from "../Header";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import HeroImageCarousel from "./HeroImageCarousel";
 import ListingInfo from "./ListingInfo";
 import ListingFooter from "./ListingFooter";
-import { ChevronLeft, Home } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useListingDetail } from "@/hooks/use-reference-data";
 
 interface ListingClientProps {
   slug: string;
@@ -18,16 +16,7 @@ interface ListingClientProps {
 function ListingDetailClient({ slug }: ListingClientProps) {
   // 1. Because we dehydrated the state on the server,
   // this hook returns data INSTANTLY. No loading state on first render.
-  const {
-    data: listing,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["listing", slug],
-    queryFn: () => getListingData(slug),
-    // Optional: Keep data fresh for 1 minute before refetching
-    staleTime: 1000 * 60 * 5,
-  });
+  const { data: listing, isLoading, isError } = useListingDetail(slug);
   const router = useRouter();
 
   function onBack() {

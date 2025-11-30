@@ -18,6 +18,7 @@ interface Amenity {
   id: string;
   name: string;
   display_name: string;
+  category: string;
 }
 
 interface User {

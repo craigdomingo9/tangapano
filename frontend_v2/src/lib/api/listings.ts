@@ -33,8 +33,20 @@ export const fetchListingById = async (id: string) => {
 
 // 1. Wrap in 'cache' to dedupe requests between Metadata and Page
 export const getListingData = cache(async (slug: string) => {
-  const response = await axiosInstance.get(
-    `/listings/listing/${slug}?is_full=true`
-  );
+  const response = await axiosInstance.get(`/listings/listing/${slug}/`);
   return response.data;
 });
+
+export const updateAmenities = async (
+  listingId: string,
+  selectedIds: (number | string)[],
+  accessToken: string
+) => {
+  await axiosInstance.patch(
+    `/listings/landlord-listings/${listingId}/`,
+    {
+      amenity_ids: selectedIds,
+    },
+    { headers: { Authorization: `Token ${accessToken}` } }
+  );
+};

@@ -19,13 +19,16 @@ export async function generateMetadata({
 
   try {
     // This call is deduped via React cache()
-    const listing = await getListingData(slug);
+    const listing: Listing = await getListingData(slug);
 
     const baseUrl =
       process.env.NEXT_PUBLIC_BASE_URL || "https://tangapano.co.zw";
 
     // Safety check for images
-    const displayImage = listing.images?.[0]?.display_image;
+    const displayImage =
+      listing.images.find((image) => image.is_face_image)?.display_image ||
+      listing.images[0]?.display_image ||
+      null;
     const imageUrl = displayImage
       ? `${baseUrl}${displayImage}`
       : `${baseUrl}/default-listing.jpg`;

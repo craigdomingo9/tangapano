@@ -24,4 +24,15 @@ class RetrieveListingSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ('id', 'created_at', 'updated_at')
         depth = 1
+    
+    def to_representation(self, instance):
+        # Get the original representation (the dictionary)
+        representation = super().to_representation(instance)
+        
+        # Check if landlord exists in the data, then remove phone_number
+        if representation.get('landlord'):
+            representation['landlord'].pop('phone_number', None)
+            representation['landlord'].pop('address', None)
+            
+        return representation
 

@@ -6,16 +6,27 @@ from listings.documents import ListingDocument
 # 1. Create a Custom List Serializer
 class ListingListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
-        # Process the list of data using the standard ListingDocumentSerializer logic
+        # 1. Get the standard list of dictionaries
         results = super().to_representation(data)
         
-        # 2. The Filter Logic
-        # Iterate over the serialized results and keep ONLY listings
-        # that have at least one room.
-        cleaned_results = [
-            item for item in results 
-            if item.get('rooms') and len(item['rooms']) > 0
-        ]
+        cleaned_results = []
+
+        for item in results:
+            # --- Filter Logic: Check Rooms ---
+            # Ensure rooms exist and the list is not empty
+            rooms = item.get('rooms')
+            if not rooms or len(rooms) == 0:
+                continue # Skip this listing entirely
+
+            # --- Sensitive Data Logic: Hide Phone Number ---
+            # We modify the 'item' dictionary directly before adding it to our final list
+            if item.get('landlord'):
+                # Pop removes the key safely (returns None if key doesn't exist)
+                item['landlord'].pop('phone_number', None)
+                item['landlord'].pop('address', None)
+
+            # Add the processed item to the new list
+            cleaned_results.append(item)
         
         return cleaned_results
     

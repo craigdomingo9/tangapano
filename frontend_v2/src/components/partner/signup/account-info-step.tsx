@@ -1,7 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { User, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FormInput } from "../common-components/form-input";
+import { FormInput } from "../../common-components/form-input";
 import { Step1FormData } from "@/lib/validations/partner-signup";
 
 interface AccountInfoStepProps {

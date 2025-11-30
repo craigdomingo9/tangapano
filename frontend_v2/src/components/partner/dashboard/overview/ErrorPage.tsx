@@ -25,10 +25,7 @@ interface ErrorPageProps {
   refreshFn?: () => void;
 }
 
-export const ListingsErrorPage: React.FC<ErrorPageProps> = ({
-  type,
-  refreshFn,
-}) => {
+export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
   const router = useRouter();
 
   // Configuration for different error states
@@ -46,9 +43,9 @@ export const ListingsErrorPage: React.FC<ErrorPageProps> = ({
     },
     "404": {
       icon: <FileWarning className="w-12 h-12 text-primary" />,
-      title: "Property Not Found",
+      title: "Resource Not Found",
       description:
-        "The property dashboard you are looking for doesn't exist or has been moved.",
+        "The resource you are looking for doesn't exist or has been moved.",
       code: "Error 404",
       primaryAction: "Refresh",
       secondaryAction: "Support",

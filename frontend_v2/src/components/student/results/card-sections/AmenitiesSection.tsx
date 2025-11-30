@@ -83,7 +83,7 @@ export default function AmenitiesSection({
   isExpanded,
   onToggle,
 }: AmenitiesSectionProps) {
-  const { data: amenitiesMasterList } = useAmenities();
+  const { data: amenitiesMasterList } = useAmenities({ has_listings: false });
   const { matched, missing, extra } = useAmenitiesCategorization(
     listingAmenities,
     amenitiesMasterList
