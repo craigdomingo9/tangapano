@@ -5,12 +5,14 @@ interface ListingDeletionModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  isDeleting: boolean;
 }
 
 export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
+  isDeleting,
 }) => {
   if (!isOpen) return null;
 
@@ -27,7 +29,7 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors z-10"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors z-10 cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -59,8 +61,9 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
               <button
                 onClick={onConfirm}
                 className="px-6 py-2.5 text-sm rounded-lg bg-crimson dark:bg-red-700 text-white font-bold hover:bg-red-800 dark:hover:bg-red-600 transition-colors shadow-sm cursor-pointer"
+                disabled={isDeleting}
               >
-                Delete
+                {isDeleting ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>

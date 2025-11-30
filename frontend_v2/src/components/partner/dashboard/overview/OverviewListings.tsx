@@ -5,8 +5,8 @@ import { RouterLink } from "@/routing/RouterLink";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteListing } from "@/lib/api/partner/deleteListing";
 import { errorToast, successToast } from "@/lib/toast";
-import { Fragment, useState } from "react";
-import { ListingDeletionModal } from "./ListingDeletionModal";
+import { useState } from "react";
+import { ListingDeletionModal } from "./ListingDeletionModal"; // Imported here
 
 interface OverviewListingsProps {
   listings: Listing[];
@@ -14,25 +14,26 @@ interface OverviewListingsProps {
 }
 
 function OverviewListings({ listings, accessToken }: OverviewListingsProps) {
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  // STATE CHANGE: Instead of boolean, we store the ID.
+  // null = modal closed. "123" = modal open for listing 123.
+  const [listingToDelete, setListingToDelete] = useState<string | null>(null);
+
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
     mutationFn: (listingId: string) => deleteListing(listingId, accessToken),
     onSuccess: () => {
       successToast("Listing deleted successfully");
-      setIsDeleteOpen(false);
+      setListingToDelete(null); // Close modal
       queryClient.invalidateQueries({ queryKey: ["landlord-listings"] });
     },
     onError: () => {
       errorToast("Something went wrong. Please try again later.");
-      setIsDeleteOpen(false);
+      // Optional: keep modal open on error so user can retry?
+      // Or close it:
+      setListingToDelete(null);
     },
   });
-
-  async function onDeleteListing(listingId: string) {
-    await deleteMutation.mutate(listingId);
-  }
 
   return (
     <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
@@ -66,20 +67,30 @@ function OverviewListings({ listings, accessToken }: OverviewListingsProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
           {listings.map((listing) => (
-            <Fragment key={listing.id}>
-              <ListingCard
-                listing={listing}
-                setIsDeleteOpen={setIsDeleteOpen}
-              />
-              {/* <ListingDeletionModal
-                isOpen={isDeleteOpen}
-                onClose={() => setIsDeleteOpen(false)}
-                onConfirm={() => onDeleteListing(listing.id)}
-              /> */}
-            </Fragment>
+            <ListingCard
+              key={listing.id}
+              listing={listing}
+              // We just set the state ID here. We don't perform the logic yet.
+              onDeleteRequest={() => setListingToDelete(listing.id)}
+            />
           ))}
         </div>
       )}
+
+      {/* SCALABLE APPROACH: 
+        One single Modal instance handles all deletions.
+        It only renders if an ID is selected.
+      */}
+      <ListingDeletionModal
+        isOpen={!!listingToDelete} // Convert string to boolean
+        onClose={() => setListingToDelete(null)}
+        onConfirm={() => {
+          if (listingToDelete) {
+            deleteMutation.mutate(listingToDelete);
+          }
+        }}
+        isDeleting={deleteMutation.isPending}
+      />
     </main>
   );
 }

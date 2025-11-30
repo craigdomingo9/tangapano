@@ -24,7 +24,7 @@ export default function PriceSection({
             /month
           </span>
         </div>
-        <p className="text-xxs sm:text-xs text-slate-400 font-medium">
+        <p className="text-xs text-slate-400 font-medium">
           {applyAgentFee ? `+$${agentFee} Agent Fee` : "Zero Agent Fees"}
         </p>
       </div>

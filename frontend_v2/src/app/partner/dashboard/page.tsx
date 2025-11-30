@@ -5,6 +5,11 @@ import { getUser } from "@/lib/api/user-context";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
+export const metadata = {
+  title: "Dashboard - Partner Portal",
+  description: "Manage your properties",
+};
+
 export default async function Page() {
   const cookieStore = await cookies();
   const token = cookieStore.get("auth_token")?.value;

@@ -19,10 +19,10 @@ import { ListingDeletionModal } from "./ListingDeletionModal";
 
 interface ListingCardProps {
   listing: Listing;
-  setIsDeleteOpen: (isOpen: boolean) => void;
+  onDeleteRequest: () => void;
 }
 
-function ListingCard({ listing, setIsDeleteOpen }: ListingCardProps) {
+function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
   const faceImage =
     listing?.images?.find((image) => image?.is_face_image) ||
     listing?.images?.[0] ||
@@ -198,13 +198,14 @@ function ListingCard({ listing, setIsDeleteOpen }: ListingCardProps) {
             </div>
 
             {/* Footer Delete */}
+            {/* Footer Delete */}
             <div className="flex justify-end pt-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsDeleteOpen(true);
+                  onDeleteRequest(); // Just triggers the parent callback
                 }}
-                className="group flex items-center gap-1.5 text-[11px] font-medium text-slate-400 hover:text-crimson transition-colors px-2 py-1 cursor-pointer"
+                className="group cursor-pointer flex items-center gap-1.5 text-[11px] font-medium text-slate-400 hover:text-crimson transition-colors px-2 py-1"
               >
                 <Trash className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100" />
                 <span>Remove Property</span>
