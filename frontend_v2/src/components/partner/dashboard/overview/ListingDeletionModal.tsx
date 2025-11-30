@@ -7,6 +7,7 @@ interface ListingDeletionModalProps {
   onClose: () => void;
   onConfirm: () => void;
   isDeleting: boolean;
+  itemName?: string;
 }
 
 export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
@@ -14,6 +15,7 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
   onClose,
   onConfirm,
   isDeleting,
+  itemName = "Property",
 }) => {
   if (!isOpen) return null;
 
@@ -38,7 +40,7 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
         {/* Header Section */}
         <div className="pt-8 pb-2 px-6 text-center">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            Delete Property
+            Delete {itemName}
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-xsm">
             This action cannot be undone.
@@ -49,7 +51,8 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
         <div className="p-6 flex flex-col items-center">
           <div className="w-full py-4 px-4 flex flex-col items-center justify-center">
             <p className="text-sm font-medium text-slate-700 dark:text-slate-300 text-center mb-8">
-              Are you sure you want to permanently delete this property listing?
+              Are you sure you want to permanently delete this{" "}
+              {itemName.toLowerCase()}?
             </p>
 
             <div className="flex gap-3 w-full justify-center">

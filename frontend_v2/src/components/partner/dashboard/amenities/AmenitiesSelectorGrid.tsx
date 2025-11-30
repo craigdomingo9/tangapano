@@ -156,7 +156,7 @@ export default function AmenitiesSelectorGrid({
                     className={cn(
                       "px-3 py-2 rounded-lg cursor-pointer text-xs font-semibold transition-all duration-200 border flex items-center gap-2 active:scale-95 select-none",
                       isSelected
-                        ? "bg-slate-800 dark:bg-sky-600 text-white border-slate-800 dark:border-sky-600 shadow-sm"
+                        ? "bg-lapis dark:bg-sky-600 text-white dark:border-sky-600 shadow-sm"
                         : "bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900"
                     )}
                   >

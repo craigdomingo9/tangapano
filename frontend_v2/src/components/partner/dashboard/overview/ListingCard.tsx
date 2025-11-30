@@ -59,7 +59,7 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
           {/* Top Bar Actions */}
           <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
             {/* Photos Badge */}
-            <RouterLink to={{ page: "images" }}>
+            <RouterLink to={{ page: "images", listingId: listing.id }}>
               <div className="bg-slate-900/50 backdrop-blur-sm text-white text-xxs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 border border-white/10 cursor-pointer">
                 <ImageIcon className="w-3.5 h-3.5" />
                 <span>{listing?.images?.length || 0} Photos</span>
@@ -187,7 +187,7 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
             {/* Primary Action */}
             <RouterLink
               className="w-full bg-lapis hover:bg-lapis-hover text-white py-3 rounded-xl font-bold text-xsm shadow-md shadow-lapis/20 transition-all flex items-center justify-center gap-2 active:scale-[0.98] group/btn hover:shadow-lg hover:shadow-lapis/30"
-              to={{ page: "images" }}
+              to={{ page: "images", listingId: listing.id }}
             >
               <ImageIcon className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
               <span>Manage Photos</span>
