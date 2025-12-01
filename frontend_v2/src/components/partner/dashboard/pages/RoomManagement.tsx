@@ -1,7 +1,7 @@
+"use client";
 import { FullScreenView } from "@/components/ui/FullScreenView";
 import { useListingDetail } from "@/hooks/use-reference-data";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { RouteProps } from "@/routing/types";
 import { ErrorPage } from "../overview/ErrorPage";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import RoomsHeaderArea from "../rooms/RoomsHeaderArea";
@@ -10,10 +10,11 @@ import { useState } from "react";
 import RoomEditorModal from "../rooms/RoomEditorModal";
 import createEntityStore from "@/lib/stores/entityStore";
 import useRoomActions from "@/hooks/use-room-actions";
+import { PartnerComponentProps } from "@/lib/types/partner";
 
 export const useEditingRoom = createEntityStore<Room>({} as Room);
 
-function RoomManagement({ params, serverData }: RouteProps) {
+function RoomManagement({ params, serverData }: PartnerComponentProps) {
   const { push } = useRouterPush();
   const { listingId } = params;
   const { accessToken } = serverData;

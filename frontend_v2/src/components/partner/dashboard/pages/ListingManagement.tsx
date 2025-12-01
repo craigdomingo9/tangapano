@@ -2,7 +2,6 @@
 
 import { useListingDetail } from "@/hooks/use-reference-data";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { RouteProps } from "@/routing/types";
 import { ErrorPage } from "../overview/ErrorPage";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { FullScreenView } from "@/components/ui/FullScreenView";
@@ -12,6 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, ListingPayload } from "@/lib/api/listings";
 import { errorToast, successToast } from "@/lib/toast";
 import PropertyDetailsManager from "../listings/PropertyDetailsManager";
+import { PartnerComponentProps } from "@/lib/types/partner";
 
 // Form State uses IDs, not Objects
 export interface FormState {
@@ -33,7 +33,7 @@ const INITIAL_STATE: FormState = {
 // Store for local form state
 export const usePropertyDetails = createEntityStore<FormState>(INITIAL_STATE);
 
-function ListingManagement({ params, serverData }: RouteProps) {
+function ListingManagement({ params, serverData }: PartnerComponentProps) {
   const { push } = useRouterPush();
   const { listingId, mode } = params;
   const { accessToken } = serverData;
@@ -131,7 +131,7 @@ function ListingManagement({ params, serverData }: RouteProps) {
   return (
     <FullScreenView title={pageTitle} onBack={() => push({ page: "overview" })}>
       <div className="flex flex-col items-center w-full">
-        <div className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 sm:p-10 space-y-8 animate-in zoom-in-95 duration-200">
+        <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 sm:p-10 space-y-8 animate-in zoom-in-95 duration-200">
           <PropertyDetailsManager
             title={
               isEditMode ? `Edit ${listing?.title}` : "New Property Listing"

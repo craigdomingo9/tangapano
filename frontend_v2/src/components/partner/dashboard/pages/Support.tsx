@@ -1,7 +1,9 @@
+"use client";
 import { MessageCircle, Phone } from "lucide-react";
 import OverviewFooter from "../overview/OverviewFooter";
 import { FullScreenView } from "@/components/ui/FullScreenView";
 import { useRouterPush } from "@/hooks/use-router-push";
+import { PartnerParams } from "@/lib/types/partner";
 
 interface SupportContact {
   initials: string;
@@ -49,12 +51,12 @@ export default function Support() {
     const cleanPhone = phone.replace(/[\s+]/g, "");
     window.open(`https://wa.me/${cleanPhone}`, "_blank");
   };
-  const { push } = useRouterPush();
+  const { push } = useRouterPush<PartnerParams>();
 
   return (
     <FullScreenView title="Support" onBack={() => push({ page: "overview" })}>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans flex flex-col transition-colors duration-300">
-        <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 sm:py-10 flex flex-col items-center">
+        <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 flex flex-col items-center mb-10">
           {/* Hero Text */}
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
             <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
@@ -87,7 +89,7 @@ export default function Support() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">
                   {member.name}
                 </h3>
-                <p className="text-xs text-lapis dark:text-sky-400 font-bold uppercase tracking-wide mb-6 h-8 flex items-center justify-center leading-tight">
+                <p className="text-xs text-lapis dark:text-sky-400 font-semibold uppercase tracking-wide mb-6 h-8 flex items-center justify-center leading-tight">
                   {member.role}
                 </p>
 
@@ -104,7 +106,7 @@ export default function Support() {
                     onClick={() =>
                       handleWhatsApp(member.message || member.phone)
                     }
-                    className="w-full text-sm py-2.5 px-4 rounded-lg border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:border-emerald-500 dark:hover:border-emerald-500 font-bold flex items-center justify-center gap-2 transition-all"
+                    className="w-full text-sm py-2.5 px-4 rounded-lg border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:border-emerald-500 dark:hover:border-emerald-500 font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4" />
                     Contact on WhatsApp

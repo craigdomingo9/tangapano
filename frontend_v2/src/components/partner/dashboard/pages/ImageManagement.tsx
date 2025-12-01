@@ -1,6 +1,6 @@
+"use client";
 import { useListingDetail } from "@/hooks/use-reference-data";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { RouteProps } from "@/routing/types";
 import { ErrorPage } from "../overview/ErrorPage";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { FullScreenView } from "@/components/ui/FullScreenView";
@@ -10,8 +10,9 @@ import ImageGrid from "../images/ImageGrid";
 import { useImageActions } from "@/hooks/use-image-actions";
 import { useState } from "react";
 import { ListingDeletionModal } from "../overview/ListingDeletionModal";
+import { PartnerComponentProps } from "@/lib/types/partner";
 
-function ImageManagement({ params, serverData }: RouteProps) {
+function ImageManagement({ params, serverData }: PartnerComponentProps) {
   const { push } = useRouterPush();
   const { listingId } = params;
   const { accessToken } = serverData;

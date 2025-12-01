@@ -1,6 +1,6 @@
+"use client";
 import { FullScreenView } from "@/components/ui/FullScreenView";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { RouteProps } from "@/routing/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ErrorPage } from "../overview/ErrorPage";
 import AmenitiesSelectorGrid from "../amenities/AmenitiesSelectorGrid";
@@ -11,10 +11,11 @@ import { errorToast, successToast } from "@/lib/toast";
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { UnsavedChangesModal } from "../UnsavedChangesModal";
+import { PartnerComponentProps, PartnerParams } from "@/lib/types/partner";
 
-function AmenitiesManagement({ params, serverData }: RouteProps) {
+function AmenitiesManagement({ params, serverData }: PartnerComponentProps) {
   // Hooks
-  const { push } = useRouterPush();
+  const { push } = useRouterPush<PartnerParams>();
   const queryClient = useQueryClient();
   const { listingId } = params;
   const { accessToken } = serverData;

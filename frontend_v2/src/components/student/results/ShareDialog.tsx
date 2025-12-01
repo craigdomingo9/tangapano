@@ -102,8 +102,8 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
 
           <div className="pt-2">
             <Button
-              variant="brandOutline"
-              className="w-full dark:border-sky-700 dark:text-sky-400 dark:hover:bg-sky-900/20 dark:bg-slate-900 cursor-pointer"
+              variant={"outline"}
+              className="w-full dark:border-sky-700 dark:text-sky-400 dark:hover:bg-sky-900/20 dark:bg-slate-900 cursor-pointer outline-lapis hover:bg-lapis/5 "
               onClick={onClose}
             >
               Done

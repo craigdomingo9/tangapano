@@ -4,72 +4,86 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { createRouterStore } from "./store";
-import { appRoutes } from "./routes";
-import { AppParams, RouteProps } from "./types";
-import LoadingScreen from "@/components/student/interest/states/LoadingScreen"; // Adjust path
+import { AppRoute, BaseParams } from "./types";
+import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
+import { useNavigationStore } from "@/lib/stores/navigationStore";
 
-// Initialize store
-const useRouterStore = createRouterStore<AppParams>();
+const useRouterStore = createRouterStore<any, any>();
 
-interface Props {
-  userContext: ServerContext;
+// 1. DEFINE SAFE VARIANTS (Opacity Only)
+const fadeVariants = {
+  initial: { opacity: 0 },
+  enter: {
+    opacity: 1,
+    transition: { duration: 0.2, ease: "easeOut" },
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.15, ease: "easeIn" },
+  },
+};
+
+interface Props<P extends BaseParams, C> {
+  serverData: C;
+  routes: AppRoute<P, C>[];
 }
 
-export function RouteRenderer({ userContext }: Props) {
+export function RouteRenderer<P extends BaseParams, C>({
+  serverData,
+  routes,
+}: Props<P, C>) {
   const searchParams = useSearchParams();
   const { activeRoute, resolve } = useRouterStore();
-
-  // 1. ADD STATE: Track if we have finished the initial route check
   const [isResolving, setIsResolving] = useState(true);
+  const { endNavigation } = useNavigationStore();
 
   const currentParams = useMemo(() => {
-    return Object.fromEntries(searchParams.entries()) as AppParams;
+    return Object.fromEntries(searchParams.entries()) as P;
   }, [searchParams]);
 
   useEffect(() => {
-    // 2. Resolve the route
-    resolve(currentParams, appRoutes);
+    if (routes) {
+      resolve(currentParams, routes);
+      setIsResolving(false);
 
-    // 3. Mark resolution as complete immediately after
-    setIsResolving(false);
-  }, [currentParams, resolve]);
+      // / STOP THE LOADER
+      // The URL has changed, and we have resolved the new component.
+      endNavigation();
+    }
+  }, [currentParams, resolve, routes]);
 
   return (
-    <div className="relative w-full h-full">
+    // 2. USE MIN-H-SCREEN
+    // Ensures the container always fills the viewport height without collapsing
+    <div className="relative w-full min-h-screen bg-gray-50/50 dark:bg-slate-950">
       <AnimatePresence mode="wait">
-        {/* CASE 1: Still figuring out where to go */}
         {isResolving ? (
-          <motion.div
-            key="loader"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="w-full h-full"
-          >
+          <motion.div key="loader" exit={{ opacity: 0 }}>
             <LoadingScreen />
           </motion.div>
         ) : activeRoute ? (
-          /* CASE 2: Route Found */
           <motion.div
             key={activeRoute.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            variants={fadeVariants}
+            initial="initial"
+            animate="enter"
+            exit="exit"
+            // 3. WILL-CHANGE: OPACITY
+            // Hints the browser to optimize this layer without breaking layout
+            style={{ willChange: "opacity" }}
             className="w-full"
           >
             <activeRoute.component
               params={currentParams}
-              serverData={userContext}
+              serverData={serverData}
             />
           </motion.div>
         ) : (
-          /* CASE 3: Route Not Found (404) */
           <motion.div
             key="404"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
           >
             <ErrorPage type="404" />
           </motion.div>

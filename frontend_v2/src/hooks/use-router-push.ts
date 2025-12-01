@@ -1,27 +1,24 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
-import { AppParams } from "@/routing/types";
+import { useCallback, useTransition } from "react";
+import { BaseParams } from "@/routing/types";
+import { useNavigationStore } from "@/lib/stores/navigationStore";
 
-interface NavigateOptions {
-  preserveParams?: boolean; // Default: false (clears other params)
-  scroll?: boolean; // Default: true (scrolls to top)
-}
-
-export function useRouterPush() {
+export function useRouterPush<T extends BaseParams>() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
+  const { startNavigation } = useNavigationStore(); // <--- Get Action
 
-  // Helper to construct the query string (DRY logic from RouterLink)
-  const getQueryString = useCallback(
-    (to: AppParams, preserveParams: boolean) => {
-      // 1. Start with existing params OR empty
+  const push = useCallback(
+    (to: T, options?: { preserveParams?: boolean; scroll?: boolean }) => {
+      const { preserveParams = false, scroll = true } = options || {};
+
       const newParams = new URLSearchParams(
         preserveParams ? searchParams.toString() : ""
       );
 
-      // 2. Merge or Delete keys
       Object.entries(to).forEach(([key, value]) => {
         if (value === undefined || value === null || value === "") {
           newParams.delete(key);
@@ -30,34 +27,16 @@ export function useRouterPush() {
         }
       });
 
-      return "?" + newParams.toString();
+      // 1. Start the Global Loader
+      startNavigation();
+
+      // 2. Start the Transition
+      startTransition(() => {
+        router.push(`?${newParams.toString()}`, { scroll });
+      });
     },
-    [searchParams]
+    [router, searchParams, startNavigation]
   );
 
-  /**
-   * Pushes a new route to the history stack
-   */
-  const push = useCallback(
-    (to: AppParams, options: NavigateOptions = {}) => {
-      const { preserveParams = false, scroll = true } = options;
-      const href = getQueryString(to, preserveParams);
-      router.push(href, { scroll });
-    },
-    [router, getQueryString]
-  );
-
-  /**
-   * Replaces the current history entry (Back button won't go back here)
-   */
-  const replace = useCallback(
-    (to: AppParams, options: NavigateOptions = {}) => {
-      const { preserveParams = false, scroll = true } = options;
-      const href = getQueryString(to, preserveParams);
-      router.replace(href, { scroll });
-    },
-    [router, getQueryString]
-  );
-
-  return { push, replace };
+  return { push, isPending };
 }

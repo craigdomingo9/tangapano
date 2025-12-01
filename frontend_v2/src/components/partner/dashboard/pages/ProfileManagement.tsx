@@ -1,5 +1,5 @@
+"use client";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { RouteProps } from "@/routing/types";
 import { ErrorPage } from "../overview/ErrorPage";
 import { FullScreenView } from "@/components/ui/FullScreenView";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import UserInformationCard from "../profile/UserInformationCard";
 import LandlordCardInformation from "../profile/LandlordCardInformation";
 import useUserActions from "@/hooks/use-user-actions";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
+import { PartnerComponentProps } from "@/lib/types/partner";
 
 export interface ProfileFormState {
   first_name: string;
@@ -22,7 +23,7 @@ export const useProfileFormData = createEntityStore<ProfileFormState>(
   {} as ProfileFormState
 );
 
-function ProfileManagement({ serverData }: RouteProps) {
+function ProfileManagement({ serverData }: PartnerComponentProps) {
   const { push } = useRouterPush();
   const { accessToken } = serverData;
   const [editingSection, setEditingSection] = useState<

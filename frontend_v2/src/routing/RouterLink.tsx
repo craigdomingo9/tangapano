@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ComponentProps, useMemo } from "react";
-import { AppParams } from "./types";
+import { useMemo } from "react";
+import { BaseParams } from "./types";
 
-interface Props extends Omit<ComponentProps<typeof Link>, "href"> {
-  to: AppParams;
+interface Props {
+  to: BaseParams;
   preserveParams?: boolean;
+  className?: string;
+  [key: string]: any;
 }
 
 export const RouterLink = ({
@@ -19,12 +21,10 @@ export const RouterLink = ({
   const searchParams = useSearchParams();
 
   const href = useMemo(() => {
-    // 1. Start with existing params if preserving, else empty
     const newParams = new URLSearchParams(
       preserveParams ? searchParams.toString() : ""
     );
 
-    // 2. Merge in new params
     Object.entries(to).forEach(([key, value]) => {
       if (value === undefined || value === null || value === "") {
         newParams.delete(key);

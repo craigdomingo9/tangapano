@@ -38,7 +38,7 @@ function OverviewListings({ listings, accessToken }: OverviewListingsProps) {
   return (
     <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight z-0">
           Your Properties
         </h1>
         <p className="text-slate-500 text-sm dark:text-slate-400">

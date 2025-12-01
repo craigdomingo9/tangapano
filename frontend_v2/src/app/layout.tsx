@@ -4,6 +4,7 @@ import { Providers } from "@/providers/react-query-providers";
 import { ThemeProvider } from "@/providers/theme-provider";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
+import { GlobalLoader } from "@/components/ui/GlobalLoader";
 
 // 2. Configure the local font
 const inter = localFont({
@@ -32,6 +33,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <GlobalLoader />
             {children}
           </ThemeProvider>
           <Toaster />

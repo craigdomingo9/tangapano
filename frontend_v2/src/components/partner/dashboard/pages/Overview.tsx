@@ -1,6 +1,6 @@
+"use client";
 import Header from "@/components/student/Header";
 import PartnerHeaderContent from "../PartnerHeaderContent";
-import { RouteProps } from "@/routing/types";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/api/config";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
@@ -10,8 +10,9 @@ import fetchLandlordListings from "@/lib/api/partner/fetchLandlordListings";
 import OverviewListings from "../overview/OverviewListings";
 import OverviewFooter from "../overview/OverviewFooter";
 import { ErrorPage } from "../overview/ErrorPage";
+import { PartnerComponentProps } from "@/lib/types/partner";
 
-function Overview({ serverData }: RouteProps) {
+function Overview({ serverData }: PartnerComponentProps) {
   const { user, accessToken } = serverData;
 
   // 1. Client-Side Fetch

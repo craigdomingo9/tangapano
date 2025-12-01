@@ -12,10 +12,12 @@ import {
   Share2 as Share,
   Sparkles,
   Trash,
+  TrendingUp,
+  User,
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { ListingDeletionModal } from "./ListingDeletionModal";
+import { cn } from "@/lib/utils";
 
 interface ListingCardProps {
   listing: Listing;
@@ -57,23 +59,66 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
           <div className="absolute inset-0 bg-linear-to-t from-slate-900/80 to-transparent opacity-60 group-hover:opacity-70 transition-opacity"></div>
 
           {/* Top Bar Actions */}
-          <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
-            {/* Photos Badge */}
-            <RouterLink to={{ page: "images", listingId: listing.id }}>
-              <div className="bg-slate-900/50 backdrop-blur-sm text-white text-xxs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 border border-white/10 cursor-pointer">
-                <ImageIcon className="w-3.5 h-3.5" />
-                <span>{listing?.images?.length || 0} Photos</span>
+          <div className="absolute top-3 sm:top-4 left-2 sm:left-4 right-4 flex justify-between items-start z-10">
+            {/* Primary Badge - Top Left for Primacy */}
+            <RouterLink
+              to={{ page: "listings", listingId: listing.id, mode: "edit" }}
+            >
+              <div
+                className={cn(
+                  "px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transition-all duration-300 hover:scale-105 backdrop-blur-md border select-none",
+                  listing.apply_agent_fee
+                    ? "bg-amber-500/95 text-white border-amber-400/50 shadow-amber-900/20"
+                    : "bg-linear-to-r from-emerald-500 to-teal-600 text-white border-emerald-400/30 shadow-emerald-900/30 ring-1 ring-white/20"
+                )}
+                title={
+                  listing.apply_agent_fee
+                    ? "Student pays an agent fee"
+                    : "No agent fees for students"
+                }
+              >
+                {listing.apply_agent_fee ? (
+                  <>
+                    <User className="w-3.5 h-3.5" />
+                    <span className="text-xxs font-bold uppercase tracking-wider">
+                      Student Pays Fee
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <TrendingUp className="w-3.5 h-3.5 stroke-[2.5px]" />
+                    <span className="text-xxs font-extrabold uppercase tracking-wider">
+                      Lanldlord Success Fee
+                    </span>
+                  </>
+                )}
               </div>
             </RouterLink>
 
-            {/* Share Button */}
-            <button
-              onClick={() => setIsShareOpen(true)}
-              className="bg-slate-900/50 hover:bg-slate-900/70 backdrop-blur-sm text-white p-2 rounded-full shadow-sm border border-white/10 transition-all cursor-pointer"
-              title="Share Property"
-            >
-              <Share className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Photos Badge */}
+              <RouterLink
+                className="hidden sm:inline"
+                to={{ page: "images", listingId: listing.id }}
+              >
+                <div className="bg-slate-900/50 backdrop-blur-sm text-white text-xxs font-bold px-2 py-2 rounded-full shadow-sm flex items-center gap-1.5 border border-white/10 cursor-pointer">
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  <span>
+                    {listing?.images?.length < 10
+                      ? listing?.images?.length
+                      : "9+"}
+                  </span>
+                </div>
+              </RouterLink>
+              {/* Share Button */}
+              <button
+                onClick={() => setIsShareOpen(true)}
+                className="bg-slate-900/50 hover:bg-slate-900/70 backdrop-blur-sm text-white p-2 rounded-full shadow-sm border border-white/10 transition-all cursor-pointer"
+                title="Share Property"
+              >
+                <Share className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Title & Location Overlay */}

@@ -4,6 +4,9 @@ import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { getUser } from "@/lib/api/user-context";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { PartnerContext } from "@/lib/types/partner";
+import { partnerRoutes } from "@/routing/registries/partner";
+import PartnerRouter from "./PartnerRouter";
 
 export const metadata = {
   title: "Dashboard - Partner Portal",
@@ -25,7 +28,7 @@ export default async function Page() {
   }
 
   // 2. Construct the Context
-  const serverContext: ServerContext = {
+  const serverContext: PartnerContext = {
     user: user,
     accessToken: token,
   };
@@ -34,7 +37,8 @@ export default async function Page() {
   return (
     <main className="flex flex-col min-h-screen">
       <Suspense fallback={<LoadingScreen />}>
-        <RouteRenderer userContext={serverContext} />
+        {/* Pass ONLY data. The routes are handled inside PartnerRouter. */}
+        <PartnerRouter serverData={serverContext} />
       </Suspense>
     </main>
   );

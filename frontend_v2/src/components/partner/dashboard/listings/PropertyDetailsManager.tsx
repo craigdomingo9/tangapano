@@ -1,7 +1,7 @@
 import { useCampuses } from "@/hooks/use-reference-data";
 import React, { useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { Briefcase, Loader2, Sparkles, TrendingUp, User } from "lucide-react";
 import { FormState } from "../pages/ListingManagement";
 
 interface PropertyDetailsManagerProps {
@@ -231,8 +231,8 @@ function PropertyDetailsManager({
             <label className="text-sm font-bold text-slate-900 dark:text-white cursor-pointer">
               Agent Fee Applicable
             </label>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              Requires agent commission?
+            <span className="text-xxs sm:text-xs text-slate-500 dark:text-slate-400">
+              Should we charge the student an agent fee?
             </span>
           </div>
           <button
@@ -253,6 +253,64 @@ function PropertyDetailsManager({
               )}
             />
           </button>
+        </div>
+        {/* Prominent Info Card */}
+        <div
+          className={cn(
+            "p-5 rounded-lg border-l-4 shadow-sm transition-all duration-300",
+            formState.apply_agent_fee
+              ? "bg-amber-50 dark:bg-amber-900/10 border-amber-400 text-amber-900 dark:text-amber-100"
+              : "bg-blue-50 dark:bg-sky-900/10 border-lapis dark:border-sky-400 text-blue-900 dark:text-sky-100"
+          )}
+        >
+          <div className="flex gap-3">
+            <div className="shrink-0 mt-0.5">
+              {formState.apply_agent_fee ? (
+                <User className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              ) : (
+                <Sparkles className="w-5 h-5 text-lapis dark:text-sky-400" />
+              )}
+            </div>
+            <div className="space-y-2 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-bold text-xsm uppercase tracking-wide opacity-90">
+                  {formState.apply_agent_fee
+                    ? "Student-Paid Model"
+                    : "Success Fee Model"}
+                </p>
+                {!formState.apply_agent_fee && (
+                  <span className="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 text-xxs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide flex items-center gap-1 animate-pulse">
+                    <TrendingUp className="w-3 h-3" />
+                    High Demand
+                  </span>
+                )}
+              </div>
+
+              {formState.apply_agent_fee ? (
+                <p className="text-xsm leading-relaxed opacity-90">
+                  The student will be charged a standard agent fee to access
+                  your contact details or book this property. While no cost to
+                  you, this may reduce student interest.
+                </p>
+              ) : (
+                <div className="text-xsm leading-relaxed opacity-90 space-y-3">
+                  <p>
+                    <span className="font-bold">Maximize your inquiries!</span>{" "}
+                    Students rush to listings without agent fees because they
+                    are cheaper upfront.
+                  </p>
+                  <div className="flex items-start gap-2 bg-white/60 dark:bg-black/20 p-3 rounded-md border border-blue-200/50 dark:border-sky-500/20">
+                    <TrendingUp className="w-4 h-4 mt-0.5 text-lapis dark:text-sky-400 shrink-0" />
+                    <p className="text-xs font-medium">
+                      <strong>Competitive Advantage:</strong> By removing the
+                      student fee, you expose your property to a wider audience.
+                      You only pay a success fee upon placement.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
