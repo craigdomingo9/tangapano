@@ -7,12 +7,12 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/student",
+        destination: "/portal",
         permanent: true,
       },
       {
         source: "/listing/:slug",
-        destination: "/student/listing/:slug",
+        destination: "/portal?page=listing&listingId=:slug",
         permanent: true,
       },
     ];
