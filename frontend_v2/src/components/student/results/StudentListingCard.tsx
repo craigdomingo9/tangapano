@@ -29,13 +29,6 @@ export function StudentListingCard({
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isAmenitiesExpanded, setIsAmenitiesExpanded] = useState(false);
 
-  // Helper to calculate pricing and availability
-  const priceRange = useMemo(() => {
-    if (listing?.rooms?.length === 0) return { min: 0, max: 0 };
-    const rents = listing?.rooms.map((r: any) => parseFloat(r.rent_per_month));
-    return { min: Math.min(...rents), max: Math.max(...rents) };
-  }, [listing.rooms]);
-
   const handleExpressInterestClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onExpressInterest(listing.id);
@@ -63,7 +56,6 @@ export function StudentListingCard({
 
         <ListingInfo
           listing={listing}
-          priceRange={priceRange}
           isAmenitiesExpanded={isAmenitiesExpanded}
           onToggleAmenities={() => setIsAmenitiesExpanded(!isAmenitiesExpanded)}
           onExpressInterest={handleExpressInterestClick}

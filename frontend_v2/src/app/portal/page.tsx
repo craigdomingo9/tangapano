@@ -18,6 +18,8 @@ export async function generateMetadata(
   // Delegate logic to the resolver
   return resolveStudentMetadata(await searchParams);
 }
+// This forces Next.js to listen to the URL on every request, bypassing static optimization.
+export const dynamic = "force-dynamic";
 
 function StudentPortal({ searchParams }: StudentPortalProps) {
   return (

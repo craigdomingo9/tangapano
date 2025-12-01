@@ -57,12 +57,7 @@ function SearchResultsClient({ queryString }: SearchResultsProps) {
 
   return (
     <div>
-      <Header
-        sticky
-        variant="student"
-        className="bg-crimson"
-        logoLinkRoute="/student"
-      >
+      <Header sticky variant="student" className="bg-crimson">
         <div className="flex gap-2">
           <button className="flex hover:cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium hover:bg-white/20 transition-all">
             <Briefcase className="w-4 h-4" />

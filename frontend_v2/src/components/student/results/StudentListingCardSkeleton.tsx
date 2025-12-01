@@ -3,10 +3,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const StudentListingCardSkeleton = () => {
   return (
-    <Card className="overflow-hidden h-full border-slate-200 shadow-sm">
+    <Card className="overflow-hidden h-full border-slate-200 shadow-sm p-0">
       {/* Image Skeleton */}
       <div className="relative aspect-16/10 bg-slate-100">
-        <Skeleton className="h-full w-full" />
+        <Skeleton className="h-full w-full rounded-b-none" />
       </div>
 
       <CardContent className="p-5 pt-6 flex flex-col gap-6">
@@ -44,7 +44,7 @@ export const StudentListingCardSkeleton = () => {
           </div>
         </div>
 
-        <div className="h-px bg-slate-100 w-full mt-auto" />
+        <div className="h-px bg-slate-100 dark:bg-slate-800 w-full mt-auto" />
 
         {/* Price & CTA */}
         <div className="flex items-center justify-between pt-2">

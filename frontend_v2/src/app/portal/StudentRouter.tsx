@@ -1,3 +1,4 @@
+"use client";
 import { StudentComponentProps, StudentContext } from "@/lib/types/student";
 import { studentRoutes } from "@/routing/registries/student";
 import { RouteRenderer } from "@/routing/RouteRenderer";

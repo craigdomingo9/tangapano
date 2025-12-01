@@ -4,7 +4,6 @@ import PriceSection from "./PriceSection";
 
 interface ListingInfoProps {
   listing: Listing;
-  priceRange: { min: number; max: number };
   isAmenitiesExpanded: boolean;
   onToggleAmenities: () => void;
   onExpressInterest: (e: React.MouseEvent) => void;
@@ -12,7 +11,6 @@ interface ListingInfoProps {
 
 export default function ListingInfo({
   listing,
-  priceRange,
   isAmenitiesExpanded,
   onToggleAmenities,
   onExpressInterest,
@@ -34,10 +32,10 @@ export default function ListingInfo({
       <div className="h-px bg-slate-100 dark:bg-slate-800 w-full mt-auto" />
 
       <PriceSection
-        priceRange={priceRange}
         applyAgentFee={listing.apply_agent_fee}
         agentFee={parseFloat(listing.campus.agent.agent_fee)}
         onExpressInterest={onExpressInterest}
+        listing={listing}
       />
     </div>
   );

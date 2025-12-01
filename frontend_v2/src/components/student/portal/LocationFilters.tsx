@@ -85,7 +85,7 @@ function LocationFilters({ updateFilter }: LocationFiltersProps) {
             className="w-full font-bold text-[0.95rem] bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-white rounded-xl py-3.5 px-4 pr-10 appearance-none outline-none focus:ring-2 focus:ring-lapis/50 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer shadow-sm"
             disabled={!campus || isLoading || isError}
           >
-            <option value="">Any Neighborhood</option>
+            <option value="+">Any Neighborhood</option>
             {neighborhoods &&
               neighborhoods?.map((n: Neighborhood) => (
                 <option key={n.id} value={n.id}>

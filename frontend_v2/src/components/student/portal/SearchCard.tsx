@@ -9,10 +9,11 @@ import AmenitiesFilter from "./AmenitiesFilter";
 import PriceRangeFilter from "./PriceRangeFilter";
 import PreferencesFilter from "./PreferencesFilter";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouterPush } from "@/hooks/use-router-push";
+import { StudentParams } from "@/lib/types/student";
 
 function SearchCard() {
-  const router = useRouter();
+  const { push } = useRouterPush<StudentParams>();
   const { entities, setEntities } = useStudentFilters();
 
   const updateFilter = (
@@ -33,36 +34,16 @@ function SearchCard() {
     !entities.maxPrice;
 
   const handleSearch = () => {
-    const {
-      campus: campusId,
-      neighborhood: neighborhoodId,
-      roommates: maxOccupants,
-      gender: preferredGender,
-      minPrice: minPriceValue,
-      maxPrice: maxPriceValue,
-      selectedPerks: selectedAmenities,
-    } = entities;
-
-    const params = {
-      campus: campusId,
-      neighborhood: neighborhoodId,
-      max_occupants: maxOccupants,
-      gender: preferredGender,
-      price_min: minPriceValue,
-      price_max: maxPriceValue,
-      amenities:
-        selectedAmenities.length > 0
-          ? selectedAmenities.sort().join(",")
-          : null,
-    };
-
-    const urlParams = new URLSearchParams(
-      Object.entries(params)
-        .filter(([_, value]) => value != null)
-        .map(([key, value]) => [key, String(value)])
-    );
-
-    router.push(`/?${urlParams.toString()}`);
+    push({
+      page: "search",
+      campus: entities.campus!!,
+      neighborhood: entities.neighborhood!!,
+      max_occupants: entities.roommates?.toString()!!,
+      gender: entities.gender!!,
+      price_min: entities.minPrice?.toString()!!,
+      price_max: entities.maxPrice?.toString()!!,
+      amenities: entities.selectedPerks.join(","),
+    });
   };
 
   return (

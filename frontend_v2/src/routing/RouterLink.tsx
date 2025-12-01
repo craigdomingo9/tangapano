@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { BaseParams } from "./types";
+import { useNavigationStore } from "@/lib/stores/navigationStore";
 
 interface Props {
   to: BaseParams;
@@ -16,9 +17,11 @@ export const RouterLink = ({
   to,
   preserveParams = false,
   children,
+  onClick,
   ...props
 }: Props) => {
   const searchParams = useSearchParams();
+  const { startNavigation } = useNavigationStore();
 
   const href = useMemo(() => {
     const newParams = new URLSearchParams(
@@ -36,8 +39,17 @@ export const RouterLink = ({
     return "?" + newParams.toString();
   }, [to, preserveParams, searchParams]);
 
+  // Intercept the click to start the loader
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // 1. Trigger the Global Loader
+    startNavigation();
+
+    // 2. Call any other onClick handlers passed from parent
+    if (onClick) onClick(e);
+  };
+
   return (
-    <Link href={href} {...props}>
+    <Link href={href} onClick={handleClick} {...props}>
       {children}
     </Link>
   );

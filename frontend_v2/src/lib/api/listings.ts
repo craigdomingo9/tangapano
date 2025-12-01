@@ -11,7 +11,7 @@ export const fetchListings = async ({
 }) => {
   try {
     const response = await axiosInstance.get(
-      `/listings/listings/?${queryString}&is_full=false&page=${pageParam}`
+      `/listings/listings/?${queryString}&page=${pageParam}`
     );
     return response.data;
   } catch (error: unknown) {
