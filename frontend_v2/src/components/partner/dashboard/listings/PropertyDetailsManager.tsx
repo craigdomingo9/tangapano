@@ -196,10 +196,10 @@ function PropertyDetailsManager({
           <label className="text-xsm font-semibold text-slate-700 dark:text-slate-300 block">
             Distance from Campus
           </label>
-          <div className="flex items-center h-12 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 overflow-hidden shadow-sm focus-within:ring-1 focus-within:ring-lapis dark:focus-within:ring-sky-500 focus-within:border-lapis dark:focus-within:border-sky-500">
+          <div className="flex items-center dark:bg-slate-800/50 h-12 rounded-lg border border-slate-200 dark:border-slate-700 bg-white overflow-hidden shadow-sm focus-within:ring-1 focus-within:ring-lapis dark:focus-within:ring-sky-500 focus-within:border-lapis dark:focus-within:border-sky-500">
             <button
               onClick={() => handleDistanceChange(-5)}
-              className="h-full px-5 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+              className="h-full px-5 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
             >
               <span className="text-base font-bold cursor-pointer">−</span>
             </button>
@@ -213,7 +213,7 @@ function PropertyDetailsManager({
             </div>
             <button
               onClick={() => handleDistanceChange(5)}
-              className="h-full px-5 bg-slate-50 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+              className="h-full px-5 bg-slate-50 dark:bg-slate-950 border-l border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
             >
               <span className="text-base font-bold cursor-pointer">+</span>
             </button>
@@ -221,7 +221,7 @@ function PropertyDetailsManager({
         </div>
 
         {/* Agent Fee Switch */}
-        <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
           <div
             className="flex flex-col cursor-pointer"
             onClick={() =>
@@ -231,7 +231,7 @@ function PropertyDetailsManager({
             <label className="text-sm font-bold text-slate-900 dark:text-white cursor-pointer">
               Agent Fee Applicable
             </label>
-            <span className="text-xxs sm:text-xs text-slate-500 dark:text-slate-400">
+            <span className="text-[0.675rem] sm:text-xs text-slate-500 dark:text-slate-400">
               Should we charge the student an agent fee?
             </span>
           </div>
