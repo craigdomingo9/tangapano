@@ -29,7 +29,18 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "role", "landlord_profile", "agent_profile"]
     
-    
+    def update(self, instance, validated_data):
+        landlord_data = validated_data.pop("landlord_profile", None)
+        instance.username = validated_data.get("username", instance.username)
+        instance.email = validated_data.get("email", instance.email)
+        instance.first_name = validated_data.get("first_name", instance.first_name)
+        instance.last_name = validated_data.get("last_name", instance.last_name)
+        instance.save()
+
+        if landlord_data:
+            landlord, _ = Landlord.objects.update_or_create(user=instance, defaults=landlord_data)
+
+        return instance
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
