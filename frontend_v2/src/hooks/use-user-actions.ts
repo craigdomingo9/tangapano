@@ -18,14 +18,21 @@ function useUserActions(accessToken: string) {
   });
 
   const getMe = useQuery({
-    queryKey: ["user"],
+    queryKey: queryKey,
     queryFn: () => api.getMe(accessToken),
+    enabled: !!accessToken,
+  });
+
+  const logout = useQuery({
+    queryKey: ["logout"],
+    queryFn: () => api.logout(accessToken),
     enabled: !!accessToken,
   });
 
   return {
     updateUser,
     getMe,
+    logout,
   };
 }
 

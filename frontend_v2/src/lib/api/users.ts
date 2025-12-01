@@ -18,4 +18,11 @@ export const UsersApi = {
     });
     return response.data;
   },
+
+  logout: async (accessToken: string) => {
+    const response = await axiosInstance.get("/users/auth/logout/", {
+      headers: { Authorization: `Token ${accessToken}` },
+    });
+    return response.data;
+  },
 };

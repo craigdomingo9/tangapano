@@ -39,7 +39,7 @@ function Overview({ serverData }: RouteProps) {
     <div>
       {/* Header */}
       <Header variant="business" sticky className="dark:bg-app-header">
-        <PartnerHeaderContent user={user} />
+        <PartnerHeaderContent user={user} accessToken={accessToken} />
       </Header>
       {/* Listings Grid */}
       <OverviewListings listings={data} accessToken={accessToken} />

@@ -18,11 +18,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import useUserActions from "@/hooks/use-user-actions";
+import { successToast } from "@/lib/toast";
 
-function PartnerHeaderContent({ user }: { user: User }) {
+function PartnerHeaderContent({
+  user,
+  accessToken,
+}: {
+  user: User;
+  accessToken: string;
+}) {
+  const { logout } = useUserActions(accessToken);
   function handleLogout() {
-    console.log("logout");
-    // Add actual sign-out logic here
+    const _ = logout;
+    successToast("Logged out successfully");
   }
 
   const initials = `${user?.first_name?.[0] || ""}${
