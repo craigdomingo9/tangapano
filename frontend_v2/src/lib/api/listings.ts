@@ -24,7 +24,9 @@ export const fetchListings = async ({
 
 export const fetchListingById = async (id: string) => {
   try {
-    const response = await axiosInstance.get(`/listings/listing/${id}/`);
+    const response = await axiosInstance.get<Listing>(
+      `/listings/listing/${id}/`
+    );
     return response.data;
   } catch (error) {
     throw new Error(`Failed to fetch listing ${id}`);

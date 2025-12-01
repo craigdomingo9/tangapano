@@ -39,7 +39,7 @@ export function errorToast(message: string) {
 }
 
 export function infoToast(message: string) {
-  toast.info("This is for your information, please note.", {
+  toast.info(message, {
     style: {
       "--normal-bg":
         "color-mix(in oklab, light-dark(var(--color-sky-600), var(--color-sky-400)) 10%, var(--background))",
