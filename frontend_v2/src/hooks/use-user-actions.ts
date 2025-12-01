@@ -23,16 +23,9 @@ function useUserActions(accessToken: string) {
     enabled: !!accessToken,
   });
 
-  const logout = useQuery({
-    queryKey: ["logout"],
-    queryFn: () => api.logout(accessToken),
-    enabled: !!accessToken,
-  });
-
   return {
     updateUser,
     getMe,
-    logout,
   };
 }
 

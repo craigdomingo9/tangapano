@@ -20,6 +20,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useUserActions from "@/hooks/use-user-actions";
 import { successToast } from "@/lib/toast";
+import { logoutAction } from "@/actions/partner/auth";
+import { UsersApi } from "@/lib/api/users";
 
 function PartnerHeaderContent({
   user,
@@ -28,10 +30,18 @@ function PartnerHeaderContent({
   user: User;
   accessToken: string;
 }) {
-  const { logout } = useUserActions(accessToken);
-  function handleLogout() {
-    const _ = logout;
+  async function handleLogout() {
+    // 1. Call API Logout (if your backend requires it to invalidate token)
+    if (accessToken) await UsersApi.logout(accessToken);
+
+    // 2. Delete Cookie (Server Action)
+    await logoutAction();
+
+    // 3. UI Feedback
     successToast("Logged out successfully");
+
+    // 4. Force hard reload or redirect to login
+    window.location.href = "/partner/login";
   }
 
   const initials = `${user?.first_name?.[0] || ""}${

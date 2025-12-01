@@ -99,3 +99,8 @@ export async function login(
     };
   }
 }
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete("auth_token");
+}
