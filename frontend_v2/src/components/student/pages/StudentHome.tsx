@@ -1,10 +1,10 @@
-import StudentHeroBackground from "../portal/StudentHeroBackground";
+import StudentHeroBackground from "../home/StudentHeroBackground";
 import Header from "../Header";
 import Link from "next/link";
 import { Briefcase } from "lucide-react";
-import StudentHeroText from "../portal/StudentHeroText";
-import SearchCard from "../portal/SearchCard";
-import StudentFooter from "../portal/StudentFooter";
+import StudentHeroText from "../home/StudentHeroText";
+import SearchCard from "../home/SearchCard";
+import StudentFooter from "../home/StudentFooter";
 import { StudentComponentProps } from "@/lib/types/student";
 import LoginButton from "../LoginButton";
 

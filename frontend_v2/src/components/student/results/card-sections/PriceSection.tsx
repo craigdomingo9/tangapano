@@ -37,7 +37,7 @@ export default function PriceSection({
       <div>
         <div className="flex items-baseline gap-1">
           <span className="text-xl sm:text-2xl font-bold text-lapis dark:text-sky-400">
-            ${isRange ? minPrice : maxPrice}
+            ${minPrice}
             {isRange && `-${maxPrice}`}
           </span>
           <span className="text-xsm sm:text-sm text-slate-500 dark:text-slate-400 font-medium">

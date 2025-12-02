@@ -1,6 +1,6 @@
 import { SearchPageWrapper } from "@/components/student/SearchPageWrapper";
 import ExpressInterest from "@/components/student/interest/ExpressInterest";
-import SearchPortal from "@/components/student/portal/SearchPortal";
+import SearchPortal from "@/components/student/home/SearchPortal";
 import SearchResults from "@/components/student/results/SearchResults";
 import { Metadata } from "next";
 

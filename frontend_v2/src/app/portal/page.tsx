@@ -2,7 +2,6 @@ import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { Suspense } from "react";
 import StudentRouter from "./StudentRouter";
 import { StudentContext, StudentParams } from "@/lib/types/student";
-import { getListingMetadata } from "@/lib/api/server/fetch-listing";
 import { Metadata, ResolvingMetadata } from "next";
 import { resolveStudentMetadata } from "@/lib/metadata/student";
 

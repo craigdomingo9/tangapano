@@ -13,7 +13,7 @@ function LoginButton({}: LoginButtonProps) {
     async function checkLoginStatus() {
       const user = await verifyToken();
 
-      console.log(user);
+      // console.log(user);
       if (user.id) setIsLoggedIn(true);
     }
 

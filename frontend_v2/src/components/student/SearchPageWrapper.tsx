@@ -1,4 +1,4 @@
-import SearchPortal from "@/components/student/portal/SearchPortal";
+import SearchPortal from "@/components/student/home/SearchPortal";
 import SearchResults from "@/components/student/results/SearchResults";
 import { StudentFilters } from "@/lib/stores/studentFilterStore";
 import {
