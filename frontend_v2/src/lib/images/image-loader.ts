@@ -14,7 +14,9 @@ export default function myImageLoader({
   // 1. Use an environment variable (fallback to localhost for dev safety)
   // We remove any trailing slash from the domain to keep logic clean
   const backendUrl = (
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost"
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_DOMAIN || "https://tangapano.co.zw"
+      : "http://localhost"
   ).replace(/\/$/, "");
 
   // 2. Ensure src always starts with a slash
