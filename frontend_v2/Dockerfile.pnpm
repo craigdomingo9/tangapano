@@ -53,7 +53,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Run build
-RUN pnpm build --no-lint
+RUN pnpm build
 
 # ---------- Production (Standalone) ----------
 FROM node:20-bullseye-slim AS production
