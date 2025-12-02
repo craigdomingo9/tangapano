@@ -6,12 +6,12 @@ const getBaseUrl = () => {
   // When Next.js fetches data on the server, it needs an absolute internal URL.
   // In Docker, this might be "http://backend_container:8000/api"
   if (typeof window === "undefined") {
-    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost/api";
   }
 
   // 2. CLIENT-SIDE (Browser)
   // The browser uses the public URL.
-  return process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:8000/api";
+  return process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost/api";
 };
 
 export const apiConfig = {
