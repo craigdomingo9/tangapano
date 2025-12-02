@@ -125,6 +125,7 @@ function StepsOrchestrator({ listing }: StepsOrchestratorProps) {
           nextStep={nextStep}
           prevStep={prevStep}
           setCurrentStep={navigateToStep}
+          listing={listing}
         />
       </div>
     </div>

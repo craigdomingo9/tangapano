@@ -17,7 +17,11 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
   } = useExpressInterestStore();
 
   useEffect(() => {
-    if (listing.rooms.length === 0 || selectedRoom !== null) return;
+    if (
+      listing.rooms.length === 0 ||
+      listing.rooms.find((room) => room.id === selectedRoom?.id)
+    )
+      return;
 
     updateStore("selectedRoom", listing.rooms[0]);
   }, [listing]);

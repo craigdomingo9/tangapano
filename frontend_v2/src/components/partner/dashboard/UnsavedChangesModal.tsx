@@ -7,7 +7,7 @@ interface UnsavedChangesModalProps {
   onClose: () => void;
   onDiscard: () => void;
   onSave: () => void;
-  isSaving: boolean;
+  isSaving?: boolean;
 }
 
 export const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
@@ -15,7 +15,7 @@ export const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
   onClose,
   onDiscard,
   onSave,
-  isSaving,
+  isSaving = false,
 }) => {
   if (!isOpen) return null;
 

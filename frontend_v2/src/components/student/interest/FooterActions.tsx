@@ -7,12 +7,14 @@ interface FooterActionsProps {
   nextStep: () => void;
   prevStep: () => void;
   setCurrentStep: (step: number) => void;
+  listing: Listing;
 }
 function FooterActions({
   currentStep,
   nextStep,
   prevStep,
   setCurrentStep,
+  listing,
 }: FooterActionsProps) {
   const {
     entities: {
@@ -28,8 +30,6 @@ function FooterActions({
       confirmed,
     },
   } = useExpressInterestStore();
-
-  function handleWhatsAppRedirect() {}
 
   return (
     <>
@@ -52,7 +52,11 @@ function FooterActions({
             onClick={nextStep}
             className="bg-lapis hover:bg-lapis-hover text-white px-8 py-6 text-sm font-semibold shadow-md hover:shadow-lg transition-all min-w-[140px] cursor-pointer"
             disabled={
-              (currentStep === 1 && !selectedRoom) ||
+              (currentStep === 1 &&
+                (!selectedRoom ||
+                  !listing.rooms.find(
+                    (room) => room.id === selectedRoom?.id
+                  ))) ||
               (currentStep === 2 &&
                 (!moveInTimeline || !depositReadiness || !paymentMethod)) ||
               (currentStep === 3 &&
