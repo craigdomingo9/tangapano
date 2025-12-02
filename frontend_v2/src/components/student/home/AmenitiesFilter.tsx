@@ -48,7 +48,7 @@ function AmenitiesFilter({ updateFilter }: AmenitiesFilterProps) {
             return (
               <Badge
                 key={perk.id}
-                variant={isSelected ? "brand" : "outline"}
+                // variant={isSelected ? "brand" : "outline"}
                 className={cn(
                   "px-[0.9rem] py-[0.4rem] rounded-full text-[0.75rem] font-medium transition-all duration-200 cursor-pointer select-none border",
                   isSelected

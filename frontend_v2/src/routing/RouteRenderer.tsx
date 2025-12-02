@@ -2,13 +2,13 @@
 
 import { useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import { AppRoute, BaseParams } from "./types";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage"; // Check path
 import { useNavigationStore } from "@/lib/stores/navigationStore"; // Check path
 
-const minimalistVariants = {
+const minimalistVariants: Variants = {
   initial: {
     opacity: 0,
     y: 8, // Very small movement (8px)

@@ -3,7 +3,7 @@ import { MessageCircle, Phone } from "lucide-react";
 import OverviewFooter from "../overview/OverviewFooter";
 import { FullScreenView } from "@/components/ui/FullScreenView";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { PartnerParams } from "@/lib/types/partner";
+import { PartnerComponentProps, PartnerParams } from "@/lib/types/partner";
 
 interface SupportContact {
   initials: string;
@@ -46,7 +46,7 @@ const SUPPORT_TEAM: SupportContact[] = [
   },
 ];
 
-export default function Support() {
+export default function Support({}: PartnerComponentProps) {
   const handleWhatsApp = (phone: string) => {
     const cleanPhone = phone.replace(/[\s+]/g, "");
     window.open(`https://wa.me/${cleanPhone}`, "_blank");

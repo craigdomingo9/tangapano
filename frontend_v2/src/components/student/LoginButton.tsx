@@ -14,7 +14,8 @@ function LoginButton({}: LoginButtonProps) {
       const user = await verifyToken();
 
       // console.log(user);
-      if (user.id) setIsLoggedIn(true);
+      if (!user?.id) return;
+      setIsLoggedIn(true);
     }
 
     checkLoginStatus();
