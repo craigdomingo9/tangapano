@@ -54,7 +54,7 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - NEXT_PUBLIC_CLIENT_URL=http://localhost/api/
+      - NEXT_PUBLIC_CLIENT_URL=https://tangapano.co.zw/api/
       - NEXT_PUBLIC_DOMAIN=https://tangapano.co.zw
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
