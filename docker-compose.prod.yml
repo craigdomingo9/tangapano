@@ -53,11 +53,19 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-      - NEXT_PUBLIC_CLIENT_URL=https://tangapano.co.zw/api/
+      # --- PUBLIC (For the Browser) ---
+      # Points to Nginx (https://tangapano.co.zw/api)
+      # MUST match your actual domain. Do not use localhost here for production.
+      - NEXT_PUBLIC_API_URL=https://tangapano.co.zw/api
+
+      # --- PRIVATE (For Next.js Server) ---
+      # Points directly to the Django container (http://backend:8000/api)
+      # This variable is NOT prefixed with NEXT_PUBLIC, so it stays secret on the server.
+      - INTERNAL_API_URL=http://backend:8000/api
+
       - NEXT_PUBLIC_DOMAIN=https://tangapano.co.zw
-      - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
+      - NODE_ENV=production
     depends_on:
       - backend
     restart: always
