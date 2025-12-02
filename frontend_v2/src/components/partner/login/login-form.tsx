@@ -39,6 +39,7 @@ export function LoginForm() {
 
         if (result && !result.success) {
           const errorMessage =
+            // @ts-ignore
             (result.errors?.general as string) ||
             "Login failed. Please check your credentials.";
           setServerError(errorMessage);
