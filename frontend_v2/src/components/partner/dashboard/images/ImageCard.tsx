@@ -1,3 +1,5 @@
+"use client";
+import { Button } from "@/components/ui/button";
 import myImageLoader from "@/lib/images/image-loader";
 import { getShimmerUrl } from "@/lib/images/shimmer";
 import { ChevronRight, Edit, Star, Trash2 } from "lucide-react";
@@ -49,20 +51,28 @@ function ImageCard({
         />
 
         {/* Delete Button - Top Right */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
+        <Button
+          onClick={() => {
             onDelete(image.id);
           }}
           className="absolute top-2 right-2 p-1.5 bg-white/90 backdrop-blur-sm text-slate-400 rounded-full shadow-sm hover:bg-crimson hover:text-white transition-colors cursor-pointer"
           title="Remove photo"
         >
           <Trash2 className="w-4 h-4" />
+        </Button>
+        <button
+          onClick={() => {
+            console.log("Delete deep", image.id);
+            onDelete(image.id);
+          }}
+        >
+          hi
         </button>
 
         {/* Cover Selection Button - Top Left */}
         <button
           onClick={() => onSelectFace(image.id)}
+          disabled={image.is_face_image}
           className={`
             absolute cursor-pointer top-2 left-2 px-2 py-1 rounded-md text-xs font-semibold shadow-sm flex items-center gap-1 transition-all
             ${

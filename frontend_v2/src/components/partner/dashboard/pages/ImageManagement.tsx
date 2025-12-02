@@ -11,6 +11,7 @@ import { useImageActions } from "@/hooks/use-image-actions";
 import { useState } from "react";
 import { ListingDeletionModal } from "../overview/ListingDeletionModal";
 import { PartnerComponentProps } from "@/lib/types/partner";
+import { ImageDeletionModal } from "../images/ImageDeletionModal";
 
 function ImageManagement({ params, serverData }: PartnerComponentProps) {
   const { push } = useRouterPush();
@@ -50,7 +51,9 @@ function ImageManagement({ params, serverData }: PartnerComponentProps) {
         {/* Gallery Grid */}
         <ImageGrid
           images={listing.images}
-          onDelete={(id) => setImageToDelete(id)}
+          onDelete={(id) => {
+            setImageToDelete(id);
+          }}
           onSelectFace={(id) => actions.setCover.mutate(id)}
           onLabelChange={(id, label) =>
             actions.updateLabel.mutate({ id, label })
@@ -59,8 +62,7 @@ function ImageManagement({ params, serverData }: PartnerComponentProps) {
       </div>
 
       {/* Scalable Modal Pattern */}
-      <ListingDeletionModal
-        isDeleting={actions.remove.isPending}
+      <ImageDeletionModal
         isOpen={!!imageToDelete}
         onClose={() => setImageToDelete(null)}
         onConfirm={() => {
@@ -69,9 +71,8 @@ function ImageManagement({ params, serverData }: PartnerComponentProps) {
             setImageToDelete(null);
           }
         }}
+        isDeleting={actions.remove.isPending}
         itemName="Image"
-        // You might want to customize text props for the modal here
-        // title="Delete Photo?"
       />
     </FullScreenView>
   );
