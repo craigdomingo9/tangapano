@@ -8,7 +8,7 @@ export const getListingMetadata = cache(
       // and might need different base URL handling or direct DB access.
       const res = await fetch(
         `${
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost/api"
         }/listings/listing/${id}/`
       );
 
