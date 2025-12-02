@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Minus, Plus, X } from "lucide-react";
+import { Info, Minus, Plus, X } from "lucide-react";
 import { useEditingRoom } from "../pages/RoomManagement";
 import { infoToast } from "@/lib/toast";
 import {
@@ -228,6 +228,17 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
                 </Tooltip>
               </TooltipProvider>
             </div>
+            {/* Help Text for Gender */}
+            {room.gender_preference !== "any" && (
+              <div className="flex items-start gap-2.5 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50">
+                <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+                <p className="text-xs text-amber-900 dark:text-amber-200 font-medium leading-relaxed">
+                  <strong>Note:</strong> Only empty rooms can be set to "Any"
+                  gender. If the room is occupied, it must be assigned a
+                  specific gender to match the current tenants.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Capacity Section */}
