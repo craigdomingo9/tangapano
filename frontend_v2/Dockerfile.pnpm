@@ -21,8 +21,9 @@ COPY package.json ./
 
 # 1. Use --mount to cache the pnpm store between builds
 # 2. Use --frozen-lockfile to ensure reproducible installs
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+# RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    # pnpm install --frozen-lockfile
+RUN pnpm install
 
 # ---------- Development ----------
 FROM base AS development
