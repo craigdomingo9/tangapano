@@ -49,7 +49,7 @@ services:
   frontend:
     build:
       context: ./frontend_v2
-      dockerfile: ./Dockerfile.pnpm
+      dockerfile: ./Dockerfile
     ports:
       - "3000:3000"
     environment:
