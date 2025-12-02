@@ -100,6 +100,24 @@ export async function login(
   }
 }
 
+export async function verifyToken() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
+
+  if (!token) return;
+
+  try {
+    const response = await axiosInstance.get("/users/auth/verify-token/", {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Token Verification Error:", error);
+  }
+}
+
 export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete("auth_token");

@@ -12,6 +12,8 @@ import AcademicInformation from "./steps/AcademicInformation";
 import Completion from "./steps/Completion";
 import FooterActions from "./FooterActions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouterPush } from "@/hooks/use-router-push";
+import { StudentParams } from "@/lib/types/student";
 
 const STEPS = [
   { id: 1, title: "Room Selection" },
@@ -26,7 +28,7 @@ interface StepsOrchestratorProps {
 }
 
 function StepsOrchestrator({ listing }: StepsOrchestratorProps) {
-  const router = useRouter();
+  const { push } = useRouterPush<StudentParams>();
   const params = useSearchParams();
   const { entities, setEntities } = useExpressInterestStore();
   const pathname = usePathname();
@@ -41,16 +43,8 @@ function StepsOrchestrator({ listing }: StepsOrchestratorProps) {
   const currentStep = parseInt(params.get("step") ?? "1", 10);
 
   const navigateToStep = (newStep: number) => {
-    // Clone current params so we don't lose 'listing' or 'expressInterest'
-    const newParams = new URLSearchParams(params.toString());
-
-    // Set the new values
-    newParams.set("step", String(newStep));
-    newParams.set("expressInterest", "true"); // Ensure this persists
-    if (listing.id) newParams.set("listing", listing.id); // Ensure this persists
-
     // Push the new URL
-    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+    push({ step: newStep.toString() }, { preserveParams: true });
   };
 
   // 2. SCROLL LOGIC

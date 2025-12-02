@@ -20,7 +20,7 @@ function ListingDetailClient({ slug }: ListingClientProps) {
   const router = useRouter();
 
   function onBack() {
-    router.push("/student");
+    router.push("/portal");
   }
 
   if (isLoading) return <LoadingScreen />; // Only shows if client-side navigation happens later

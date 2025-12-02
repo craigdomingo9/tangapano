@@ -47,12 +47,12 @@ function SearchResultsClient({ queryString }: SearchResultsProps) {
   }
 
   function onAdjustFilters() {
-    router.push("/student");
+    router.push("/portal");
   }
 
   function onClearSearch() {
     reset();
-    router.push("/student");
+    router.push("/portal");
   }
 
   return (

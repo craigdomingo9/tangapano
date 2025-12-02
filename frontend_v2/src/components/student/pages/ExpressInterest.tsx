@@ -34,7 +34,6 @@ function ExpressInterest({ params, serverData }: StudentComponentProps) {
       onBack={() => push({ page: "home" })}
       action={<ThemeToggle className="text-slate-900 dark:text-white/80" />}
     >
-      jk
       <StepsOrchestrator listing={listing} />
     </FullScreenView>
   );

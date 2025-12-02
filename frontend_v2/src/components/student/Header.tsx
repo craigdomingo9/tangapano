@@ -1,17 +1,13 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import ThemeToggle from "../ui/ThemeToggle";
-import { RouterLink } from "@/routing/RouterLink";
 
 interface HeaderProps {
   sticky?: boolean;
   className?: string;
   variant: "student" | "business";
   containerClassName?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function Header({
@@ -61,18 +57,16 @@ function Header({
               </div>
             </div>
           ) : (
-            <RouterLink to={{ page: "home" }}>
-              <div className="flex items-center gap-3 group hover:cursor-pointer">
-                <div className="flex flex-col">
-                  <span className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-none drop-shadow-md">
-                    TangaPano
-                  </span>
-                  <span className="text-white/80 text-[0.675rem] sm:text-xs font-bold tracking-wide mt-0.5 uppercase opacity-90">
-                    Student Housing
-                  </span>
-                </div>
+            <div className="flex items-center gap-3 group hover:cursor-pointer">
+              <div className="flex flex-col">
+                <span className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-none drop-shadow-md">
+                  TangaPano
+                </span>
+                <span className="text-white/80 text-[0.675rem] sm:text-xs font-bold tracking-wide mt-0.5 uppercase opacity-90">
+                  Student Housing
+                </span>
               </div>
-            </RouterLink>
+            </div>
           )}
         </div>
 

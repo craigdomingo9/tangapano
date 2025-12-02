@@ -12,6 +12,7 @@ import EndOfResults from "../results/states/EndOfResults";
 import EmptyState from "../results/states/EmptyState";
 import { useRouterPush } from "@/hooks/use-router-push";
 import useStudentFilters from "@/lib/stores/studentFilterStore";
+import LoginButton from "../LoginButton";
 
 function SearchResults({ params, serverData }: StudentComponentProps) {
   // Remove page from params
@@ -61,12 +62,7 @@ function SearchResults({ params, serverData }: StudentComponentProps) {
   return (
     <div>
       <Header sticky variant="student" className="bg-crimson">
-        <div className="flex gap-2">
-          <button className="flex hover:cursor-pointer items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium hover:bg-white/20 transition-all">
-            <Briefcase className="w-4 h-4" />
-            <span className="hidden sm:inline">Partner Login</span>
-          </button>
-        </div>
+        <LoginButton />
       </Header>
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <ResultsNavigation />

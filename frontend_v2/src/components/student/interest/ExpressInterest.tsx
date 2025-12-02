@@ -18,7 +18,7 @@ export default async function ExpressInterest({
     : searchParams.listing;
 
   if (!listingId) {
-    redirect("/student"); // Redirect if no listing ID is provided
+    redirect("/portal"); // Redirect if no listing ID is provided
   }
 
   // 2. Initialize Query Client

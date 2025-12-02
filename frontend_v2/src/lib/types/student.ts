@@ -19,6 +19,9 @@ export interface StudentParams {
   price_max?: string;
   amenities?: string;
 
+  // Express Interest (Matches your query string)
+  step?: string;
+
   // Index signature for generic access
   [key: string]: string | undefined;
 }
