@@ -26,10 +26,30 @@ services:
     labels:
       "com.tangapano.service": "backend"
 
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NEXT_PUBLIC_API_URL=http://backend:8000/api/
+  #     - NEXT_PUBLIC_CLIENT_URL=http://localhost/api/
+  #     - NEXT_PUBLIC_DOMAIN=https://tangapano.co.zw
+  #     - NODE_ENV=production
+  #     - NEXT_TELEMETRY_DISABLED=1
+  #   depends_on:
+  #     - backend
+  #   restart: always
+  #   networks:
+  #     - app_net
+  #   labels:
+  #     "com.tangapano.service": "frontend"
+
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ./Dockerfile
+      context: ./frontend_v2
+      dockerfile: ./Dockerfile.pnpm
     ports:
       - "3000:3000"
     environment:
@@ -101,8 +121,8 @@ services:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - xpack.security.enabled=false
-      - xpack.ml.enabled=false     
-      - xpack.graph.enabled=false  
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
       - xpack.watcher.enabled=false
     ports:
       - "9200:9200"

@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y libc6-dev && rm -rf /var/lib/apt/lists/
 # ---------- Dependencies (New Stage) ----------
 # This stage exists solely to cache dependencies
 FROM base AS deps
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
+# pnpm-lock.yaml
 
 # 1. Use --mount to cache the pnpm store between builds
 # 2. Use --frozen-lockfile to ensure reproducible installs
