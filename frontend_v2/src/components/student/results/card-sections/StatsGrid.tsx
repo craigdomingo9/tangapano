@@ -41,7 +41,7 @@ function StatBlock({ icon, value, label }: StatBlockProps) {
         <span className="text-slate-900 dark:text-slate-200 font-bold text-xsm sm:text-sm truncate">
           {value}
         </span>
-        <span className="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider truncate">
+        <span className="text-slate-400 dark:text-slate-500 text-xxs font-bold uppercase tracking-wider truncate">
           {label}
         </span>
       </div>
