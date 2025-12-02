@@ -23,7 +23,11 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
     )
       return;
 
-    updateStore("selectedRoom", listing.rooms[0]);
+    const firstVacantRoom = listing.rooms?.find(
+      (room) => room.current_occupants < room.max_occupants
+    );
+
+    updateStore("selectedRoom", firstVacantRoom);
   }, [listing]);
 
   return (
