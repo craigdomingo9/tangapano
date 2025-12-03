@@ -60,14 +60,6 @@ function ImageCard({
         >
           <Trash2 className="w-4 h-4" />
         </Button>
-        <button
-          onClick={() => {
-            // console.log("Delete deep", image.id);
-            onDelete(image.id);
-          }}
-        >
-          hi
-        </button>
 
         {/* Cover Selection Button - Top Left */}
         <button
