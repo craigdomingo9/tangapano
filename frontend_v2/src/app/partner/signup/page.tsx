@@ -65,7 +65,7 @@ export default function SignupPage() {
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               Are you a student?{" "}
               <Link
-                href="/portal"
+                href="/portal?page=home"
                 prefetch={true}
                 className="text-lapis dark:text-sky-400 font-bold hover:underline focus:outline-none focus:ring-2 focus:ring-lapis rounded"
               >

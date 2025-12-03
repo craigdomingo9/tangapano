@@ -44,7 +44,7 @@ export const studentRoutes: AppRoute<StudentParams, StudentContext>[] = [
   // 4. MAIN PAGE (Home)
   {
     id: "student-home",
-    matcher: (p) => !p.page || p.page === "home",
+    matcher: (p) => p.page === "home",
     component: StudentHome,
   },
 ];

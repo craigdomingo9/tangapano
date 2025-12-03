@@ -29,7 +29,7 @@ function ListingNotFound() {
       {/* Action Buttons */}
       <div className="flex flex-col w-full max-w-xs gap-3">
         <button
-          onClick={() => router.push("/portal")}
+          onClick={() => router.push("/portal?page=home")}
           className="flex items-center justify-center gap-2 w-full py-3 bg-lapis hover:bg-lapis-hover active:bg-lapis-hover text-white font-medium rounded-xl transition-all shadow-lg shadow-lapis-900/20 cursor-pointer"
         >
           <Home size={18} />

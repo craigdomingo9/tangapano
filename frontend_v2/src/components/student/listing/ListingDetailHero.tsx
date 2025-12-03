@@ -48,10 +48,11 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
               className="object-cover transition-transform duration-700 animate-in fade-in slide-in-from-right-4 fill-mode-both touch-pan-y"
               loader={myImageLoader}
               fill
-              priority
+              preload
               placeholder="blur"
               blurDataURL={getShimmerUrl(700, 475)}
               draggable={false}
+              quality={100}
             />
           </div>
 
@@ -66,7 +67,7 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
                 loader={myImageLoader}
                 fill
                 className="object-cover blur-3xl scale-110 opacity-60"
-                priority
+                preload
                 draggable={false}
               />
               <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
@@ -82,7 +83,7 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
                 loader={myImageLoader}
                 width={1200}
                 height={800}
-                priority
+                preload
                 placeholder="blur"
                 blurDataURL={getShimmerUrl(700, 475)}
                 draggable={false}

@@ -57,8 +57,7 @@ function RouterContent<P extends BaseParams, C>({
   useEffect(() => {
     // Stop the Global Loader whenever params change (Navigation finished)
     endNavigation();
-    // TODO: change to invalidate
-    queryClient.resetQueries();
+    queryClient.invalidateQueries();
 
     // Debug Logs
     // console.log("%c ROUTER DEBUG ", "background: #222; color: #bada55");

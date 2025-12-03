@@ -82,7 +82,7 @@ function Completion({
     resetExpressInterestStore();
 
     // redirect to student portal
-    router.push("/portal");
+    router.push("/portal?page=home");
   }
 
   async function postStudentRequest() {

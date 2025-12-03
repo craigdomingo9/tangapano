@@ -32,7 +32,7 @@ export function useCampuses({
 }
 export function useListingDetail(listingId: string, enabled: boolean = true) {
   return useQuery({
-    queryKey: ["listing-detail_cache", listingId],
+    queryKey: ["listing", listingId],
     queryFn: () => fetchListingById(listingId),
     enabled: !!listingId && enabled,
     staleTime: 1000 * 60 * 2,

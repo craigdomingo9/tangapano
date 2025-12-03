@@ -41,8 +41,9 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
 
       <div className="flex-1 space-y-4">
         {listing.rooms.map((room) => {
-          const isFull = room.current_occupants >= room.max_occupants;
           const spotsOpen = room.max_occupants - room.current_occupants;
+          const isFull =
+            room.current_occupants >= room.max_occupants || spotsOpen === 0;
           const isSelected = selectedRoom?.id === room.id;
 
           return (

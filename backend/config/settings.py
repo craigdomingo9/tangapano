@@ -246,7 +246,7 @@ CACHES = {
     },
 }
 
-CACHE_TTL = timedelta(days=7).total_seconds()  # 1 week
+CACHE_TTL = timedelta(days=1).total_seconds()  # 1 week
 
 # ImageKit Configuration
 IMAGEKIT_DEFAULT_IMAGE_KIT_ENGINE = 'imagekit.engines.Pillow'

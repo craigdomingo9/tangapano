@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/portal",
+        destination: "/portal?page=home",
         permanent: true,
       },
       {
@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // images: {
+  //   unoptimized: true,
+  // },
 };
 
 export default nextConfig;
