@@ -49,7 +49,7 @@ function ProfileManagement({ serverData }: PartnerComponentProps) {
   };
 
   const handleSave = () => {
-    console.log("save", formData);
+    // console.log("save", formData);
     if (editingSection === "user") {
       // Update User Profile
       const payload = {
@@ -57,7 +57,7 @@ function ProfileManagement({ serverData }: PartnerComponentProps) {
         last_name: formData.last_name,
         username: formData.username,
       };
-      console.log("Payload", payload);
+      // console.log("Payload", payload);
       updateUser.mutate(payload);
     }
     if (editingSection === "landlord") {
@@ -71,7 +71,7 @@ function ProfileManagement({ serverData }: PartnerComponentProps) {
         },
       } as Partial<User>;
       updateUser.mutate(payload);
-      console.log("Payload", payload);
+      // console.log("Payload", payload);
     }
     setEditingSection(null);
   };

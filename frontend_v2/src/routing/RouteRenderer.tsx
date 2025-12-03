@@ -7,6 +7,7 @@ import { AppRoute, BaseParams } from "./types";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage"; // Check path
 import { useNavigationStore } from "@/lib/stores/navigationStore"; // Check path
+import { useQueryClient } from "@tanstack/react-query";
 
 const minimalistVariants: Variants = {
   initial: {
@@ -42,6 +43,7 @@ function RouterContent<P extends BaseParams, C>({
 }: Props<P, C>) {
   const searchParams = useSearchParams();
   const { endNavigation } = useNavigationStore();
+  const queryClient = useQueryClient();
 
   // 2. DIRECT CALCULATION
   // We derive state immediately during render. No useEffect delay.
@@ -55,6 +57,8 @@ function RouterContent<P extends BaseParams, C>({
   useEffect(() => {
     // Stop the Global Loader whenever params change (Navigation finished)
     endNavigation();
+    // TODO: change to invalidate
+    queryClient.resetQueries();
 
     // Debug Logs
     // console.log("%c ROUTER DEBUG ", "background: #222; color: #bada55");

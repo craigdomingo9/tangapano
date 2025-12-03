@@ -47,7 +47,7 @@ function SearchCard() {
   };
 
   return (
-    <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 pb-20">
+    <main className="flex-1 z-250 w-full px-4 sm:px-6 lg:px-8 pb-20">
       <Card className="border-0 max-w-[952px] mx-auto shadow-2xl rounded-3xl overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-500 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm text-slate-900 dark:text-slate-100 transition-colors">
         <CardContent className="px-6 sm:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10">

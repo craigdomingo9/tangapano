@@ -20,7 +20,7 @@ export const ListingDeletionModal: React.FC<ListingDeletionModalProps> = ({
   itemName = "Property",
 }) => {
   React.useEffect(() => {
-    console.log("[ListingDeletionModal] isOpen:", isOpen);
+    // console.log("[ListingDeletionModal] isOpen:", isOpen);
     if (isOpen) {
       // lock body scroll while open
       // const prev = document.body.style.overflow;

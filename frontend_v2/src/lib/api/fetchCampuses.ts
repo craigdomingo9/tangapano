@@ -12,6 +12,8 @@ export default function fetchCampuses({
   const searchParams = new URLSearchParams(params);
 
   return axiosInstance
-    .get("/campuses/campuses/" + "?" + searchParams.toString())
+    .get("/campuses/campuses/" + "?" + searchParams.toString(), {
+      params: { _t: Date.now() },
+    })
     .then((response) => response.data);
 }

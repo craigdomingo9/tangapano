@@ -13,7 +13,7 @@ export default function StatsGrid({
     <div className="grid grid-cols-2 gap-4">
       <StatBlock
         icon={<Home className="w-4 sm:w-5 h-4 sm:h-5" />}
-        value={`${roomsCount} Rooms Available`}
+        value={`${roomsCount} Room${roomsCount > 1 ? "s" : ""} Available`}
         label="CAPACITY"
       />
       <StatBlock

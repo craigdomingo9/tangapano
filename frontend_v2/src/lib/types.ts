@@ -60,6 +60,7 @@ interface Image {
 interface Room {
   id: string;
   room_number: number;
+  agent_fee: string;
   listing: number;
   max_occupants: number;
   current_occupants: number;

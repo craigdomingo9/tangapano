@@ -101,17 +101,22 @@ class Command(BaseCommand):
                 for _ in range(random.randint(5, 10)):
                     max_occupants = random.choice([1, 2, 3])
                     current_occupants = max_occupants - random.choice([0, 1, 2])
-                    if current_occupants > max_occupants or current_occupants < 0: current_occupants = 0
+                    if current_occupants > max_occupants or current_occupants < 0: 
+                        current_occupants = 0
                     
                     base_price = 50 + (4 - max_occupants) * 20
                     rent = base_price + random.choice([-10, -5, 0, 5, 10])  # +/- 10%
+                    
+                    gender_preference = random.choice(["male", "female"])
+                    if (current_occupants == 0):
+                        gender_preference = "any"
 
                     Room.objects.create(
                         listing=listing,
                         rent_per_month=rent,
                         max_occupants=max_occupants,
                         current_occupants=current_occupants,
-                        gender_preference=random.choice(["male", "female"]),
+                        gender_preference=gender_preference
                     )
 
         self.stdout.write(self.style.SUCCESS("✅ Database seeded successfully!"))

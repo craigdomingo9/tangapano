@@ -11,6 +11,7 @@ import { UnsavedChangesModal } from "@/components/partner/dashboard/UnsavedChang
 import { useState } from "react";
 import { useExpressInterestStore } from "@/lib/stores/expressInterestStore";
 import { useSearchParams } from "next/navigation";
+import useStudentFilters from "@/lib/stores/studentFilterStore";
 
 function ExpressInterest({ params, serverData }: StudentComponentProps) {
   const { listingId } = params;
@@ -26,6 +27,7 @@ function ExpressInterest({ params, serverData }: StudentComponentProps) {
     staleTime: 1000 * 60 * 20,
   });
   const { push } = useRouterPush<StudentParams>();
+  const { entities: studentFilters } = useStudentFilters();
   const [showUnsavedModal, setShowUnsavedModal] = useState(false);
   const { reset } = useExpressInterestStore();
   const searchParams = useSearchParams();
@@ -34,7 +36,7 @@ function ExpressInterest({ params, serverData }: StudentComponentProps) {
   if (isLoading) return <LoadingScreen />;
   if (isError || !listing || !listingId) return <ListingNotFound />;
 
-  console.log(listing);
+  // console.log(listing);
 
   function handleDiscard() {
     reset();
@@ -49,6 +51,23 @@ function ExpressInterest({ params, serverData }: StudentComponentProps) {
 
   function handleOnBack() {
     if (currentStep === 1) {
+      if (
+        typeof studentFilters.campus === "string" &&
+        studentFilters.campus.trim().length > 0
+      ) {
+        // 1. Create a cleaned object where nulls become undefined
+        const cleanFilters: StudentParams = Object.fromEntries(
+          Object.entries(studentFilters).map(([key, value]) => [
+            key,
+            value === null ? undefined : value,
+          ])
+        );
+
+        // 2. Push the clean object
+        push({ page: "search", ...cleanFilters });
+        return;
+      }
+
       push({ page: "home" });
       return;
     }

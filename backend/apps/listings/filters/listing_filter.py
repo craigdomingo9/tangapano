@@ -7,6 +7,31 @@ class RoomCompositeFilterBackend(BaseSearchFilterBackend):
     meets criteria A, B, C, and D simultaneously.
     """
     def filter_queryset(self, request, queryset, view):
+        """
+        Filter the queryset based on the given query parameters.
+
+        If the 'price_min' parameter is present, filter the queryset to only
+        include listings with rooms that have a rent greater than or equal to the
+        specified price.
+
+        If the 'price_max' parameter is present, filter the queryset to only
+        include listings with rooms that have a rent less than or equal to the
+        specified price.
+
+        If the 'gender' parameter is present, filter the queryset to only
+        include listings with rooms that have a gender preference matching the requested
+        gender or are 'any'.
+
+        If the 'max_occupants' parameter is present, filter the queryset to only
+        include listings with rooms that have a maximum occupancy matching the requested
+        value.
+
+        If the 'is_full' parameter is present and set to 'true', filter the queryset to only
+        include listings with rooms that have no vacancy.
+
+        Wrap all conditions in a nested query to ensure that only listings with
+        rooms that meet all the specified conditions are returned.
+        """
         params = request.query_params
         must_conditions = []
 
@@ -18,13 +43,17 @@ class RoomCompositeFilterBackend(BaseSearchFilterBackend):
             must_conditions.append(Q('range', rooms__rent_per_month={'lte': params['price_max']}))
             
         if 'gender' in params:
-            must_conditions.append(Q('term', rooms__gender_preference=params['gender']))
+            # Use OR logic (Requested Gender | Any)
+            must_conditions.append(
+                Q('term', rooms__gender_preference=params['gender']) | 
+                Q('term', rooms__gender_preference='any')
+            )
             
+        
         if 'max_occupants' in params:
             must_conditions.append(Q('term', rooms__max_occupants=params['max_occupants']))
             
         if params.get('is_full') == 'true':
-            # Uses the pre-calculated boolean from Step 2
             must_conditions.append(Q('term', rooms__has_vacancy=True))
 
         if not must_conditions:
@@ -42,6 +71,14 @@ class AmenityDynamicMatchBackend(BaseSearchFilterBackend):
     matches listings containing ~33% of requested amenities.
     """
     def filter_queryset(self, request, queryset, view):
+        """
+        Filter the queryset based on the given query parameters.
+
+        If the 'amenities' parameter is present, filter the queryset to only
+        include listings that contain at least 33% of the requested amenities.
+
+        Prefetch the 'amenities' relation to improve performance.
+        """
         amenities_str = request.query_params.get('amenities')
         if not amenities_str:
             return queryset

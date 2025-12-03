@@ -1,6 +1,6 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { Check, ChevronRight, Plus, X } from "lucide-react";
+import { Check, ChevronRight, Plus, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAmenities } from "@/hooks/use-reference-data";
 import { useSearchParams } from "next/navigation";
@@ -135,9 +135,9 @@ export default function AmenitiesSection({
             <Badge
               key={amenity.id}
               variant="secondary"
-              className="px-2.5 py-1 rounded-full text-xs font-medium bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-100 dark:border-sky-800/50 hover:bg-sky-100 dark:hover:bg-sky-900/50 border"
+              className="px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border-indigo-100 dark:border-indigo-800/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 border"
             >
-              <Plus className="w-3 h-3 mr-1" />
+              <Sparkles className="w-3 h-3 mr-1" />
               {amenity.display_name}
             </Badge>
           ))}

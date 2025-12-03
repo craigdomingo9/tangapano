@@ -25,15 +25,16 @@ export function useCampuses({
 } = {}) {
   // <--- FIX: Added " = {}" here to allow calling without args
   return useQuery({
-    queryKey: ["campuses", { has_listings }],
+    queryKey: ["campuses_cache", { has_listings }],
     queryFn: () => fetchCampuses({ params: { has_listings } }),
     staleTime: 1000 * 60 * 60,
   });
 }
 export function useListingDetail(listingId: string, enabled: boolean = true) {
   return useQuery({
-    queryKey: ["listing", listingId],
+    queryKey: ["listing-detail_cache", listingId],
     queryFn: () => fetchListingById(listingId),
     enabled: !!listingId && enabled,
+    staleTime: 1000 * 60 * 2,
   });
 }

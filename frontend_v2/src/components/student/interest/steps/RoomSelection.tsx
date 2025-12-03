@@ -3,7 +3,7 @@ import {
   useExpressInterestStore,
 } from "@/lib/stores/expressInterestStore";
 import { cn } from "@/lib/utils";
-import { Bed, Check } from "lucide-react";
+import { Banknote, Bed, Check, Sparkles } from "lucide-react";
 import { useEffect } from "react";
 
 interface RoomSelectionProps {
@@ -113,6 +113,65 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
           );
         })}
       </div>
+      {/* Agent Fee Summary Card */}
+      {selectedRoom && (
+        <div
+          className={cn(
+            "mt-4 rounded-xl border-2 p-4 flex items-center justify-between shadow-sm transition-all animate-in fade-in slide-in-from-bottom-2",
+            listing.apply_agent_fee
+              ? "border-amber-100 bg-amber-50/50 dark:bg-amber-900/20 dark:border-amber-800"
+              : "border-emerald-100 bg-emerald-50/50 dark:bg-emerald-900/20 dark:border-emerald-800"
+          )}
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className={cn(
+                "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
+                listing.apply_agent_fee
+                  ? "bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400"
+                  : "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400"
+              )}
+            >
+              {listing.apply_agent_fee ? (
+                <Banknote className="w-5 h-5" />
+              ) : (
+                <Sparkles className="w-5 h-5" />
+              )}
+            </div>
+            <div>
+              <p
+                className={cn(
+                  "font-bold text-[0.825rem] sm:text-sm",
+                  listing.apply_agent_fee
+                    ? "text-amber-900 dark:text-amber-200"
+                    : "text-emerald-900 dark:text-emerald-200"
+                )}
+              >
+                {listing.apply_agent_fee
+                  ? "Agent Service Fee Applies"
+                  : "No Agent Fee"}
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-tight">
+                {listing.apply_agent_fee
+                  ? "A one-time fee is required to secure this room."
+                  : "The landlord covers all agent fees for this booking."}
+              </p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p
+              className={cn(
+                "text-lg font-extrabold",
+                listing.apply_agent_fee
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-emerald-600 dark:text-emerald-400"
+              )}
+            >
+              {listing.apply_agent_fee ? `$${selectedRoom.agent_fee}` : "FREE"}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

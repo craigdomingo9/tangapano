@@ -86,12 +86,12 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({
                 >
                   {copied ? (
                     <>
-                      <Check className="w-4 h-4 mr-2" />
+                      <Check className="w-4 h-4 mr-1" />
                       Copied
                     </>
                   ) : (
                     <>
-                      <Copy className="w-4 h-4 mr-2" />
+                      <Copy className="w-4 h-4 mr-1" />
                       Copy
                     </>
                   )}

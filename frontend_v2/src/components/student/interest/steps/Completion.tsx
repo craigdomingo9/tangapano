@@ -10,6 +10,7 @@ import {
   ExpressInterestState,
   useExpressInterestStore,
 } from "@/lib/stores/expressInterestStore";
+import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { Calendar, Check, MapPin, Pencil, Send, User } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -124,19 +125,39 @@ function Completion({
         </div>
       </div>
 
-      {/* Selected Room Card */}
-      <div className="bg-blue-50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/20 rounded-xl p-4 flex items-center justify-between transition-colors duration-300">
-        <div className="text-left">
-          <div className="text-[0.65rem] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
-            Selected Room
-          </div>
-          <div className="text-base font-semibold text-gray-900 dark:text-white transition-colors">
-            Room {selectedRoom?.room_number}
+      {/* Room Info */}
+      <div className="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-4 border border-blue-100 dark:border-blue-900/30">
+        <div className="text-xs font-bold text-blue-500 dark:text-blue-400 uppercase tracking-wider mb-3">
+          Selected Room
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="font-bold text-slate-900 dark:text-white text-base">
+            Room {selectedRoom?.room_number || "No Room Selected"}
+          </p>
+          <div className="bg-white dark:bg-slate-800 border border-blue-100 dark:border-gray-700 px-3 py-1.5 rounded-lg shadow-sm transition-colors">
+            <span className="text-blue-600 dark:text-blue-400 font-bold">
+              ${selectedRoom?.rent_per_month}
+              <span className="text-xs">/mo</span>
+            </span>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 border border-blue-100 dark:border-gray-700 px-3 py-1.5 rounded-lg shadow-sm transition-colors">
-          <span className="text-blue-600 dark:text-blue-400 font-bold">
-            {selectedRoom?.rent_per_month}
+
+        {/* Agent Fee Breakdown in Summary - Dark Mode Compatible */}
+        <div className="flex justify-between items-center mt-3 pt-3 border-t border-blue-200/50 dark:border-blue-800/30">
+          <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            One-time Agent Fee
+          </span>
+          <span
+            className={cn(
+              "font-bold",
+              listing.apply_agent_fee
+                ? "text-amber-600 dark:text-amber-400"
+                : "text-emerald-600 dark:text-emerald-400"
+            )}
+          >
+            {selectedRoom?.agent_fee
+              ? `$${parseInt(selectedRoom?.agent_fee).toFixed(2)}`
+              : "Waived"}
           </span>
         </div>
       </div>

@@ -66,10 +66,9 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
       setEditingRoom({
         ...room,
         current_occupants: newVal,
-        gender_preference: "female", // Auto-switch to Female
+        gender_preference: "male",
       });
 
-      infoToast("First occupant added: Gender set to 'Female' by default.");
       return;
     }
 

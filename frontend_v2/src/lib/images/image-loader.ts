@@ -25,5 +25,5 @@ export default function myImageLoader({
   // 3. Return the full URL with optimization params
   // Even if your backend ignores '?w=800', passing them is standard practice
   // to avoid cache collisions and allow for future optimization support.
-  return `${backendUrl}${cleanSrc}?w=${width}&q=${quality || 75}`;
+  return `${backendUrl}${cleanSrc}?w=${width}&q=${100}`;
 }

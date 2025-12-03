@@ -53,6 +53,13 @@ class Room(models.Model):
         return self.current_occupants >= self.max_occupants
     
     @property
+    def agent_fee(self):
+        general_fee = self.listing.campus.agent.agent_fee
+        if self.max_occupants == 1:
+            return int(general_fee) * 2
+        return general_fee
+    
+    @property
     def room_number(self):
         """
         Alternative: Use room sequence as the room id.

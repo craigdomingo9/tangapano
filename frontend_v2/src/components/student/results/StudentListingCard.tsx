@@ -39,7 +39,7 @@ export function StudentListingCard({
       <div className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-all duration-300 flex flex-col h-full">
         {/* Image Carousel Section */}
         <ImageCarousel
-          images={listing.images}
+          listing={listing}
           title={listing.title}
           neighborhood={listing.neighborhood.name}
           currentImageIndex={currentImageIndex}

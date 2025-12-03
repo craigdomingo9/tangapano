@@ -10,7 +10,7 @@ import ListingDetailBookingCard from "../listing/ListingDetailBookingCard";
 import LoadingScreen from "../interest/states/LoadingScreen";
 
 function ListingDetail({ params, serverData }: StudentComponentProps) {
-  console.log(params, serverData);
+  // console.log(params, serverData);
   const { listingId } = params;
   const { push } = useRouterPush<StudentParams>();
 

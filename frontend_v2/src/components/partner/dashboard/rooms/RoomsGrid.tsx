@@ -66,7 +66,7 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
     return <RoomsEmptyState rooms={rooms} handleAddRoom={handleAddRoom} />;
   }
 
-  console.log(rooms);
+  // console.log(rooms);
   return (
     <>
       <div

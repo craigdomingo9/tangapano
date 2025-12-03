@@ -62,7 +62,7 @@ function ImageCard({
         </Button>
         <button
           onClick={() => {
-            console.log("Delete deep", image.id);
+            // console.log("Delete deep", image.id);
             onDelete(image.id);
           }}
         >

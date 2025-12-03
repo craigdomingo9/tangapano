@@ -79,6 +79,7 @@ class ListingDocument(Document):
         'id': fields.IntegerField(),
         'name': fields.KeywordField(),
         'display_name': fields.KeywordField(),
+        'category': fields.KeywordField(),
     })
 
     # Rooms (List of Objects)
@@ -96,6 +97,7 @@ class ListingDocument(Document):
         'created_at': fields.DateField(),
         'updated_at': fields.DateField(),
         'has_vacancy': fields.BooleanField(),
+        'agent_fee': fields.IntegerField(),
     })
 
     class Index:
@@ -105,6 +107,13 @@ class ListingDocument(Document):
     class Django:
         model = Listing
         fields = []
+    
+    # def get_queryset(self):
+    #     """Optimized queryset for indexing"""
+    #     return super().get_queryset().prefetch_related(
+    #         'rooms',
+    #         'campus__agent' # Needed for agent_fee calculation
+    #     )
 
     # --- PREPARE METHODS (The Heavy Lifting) ---
 
@@ -187,22 +196,49 @@ class ListingDocument(Document):
         return [{
             'id': a.id,
             'name': a.name,
-            'display_name': a.display_name
+            'display_name': a.display_name,
+            'category': a.category
         } for a in instance.amenities.all()]
 
     def prepare_rooms(self, instance):
-        return [{
-            'id': room.id,
-            'room_number': room.room_number,
-            'listing': instance.id,
-            'current_occupants': room.current_occupants,
-            'is_full': room.current_occupants >= room.max_occupants,
-            'max_occupants': room.max_occupants,
-            'rent_per_month': str(room.rent_per_month), # String for display
-            'rent_value': float(room.rent_per_month),   # Float for sorting/filtering
-            'gender_preference': room.gender_preference,
-            'is_active': room.is_active,
-            'created_at': room.created_at,
-            'updated_at': room.updated_at,
-            'has_vacancy': room.current_occupants < room.max_occupants
-        } for room in instance.rooms.all()]
+        """
+        Converts the related Room models into a list of dictionaries for Elasticsearch.
+        'instance' is the Listing object.
+        """
+        # 1. Get all rooms for this listing
+        rooms = instance.rooms.all()
+        
+        rooms_data = []
+
+        # 2. Iterate (Use enumerate for room_number to avoid DB hits)
+        for index, room in enumerate(rooms, start=1):
+            rooms_data.append({
+                'id': room.id,
+                
+                # OPTIMIZATION: Do not use room.room_number here. 
+                # Calculating it via Python 'enumerate' is instant.
+                # Calculating it via your Model property triggers a new SQL query per room.
+                'room_number': index, 
+                
+                'listing': instance.id,
+                'current_occupants': room.current_occupants,
+                'max_occupants': room.max_occupants,
+                'is_full': room.is_full, # Uses your model property
+                
+                # Logic: Explicitly calculate vacancy for the Filter Backend
+                'has_vacancy': room.current_occupants < room.max_occupants,
+                
+                # Formatting: String for Display, Float for Range Filtering
+                'rent_per_month': str(room.rent_per_month), 
+                'rent_value': float(room.rent_per_month),
+                
+                'gender_preference': room.gender_preference,
+                'is_active': room.is_active,
+                'created_at': room.created_at,
+                'updated_at': room.updated_at,
+                
+                # Uses your model property (Make sure Agent is prefetched!)
+                'agent_fee': room.agent_fee, 
+            })
+            
+        return rooms_data

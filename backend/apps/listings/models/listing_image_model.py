@@ -15,7 +15,7 @@ class ListingImage(models.Model):
         source='image',
         processors=[Transpose(), ResizeToFill(1200, 800)],
         format='WEBP',
-        options={'quality': 85}
+        options={'quality': 100}
     )
     
     caption = models.CharField(max_length=255, blank=True, null=True)

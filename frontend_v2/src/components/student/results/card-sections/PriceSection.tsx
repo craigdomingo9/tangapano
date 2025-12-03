@@ -35,18 +35,22 @@ export default function PriceSection({
   return (
     <div className="flex items-center justify-between pt-2">
       <div>
-        <div className="flex items-baseline gap-1">
-          <span className="text-xl sm:text-2xl font-bold text-lapis dark:text-sky-400">
-            ${minPrice}
-            {isRange && `-${maxPrice}`}
-          </span>
-          <span className="text-xsm sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-            /month
-          </span>
+        <div className="flex flex-col">
+          <p className="text-xxs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-0.5">
+            Monthly Rent
+          </p>
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
+              ${minPrice}
+            </span>
+            {isRange && (
+              <span className="text-lg font-bold text-slate-400 dark:text-slate-500">
+                {" "}
+                - {maxPrice}
+              </span>
+            )}
+          </div>
         </div>
-        <p className="text-xs sm:text-xsm text-slate-400 font-medium">
-          {applyAgentFee ? `+$${agentFee} Agent Fee` : "Zero Agent Fees"}
-        </p>
       </div>
 
       <Button
