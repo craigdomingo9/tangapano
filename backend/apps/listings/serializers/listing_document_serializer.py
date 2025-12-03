@@ -103,14 +103,16 @@ class ListingDocumentSerializer(DocumentSerializer):
                     pass
 
             # --- Filter: Gender ---
+            req_gender = params.get('gender')
             if params.get('gender'):
-                room_gender = r.gender_preference.lower()
-                req_gender = params['gender'].lower()
+                r_gender = r.gender_preference.lower()
+                q_gender = req_gender.lower()
 
-                # Logic: The room is valid if it matches specific gender OR is 'any' (single occupancy)
-                # So we SKIP if it fails BOTH checks.
+                # RELAXED LOGIC: 
+                # Valid if exact match OR if room is simply 'any'
+                is_match = (r_gender == q_gender) or (r_gender == 'any')
                 
-                if room_gender != req_gender and not (room_gender == 'any' and r.max_occupants == 1):
+                if not is_match:
                     continue
             
             # --- Filter: Max Occupants ---

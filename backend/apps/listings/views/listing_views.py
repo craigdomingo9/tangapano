@@ -81,21 +81,21 @@ class ListingSearchAPIView(APIView):
         if 'price_max' in params:
             must_rules.append(Q('range', rooms__rent_value={'lte': params['price_max']}))
             
-        # Gender Logic:
-        # 1. Matches the requested gender exactly (e.g., "Female" -> "Female")
-        # OR
-        # 2. Is marked "Any" AND is currently empty (current_occupants=0)
-        #    (An empty "Any" room is safe for anyone. A populated "Any" room implies a gender is already established.)
+        # --- GENDER LOGIC FIX ---
         if 'gender' in params:
-            exact_match = Q('term', rooms__gender_preference=params['gender'])
+            # OPTION A: STRICT SAFETY (Previous)
+            # Matches "Female" OR ("Any" AND Empty)
+            # any_match = Q('term', rooms__gender_preference='any') & Q('term', rooms__current_occupants=0)
+
+            # OPTION B: RELAXED (Fixes your issue)
+            # Matches "Female" OR "Any" (regardless of occupants)
+            # Use this if you want "Any" rooms to always appear.
             
-            any_empty_match = (
-                Q('term', rooms__gender_preference='any') & 
-                Q('term', rooms__current_occupants=0)
-            )
+            exact_match = Q('term', rooms__gender_preference=params['gender'])
+            any_match = Q('term', rooms__gender_preference='any')
             
             # Combine with OR (|)
-            gender_q = exact_match | any_empty_match
+            gender_q = exact_match | any_match
             
             must_rules.append(gender_q)
             

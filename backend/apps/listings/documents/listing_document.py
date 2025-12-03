@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-from listings.models import Listing
+from listings.models import Listing, Room
 
 @registry.register_document
 class ListingDocument(Document):
@@ -107,13 +107,19 @@ class ListingDocument(Document):
     class Django:
         model = Listing
         fields = []
+        related_models = [Room]
     
-    # def get_queryset(self):
-    #     """Optimized queryset for indexing"""
-    #     return super().get_queryset().prefetch_related(
-    #         'rooms',
-    #         'campus__agent' # Needed for agent_fee calculation
-    #     )
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related('rooms', 'campus__agent')
+
+    # 2. DEFINE HOW TO FIND THE PARENT
+    def get_instances_from_related(self, related_instance):
+        """
+        If a Room is updated, return the Listing it belongs to.
+        """
+        if isinstance(related_instance, Room):
+            return related_instance.listing
+        return None
 
     # --- PREPARE METHODS (The Heavy Lifting) ---
 
