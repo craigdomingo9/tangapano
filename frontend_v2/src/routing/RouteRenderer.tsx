@@ -36,35 +36,23 @@ function RouterContent<P extends BaseParams, C>({
   const { endNavigation } = useNavigationStore(); // Ensure push is destructured
   const queryClient = useQueryClient();
 
-  // 1. Derive Params (Sync)
+  // Derive Params (Sync)
   const currentParams = useMemo(() => {
     return Object.fromEntries(searchParams.entries()) as P;
   }, [searchParams.toString()]);
 
-  // 2. Find Route (Sync)
+  // Find Route (Sync)
   // We do not need state here. This happens instantly.
   const activeRoute = routes.find((r) => r.matcher(currentParams));
 
-  // 3. Detect "Root" State (e.g. tangapano.co.zw/)
-  // This is the specific scenario where we want to show a Loader instead of a 404
   const isRootPath = Object.keys(currentParams).length === 0;
 
   useEffect(() => {
     endNavigation();
     queryClient.invalidateQueries();
-
-    // Auto-redirect root to home
-    if (isRootPath) {
-      // Use your store's push, or fallback to window if store isn't ready
-      const newUrl = new URL(window.location.href);
-      newUrl.searchParams.set("page", "home");
-      window.history.replaceState(null, "", newUrl.toString());
-      // Force a reload if your router doesn't pick up manual history changes automatically
-      // But ideally, use: push({ page: 'home' } as any);
-    }
   }, [currentParams, activeRoute, endNavigation, isRootPath]);
 
-  // 4. "Resolving" UI
+  // "Resolving" UI
   // If we are at the root path, we are technically "resolving" a redirect.
   // Show the loader here to prevent the "404 Flash".
   if (isRootPath) {
