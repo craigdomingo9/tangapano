@@ -5,29 +5,38 @@ import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { AppRoute, BaseParams } from "./types";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
-import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
-import { useNavigationStore } from "@/lib/stores/navigationStore";
+import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage"; // Check path
+import { useNavigationStore } from "@/lib/stores/navigationStore"; // Check path
 import { useQueryClient } from "@tanstack/react-query";
 
 const minimalistVariants: Variants = {
-  initial: { opacity: 0, y: 8 },
+  initial: {
+    opacity: 0,
+    y: 8, // Very small movement (8px)
+  },
   enter: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.25, ease: "easeOut" },
+    transition: {
+      duration: 0.25,
+      ease: "easeOut", // Smooth deceleration
+    },
   },
   exit: {
     opacity: 0,
-    y: -4,
-    transition: { duration: 0.15, ease: "easeIn" },
+    y: -4, // Slight lift on exit
+    transition: {
+      duration: 0.15,
+      ease: "easeIn",
+    },
   },
 };
-
 interface Props<P extends BaseParams, C> {
   serverData: C;
   routes: AppRoute<P, C>[];
 }
 
+// Internal Component: Handles the Logic inside Suspense
 function RouterContent<P extends BaseParams, C>({
   serverData,
   routes,
@@ -75,18 +84,20 @@ function RouterContent<P extends BaseParams, C>({
   // --- NEW LOGIC END ---
 
   return (
+    // 4. LAYOUT WRAPPER (Min-H-Screen)
     <div className="relative w-full min-h-screen bg-gray-50/50 dark:bg-slate-950 isolate">
       <AnimatePresence mode="wait">
         {activeRoute ? (
           // CASE 1: ROUTE FOUND
           <motion.div
-            key={activeRoute.id}
+            key={activeRoute.id} // Changing key triggers animation
             variants={minimalistVariants}
             initial="initial"
             animate="enter"
             exit="exit"
-            className="w-full"
             style={{ willChange: "opacity, transform" }}
+            // 5. PERFORMANCE HINT
+            className="w-full"
           >
             <activeRoute.component
               params={currentParams}
@@ -99,7 +110,6 @@ function RouterContent<P extends BaseParams, C>({
             key={shouldShowError ? "404-error" : "404-loading"}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
           >
             {shouldShowError ? (
               // Timer finished, truly 404
@@ -115,6 +125,8 @@ function RouterContent<P extends BaseParams, C>({
   );
 }
 
+// 6. MAIN EXPORT (Suspense Wrapper)
+// This ensures useSearchParams works correctly
 export function RouteRenderer<P extends BaseParams, C>(props: Props<P, C>) {
   return (
     <Suspense fallback={<LoadingScreen />}>
