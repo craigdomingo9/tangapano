@@ -131,7 +131,7 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
           {/* Gender */}
           <div className="space-y-3">
             <label className="text-xsm font-semibold text-slate-700 dark:text-slate-300">
-              Allowed Gender
+              Gender Preference
             </label>
             <div className="grid grid-cols-3 gap-3 mt-1">
               <label
@@ -232,9 +232,8 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
               <div className="flex items-start gap-2.5 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50">
                 <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
                 <p className="text-xs text-amber-900 dark:text-amber-200 font-medium leading-relaxed">
-                  <strong>Note:</strong> Only empty rooms can be set to "Any"
-                  gender. If the room is occupied, it must be assigned a
-                  specific gender to match the current tenants.
+                  <strong>Note:</strong> Only empty rooms can be set to "Any".
+                  Occupied rooms must match tenant gender.
                 </p>
               </div>
             )}
