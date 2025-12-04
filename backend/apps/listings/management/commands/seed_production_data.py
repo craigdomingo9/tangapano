@@ -1,147 +1,146 @@
 import os
 from django.core.management.base import BaseCommand
-
 from listings.models import Amenity
 from users.models import User, Agent
-from campuses.models import Campus, Neighborhood
+from campuses.models import Campus, Neighborhood, City
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
 class Command(BaseCommand):
-    help = 'Seed production data safely, avoiding data deletion and duplication.'
+    help = 'Builds the foundation (Cities, Campuses, Amenities) from scratch.'
 
     def handle(self, *args, **options):
-        # We've removed all .delete() calls to prevent data loss.
-        self.stdout.write("🌍 Seeding Zimbabwean campuses and neighborhoods...")
+        self.stdout.write("🏗️  Starting foundation build...")
 
-        campus_names = [
-            "University of Zimbabwe", "Midlands State University"
-            # , "Great Zimbabwe University",
-            # "Chinhoyi University", "Lupane State University"
-        ]
-        
-        cities = [
-            "Harare", "Gweru", 
-            # "Masvingo", "Chinhoyi", "Lupane"
-        ]
-        
-        ZIM_NEIGHBORHOODS = {
-            "Harare": ["Avondale", "Mbare", "Greendale", "Waterfalls"],
-            "Gweru": ["Senga KMP", "Senga CBZ", "Adelaide", "Randolph Park"],
-            # "Masvingo": ["Mucheke", "Rujeko", "Rhodes", "Junction", "Runyararo"],
-            # "Chinhoyi": ["Cold Stream", "Hunyani", "Gadzema", "Cherima", "Orange Grove"],
-            # "Lupane": ["Lupane Center", "Gwayi", "Jotsholo", "Dandanda", "Tshongogwe"],
+        # ---------------------------------------------------------
+        # 1. CITIES, CAMPUSES & AGENTS HIERARCHY
+        # ---------------------------------------------------------
+        # Data Structure: City -> Campus -> Neighborhoods
+        ZIM_LOCATIONS = {
+            "Harare": {
+                "campuses": ["University of Zimbabwe", "Harare Institute of Technology"],
+                "neighborhoods": ["Avondale", "Mbare", "Greendale", "Waterfalls", "Mount Pleasant", "Belvedere"]
+            },
+            "Gweru": {
+                "campuses": ["Midlands State University"],
+                "neighborhoods": ["Senga KMP", "Senga CBZ", "Adelaide", "Randolph Park", "Nehosho"]
+            },
+            "Bulawayo": {
+                "campuses": ["NUST"],
+                "neighborhoods": ["Selbourne Park", "Khumalo", "Riverside"]
+            }
         }
 
-        # Use get_or_create to prevent creating duplicate campuses and agents.
-        for name, city in zip(campus_names, cities):
-            username = "_".join(name.lower().split(" "))
-            agent_username = f"agent_{username}"
+        for city_name, data in ZIM_LOCATIONS.items():
+            self.stdout.write(f"  📍 Processing City: {city_name}")
+            
+            # A. Create City
+            city, _ = City.objects.get_or_create(name=city_name)
 
-            # Safely get or create the agent user
-            agent_user, user_created = User.objects.get_or_create(
-                username=agent_username,
-                defaults={
-                    "email": f"{agent_username}@tangapano.com",
-                    "password": "password123", # Set a default password
-                    "first_name": "Agent",
-                    "last_name": name,
-                    "role": "agent"
-                }
-            )
-            if user_created:
-                self.stdout.write(f"Created new agent user: {agent_user.username}")
-            else:
-                self.stdout.write(f"Agent user already exists: {agent_user.username}")
+            # B. Create Neighborhoods (Linked to City)
+            for hood_name in data["neighborhoods"]:
+                Neighborhood.objects.get_or_create(name=hood_name, city=city)
 
-            # Safely get or create the agent
-            agent, agent_created = Agent.objects.get_or_create(
-                user=agent_user,
-                defaults={
-                    "agency_name": "Agency",
-                    "agent_fee": 10,
-                    "phone_number": "+263781901939"
-                }
-            )
-            if agent_created:
-                self.stdout.write(f"Created new agent for {name}")
-            else:
-                self.stdout.write(f"Agent for {name} already exists.")
-
-            # Safely get or create the campus
-            campus, campus_created = Campus.objects.get_or_create(
-                name=name,
-                defaults={"city": city, "agent": agent}
-            )
-            if campus_created:
-                self.stdout.write(f"Created new campus: {campus.name}")
-            else:
-                self.stdout.write(f"Campus already exists: {campus.name}")
-
-            # Safely get or create neighborhoods and link them to the campus.
-            for neighborhood_name in ZIM_NEIGHBORHOODS[city]:
-                neighborhood, neighborhood_created = Neighborhood.objects.get_or_create(
-                    name=neighborhood_name,
-                    defaults={"city": city}
+            # C. Create Agent & Campus
+            for campus_name in data["campuses"]:
+                # 1. Create Agent User
+                agent_username = f"agent_{campus_name.lower().replace(' ', '_')}"
+                agent_user, created = User.objects.get_or_create(
+                    username=agent_username,
+                    defaults={
+                        "email": f"{agent_username}@tangapano.com",
+                        "first_name": "Agent",
+                        "last_name": campus_name,
+                        "role": "agent"
+                    }
                 )
-                if neighborhood_created:
-                    self.stdout.write(f"  Created new neighborhood: {neighborhood.name}")
-                # Add the neighborhood to the campus, checking if it's already there.
-                campus.neighborhoods.add(neighborhood)
+                if created:
+                    agent_user.set_password("password123")
+                    agent_user.save()
 
-        self.stdout.write(self.style.SUCCESS("✅ Campuses, neighborhoods, and agents seeded successfully."))
+                # 2. Create Agent Profile
+                agent, _ = Agent.objects.get_or_create(
+                    user=agent_user,
+                    defaults={
+                        "agency_name": f"{campus_name} Housing Office",
+                        "agent_fee": 10.00,
+                        "phone_number": "+263777000000",
+                    }
+                )
+
+                # 3. Create Campus (Linked to City & Agent)
+                campus, created = Campus.objects.get_or_create(
+                    name=campus_name,
+                    defaults={
+                        "city": city,
+                        "agent": agent,
+                        "address": f"Main Campus, {city_name}"
+                    }
+                )
+                
+                # 4. Link ALL city neighborhoods to this campus (for simplicity)
+                if created:
+                    city_hoods = Neighborhood.objects.filter(city=city)
+                    campus.neighborhoods.set(city_hoods)
+
+        self.stdout.write(self.style.SUCCESS("✅ Locations & Agents created."))
+
+        # ---------------------------------------------------------
+        # 2. AMENITIES (With Categories)
+        # ---------------------------------------------------------
+        self.stdout.write("  🛁 Creating Amenities...")
         
-        self.stdout.write("🧱 Creating amenities...")
         amenities_data = [
-            {"name": "wifi", "display_name": "WiFi"},
-            {"name": "air_conditioning", "display_name": "Air Conditioning"},
-            {"name": "study_desk", "display_name": "Study Desk & Chair"},
-            {"name": "wardrobe", "display_name": "Wardrobe or Closet"},
-            {"name": "multiple_bathrooms", "display_name": "Multiple Bathrooms"},
-            {"name": "geyser", "display_name": "24/7 Hot Water"},
-            {"name": "refrigerator", "display_name": "Refrigerator"},
-            {"name": "electricity", "display_name": "Electricity"},
-            {"name": "no_curfew", "display_name": "No Curfew"},
-            {"name": "solar_power", "display_name": "Solar Power"},
-            {"name": "shared_kitchen", "display_name": "Shared Full Kitchen"},
-            {"name": "laundry_facility", "display_name": "Washing Machine"},
-            {"name": "study_room", "display_name": "Dedicated Quiet Study Room"},
-            {"name": "common_lounge", "display_name": "Common Lounge Area"},
-            {"name": "parking", "display_name": "Secure Parking"},
-            {"name": "security_gate", "display_name": "Security Gate"},
-            {"name": "cctv", "display_name": "CCTV Surveillance"},
-            {"name": "on_site_guard", "display_name": "On-Site Security Guard"},
-            {"name": "starlink_internet", "display_name": "Starlink Internet"},
-            {"name": "bbq_area", "display_name": "BBQ Area"},
-            {"name": "game_room", "display_name": "Game Room (Pool table, etc.)"},
-            {"name": "disabled_access", "display_name": "Wheelchair Accessible"}
+            # Connectivity
+            {"name": "wifi", "display_name": "WiFi", "category": "connectivity"},
+            {"name": "starlink", "display_name": "Starlink Internet", "category": "connectivity"},
+            {"name": "backup_power", "display_name": "Solar/Inverter", "category": "connectivity"},
+            
+            # Comfort
+            {"name": "ensuite", "display_name": "Ensuite Bathroom", "category": "comfort"},
+            {"name": "tiled", "display_name": "Tiled Floors", "category": "comfort"},
+            {"name": "ceiling", "display_name": "Ceiling", "category": "comfort"},
+            {"name": "bic", "display_name": "Built-in Cupboards", "category": "comfort"},
+            
+            # Kitchen
+            {"name": "fridge", "display_name": "Refrigerator", "category": "kitchen"},
+            {"name": "stove", "display_name": "Gas/Electric Stove", "category": "kitchen"},
+            {"name": "microwave", "display_name": "Microwave", "category": "kitchen"},
+            
+            # Security
+            {"name": "gated", "display_name": "Walled & Gated", "category": "security"},
+            {"name": "caretaker", "display_name": "On-site Caretaker", "category": "security"},
+            {"name": "security_guard", "display_name": "Security Guard", "category": "security"},
+            
+            # Water
+            {"name": "borehole", "display_name": "Borehole Water", "category": "connectivity"},
+            {"name": "tank", "display_name": "Water Tank", "category": "connectivity"},
+            {"name": "hot_water", "display_name": "Geyser/Hot Water", "category": "comfort"},
         ]
 
-        for amenity in amenities_data:
+        for item in amenities_data:
             Amenity.objects.get_or_create(
-                name=amenity["name"],
-                defaults={"display_name": amenity["display_name"]}
+                name=item["name"],
+                defaults={
+                    "display_name": item["display_name"],
+                    "category": item["category"]
+                }
             )
-        self.stdout.write(self.style.SUCCESS("✅ Amenities created successfully."))
-        
-        # Safely get or create the admin user.
-        self.stdout.write(f"👨‍💼 Creating admin user...")
-        admin_user, admin_created = User.objects.get_or_create(
-            username=os.getenv("DJANGO_ADMIN_USERNAME"),
-            defaults={
-                "email": os.getenv("DJANGO_ADMIN_EMAIL"),
-                "is_staff": True,
-                "is_superuser": True,
-                "first_name": "Admin",
-                "last_name": "User",
-                "role": "admin"
-            }
-        )
-        if admin_created:
-            admin_user.set_password(os.getenv("DJANGO_ADMIN_PASSWORD"))
-            admin_user.save()
-            self.stdout.write(self.style.SUCCESS("✅ Admin user created successfully."))
+
+        self.stdout.write(self.style.SUCCESS("✅ Amenities created."))
+
+        # ---------------------------------------------------------
+        # 3. SUPERUSER
+        # ---------------------------------------------------------
+        admin_username = os.getenv("DJANGO_ADMIN_USERNAME", "admin")
+        if not User.objects.filter(username=admin_username).exists():
+            User.objects.create_superuser(
+                username=admin_username,
+                email=os.getenv("DJANGO_ADMIN_EMAIL", "admin@example.com"),
+                password=os.getenv("DJANGO_ADMIN_PASSWORD", "admin"),
+                role="admin"
+            )
+            self.stdout.write(self.style.SUCCESS(f"✅ Admin created: {admin_username}"))
         else:
-            self.stdout.write(self.style.WARNING("⚠️ Admin user already exists."))
+            self.stdout.write("ℹ️  Admin already exists.")
