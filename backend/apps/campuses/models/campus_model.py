@@ -1,15 +1,18 @@
 from django.db import models
 from campuses.models.neighborhood_model import Neighborhood
+from .city_model import City
 
 class Campus(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    city = models.CharField(max_length=255, blank=True)
+    city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name='campuses_in_city')
+    
     agent = models.ForeignKey(
         "users.Agent",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
+    
     neighborhoods = models.ManyToManyField(Neighborhood, related_name="campuses", blank=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

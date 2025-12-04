@@ -119,7 +119,7 @@ function Completion({
             <MapPin size={14} className="text-blue-500 dark:text-blue-500" />
             <span className="text-ellipsis truncate">
               {listing.campus.name} • {listing.neighborhood.name},{" "}
-              {listing.neighborhood.city}
+              {listing.campus.city.name}
             </span>
           </div>
         </div>

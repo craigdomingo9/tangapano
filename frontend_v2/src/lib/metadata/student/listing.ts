@@ -29,7 +29,7 @@ export async function generateListingMetadata(
 
   return {
     title: title,
-    description: `${listing.neighborhood.name}, ${listing.neighborhood.city}. ${listing.rooms.length} rooms available. Starting from $${lowestPrice}.`,
+    description: `${listing.neighborhood.name}, ${listing.campus.city.name}. ${listing.rooms.length} rooms available. Starting from $${lowestPrice}.`,
     openGraph: {
       title: title,
       description: `Check out this student accommodation in ${listing.neighborhood.name}!`,

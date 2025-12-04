@@ -32,7 +32,7 @@ class CampusViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
     
     def get_queryset(self):
-        return Campus.objects.select_related('agent').prefetch_related(
+        return Campus.objects.select_related('agent', 'city').prefetch_related(
             'neighborhoods', 'campus_listings'
         ).all()
 

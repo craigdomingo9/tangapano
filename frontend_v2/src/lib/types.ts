@@ -1,16 +1,20 @@
 interface Campus {
   id: string;
   name: string;
-  city: string;
+  city: City;
   address: string;
   neighborhoods: Neighborhood[];
   agent: Agent;
 }
 
+interface City {
+  name: string;
+}
+
 interface Neighborhood {
   id: string;
   name: string;
-  city: string;
+  city: City;
   has_listings: string;
 }
 

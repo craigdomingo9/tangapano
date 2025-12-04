@@ -3,7 +3,11 @@ from campuses.models import Campus
 
 class CampusFilter(filters.FilterSet):
     has_listings = filters.BooleanFilter(method='filter_has_listings')
-
+    # Allow filtering by 'city_name=Harare'
+    city_name = filters.CharFilter(field_name='city__name', lookup_expr='icontains')
+    # Allow filtering by 'city_id=1'
+    city_id = filters.NumberFilter(field_name='city__id')
+    
     class Meta:
         model = Campus
         fields = []

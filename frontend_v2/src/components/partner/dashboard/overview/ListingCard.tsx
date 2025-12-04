@@ -129,7 +129,7 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
             <div className="flex items-center gap-1.5 text-xs font-medium text-slate-100 drop-shadow-sm">
               <MapPin className="w-4 h-4 text-slate-200" />
               <span className="truncate opacity-95">
-                {listing.neighborhood.name}, {listing.neighborhood.city}
+                {listing.neighborhood.name}, {listing.campus.city.name}
               </span>
             </div>
           </div>

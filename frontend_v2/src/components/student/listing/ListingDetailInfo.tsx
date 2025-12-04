@@ -18,7 +18,7 @@ function ListingDetailInfo({ listing }: ListingDetailInfoProps) {
             <div className="flex items-center gap-2 mt-1 text-slate-500 dark:text-slate-400 font-medium">
               <MapPin className="w-4 h-4 text-lapis dark:text-sky-400" />
               <span className="text-sm">
-                {listing.neighborhood.name}, {listing.neighborhood.city}
+                {listing.neighborhood.name}, {listing.campus.city.name}
               </span>
             </div>
           </div>
