@@ -23,10 +23,10 @@ function EmptyState({ onAdjustFilters, onClearSearch }: EmptyStateProps) {
         </div>
       </div>
 
-      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
+      <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
         No accommodations found
       </h3>
-      <p className="text-slate-500 dark:text-slate-400 max-w-md text-sm sm:text-lg leading-relaxed mb-10 mx-auto">
+      <p className="text-slate-500 dark:text-slate-400 max-w-md text-xsm sm:text-sm leading-relaxed mb-10 mx-auto">
         We couldn't find any properties matching your specific criteria. Try
         expanding your search area or adjusting your budget.
       </p>
