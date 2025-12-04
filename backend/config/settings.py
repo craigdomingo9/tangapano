@@ -135,6 +135,7 @@ if not DEBUG:
         'listing': '100/day',
         'dashboard_listings': '250/day',
         'rooms': '300/day',
+        'inquiries': '100/hour',
         'user_lookup': '35/hour',
         'anon': '50/hour',  # Global anonymous throttle
         'user': '1000/hour',  # Global authenticated throttle
@@ -145,6 +146,7 @@ else:
         'listing': '1000/hour',
         'dashboard_listings': '1000/hour',
         'rooms': '1000/hour',
+        'inquiries': '100/hour',
         'user_lookup': '1000/hour',
         'anon': '1000/hour',  # Global anonymous throttle
         'user': '1000/hour',  # Global authenticated throttle

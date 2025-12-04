@@ -2,8 +2,6 @@ from rest_framework.routers import DefaultRouter
 from interests.views import InterestsViewSet
 
 router = DefaultRouter()
-router.register(r'interests', InterestsViewSet,basename='interests')
+router.register(r'inquiries', InterestsViewSet, basename='inquiries')
 
-urlpatterns = [
-    
-] + router.urls
+urlpatterns = router.urls

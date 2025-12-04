@@ -99,7 +99,7 @@ type Listing = {
 
 interface Interest {
   room: any;
-  contacted_agent: string;
+  contacted_agent?: string;
   full_name: string;
   student_id: string;
   phone_number: string;

@@ -88,7 +88,6 @@ function Completion({
   async function postStudentRequest() {
     await mutation.mutate({
       room: selectedRoom?.id,
-      contacted_agent: listing.campus.agent.id,
       full_name: fullName,
       student_id: studentId,
       phone_number: whatsappNumber,
