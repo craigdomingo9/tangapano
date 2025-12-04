@@ -15,7 +15,7 @@ export default function ListingInfo({
   onToggleAmenities,
   onExpressInterest,
 }: ListingInfoProps) {
-  console.log(listing);
+  // console.log(listing);
   return (
     <div className="p-5 pt-6 flex flex-col gap-6 flex-1">
       <StatsGrid
