@@ -1,84 +1,92 @@
 "use client";
 
-import { useEffect, useMemo, Suspense } from "react";
+import { useEffect, useMemo, Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import { AppRoute, BaseParams } from "./types";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
-import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage"; // Check path
-import { useNavigationStore } from "@/lib/stores/navigationStore"; // Check path
+import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
+import { useNavigationStore } from "@/lib/stores/navigationStore";
+import { useQueryClient } from "@tanstack/react-query";
 
-const minimalistVariants = {
-  initial: {
-    opacity: 0,
-    y: 8, // Very small movement (8px)
-  },
+const minimalistVariants: Variants = {
+  initial: { opacity: 0, y: 8 },
   enter: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.25,
-      ease: "easeOut", // Smooth deceleration
-    },
+    transition: { duration: 0.25, ease: "easeOut" },
   },
   exit: {
     opacity: 0,
-    y: -4, // Slight lift on exit
-    transition: {
-      duration: 0.15,
-      ease: "easeIn",
-    },
+    y: -4,
+    transition: { duration: 0.15, ease: "easeIn" },
   },
 };
+
 interface Props<P extends BaseParams, C> {
   serverData: C;
   routes: AppRoute<P, C>[];
 }
 
-// Internal Component: Handles the Logic inside Suspense
 function RouterContent<P extends BaseParams, C>({
   serverData,
   routes,
 }: Props<P, C>) {
   const searchParams = useSearchParams();
   const { endNavigation } = useNavigationStore();
+  const queryClient = useQueryClient();
 
-  // 2. DIRECT CALCULATION
-  // We derive state immediately during render. No useEffect delay.
+  // 1. Calculate Params
   const currentParams = useMemo(() => {
     return Object.fromEntries(searchParams.entries()) as P;
   }, [searchParams.toString()]);
 
+  // 2. Find Route (Sync)
   const activeRoute = routes.find((r) => r.matcher(currentParams));
 
-  // 3. SIDE EFFECTS (Loader & Logging)
-  useEffect(() => {
-    // Stop the Global Loader whenever params change (Navigation finished)
-    endNavigation();
+  // --- NEW LOGIC START ---
+  // State to gate the 404 page
+  const [shouldShowError, setShouldShowError] = useState(false);
 
-    // Debug Logs
-    // console.log("%c ROUTER DEBUG ", "background: #222; color: #bada55");
-    // console.log("URL Params:", currentParams);
-    // console.log(
-    //   "Matched Route ID:",
-    //   activeRoute?.id || "NONE (Falling to 404)"
-    // );
-  }, [currentParams, activeRoute, endNavigation]);
+  useEffect(() => {
+    // A. Always clear navigation state on param change
+    endNavigation();
+    queryClient.invalidateQueries();
+
+    // B. Handle the 404 Timer
+    let timeoutId: NodeJS.Timeout;
+
+    if (activeRoute) {
+      // If we found a route, ensure error state is reset immediately
+      setShouldShowError(false);
+    } else {
+      // If NO route matches, wait 5 seconds before admitting defeat (showing 404)
+      setShouldShowError(false); // Start with loading
+      timeoutId = setTimeout(() => {
+        setShouldShowError(true);
+      }, 5000);
+    }
+
+    // Cleanup: Clear timer if params change or component unmounts
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [currentParams, activeRoute, endNavigation, queryClient]);
+  // --- NEW LOGIC END ---
 
   return (
-    // 4. LAYOUT WRAPPER (Min-H-Screen)
     <div className="relative w-full min-h-screen bg-gray-50/50 dark:bg-slate-950 isolate">
       <AnimatePresence mode="wait">
         {activeRoute ? (
+          // CASE 1: ROUTE FOUND
           <motion.div
-            key={activeRoute.id} // Changing key triggers animation
+            key={activeRoute.id}
             variants={minimalistVariants}
             initial="initial"
             animate="enter"
             exit="exit"
-            style={{ willChange: "opacity, transform" }}
-            // 5. PERFORMANCE HINT
             className="w-full"
+            style={{ willChange: "opacity, transform" }}
           >
             <activeRoute.component
               params={currentParams}
@@ -86,12 +94,20 @@ function RouterContent<P extends BaseParams, C>({
             />
           </motion.div>
         ) : (
+          // CASE 2: NO ROUTE (Yet)
           <motion.div
-            key="404"
+            key={shouldShowError ? "404-error" : "404-loading"}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <ErrorPage type="404" />
+            {shouldShowError ? (
+              // Timer finished, truly 404
+              <ErrorPage type="404" />
+            ) : (
+              // Timer running, waiting...
+              <LoadingScreen />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
@@ -99,8 +115,6 @@ function RouterContent<P extends BaseParams, C>({
   );
 }
 
-// 6. MAIN EXPORT (Suspense Wrapper)
-// This ensures useSearchParams works correctly
 export function RouteRenderer<P extends BaseParams, C>(props: Props<P, C>) {
   return (
     <Suspense fallback={<LoadingScreen />}>

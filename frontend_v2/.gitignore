@@ -10,6 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+sitemap*.xml
+robots.txt
+
 # testing
 /coverage
 
