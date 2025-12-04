@@ -88,7 +88,7 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
                   <>
                     <TrendingUp className="w-3.5 h-3.5 stroke-[2.5px]" />
                     <span className="text-xxs font-extrabold uppercase tracking-wider">
-                      Lanldlord Success Fee
+                      Landlord Success Fee
                     </span>
                   </>
                 )}
