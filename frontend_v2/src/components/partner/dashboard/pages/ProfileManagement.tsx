@@ -63,7 +63,7 @@ function ProfileManagement({ serverData }: PartnerComponentProps) {
     if (editingSection === "landlord") {
       // Update Landlord Profile
       const payload = {
-        ...user,
+        // ...user,
         landlord_profile: {
           phone_number: formData.phone_number,
           address: formData.address,

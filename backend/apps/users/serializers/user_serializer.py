@@ -1,20 +1,16 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from users.models import Landlord
+from users.models import Landlord, Agent
+from .landlord_serializer import LandlordSerializer
+from .agent_serializer import AgentSerializer
 
 User = get_user_model()
 
-
-
-class LandlordProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Landlord
-        fields = '__all__'
-        read_only_fields = ['user']
-
-
 class UserSerializer(serializers.ModelSerializer):
-    landlord_profile = LandlordProfileSerializer(required=False)
+    # Nest the full profile serializers for read operations
+    landlord_profile = LandlordSerializer(required=False)
+    agent_profile = AgentSerializer(required=False)
+
     class Meta:
         model = User
         fields = [
@@ -27,47 +23,29 @@ class UserSerializer(serializers.ModelSerializer):
             "landlord_profile",
             "agent_profile",
         ]
-        read_only_fields = ["id", "role", "landlord_profile", "agent_profile"]
-    
+        read_only_fields = ["id", "role"] # Usually username shouldn't change easily
+
     def update(self, instance, validated_data):
+        # 1. Pop profile data
         landlord_data = validated_data.pop("landlord_profile", None)
-        instance.username = validated_data.get("username", instance.username)
-        instance.email = validated_data.get("email", instance.email)
-        instance.first_name = validated_data.get("first_name", instance.first_name)
-        instance.last_name = validated_data.get("last_name", instance.last_name)
+        agent_data = validated_data.pop("agent_profile", None)
+
+        # 2. Update User Standard Fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
         instance.save()
 
-        if landlord_data:
-            landlord, _ = Landlord.objects.update_or_create(user=instance, defaults=landlord_data)
+        # 3. Update Landlord Profile (if exists and data provided)
+        if landlord_data and hasattr(instance, 'landlord_profile'):
+            for attr, value in landlord_data.items():
+                setattr(instance.landlord_profile, attr, value)
+            instance.landlord_profile.save()
+
+        # 4. Update Agent Profile (if exists and data provided)
+        if agent_data and hasattr(instance, 'agent_profile'):
+            for attr, value in agent_data.items():
+                setattr(instance.agent_profile, attr, value)
+            instance.agent_profile.save()
 
         return instance
 
-
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})
-    landlord_profile = LandlordProfileSerializer(required=False)
-
-    class Meta:
-        model = User
-        fields = [
-            "username",
-            "email",
-            "first_name",
-            "last_name",
-            "landlord_profile",
-            "role",
-            "password",
-        ]
-
-
-    def create(self, validated_data):
-        landlord_data = validated_data.pop("landlord_profile", None)
-        password = validated_data.pop("password")
-        user = User.objects.create_user(**validated_data)
-        user.set_password(password)
-        user.save()
-
-        if landlord_data:
-            Landlord.objects.create(user=user, **landlord_data)
-
-        return user

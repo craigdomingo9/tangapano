@@ -1,12 +1,46 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from users.models import User, Agent, Landlord
 
-# Register your models here.
-admin.site.register(User)
-admin.site.register(Agent)
+# 1. Customize User Admin to show roles clearly
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    list_display = ('username', 'email', 'role', 'is_staff')
+    list_filter = ('role', 'is_staff', 'is_active')
+    fieldsets = BaseUserAdmin.fieldsets + (
+        ('Role Info', {'fields': ('role',)}),
+    )
 
+# 2. Agent Admin
+@admin.register(Agent)
+class AgentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'agency_name', 'phone_number')
+    search_fields = ('user__username', 'agency_name')
+
+# 3. Landlord Admin (HEAVILY MODIFIED)
 @admin.register(Landlord)
-class RoomAdmin(admin.ModelAdmin):
-    list_display = ('company_name', 'phone_number', 'user__role', 'user__first_name', 'user__last_name')
-    search_fields = ('user__username', 'company_name')
-    list_filter = ('company_name', 'user__date_joined')
+class LandlordAdmin(admin.ModelAdmin):
+    list_display = (
+        'get_full_name', 
+        'account_type', 
+        'company_name', 
+        'phone_number', 
+        'is_verified'
+    )
+    list_filter = ('account_type', 'is_verified', 'user__date_joined')
+    search_fields = ('user__username', 'user__email', 'company_name', 'phone_number')
+    actions = ['mark_as_verified', 'mark_as_unverified']
+
+    def get_full_name(self, obj):
+        return obj.user.get_full_name()
+    get_full_name.short_description = 'Name'
+
+    # --- ADMIN ACTIONS ---
+    def mark_as_verified(self, request, queryset):
+        rows_updated = queryset.update(is_verified=True)
+        self.message_user(request, f"{rows_updated} landlords successfully verified.")
+    mark_as_verified.short_description = "Mark selected landlords as Verified"
+
+    def mark_as_unverified(self, request, queryset):
+        rows_updated = queryset.update(is_verified=False)
+        self.message_user(request, f"{rows_updated} landlords marked unverified.")

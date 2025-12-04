@@ -34,14 +34,14 @@ export function SignupForm() {
     resolver: zodResolver(registrationSchema),
     mode: "onBlur",
     defaultValues: {
-      first_name: "",
-      last_name: "",
-      username: "",
-      password: "",
-      confirm_password: "",
-      company_name: "",
-      phone_number: "",
-      address: "",
+      first_name: "Craig",
+      last_name: "Domingo",
+      username: "ktb",
+      password: "password123",
+      confirm_password: "password123",
+      company_name: "Domingo Properties",
+      phone_number: "+254712345678",
+      address: "Nairobi, Kenya",
     },
   });
 

@@ -47,6 +47,8 @@ interface Landlord {
   company_name: string;
   phone_number: string;
   address: string;
+  is_verified: boolean;
+  account_type: "individual" | "agency";
 }
 
 interface Image {

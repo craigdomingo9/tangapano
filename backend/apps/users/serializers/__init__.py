@@ -1,3 +1,4 @@
-from .user_serializer import UserSerializer, UserRegistrationSerializer
+from .user_serializer import UserSerializer
+from .registration_serializer import UserRegistrationSerializer
 from .landlord_serializer import LandlordSerializer
 from .agent_serializer import AgentSerializer
