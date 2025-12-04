@@ -15,6 +15,7 @@ export default function ListingInfo({
   onToggleAmenities,
   onExpressInterest,
 }: ListingInfoProps) {
+  console.log(listing);
   return (
     <div className="p-5 pt-6 flex flex-col gap-6 flex-1">
       <StatsGrid
@@ -31,12 +32,7 @@ export default function ListingInfo({
       {/* Divider */}
       <div className="h-px bg-slate-100 dark:bg-slate-800 w-full mt-auto" />
 
-      <PriceSection
-        applyAgentFee={listing.apply_agent_fee}
-        agentFee={parseFloat(listing.campus.agent.agent_fee)}
-        onExpressInterest={onExpressInterest}
-        listing={listing}
-      />
+      <PriceSection onExpressInterest={onExpressInterest} listing={listing} />
     </div>
   );
 }

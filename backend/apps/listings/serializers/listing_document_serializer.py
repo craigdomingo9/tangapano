@@ -126,18 +126,13 @@ class ListingDocumentSerializer(DocumentSerializer):
             # If it survived all checks, add to output
             filtered_rooms.append({
                 'id': r.id,
-                'room_number': r.room_number,
                 'rent_value': r.rent_value,
                 'is_full': r.is_full,
-                'created_at': r.created_at,
-                'updated_at': r.updated_at,
-                'rent_per_month': r.rent_per_month,
+                'rent_per_month': r.rent_display,
                 'max_occupants': r.max_occupants,
-                'is_active': r.is_active,
                 'gender_preference': r.gender_preference,
                 'current_occupants': r.current_occupants,
                 'has_vacancy': r.has_vacancy,
-                'agent_fee': r.agent_fee
             })
 
         return filtered_rooms

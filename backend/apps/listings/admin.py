@@ -1,27 +1,26 @@
 from django.contrib import admin
 from listings.models import Listing, Amenity, Room, ListingImage
 
-# Register your models here.
 @admin.register(Listing)
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ('title', 'landlord', 'campus', 'neighborhood', 'distance_from_campus', 'is_active',)
-    search_fields = ('title', 'description')
-    list_filter = ('is_active', 'campus', 'neighborhood')
+    list_display = ('title', 'get_landlord', 'campus', 'neighborhood', 'is_active')
+    search_fields = ('title', 'description', 'landlord__company_name', 'landlord__user__username')
+    list_filter = ('is_active', 'campus__city', 'campus') # Filter by City, then Campus
+    autocomplete_fields = ['landlord', 'campus', 'neighborhood']
 
-@admin.register(Amenity)
-class AmenityAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
+    def get_landlord(self, obj):
+        return obj.landlord.user.username
+    get_landlord.short_description = 'Landlord'
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ('listing', 'max_occupants', 'current_occupants', 'rent_per_month', 'is_full')
+    list_display = ('listing', 'gender_preference', 'rent_per_month', 'occupancy_status')
+    list_filter = ('gender_preference', 'is_active')
     search_fields = ('listing__title',)
-    list_filter = ('is_active', 'max_occupants')
 
+    def occupancy_status(self, obj):
+        return f"{obj.current_occupants}/{obj.max_occupants}"
 
-@admin.register(ListingImage)
-class ListingImageAdmin(admin.ModelAdmin):
-    list_display = ('listing', 'image')
-    search_fields = ('listing__title',)
-    list_filter = ('listing',)
+# Register Amenity and ListingImage as standard
+admin.site.register(Amenity)
+admin.site.register(ListingImage)

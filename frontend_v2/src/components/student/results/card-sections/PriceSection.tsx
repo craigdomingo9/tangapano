@@ -1,15 +1,11 @@
 import { Button } from "@/components/ui/button";
 
 interface PriceSectionProps {
-  applyAgentFee: boolean;
-  agentFee: number;
   onExpressInterest: (e: React.MouseEvent) => void;
   listing: Listing;
 }
 
 export default function PriceSection({
-  applyAgentFee,
-  agentFee,
   onExpressInterest,
   listing,
 }: PriceSectionProps) {

@@ -1,4 +1,3 @@
-from .listing_filter import RoomCompositeFilterBackend, AmenityDynamicMatchBackend
 from .listing_ordering_filter import AliasedOrderingFilter
 from .room_filter import RoomFilter
 from .listing_image_filter import ListingImageFIlter

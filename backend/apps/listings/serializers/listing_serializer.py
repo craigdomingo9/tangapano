@@ -9,29 +9,35 @@ from users.serializers import LandlordSerializer
 
 
 class ListingSerializer(serializers.ModelSerializer):
-    amenities = AmenitySerializer(many=True)
-    rooms = RoomSerializer(many=True, read_only=True)
+    amenities = AmenitySerializer(many=True, read_only=True)
+    rooms = serializers.SerializerMethodField() # Custom method for numbering
     campus = CampusSerializer(read_only=True)
-    landlord = LandlordSerializer(read_only=True)
     neighborhood = NeighborhoodSerializer(read_only=True)
-    images = ListingImageSerializer(
-        many=True, 
-        read_only=True, 
-        source='ordered_images'
-    )
+    landlord = LandlordSerializer(read_only=True)
+    images = ListingImageSerializer(many=True, read_only=True, source='ordered_images')
 
     class Meta:
         model = Listing
         fields = [
-            'id', 'landlord', 'title', 'description', 'images',
-            'amenities',
-            'campus', 'neighborhood',
-            'apply_agent_fee', 'is_locked',
-            'distance_from_campus', 'is_active', 'rooms',
+            'id', 'title', 'description', 'landlord',
+            'campus', 'neighborhood', 'amenities', 
+            'rooms', 'images', 
+            'apply_agent_fee', 'is_locked', 'is_active',
             'created_at', 'updated_at'
         ]
-        read_only_fields = ('id', 'created_at', 'updated_at')
-        
+
+    def get_rooms(self, obj):
+        """
+        Calculates room number in Python to avoid N+1 DB queries.
+        """
+        rooms = obj.rooms.all() # Prefetched in ViewSet
+        data = []
+        for index, room in enumerate(rooms, start=1):
+            # Serialize individually or manually construct dict for speed
+            r_data = RoomSerializer(room).data
+            r_data['room_number'] = index # Inject number here
+            data.append(r_data)
+        return data
 
 
 class ListingCreateSerializer(serializers.ModelSerializer):
