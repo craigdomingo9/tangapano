@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, Suspense } from "react";
+import { useEffect, useMemo, Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { AppRoute, BaseParams } from "./types";
@@ -33,36 +33,52 @@ function RouterContent<P extends BaseParams, C>({
   routes,
 }: Props<P, C>) {
   const searchParams = useSearchParams();
-  const { endNavigation } = useNavigationStore(); // Ensure push is destructured
+  const { endNavigation } = useNavigationStore();
   const queryClient = useQueryClient();
 
-  // Derive Params (Sync)
+  // 1. Calculate Params
   const currentParams = useMemo(() => {
     return Object.fromEntries(searchParams.entries()) as P;
   }, [searchParams.toString()]);
 
-  // Find Route (Sync)
-  // We do not need state here. This happens instantly.
+  // 2. Find Route (Sync)
   const activeRoute = routes.find((r) => r.matcher(currentParams));
 
-  const isRootPath = Object.keys(currentParams).length === 0;
+  // --- NEW LOGIC START ---
+  // State to gate the 404 page
+  const [shouldShowError, setShouldShowError] = useState(false);
 
   useEffect(() => {
+    // A. Always clear navigation state on param change
     endNavigation();
     queryClient.invalidateQueries();
-  }, [currentParams, activeRoute, endNavigation, isRootPath]);
 
-  // "Resolving" UI
-  // If we are at the root path, we are technically "resolving" a redirect.
-  // Show the loader here to prevent the "404 Flash".
-  if (isRootPath) {
-    return <LoadingScreen />;
-  }
+    // B. Handle the 404 Timer
+    let timeoutId: NodeJS.Timeout;
+
+    if (activeRoute) {
+      // If we found a route, ensure error state is reset immediately
+      setShouldShowError(false);
+    } else {
+      // If NO route matches, wait 5 seconds before admitting defeat (showing 404)
+      setShouldShowError(false); // Start with loading
+      timeoutId = setTimeout(() => {
+        setShouldShowError(true);
+      }, 5000);
+    }
+
+    // Cleanup: Clear timer if params change or component unmounts
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [currentParams, activeRoute, endNavigation, queryClient]);
+  // --- NEW LOGIC END ---
 
   return (
     <div className="relative w-full min-h-screen bg-gray-50/50 dark:bg-slate-950 isolate">
       <AnimatePresence mode="wait">
         {activeRoute ? (
+          // CASE 1: ROUTE FOUND
           <motion.div
             key={activeRoute.id}
             variants={minimalistVariants}
@@ -78,13 +94,20 @@ function RouterContent<P extends BaseParams, C>({
             />
           </motion.div>
         ) : (
+          // CASE 2: NO ROUTE (Yet)
           <motion.div
-            key="404"
+            key={shouldShowError ? "404-error" : "404-loading"}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <ErrorPage type="404" />
+            {shouldShowError ? (
+              // Timer finished, truly 404
+              <ErrorPage type="404" />
+            ) : (
+              // Timer running, waiting...
+              <LoadingScreen />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
