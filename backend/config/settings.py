@@ -84,6 +84,8 @@ INSTALLED_APPS = [
     'campuses',
     'interests',
     'health',
+    'billing',
+    'notifications'
 ] 
 
 

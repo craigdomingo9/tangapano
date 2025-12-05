@@ -8,7 +8,11 @@ import os
 from django.core.files import File
 from listings.models import Listing, Amenity, Room, ListingImage
 from campuses.models import Campus
+from django.utils import timezone
+from datetime import timedelta
 from users.models import Landlord, User
+from billing.models import Tier, Subscription
+from notifications.models import Notification
 
 fake = Faker()
 
@@ -30,10 +34,17 @@ class Command(BaseCommand):
         Listing.objects.all().delete()
         Landlord.objects.all().delete()
         User.objects.filter(role="landlord").delete()
+        Subscription.objects.all().delete()
+        Notification.objects.all().delete()
 
         # Load References
         campuses = list(Campus.objects.all())
         amenities = list(Amenity.objects.all())
+        tiers = list(Tier.objects.all())
+        
+        if not tiers:
+            self.stdout.write(self.style.ERROR("🚫 No Tiers found. Update seed_production_data.py first."))
+            return
         
         landlords_count = options['landlords']
         listings_per_landlord = options['listings']
@@ -62,6 +73,60 @@ class Command(BaseCommand):
                 is_verified=random.choice([True, False]),
                 address=fake.address()
             )
+            
+            # -----------------------------------------------------
+            # Create Subscription
+            # -----------------------------------------------------
+            # 60% Active, 20% Expired, 20% Pending
+            status_roll = random.random()
+            if status_roll < 0.6:
+                sub_status = 'active'
+                start_dt = timezone.now() - timedelta(days=random.randint(1, 20))
+                end_dt = start_dt + timedelta(days=30)
+            elif status_roll < 0.8:
+                sub_status = 'expired'
+                start_dt = timezone.now() - timedelta(days=60)
+                end_dt = timezone.now() - timedelta(days=10)
+            else:
+                sub_status = 'pending'
+                start_dt = timezone.now()
+                end_dt = None
+            
+            # Agencies usually get Pro, Individuals get Standard/Free
+            selected_tier = tiers[2] if is_agency else random.choice(tiers[:2])
+            
+            Subscription.objects.create(
+                landlord=landlord,
+                tier=selected_tier,
+                status=sub_status,
+                start_date=start_dt,
+                end_date=end_dt,
+                transaction_ref=fake.uuid4() if sub_status == 'active' else None
+            )
+            
+            # -----------------------------------------------------
+            # Create Notifications
+            # -----------------------------------------------------
+            # Generate 1-5 notifications per user
+            for _ in range(random.randint(1, 5)):
+                n_type = random.choice(['info', 'success', 'warning'])
+                category = random.choice(['billing', 'listing', 'inquiry', 'system'])
+                
+                titles = {
+                    'billing': ["Invoice Paid", "Subscription Expiring Soon", "Payment Failed"],
+                    'listing': ["Listing Approved", "Please update your listing", "Listing Locked"],
+                    'inquiry': ["New Student Inquiry", "Message from Admin"],
+                    'system': ["Maintenance Scheduled", "Welcome to Tangapano"]
+                }
+                
+                Notification.objects.create(
+                    recipient=user,
+                    title=random.choice(titles[category]),
+                    message=fake.sentence(),
+                    notification_type=n_type,
+                    category=category,
+                    is_read=random.choice([True, False])
+                )
 
             # C. Create Listings
             for _ in range(listings_per_landlord):

@@ -2,6 +2,7 @@ import os
 from django.core.management.base import BaseCommand
 from listings.models import Amenity
 from users.models import User, Agent
+from billing.models import Tier
 from campuses.models import Campus, Neighborhood, City
 from dotenv import load_dotenv
 
@@ -144,3 +145,53 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f"✅ Admin created: {admin_username}"))
         else:
             self.stdout.write("ℹ️  Admin already exists.")
+        
+        # ---------------------------------------------------------
+        # 4. BILLING TIERS (NEW SECTION)
+        # ---------------------------------------------------------
+        self.stdout.write("  💳 Creating Subscription Tiers...")
+        
+        tiers_data = [
+            {
+                "name": "Free Starter",
+                "slug": "free",
+                "price": 0.00,
+                "duration_days": 365,
+                "max_listings": 1,
+                "can_feature": False,
+                "verified": False
+            },
+            {
+                "name": "Standard Landlord",
+                "slug": "standard",
+                "price": 15.00,
+                "duration_days": 30,
+                "max_listings": 5,
+                "can_feature": False,
+                "verified": True
+            },
+            {
+                "name": "Agency Pro",
+                "slug": "agency_pro",
+                "price": 50.00,
+                "duration_days": 30,
+                "max_listings": 50,
+                "can_feature": True,
+                "verified": True
+            }
+        ]
+
+        for t in tiers_data:
+            Tier.objects.get_or_create(
+                slug=t["slug"],
+                defaults={
+                    "name": t["name"],
+                    "price": t["price"],
+                    "duration_days": t["duration_days"],
+                    "max_listings": t["max_listings"],
+                    "can_feature_listings": t["can_feature"],
+                    "is_verified_badge": t["verified"]
+                }
+            )
+        
+        self.stdout.write(self.style.SUCCESS("✅ Tiers created."))

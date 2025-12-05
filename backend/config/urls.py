@@ -28,4 +28,6 @@ urlpatterns = [
     path('api/campuses/', include('campuses.urls')),
     path('api/listings/', include('listings.urls')),
     path('api/interests/', include('interests.urls')),
+    path('api/billing/', include('billing.urls')),
+    path('api/notifications/', include('notifications.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls()
