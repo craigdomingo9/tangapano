@@ -19,6 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
+from rest_framework.routers import DefaultRouter
+
+from apps.users.views import AdminLandlordViewSet
+from apps.listings.views import AdminListingViewSet
+
+admin_router = DefaultRouter()
+admin_router.register(r'users/landlords', AdminLandlordViewSet, basename='admin-landlords')
+admin_router.register(r'listings', AdminListingViewSet, basename='admin-listings')
 
 urlpatterns = [
     path('', include('django_prometheus.urls'), name="prometheus"),
@@ -30,4 +38,6 @@ urlpatterns = [
     path('api/interests/', include('interests.urls')),
     path('api/billing/', include('billing.urls')),
     path('api/notifications/', include('notifications.urls')),
+    path('api/analytics/', include('analytics.urls')),
+    path('api/control/', include(admin_router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls()
