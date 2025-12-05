@@ -1,1 +1,2 @@
 from .landlord_permissions import IsOwnerLandlord
+from .admin_permissions import IsSuperAdmin

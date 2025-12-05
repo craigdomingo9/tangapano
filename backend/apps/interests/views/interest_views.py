@@ -1,6 +1,9 @@
 from rest_framework import viewsets, permissions
 from interests.models import Interest
 from interests.serializers import InterestSerializer
+from analytics.models import ListingStat
+from notifications.models import Notification
+from django.db.models import F
 
 class InterestsViewSet(viewsets.ModelViewSet):
     """
@@ -11,3 +14,28 @@ class InterestsViewSet(viewsets.ModelViewSet):
     serializer_class = InterestSerializer
     permission_classes = [permissions.AllowAny]
     throttle_scope = "inquiries" # Good practice to rate-limit this
+    
+    def perform_create(self, serializer):
+        # 1. Save the Inquiry
+        interest = serializer.save()
+        
+        # 2. ANALYTICS: Increment Inquiry Counter
+        room = interest.room
+        stat, _ = ListingStat.objects.get_or_create(listing=room.listing)
+        ListingStat.objects.filter(pk=stat.pk).update(total_inquiries=F('total_inquiries') + 1)
+
+        # 3. NOTIFICATION: Alert the Landlord/Agent
+        recipient_user = None
+        if interest.contacted_agent:
+            recipient_user = interest.contacted_agent.user
+        elif room.listing.landlord:
+            recipient_user = room.listing.landlord.user
+            
+        if recipient_user:
+            Notification.objects.create(
+                recipient=recipient_user,
+                title="New Student Inquiry",
+                message=f"You have a new inquiry for {room.listing.title} from {interest.full_name}.",
+                category="inquiry",
+                action_link=f"/dashboard/inquiries/{interest.id}"
+            )
