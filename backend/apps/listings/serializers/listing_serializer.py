@@ -21,7 +21,7 @@ class ListingSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'description', 'landlord',
             'campus', 'neighborhood', 'amenities', 
-            'rooms', 'images', 
+            'rooms', 'images', 'distance_from_campus',
             'apply_agent_fee', 'is_locked', 'is_active',
             'created_at', 'updated_at'
         ]

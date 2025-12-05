@@ -5,6 +5,7 @@ from listings.serializers import RetrieveListingSerializer
 from listings.models import Listing
 from listings.filters import RetrieveRoomFilter
 from analytics.models import ListingViewEvent, ListingStat
+from django.db.models import F
 
 class ListingRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Listing.objects.all()
