@@ -1,6 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils import timezone
+from datetime import timedelta
 from listings.serializers import RetrieveListingSerializer
 from listings.models import Listing
 from listings.filters import RetrieveRoomFilter
@@ -19,24 +21,33 @@ class ListingRetrieveAPIView(generics.RetrieveAPIView):
     ]
 
     def retrieve(self, request, *args, **kwargs):
-        # 1. Standard Retrieve Logic
         response = super().retrieve(request, *args, **kwargs)
-        
-        # 2. ACTIVE TRACKING LOGIC
         instance = self.get_object()
         
-        # A. Log the raw event
-        ListingViewEvent.objects.create(
-            listing=instance,
-            user=request.user if request.user.is_authenticated else None,
-            session_key=request.session.session_key,
-            source=request.query_params.get('source', 'direct')
-        )
+        # 1. EXCLUDE SELF-VIEWS
+        if request.user.is_authenticated and instance.landlord.user == request.user:
+            return response
+
+        # 2. DEBOUNCE (Check if viewed in last 30 mins)
+        session_key = request.session.session_key
+        cutoff = timezone.now() - timedelta(minutes=30)
         
-        # B. Increment the aggregate counter (Atomic update)
-        # We use get_or_create to ensure the Stats object exists
-        stat, _ = ListingStat.objects.get_or_create(listing=instance)
-        ListingStat.objects.filter(pk=stat.pk).update(total_views=F('total_views') + 1)
+        already_viewed = ListingViewEvent.objects.filter(
+            listing=instance,
+            session_key=session_key,
+            timestamp__gte=cutoff
+        ).exists()
+
+        if not already_viewed:
+            # Create Log
+            ListingViewEvent.objects.create(
+                listing=instance,
+                user=request.user if request.user.is_authenticated else None,
+                session_key=session_key
+            )
+            # Increment Counter (Atomic)
+            stat, _ = ListingStat.objects.get_or_create(listing=instance)
+            ListingStat.objects.filter(pk=stat.pk).update(total_views=F('total_views') + 1)
         
         return response
     

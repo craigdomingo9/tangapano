@@ -9,11 +9,16 @@ class UserEngagementMiddleware:
         # 1. Ensure Anonymous users have a Session ID
         if not request.session.session_key:
             request.session.save()
+            
+        # 1. BOT FILTERING (New)
+        user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+        if any(bot in user_agent for bot in ['bot', 'crawler', 'spider', 'google', 'bing']):
+            return self.get_response(request) # Skip tracking bots
 
         response = self.get_response(request)
 
         # 2. Filter Noise (Admin/Static)
-        if request.path.startswith('/admin') or request.path.startswith('/static') or request.path.startswith('/media'):
+        if request.path.startswith(('/admin', '/static', '/media', '/favicon.ico')):
             return response
 
         # 3. Track

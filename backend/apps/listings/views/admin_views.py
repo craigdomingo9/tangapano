@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from listings.models import Listing
-from listings.serializers import ListingSerializer
+from listings.serializers import ListingAdminSerializer
 from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
 
@@ -11,7 +11,7 @@ class AdminListingViewSet(viewsets.ReadOnlyModelViewSet):
     Admin-only viewset to moderate listings.
     """
     queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
+    serializer_class = ListingAdminSerializer
     permission_classes = [IsSuperAdmin]
 
     @action(detail=True, methods=['post'])

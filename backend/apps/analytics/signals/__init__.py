@@ -1,0 +1,1 @@
+from .listing_stat_signals import decrement_inquiry_stat, increment_inquiry_stat
