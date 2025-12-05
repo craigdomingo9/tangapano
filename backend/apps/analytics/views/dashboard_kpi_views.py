@@ -62,9 +62,11 @@ class DashboardKPIView(APIView):
             "dau": dau,
             "dau_pct_change": round(dau_pct_change, 1),
             "total_users": total_users,
+            "total_occupied": total_occ,
+            "total_capacity": total_cap,
             "occupancy_rate": round(occupancy_rate, 1),
             "mrr": mrr,
-            "pending_verifications": pending_verifications
+            "pending_verifications": pending_verifications,
         }
         
         return Response(data)
