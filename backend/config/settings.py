@@ -85,7 +85,8 @@ INSTALLED_APPS = [
     'interests',
     'health',
     'billing',
-    'notifications'
+    'notifications',
+    'analytics',
 ] 
 
 
@@ -109,6 +110,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
+    
+    # Custom
+    'analytics.middleware.UserEngagementMiddleware',
 ] 
 
 
