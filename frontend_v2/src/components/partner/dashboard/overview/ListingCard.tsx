@@ -30,7 +30,7 @@ function ListingCard({ listing, onDeleteRequest }: ListingCardProps) {
     listing?.images?.[0] ||
     null;
 
-  console.log(listing);
+  // console.log(listing);
 
   const [isShareOpen, setIsShareOpen] = useState(false);
 
