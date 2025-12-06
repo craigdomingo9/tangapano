@@ -20,5 +20,7 @@ class UserSession(models.Model):
         unique_together = ('session_key', 'date')
         indexes = [
             models.Index(fields=['date']),
+            models.Index(fields=['session_key', 'date']),
         ]
-
+        # But we can assume session_key + date should be unique.
+        unique_together = ('session_key', 'date')
