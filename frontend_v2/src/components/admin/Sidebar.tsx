@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LayoutDashboard,
   BarChart3,
@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { RouterLink } from "@/routing/RouterLink";
+import useIsMobile from "@/hooks/use-is-mobile";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -34,6 +35,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || "";
   const isActive = (path: string) => page === path;
+  const { isMobile } = useIsMobile();
+
+  useEffect(() => {
+    // console.log("VIEWPORT", isMobile);
+    if (!isMobile) {
+      setMobileOpen(false);
+    }
+  }, [isMobile]);
 
   const navItems = [
     {
@@ -92,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           } transition-all border-b border-border/40`}
         >
           {!collapsed || mobileOpen ? (
-            <div className="flex flex-col animate-fade-in">
+            <div className="flex flex-col self-start animate-fade-in">
               <span className="text-xl font-bold tracking-tight text-foreground leading-none">
                 <span className="text-red-500/80">Tanga</span>Pano
               </span>
