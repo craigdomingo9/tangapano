@@ -4,8 +4,8 @@ import { ArrowRight, Lock, Mail, Shield, User } from "lucide-react";
 import { useState, useTransition } from "react";
 
 function Login() {
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("connected2005");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isPending, startTransition] = useTransition();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
