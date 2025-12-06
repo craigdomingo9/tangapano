@@ -1,0 +1,72 @@
+"use client";
+
+import { AppRoute } from "@/routing/types";
+import { lazyLoad } from "@/routing/utils";
+import { AdminPanelContext, AdminPanelParams } from "@/lib/types/admin";
+
+const Login = lazyLoad(() => import("@/components/admin/pages/Login"));
+const Dashboard = lazyLoad(() => import("@/components/admin/pages/Dashboard"));
+const Analytics = lazyLoad(() => import("@/components/admin/pages/Analytics"));
+const ListingManagement = lazyLoad(
+  () => import("@/components/admin/pages/ListingManagement")
+);
+const LandlordManagement = lazyLoad(
+  () => import("@/components/admin/pages/LandlordManagement")
+);
+const AgentManagement = lazyLoad(
+  () => import("@/components/admin/pages/AgentManagement")
+);
+const Settings = lazyLoad(() => import("@/components/admin/pages/Settings"));
+const Notifications = lazyLoad(
+  () => import("@/components/admin/pages/Notifications")
+);
+
+export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
+  [
+    {
+      id: "login",
+      matcher: (p) => p.page === "login",
+      component: Login,
+    },
+
+    {
+      id: "analytics",
+      matcher: (p) => p.page === "analytics",
+      component: Analytics,
+    },
+
+    {
+      id: "landlord-management",
+      matcher: (p) => p.page === "landlords",
+      component: LandlordManagement,
+    },
+
+    {
+      id: "agent-management",
+      matcher: (p) => p.page === "agents",
+      component: AgentManagement,
+    },
+
+    {
+      id: "settings",
+      matcher: (p) => p.page === "settings",
+      component: Settings,
+    },
+
+    {
+      id: "notifications",
+      matcher: (p) => p.page === "notifications",
+      component: Notifications,
+    },
+
+    {
+      id: "listing-management",
+      matcher: (p) => p.page === "listings",
+      component: ListingManagement,
+    },
+
+    {
+      matcher: (p) => p.page === "dashboard" || !p.page,
+      component: Dashboard,
+    },
+  ];

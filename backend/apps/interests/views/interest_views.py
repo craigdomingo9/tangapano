@@ -16,15 +16,10 @@ class InterestsViewSet(viewsets.ModelViewSet):
     throttle_scope = "inquiries" # Good practice to rate-limit this
     
     def perform_create(self, serializer):
-        # 1. Save the Inquiry
         interest = serializer.save()
         
-        # 2. ANALYTICS: Increment Inquiry Counter
         room = interest.room
-        stat, _ = ListingStat.objects.get_or_create(listing=room.listing)
-        ListingStat.objects.filter(pk=stat.pk).update(total_inquiries=F('total_inquiries') + 1)
 
-        # 3. NOTIFICATION: Alert the Landlord/Agent
         recipient_user = None
         if interest.contacted_agent:
             recipient_user = interest.contacted_agent.user
