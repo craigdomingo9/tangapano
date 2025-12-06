@@ -15,3 +15,13 @@ export function hashString(str: string): string {
   }
   return Math.abs(hash).toString(36);
 }
+
+export const getAcronym = (text: string) => {
+  const stopWords = ["of", "the", "in", "and", "at", "for", "to", "a"];
+
+  return text
+    .split(" ")
+    .filter((word) => !stopWords.includes(word.toLowerCase())) // Remove stop words
+    .map((word) => word.charAt(0).toUpperCase()) // Get first letter & capitalize
+    .join("");
+};

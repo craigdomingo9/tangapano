@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, Bell, Sun, Moon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouterPush } from "@/hooks/use-router-push";
@@ -23,6 +23,11 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
   toggleTheme,
 }) => {
   const { push } = useRouterPush<AdminPanelParams>();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
     <header className="min-h-16 sticky top-0 z-40 w-full flex items-center justify-between px-4 sm:px-6 border-b border-border/40 bg-background/80 backdrop-blur-xl transition-all duration-300">
       {/* Left Section: Toggle & Breadcrumbs */}
@@ -51,7 +56,13 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
           onClick={toggleTheme}
           className="p-2.5 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full transition-all cursor-pointer"
         >
-          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          {!mounted ? (
+            <div className="w-5 h-5" />
+          ) : isDark ? (
+            <Sun className="w-5 h-5" />
+          ) : (
+            <Moon className="w-5 h-5" />
+          )}
         </button>
 
         {/* Notifications */}
