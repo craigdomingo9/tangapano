@@ -10,7 +10,6 @@ function Login() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     onLogin();
   }
 
