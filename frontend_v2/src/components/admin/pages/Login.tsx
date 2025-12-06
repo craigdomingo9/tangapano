@@ -1,9 +1,10 @@
 import { login } from "@/actions/admin/auth";
 import { errorToast, successToast } from "@/lib/toast";
+import { AdminPanelComponentProps } from "@/lib/types/admin";
 import { ArrowRight, Lock, Mail, Shield, User } from "lucide-react";
 import { useState, useTransition } from "react";
 
-function Login() {
+function Login({}: AdminPanelComponentProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, startTransition] = useTransition();
