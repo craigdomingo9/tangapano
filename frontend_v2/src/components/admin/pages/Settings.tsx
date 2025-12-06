@@ -1,6 +1,7 @@
+import { AdminPanelComponentProps } from "@/lib/types/admin";
 import React from "react";
 
-function Settings() {
+function Settings({}: AdminPanelComponentProps) {
   return <div>Settings</div>;
 }
 

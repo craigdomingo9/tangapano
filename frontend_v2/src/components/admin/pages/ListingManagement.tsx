@@ -1,6 +1,7 @@
+import { AdminPanelComponentProps } from "@/lib/types/admin";
 import React from "react";
 
-function ListingManagement() {
+function ListingManagement({}: AdminPanelComponentProps) {
   return <div>ListingManagement</div>;
 }
 
