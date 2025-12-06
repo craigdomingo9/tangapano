@@ -15,7 +15,7 @@ urlpatterns = [
     path("auth/verify-token/", auth_views.VerifyTokenView.as_view(), name="user-verify-token"),
     
     # Admin Panel Auth
-    path("auth/admin/login", AdminLoginView.as_view(), name="admin-login"),
+    path("auth/admin/login/", AdminLoginView.as_view(), name="admin-login"),
     
     # Profiles
     path("me/", user_views.UserProfileView.as_view(), name="user-profile"),

@@ -1,13 +1,35 @@
 import React, { Suspense } from "react";
 import AdminPanelRouter from "./AdminPanelRouter";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
+import { cookies } from "next/headers";
+import { getUser } from "@/lib/api/user-context";
+import { redirect } from "next/navigation";
+import { AdminPanelContext } from "@/lib/types/admin";
 
-function page() {
+async function page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
+  const params = await searchParams;
+  const { page } = params;
+
+  const user = await getUser({ isAdmin: true });
+  console.log(user, page);
+
+  if ((!user || !token) && page !== "login") redirect("/admin?page=login");
+
+  const serverContext: AdminPanelContext = {
+    user: user!!,
+    accessToken: token!!,
+  };
+
   return (
     <main className="flex flex-col min-h-screen">
       <Suspense fallback={<LoadingScreen />}>
-        {/* Pass ONLY data. The routes are handled inside PartnerRouter. */}
-        <AdminPanelRouter serverData={{}} params={{}} />
+        <AdminPanelRouter serverData={serverContext} params={params} />
       </Suspense>
     </main>
   );
