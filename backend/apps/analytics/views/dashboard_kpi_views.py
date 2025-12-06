@@ -18,7 +18,7 @@ class DashboardKPIView(APIView):
     """
     permission_classes = [IsSuperAdmin]
     
-    # @method_decorator(cache_page(60 * 5))
+    @method_decorator(cache_page(60 * 15))
     def get(self, request):
         today = timezone.now().date()
         yesterday = today - timezone.timedelta(days=1)

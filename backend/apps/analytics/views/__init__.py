@@ -4,3 +4,4 @@ from .top_listings_views import TopListingsView
 from .session_traffic_views import SessionTrafficView
 from .demographics_views import DemographicsView
 from .dau_trend_chart_view import DAUTrendChartView
+from .regional_interest_views import RegionalInterestView
