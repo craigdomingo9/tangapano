@@ -66,6 +66,7 @@ export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
     },
 
     {
+      id: "dashboard",
       matcher: (p) => p.page === "dashboard" || !p.page,
       component: Dashboard,
     },
