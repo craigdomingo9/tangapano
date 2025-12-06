@@ -33,6 +33,11 @@ class VerifyTokenView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        admin = request.query_params.get('admin', False)
+        
+        if admin and not request.user.is_staff:
+            return Response({"error": "You are not authorized to access this resource."}, status=status.HTTP_403_FORBIDDEN)
+        
         user = request.user
         return Response(data=UserSerializer(user).data, status=status.HTTP_200_OK)
 
