@@ -1,7 +1,7 @@
 "use client";
 
-import SidebarContainer from "@/components/admin/SidebarContainer";
-import { AdminPanelComponentProps } from "@/lib/types/admin";
+import AdminPageContainer from "@/app/admin/AdminPageContainer";
+import { AdminPanelComponentProps, AdminPanelContext } from "@/lib/types/admin";
 import { adminPanelRoutes } from "@/routing/registries/admin";
 import { RouteRenderer } from "@/routing/RouteRenderer";
 
@@ -12,10 +12,16 @@ export function AdminPanelRouter({
   const { page } = params;
 
   // console.log(page);
+  if (page === "login")
+    return (
+      <RouteRenderer
+        routes={adminPanelRoutes}
+        serverData={{} as AdminPanelContext}
+      />
+    );
   return (
     <>
-      {page !== "login" && <SidebarContainer />}
-      <RouteRenderer routes={adminPanelRoutes} serverData={serverData} />
+      <AdminPageContainer serverData={serverData} />
     </>
   );
 }

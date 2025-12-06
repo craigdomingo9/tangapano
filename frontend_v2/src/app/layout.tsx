@@ -73,7 +73,10 @@ export default function RootLayout({
         name="google-site-verification"
         content="CodVIAK6BTqMp4Ci0MV3ZuqoN2eP0TVjgkLUpEaq5zI"
       />
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body
+        className={`${inter.variable} font-sans antialiased`}
+        suppressHydrationWarning
+      >
         <Providers>
           <ThemeProvider
             attribute="class"

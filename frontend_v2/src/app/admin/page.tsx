@@ -17,7 +17,7 @@ async function page({
   const { page } = params;
 
   const user = await getUser({ isAdmin: true });
-  console.log(user, page);
+  // console.log(user, page);
 
   if ((!user || !token) && page !== "login") redirect("/admin?page=login");
 
@@ -27,7 +27,7 @@ async function page({
   };
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex flex-col h-screen overflow-hidden">
       <Suspense fallback={<LoadingScreen />}>
         <AdminPanelRouter serverData={serverContext} params={params} />
       </Suspense>

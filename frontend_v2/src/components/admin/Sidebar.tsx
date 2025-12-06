@@ -19,9 +19,9 @@ import { useSearchParams } from "next/navigation";
 import { RouterLink } from "@/routing/RouterLink";
 
 interface SidebarProps {
-  collapsed?: boolean;
-  mobileOpen?: boolean;
-  setMobileOpen?: (open: boolean) => void;
+  collapsed: boolean;
+  mobileOpen: boolean;
+  setMobileOpen: (open: boolean) => void;
   onLogout?: () => void;
 }
 
@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     {
       group: "System",
       items: [
-        { label: "Locations & Amenities", icon: Map, page: "locations" },
+        { label: "Locations & Amenities", icon: Map, page: "settings" },
         { label: "Notifications", icon: Bell, page: "notifications" },
       ],
     },
@@ -82,7 +82,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           !mobileOpen && !collapsed ? "md:w-72" : ""
         } ${
           collapsed ? "md:w-20" : ""
-        } h-screen flex-col transition-all duration-300 z-50 border-r border-border/40 bg-card`}
+        } h-screen overflow-y-auto flex-col transition-all z-50 border-r border-border/40 bg-card animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both`}
+        key={collapsed ? "collapsed" : "expanded"}
       >
         {/* Logo Section */}
         <div
@@ -93,10 +94,10 @@ const Sidebar: React.FC<SidebarProps> = ({
           {!collapsed || mobileOpen ? (
             <div className="flex flex-col animate-fade-in">
               <span className="text-xl font-bold tracking-tight text-foreground leading-none">
-                TangaPano
+                <span className="text-red-500/80">Tanga</span>Pano
               </span>
-              <span className="text-xxs text-primary font-bold tracking-widest uppercase mt-1">
-                Student Housing
+              <span className="text-xxs text-primary font-semibold tracking-widest uppercase mt-1">
+                Control Panel
               </span>
             </div>
           ) : (
@@ -110,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => setMobileOpen && setMobileOpen(false)}
               className="absolute top-6 right-6 md:hidden text-muted-foreground hover:text-foreground transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 cursor-pointer" />
             </button>
           )}
         </div>
@@ -134,7 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative
                         ${
                           active
-                            ? "bg-primary text-primary-foreground shadow-sm"
+                            ? "bg-lapis dark:bg-sky-500/90 dark:text-white/90 text-primary-foreground shadow-sm"
                             : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         }`}
                       key={item.page}
@@ -143,7 +144,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                       <item.icon
                         className={`w-4 h-4 shrink-0 transition-colors relative z-10 ${
                           active
-                            ? "text-primary-foreground"
+                            ? "text-primary-foreground dark:text-white/90"
                             : "text-muted-foreground group-hover:text-foreground"
                         }`}
                       />
