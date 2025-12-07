@@ -21,7 +21,7 @@ function HotPropertiesTable({ hotProperties }: HotPropertiesTableProps) {
         </div>
         <RouterLink
           to={{ page: "analytics" }}
-          className="text-xs font-bold text-primary hover:text-primary/80 uppercase tracking-wider flex items-center gap-1 transition-colors"
+          className="text-xs font-bold text-lapis hover:text-lapis/80 uppercase tracking-wider flex items-center gap-1 transition-colors"
         >
           <span className="hidden sm:inline">View</span> Full Report{" "}
           <ArrowRight className="w-3 h-3" />
@@ -57,7 +57,7 @@ function HotPropertiesTable({ hotProperties }: HotPropertiesTableProps) {
                   key={listing.id}
                   className="hover:bg-white/5 transition-colors group"
                 >
-                  <td className="px-6 py-4 font-medium text-foreground/70 whitespace-nowrap group-hover:text-primary transition-colors">
+                  <td className="px-6 py-4 font-medium text-foreground/70 whitespace-nowrap group-hover:text-lapis transition-colors">
                     <RouterLink to={{ page: "listing", listingId: listing.id }}>
                       {listing.title}
                     </RouterLink>

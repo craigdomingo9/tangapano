@@ -8,7 +8,7 @@ from .listing_image_serializer import ListingImageSerializer
 
 class RetrieveListingSerializer(serializers.ModelSerializer):
     amenities = AmenitySerializer(many=True)
-    rooms = RoomSerializer(many=True, read_only=True)
+    rooms = serializers.SerializerMethodField()
     campus = CampusSerializer(read_only=True)
     images = ListingImageSerializer(many=True, read_only=True)
     
@@ -24,6 +24,19 @@ class RetrieveListingSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ('id', 'created_at', 'updated_at')
         depth = 1
+    
+    def get_rooms(self, obj):
+        """
+        Calculates room number in Python to avoid N+1 DB queries.
+        """
+        rooms = obj.rooms.all() # Prefetched in ViewSet
+        data = []
+        for index, room in enumerate(rooms, start=1):
+            # Serialize individually or manually construct dict for speed
+            r_data = RoomSerializer(room).data
+            r_data['room_number'] = index # Inject number here
+            data.append(r_data)
+        return data
     
     def to_representation(self, instance):
         # Get the original representation (the dictionary)

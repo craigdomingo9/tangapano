@@ -56,7 +56,7 @@ function Dashboard({ serverData }: AdminPanelComponentProps) {
           onClick={() => {
             infoToast("Feature coming soon!");
           }}
-          className="group relative inline-flex items-center justify-center gap-2 rounded-full text-xsm sm:text-sm font-semibold bg-lapis text-white hover:bg-lapis/90 transition-all h-10 px-6 shadow-lg shadow-primary/20 overflow-hidden disabled:opacity-50 border border-white/10 cursor-pointer"
+          className="group relative inline-flex items-center justify-center gap-2 rounded-full text-xsm sm:text-sm font-semibold bg-lapis text-white hover:bg-lapis/90 transition-all h-10 px-6 shadow-lg shadow-lapis/20 overflow-hidden disabled:opacity-50 border border-white/10 cursor-pointer"
         >
           <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
           {loadingInsight ? (
