@@ -5,7 +5,8 @@ from .views import (
     TopListingsView, 
     SessionTrafficView, 
     DemographicsView, 
-    DAUTrendChartView
+    DAUTrendChartView,
+    RegionalInterestView
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('charts/dau/', DAUTrendChartView.as_view(), name='chart-dau'),
     path('top-listings/', TopListingsView.as_view(), name='dashboard-top-listings'),
     path('demographics/', DemographicsView.as_view(), name='dashboard-demographics'),
+    path('regional-interest/', RegionalInterestView.as_view(), name='dashboard-regional-interest'),
 ]

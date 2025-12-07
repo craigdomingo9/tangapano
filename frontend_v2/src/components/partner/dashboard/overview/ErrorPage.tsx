@@ -32,7 +32,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
   const errorConfig = {
     "500": {
       icon: <WifiOff className="w-12 h-12 text-destructive" />,
-      title: "Unable to Load Properties",
+      title: "Unable to Load Resources",
       description:
         "We're having trouble connecting to the server. This might be a temporary connection issue.",
       code: "Error 500",
@@ -67,7 +67,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
       icon: <Lock className="w-12 h-12 text-rose-500" />,
       title: "Access Restricted",
       description:
-        "You don't have the necessary permissions to view this property group. Please contact your administrator.",
+        "You don't have the necessary permissions to view this resource group. Please contact your administrator.",
       code: "Error 403",
       primaryAction: "Request Access",
       secondaryAction: "Switch Account",

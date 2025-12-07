@@ -69,6 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content="Tangapano" />
+      <link rel="icon" href="/apple-icon.png" sizes="any" />
       <meta
         name="google-site-verification"
         content="CodVIAK6BTqMp4Ci0MV3ZuqoN2eP0TVjgkLUpEaq5zI"

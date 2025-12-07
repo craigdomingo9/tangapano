@@ -1,7 +1,7 @@
 import {
   fetchDauChartData,
-  fetchHotProperties,
   fetchKPIs,
+  fetchListingPerformance,
 } from "@/lib/api/admin/analytics";
 import { useQuery } from "@tanstack/react-query";
 
@@ -32,7 +32,7 @@ function useDashboardAnalytics(accessToken: string) {
     isError: hotPropertiesIsError,
   } = useQuery({
     queryKey: ["hot_properties"],
-    queryFn: () => fetchHotProperties(accessToken),
+    queryFn: () => fetchListingPerformance(accessToken),
     staleTime: 1000 * 60 * 5,
   });
 

@@ -40,11 +40,11 @@ class DemographicsView(APIView):
                 
         return Response({
             "campuses": [
-                {"name": c['listing__campus__name'], "value": c['count']} # Renamed 'count' to 'value'
+                {"name": c['listing__campus__name'], "value": c['count']} 
                 for c in campus_stats
             ],
             "devices": [
-                { "name": "Mobile", "value": mobile, "fill": "#3b82f6" },  # Added color for UI
-                { "name": "Desktop", "value": desktop, "fill": "#1e293b" }
+                { "name": "Mobile", "value": mobile },
+                { "name": "Desktop", "value": desktop }
             ]
         })
