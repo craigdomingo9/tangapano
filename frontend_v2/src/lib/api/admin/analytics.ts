@@ -14,8 +14,28 @@ export async function fetchDauChartData(accessToken: string) {
   return response.data;
 }
 
-export async function fetchHotProperties(accessToken: string) {
-  const response = await axiosInstance.get(`/analytics/top-listings/`, {
+export async function fetchListingPerformance(
+  accessToken: string,
+  limit: number = 5
+) {
+  const response = await axiosInstance.get(
+    `/analytics/top-listings` + `?num_listings=${limit}`,
+    {
+      headers: { Authorization: `Token ${accessToken}` },
+    }
+  );
+  return response.data;
+}
+
+export async function fetchRegionalInterest(accessToken: string) {
+  const response = await axiosInstance.get(`/analytics/regional-interest/`, {
+    headers: { Authorization: `Token ${accessToken}` },
+  });
+  return response.data;
+}
+
+export async function fetchDemographics(accessToken: string) {
+  const response = await axiosInstance.get(`/analytics/demographics/`, {
     headers: { Authorization: `Token ${accessToken}` },
   });
   return response.data;

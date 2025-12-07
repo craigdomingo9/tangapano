@@ -1,21 +1,10 @@
 "use client";
 
 import { AdminPanelComponentProps } from "@/lib/types/admin";
-import {
-  AlertCircle,
-  BedDouble,
-  Calendar,
-  DollarSign,
-  Home,
-  RefreshCw,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { Calendar, RefreshCw, Sparkles } from "lucide-react";
 import { useState } from "react";
-import StatCard from "../dashboard/StatCard";
-import { RouterLink } from "@/routing/RouterLink";
 import StatCardsContainer from "../dashboard/StatCardsContainer";
-import useDashboardAnalytics from "@/hooks/admin/use-dashboard-analytics";
+import useDashboardAnalytics from "@/hooks/admin/use-dashboard";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
 import DauTrendChart from "../dashboard/DauTrendChart";
