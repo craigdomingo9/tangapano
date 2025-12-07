@@ -11,6 +11,7 @@ class Campus(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        related_name="campus"
     )
     
     neighborhoods = models.ManyToManyField(Neighborhood, related_name="campuses", blank=True)

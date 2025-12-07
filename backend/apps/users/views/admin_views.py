@@ -1,8 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from users.models import Landlord
-from users.serializers import LandlordSerializer
+from django.db.models import Count, F
+from users.models import Landlord, Agent
+from users.serializers import LandlordSerializer, AgentSerializer
 from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
 
@@ -56,3 +57,16 @@ class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         return Response({'status': 'suspended'}, status=status.HTTP_200_OK)
+
+class AdminAgentViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Admin-only viewset to list and manage landlords.
+    """
+    queryset = Agent.objects\
+        .annotate(
+            total_listings=Count('campus__campus_listings'),
+            campus_name=F('campus__name'),
+        )
+    serializer_class = AgentSerializer
+    permission_classes = [IsSuperAdmin]
+

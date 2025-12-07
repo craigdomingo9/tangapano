@@ -21,11 +21,12 @@ from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
 from rest_framework.routers import DefaultRouter
 
-from apps.users.views import AdminLandlordViewSet
+from apps.users.views import AdminLandlordViewSet, AdminAgentViewSet
 from apps.listings.views import AdminListingViewSet
 
 admin_router = DefaultRouter()
 admin_router.register(r'users/landlords', AdminLandlordViewSet, basename='admin-landlords')
+admin_router.register(r'users/agents', AdminAgentViewSet, basename='admin-agents')
 admin_router.register(r'listings', AdminListingViewSet, basename='admin-listings')
 
 urlpatterns = [
