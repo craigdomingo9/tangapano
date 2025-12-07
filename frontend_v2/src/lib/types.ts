@@ -47,11 +47,15 @@ interface Agent {
 }
 
 interface Landlord {
+  id: number;
   user: User;
   company_name: string;
   phone_number: string;
+  full_name: string;
   address: string;
   is_verified: boolean;
+  current_tier: string;
+  joined_at: string;
   account_type: "individual" | "agency";
 }
 
