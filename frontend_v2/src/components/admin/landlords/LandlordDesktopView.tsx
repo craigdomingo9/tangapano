@@ -57,7 +57,7 @@ function LandlordDesktopView({
                           )}
                         </div>
                         <div>
-                          <div className="font-bold text-foreground text-sm group-hover:text-primary transition-colors">
+                          <div className="font-bold text-foreground text-sm group-hover:text-lapis transition-colors">
                             {isCompany
                               ? landlord.company_name
                               : landlord.full_name}
@@ -101,7 +101,7 @@ function LandlordDesktopView({
                         {landlord.current_tier === "Standard Landlord" && (
                           <Award className="w-3 h-3" />
                         )}
-                        <span>{landlord.current_tier || "N/A"}</span>
+                        <span>{landlord.current_tier || "Free"}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-muted-foreground whitespace-nowrap text-sm font-medium">
@@ -112,7 +112,7 @@ function LandlordDesktopView({
                         <div className="flex items-center justify-end gap-3">
                           <button
                             onClick={() => openVerifyModal(landlord.id)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-lapis hover:bg-lapis-hover cursor-pointer text-white border border-transparent transition-all duration-200 shadow-sm shadow-primary/20"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-lapis hover:bg-lapis-hover cursor-pointer text-white border border-transparent transition-all duration-200 shadow-sm shadow-lapis/20"
                           >
                             <ShieldCheck className="w-3.5 h-3.5" />
                             Verify
@@ -125,7 +125,7 @@ function LandlordDesktopView({
                               page: "landlords",
                               landlordId: landlord.id.toString(),
                             }}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all duration-200 group/btn"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground hover:text-lapis hover:bg-lapis/10 border border-transparent hover:border-lapis/20 transition-all duration-200 group/btn"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             View Profile

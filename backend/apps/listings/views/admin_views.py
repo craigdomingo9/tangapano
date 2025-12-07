@@ -1,10 +1,13 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from listings.models import Listing
 from listings.serializers import ListingAdminSerializer
 from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
+from listings.filters import ListingAdminFilter
+
 
 class AdminListingViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -13,6 +16,13 @@ class AdminListingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Listing.objects.all()
     serializer_class = ListingAdminSerializer
     permission_classes = [IsSuperAdmin]
+    filterset_class = ListingAdminFilter
+    filter_backends = [
+        DjangoFilterBackend, 
+    ]
+    
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related('rooms')
 
     @action(detail=True, methods=['post'])
     def lock(self, request, pk=None):

@@ -102,7 +102,7 @@ function LandlordManagement({
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           <div className="relative group flex-1 md:flex-none w-full sm:w-auto">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-lapis transition-colors" />
             <input
               type="text"
               placeholder="Search companies..."
@@ -110,7 +110,7 @@ function LandlordManagement({
               onChange={(e) =>
                 handleFilterChange(setSearchQuery, e.target.value)
               }
-              className="pl-9 pr-4 h-10 bg-muted/30 border border-border/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-full md:w-64 transition-all text-foreground placeholder:text-muted-foreground"
+              className="pl-9 pr-4 h-10 bg-muted/30 border border-border/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lapis/50 w-full md:w-64 transition-all text-foreground placeholder:text-muted-foreground"
             />
           </div>
 
@@ -120,7 +120,7 @@ function LandlordManagement({
               onChange={(e) =>
                 handleFilterChange(setStatusFilter, e.target.value)
               }
-              className="h-10 pl-3 pr-8 bg-muted/30 border border-border/50 rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer transition-all font-medium"
+              className="h-10 pl-3 pr-8 bg-muted/30 border border-border/50 rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/50 cursor-pointer transition-all font-medium"
             >
               <option>All Status</option>
               <option>Verified</option>
@@ -131,7 +131,7 @@ function LandlordManagement({
               onChange={(e) =>
                 handleFilterChange(setTierFilter, e.target.value)
               }
-              className="h-10 pl-3 pr-8 bg-muted/30 border border-border/50 rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer transition-all font-medium"
+              className="h-10 pl-3 pr-8 bg-muted/30 border border-border/50 rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/50 cursor-pointer transition-all font-medium"
             >
               <option>All Tiers</option>
               <option>Standard</option>

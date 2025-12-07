@@ -41,25 +41,18 @@ class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
         return Response({'status': 'verified'}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'])
-    def reject(self, request, pk=None):
-        """
-        POST /api/admin/landlords/{id}/reject/
-        Body: {"reason": "ID document is blurry"}
-        """
+    def suspend(self, request, pk=None):
         landlord = self.get_object()
-        reason = request.data.get('reason', 'Documents did not meet criteria.')
 
-        # 1. Update State (Optional: Add a 'status' field to Landlord later if needed)
         landlord.is_verified = False
         landlord.save()
 
-        # 2. Send Notification
         Notification.objects.create(
             recipient=landlord.user,
-            title="Verification Rejected",
-            message=f"Your verification request was rejected. Reason: {reason}",
+            title="Account Suspension",
+            message=f"Your account has been suspended. Contact support if you believe this to have been unjustified.",
             notification_type="error",
             category="system"
         )
 
-        return Response({'status': 'rejected'}, status=status.HTTP_200_OK)
+        return Response({'status': 'suspended'}, status=status.HTTP_200_OK)

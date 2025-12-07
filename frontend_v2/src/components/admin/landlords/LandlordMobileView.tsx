@@ -34,7 +34,7 @@ function LandlordMobileView({
                     className={`w-12 h-12 rounded-xl flex items-center justify-center text-foreground shadow-inner border border-border/40 shrink-0 ${
                       isCompany
                         ? "bg-linear-to-br from-muted/50 to-muted/20"
-                        : "bg-linear-to-br from-primary/20 to-primary/5 text-primary"
+                        : "bg-linear-to-br from-lapis/20 to-lapis/5 text-lapis"
                     }`}
                   >
                     {isCompany ? (
@@ -89,14 +89,14 @@ function LandlordMobileView({
                     {landlord.current_tier === "Standard Landlord" && (
                       <Award className="w-3 h-3" />
                     )}
-                    <span>{landlord.current_tier}</span>
+                    <span>{landlord.current_tier || "Free"}</span>
                   </div>
                 </div>
                 <div>
                   <div className="text-xxs text-muted-foreground uppercase font-bold tracking-wider mb-1">
                     Joined
                   </div>
-                  <div className="text-sm font-medium text-muted-foreground">
+                  <div className="text-xsm sm:text-sm font-medium text-muted-foreground">
                     {landlord.joined_at}
                   </div>
                 </div>
@@ -106,7 +106,7 @@ function LandlordMobileView({
                 {!landlord.is_verified ? (
                   <button
                     onClick={() => openVerifyModal(landlord.id)}
-                    className="w-full flex items-center justify-center gap-1.5 px-3 py-3 rounded-xl text-sm font-bold cursor-pointer bg-lapis hover:bg-lapis-hover text-white border border-transparent transition-all duration-200 shadow-sm shadow-primary/20"
+                    className="w-full flex items-center justify-center gap-1.5 px-3 py-3 rounded-xl text-sm font-bold cursor-pointer bg-lapis hover:bg-lapis-hover text-white border border-transparent transition-all duration-200 shadow-sm shadow-lapis/20"
                   >
                     <ShieldCheck className="w-4 h-4" />
                     Verify Landlord
@@ -117,7 +117,7 @@ function LandlordMobileView({
                       page: "landlords",
                       landlordId: landlord.id.toString(),
                     }}
-                    className="w-full flex items-center justify-center gap-1.5 px-3 py-3 rounded-xl text-sm font-semibold text-muted-foreground bg-muted/20 border border-border/40 hover:text-primary hover:border-primary/20 transition-all duration-200"
+                    className="w-full flex items-center justify-center gap-1.5 px-3 py-3 rounded-xl text-sm font-semibold text-muted-foreground bg-muted/20 border border-border/40 hover:text-lapis hover:border-lapis/20 transition-all duration-200"
                   >
                     <Eye className="w-4 h-4" />
                     View Full Profile
