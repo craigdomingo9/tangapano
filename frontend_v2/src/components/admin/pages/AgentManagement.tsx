@@ -90,14 +90,31 @@ function AgentManagement({
   }
 
   // --- Filter Logic ---
-  const filteredAgents = agents?.filter(
-    (agent: AdminAgent) =>
-      agent.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      agent.campus_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      getAcronym(agent.campus_name)
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-  );
+  // 1. OPTIMIZATION: Normalize the query ONCE outside the loop.
+  // We also default to "" to prevent crashing if searchQuery is null/undefined.
+  const lowerQuery = searchQuery?.toLowerCase() || "";
+
+  const filteredAgents = agents?.filter((agent: AdminAgent) => {
+    // 2. SAFETY: Fail fast if the agent object itself is null/undefined
+    if (!agent) return false;
+
+    // 3. READABILITY & SAFETY:
+    // Coalesce (??) null values to empty strings "" so .includes() always runs on a valid string.
+    // This avoids "undefined" floating around in your boolean logic.
+    const name = agent.full_name?.toLowerCase() ?? "";
+    const campus = agent.campus_name?.toLowerCase() ?? "";
+
+    // Note: We keep your getAcronym logic, assuming it returns a string.
+    // If getAcronym can return null, add ?? "" there too.
+    const acronym = getAcronym(agent.campus_name || "").toLowerCase();
+
+    // 4. LOGIC: Return the boolean result directly.
+    return (
+      name.includes(lowerQuery) ||
+      campus.includes(lowerQuery) ||
+      acronym.includes(lowerQuery)
+    );
+  });
   // --- End Filter Logic ---
 
   function updateFormField(key: keyof AgentFormData, value: any) {
