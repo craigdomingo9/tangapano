@@ -6,6 +6,7 @@ class AgentSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='user.get_full_name', read_only=True)
     total_listings = serializers.IntegerField(read_only=True)
     campus_name = serializers.CharField(read_only=True)
+    campus_id = serializers.CharField(read_only=True)
     
     class Meta:
         model = Agent
@@ -16,6 +17,7 @@ class AgentSerializer(serializers.ModelSerializer):
             "full_name",
             "agency_name",
             "campus_name",
+            "campus_id",
             "agent_fee",
             "phone_number",
             "total_listings",

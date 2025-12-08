@@ -20,7 +20,7 @@ export const VerifyLandlordModal: React.FC<VerifyLandlordModalProps> = ({
   landlordName = "Landlord",
 }) => {
   React.useEffect(() => {
-    console.log("[VerifyLandlordModal] isOpen:", isOpen);
+    // console.log("[VerifyLandlordModal] isOpen:", isOpen);
     if (isOpen) {
       // lock body scroll while open
       // const prev = document.body.style.overflow;
@@ -78,7 +78,7 @@ export const VerifyLandlordModal: React.FC<VerifyLandlordModalProps> = ({
                 <button
                   onClick={onConfirm}
                   className={cn(
-                    "px-6 py-2.5 text-sm rounded-lg bg-green-500 dark:bg-green-700 text-white font-bold hover:bg-green-500/70 dark:hover:bg-green-700/70 transition-colors shadow-sm cursor-pointer",
+                    "px-6 py-2.5 text-sm rounded-lg bg-lapis dark:bg-lapis text-white font-bold hover:bg-lapis/70 dark:hover:bg-lapis/70 transition-colors shadow-sm cursor-pointer",
                     isVerifying && "opacity-50 cursor-not-allowed"
                   )}
                   disabled={isVerifying}
