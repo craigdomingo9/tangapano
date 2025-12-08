@@ -12,24 +12,8 @@ services:
     type: "http"
     check_target: "http://backend:8000/health"
     restart_label: "com.tangapano.service=backend"
-    interval_seconds: 211
+    interval_seconds: 163
     cooldown_seconds: 120
-services:
-  # --- CHECK 1: The TCP Port (Process Health) - Backend ---
-  - name: "django-api-ping"
-    type: "ping"
-    check_target: "backend:8000"
-    restart_label: "com.tangapano.service=backend"
-    interval_seconds: 240
-    cooldown_seconds: 15
-
-  # --- CHECK 2: The HTTP Endpoint (Application Health) - Backend ---
-  - name: "django-api-http"
-    type: "http"
-    check_target: "http://backend:8000/health"
-    restart_label: "com.tangapano.service=backend"
-    interval_seconds: 240
-    cooldown_seconds: 90
 
   # --- CHECK 3: The TCP Port (Process Health) - Frontend ---
   - name: "nextjs-frontend"
