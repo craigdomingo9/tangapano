@@ -24,7 +24,7 @@ echo "Waiting for Elasticsearch connection..."
 # -v: verbose (so you see what's happening in logs)
 while ! nc -z -v elasticsearch 9200; do
   echo "Elasticsearch (es:9200) is not reachable yet. Retrying..."
-  sleep 2
+  sleep 30
 done
 echo "Elasticsearch started and reachable"
 
