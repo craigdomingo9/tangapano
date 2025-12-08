@@ -3,9 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Count, F
 from users.models import Landlord, Agent
-from users.serializers import LandlordSerializer, AgentSerializer
+from users.serializers import LandlordSerializer, AgentSerializer, AgentWriteSerializer
 from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
+
 
 class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -58,15 +59,31 @@ class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response({'status': 'suspended'}, status=status.HTTP_200_OK)
 
-class AdminAgentViewSet(viewsets.ReadOnlyModelViewSet):
+class AdminAgentViewSet(viewsets.ModelViewSet):
     """
-    Admin-only viewset to list and manage landlords.
+    Admin-only viewset to list and manage agents.
     """
     queryset = Agent.objects\
         .annotate(
             total_listings=Count('campus__campus_listings'),
             campus_name=F('campus__name'),
+            campus_id=F('campus__id'),
         )
     serializer_class = AgentSerializer
     permission_classes = [IsSuperAdmin]
-
+    
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return AgentWriteSerializer
+        return AgentSerializer
+    
+    def perform_create(self, serializer):
+        """
+        This method triggers the serializer's complex create logic.
+        """
+        # The serializer's .create() method will now handle:
+        # 1. Creating the User.
+        # 2. Creating the Agent.
+        # 3. Setting the reverse Campus relationship.
+        serializer.save()
+        
