@@ -1,4 +1,5 @@
 import { Portal } from "@/components/ui/Portal";
+import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useEffect } from "react";
 
@@ -9,6 +10,7 @@ interface ModalProps {
   subTitle?: string;
   children: React.ReactNode;
   footer: React.ReactNode;
+  noPadding?: boolean;
 }
 
 function Modal({
@@ -18,6 +20,7 @@ function Modal({
   subTitle,
   children,
   footer,
+  noPadding,
 }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
@@ -53,7 +56,7 @@ function Modal({
             </p>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className={cn(!noPadding && "p-6 space-y-6")}>
             {children}
             {/* Footer Actions */}
             <div className="flex gap-3 pt-4 justify-end border-t border-slate-50 dark:border-slate-800">

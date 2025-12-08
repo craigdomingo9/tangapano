@@ -33,6 +33,22 @@ export async function fetchInventoryAdmin(accessToken: string) {
 
   return data;
 }
+
+export async function fetchInventoryDetailAdmin(
+  accessToken: string,
+  id: string
+) {
+  const { data } = await axiosInstance.get<Inventory>(
+    `/control/listings/${id}/`,
+    {
+      headers: {
+        Authorization: `Token ${accessToken}`,
+      },
+    }
+  );
+
+  return data;
+}
 export async function lockListingFn(accessToken: string, id: string) {
   const { data } = await axiosInstance.post(
     `/control/listings/${id}/lock/`,
