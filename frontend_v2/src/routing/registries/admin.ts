@@ -10,6 +10,9 @@ const Analytics = lazyLoad(() => import("@/components/admin/pages/Analytics"));
 const ListingManagement = lazyLoad(
   () => import("@/components/admin/pages/ListingManagement")
 );
+const ListingDetail = lazyLoad(
+  () => import("@/components/admin/pages/ListingDetail")
+);
 const LandlordManagement = lazyLoad(
   () => import("@/components/admin/pages/LandlordManagement")
 );
@@ -46,7 +49,7 @@ export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
 
     {
       id: "landlord-management",
-      matcher: (p) => p.page === "landlords",
+      matcher: (p) => p.page === "landlords" && !p.landlordId,
       component: LandlordManagement,
     },
 
@@ -70,8 +73,14 @@ export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
 
     {
       id: "listing-management",
-      matcher: (p) => p.page === "listings",
+      matcher: (p) => p.page === "listings" && !p.listingId,
       component: ListingManagement,
+    },
+
+    {
+      id: "listing-detail",
+      matcher: (p) => p.page === "listings" && !!p.listingId,
+      component: ListingDetail,
     },
 
     {
