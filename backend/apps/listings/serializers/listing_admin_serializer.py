@@ -1,5 +1,15 @@
 from rest_framework import serializers
 from listings.models import Listing
+from analytics.models import ListingStat
+
+
+class ListingStatsSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ListingStat
+        fields = [
+            'id', 'listing', 'total_views', 'total_inquiries', 'last_updated'
+        ]
 
 class ListingAdminSerializer(serializers.ModelSerializer):
     """
@@ -7,17 +17,22 @@ class ListingAdminSerializer(serializers.ModelSerializer):
     """
     landlord_name = serializers.CharField(source='landlord.user.get_full_name')
     campus_name = serializers.CharField(source='campus.name')
+    location = serializers.SerializerMethodField()
     
     # NEW: Vacancy Summary for the Progress Bar
     vacancy_stats = serializers.SerializerMethodField()
     main_image = serializers.SerializerMethodField()
+    stats = ListingStatsSerializer(read_only=True)
 
     class Meta:
         model = Listing
         fields = [
-            'id', 'title', 'landlord_name', 'campus_name', 
-            'is_active', 'is_locked', 'vacancy_stats', 'main_image'
+            'id', 'title', 'landlord_name', 'location', 'campus_name', 
+            'is_active', 'is_locked', 'vacancy_stats', 'main_image', 'stats'
         ]
+    
+    def get_location(self, obj):
+        return f"{obj.neighborhood.name}, {obj.neighborhood.city.name}"
 
     def get_vacancy_stats(self, obj):
         # Aggregate room data efficiently
@@ -36,4 +51,4 @@ class ListingAdminSerializer(serializers.ModelSerializer):
 
     def get_main_image(self, obj):
         img = obj.images.filter(is_face_image=True).first()
-        return img.image.url if img else None
+        return img.display_image.url if img else None
