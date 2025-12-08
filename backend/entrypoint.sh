@@ -34,7 +34,7 @@ check_service() {
 check_service "$DB_HOST" "$DB_PORT" "Postgres" &
 PID_DB=$!
 
-check_service "es" "$ES_PORT" "Elasticsearch" &
+check_service "elasticsearch" "$ES_PORT" "Elasticsearch" &
 PID_ES=$!
 
 # Wait for both background processes to finish
