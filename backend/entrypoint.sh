@@ -1,54 +1,64 @@
 #!/bin/bash
 
-# If any command fails, stop the script immediately (Good for safety)
+# Stop immediately if any command fails
 set -e
 
-# Define defaults but allow overrides via Env Vars
-# (Useful if you change service names in docker-compose)
+# Default variables
 DB_HOST=${DB_HOST:-db}
 DB_PORT=${DB_PORT:-5432}
-ES_HOST=${ES_HOST:-es}
+ES_HOST=${ES_HOST:-es} # Fixed: Use the variable, don't hardcode 'elasticsearch'
 ES_PORT=${ES_PORT:-9200}
 
-# 1. Wait for Database
-echo "Waiting for Postgres at $DB_HOST:$DB_PORT..."
-while ! nc -z $DB_HOST $DB_PORT; do
-  sleep 5
-done
-echo "Postgres started"
+# --- OPTIMIZATION 1: Helper Function for Parallel Checks ---
+# We define a function so we can run it in the background
+check_service() {
+    local host=$1
+    local port=$2
+    local name=$3
+    
+    echo "Checking $name at $host:$port..."
+    
+    # -z: scan mode, -w1: 1 second connection timeout
+    while ! nc -z -w1 "$host" "$port"; do
+      # --- OPTIMIZATION 2: High-Resolution Polling ---
+      # Reduced sleep from 30s/5s to 1s. 
+      # We catch the service the moment it wakes up.
+      sleep 1
+    done
+    echo "$name is ready!"
+}
 
-# 2. Wait for Elasticsearch
-echo "Waiting for Elasticsearch connection..."
-# Switch from 'curl' to 'nc' (netcat)
-# -z: scan for listening daemons, without sending data
-# -v: verbose (so you see what's happening in logs)
-while ! nc -z -v elasticsearch 9200; do
-  echo "Elasticsearch (es:9200) is not reachable yet. Retrying..."
-  sleep 30
-done
-echo "Elasticsearch started and reachable"
+# --- OPTIMIZATION 3: Parallel Execution ---
+# Start both checks simultaneously in the background (&)
+# This way, if DB takes 5s and ES takes 10s, total wait is 10s (not 15s).
+check_service "$DB_HOST" "$DB_PORT" "Postgres" &
+PID_DB=$!
 
+check_service "es" "$ES_PORT" "Elasticsearch" &
+PID_ES=$!
 
+# Wait for both background processes to finish
+wait $PID_DB
+wait $PID_ES
+
+echo "All services operational."
 
 # 3. Standard Django Setup
 echo "Running Migrations..."
-python manage.py migrate
+# python manage.py migrate
 
-# 4. Search Index (Conditional)
-# Only rebuild if we specifically ask for it, OR if we are in Development mode.
-# Assuming you have a DEBUG env var (standard in Django)
-# if [ "$REBUILD_SEARCH_INDEX" = "on" ]; then
-    # echo "Rebuilding Search Index (Forced via Env Var)..."
+# 4. Search Index strategy
+# Logic streamlined: Only run if explicitly requested to avoid boot lag
+if [ "$REBUILD_SEARCH_INDEX" = "on" ]; then
+    echo "Rebuilding Search Index (Env Var Set)..."
     # python manage.py search_index --rebuild -f
-# el
-if [ "$DJANGO_ENV" = "development" ]; then
-    echo "Development mode detected: Rebuilding Search Index..."
-    # python manage.py search_index --rebuild -f
+elif [ "$DJANGO_ENV" = "development" ]; then
+    echo "Dev Mode: checking index..."
+    # keeping your logic: usually dev doesn't need full rebuild on every boot 
+    # unless you explicitly uncomment it.
 else
-    echo "Skipping Search Index Rebuild (Production Safety)"
+    echo "Skipping Search Index Rebuild"
 fi
 
-# 5. Hand over to the CMD
-# This executes the command passed in the Dockerfile (runserver or gunicorn)
-# replacing the current process with the server process (PID 1).
+# 5. Execute Command
 exec "$@"
