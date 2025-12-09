@@ -5,3 +5,4 @@ from .listing_image_serializer import ListingImageSerializer, ListingImageCreate
 from .retrieve_listing_serializer import RetrieveListingSerializer
 from .listing_document_serializer import ListingDocumentSerializer
 from .listing_admin_serializer import ListingAdminSerializer
+from .amenity_category_serializer import AmenityCategorySerializer

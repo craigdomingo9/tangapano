@@ -1,6 +1,6 @@
 import os
 from django.core.management.base import BaseCommand
-from listings.models import Amenity
+from listings.models import Amenity, Category
 from users.models import User, Agent
 from billing.models import Tier
 from campuses.models import Campus, Neighborhood, City
@@ -92,6 +92,24 @@ class Command(BaseCommand):
         # ---------------------------------------------------------
         self.stdout.write("  🛁 Creating Amenities...")
         
+        # A. Define Categories first
+        CATEGORY_DEFINITIONS = {
+            'connectivity': 'Connectivity & Utilities',
+            'comfort': 'Room Comfort',
+            'kitchen': 'Kitchen & Laundry',
+            'common': 'Common Areas',
+            'recreation': 'Recreation',
+            'security': 'Security & Access',
+        }
+
+        # Create Category objects
+        for slug, display_name in CATEGORY_DEFINITIONS.items():
+            Category.objects.get_or_create(
+                name=slug,
+                defaults={'display_name': display_name}
+            )
+        
+        # B. Define Amenities
         amenities_data = [
             # Connectivity
             {"name": "wifi", "display_name": "WiFi", "category": "connectivity"},
@@ -121,11 +139,14 @@ class Command(BaseCommand):
         ]
 
         for item in amenities_data:
+            # Lookup the Category object by name (slug)
+            category_obj = Category.objects.get(name=item["category"])
+
             Amenity.objects.get_or_create(
                 name=item["name"],
                 defaults={
                     "display_name": item["display_name"],
-                    "category": item["category"]
+                    "category": category_obj  # Assign actual object, not string
                 }
             )
 

@@ -5,3 +5,4 @@ from .listing_retrieve_views import ListingRetrieveAPIView
 from .room_views import RoomViewSet
 from .landlord_listing_views import LandlordListingViewSet
 from .admin_views import AdminListingViewSet
+from .amenity_category_views import AmenityCategoryViewSet

@@ -7,11 +7,13 @@ from listings.views import (
     ListingSearchAPIView, 
     ListingRetrieveAPIView, 
     RoomViewSet, 
-    LandlordListingViewSet
+    LandlordListingViewSet,
+    AmenityCategoryViewSet
 )
 
 router = DefaultRouter()
 router.register(r'amenities', AmenityViewSet, basename='amenities')
+router.register(r'amenity-categories', AmenityCategoryViewSet, basename='amenity-categories')
 router.register(r'listing-images', ListingImageViewSet, basename='listing-images')
 router.register(r'landlord-listings', LandlordListingViewSet, basename='landlord-listings')
 router.register(r'rooms', RoomViewSet, basename='rooms')
