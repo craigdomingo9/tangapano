@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     {
       group: "System",
       items: [
-        { label: "Locations & Amenities", icon: Map, page: "settings" },
+        { label: "Locations & Amenities", icon: Map, page: "locations" },
         { label: "Notifications", icon: Bell, page: "notifications" },
       ],
     },

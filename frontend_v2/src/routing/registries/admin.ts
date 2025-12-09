@@ -22,7 +22,9 @@ const LandlordDetail = lazyLoad(
 const AgentManagement = lazyLoad(
   () => import("@/components/admin/pages/AgentManagement")
 );
-const Settings = lazyLoad(() => import("@/components/admin/pages/Settings"));
+const Locations = lazyLoad(
+  () => import("@/components/admin/pages/LocationsAmenities")
+);
 const Notifications = lazyLoad(
   () => import("@/components/admin/pages/Notifications")
 );
@@ -60,9 +62,9 @@ export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
     },
 
     {
-      id: "settings",
-      matcher: (p) => p.page === "settings",
-      component: Settings,
+      id: "locations",
+      matcher: (p) => p.page === "locations",
+      component: Locations,
     },
 
     {
