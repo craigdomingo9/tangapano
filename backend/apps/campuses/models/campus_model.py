@@ -4,7 +4,7 @@ from .city_model import City
 
 class Campus(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name='campuses_in_city')
+    city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name='campuses')
     
     agent = models.ForeignKey(
         "users.Agent",

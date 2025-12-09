@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from campuses.models import Neighborhood, City
-from .city_serializer import CitySerializer
+from .city_summary_serializer import CitySummarySerializer
 
 
 class NeighborhoodSerializer(serializers.ModelSerializer):
-    city = CitySerializer(read_only=True)
+    city = CitySummarySerializer(read_only=True)
     city_id = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
     
     
