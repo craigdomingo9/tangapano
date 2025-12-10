@@ -8,7 +8,11 @@ function OverviewFooter() {
         <p className="text-xsm sm:text-sm text-slate-500 dark:text-slate-400">
           © {new Date().getFullYear()} TangaPano. Partner Dashboard.
         </p>
-        <Link href="/portal?page=home" rel="noopener noreferrer">
+        <Link
+          prefetch={true}
+          href="/portal?page=home"
+          rel="noopener noreferrer"
+        >
           <button className="group flex items-center gap-2 text-xsm sm:text-sm font-semibold text-lapis dark:text-sky-400 hover:text-lapis-hover dark:hover:text-sky-300 transition-colors cursor-pointer">
             Go to main page
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
