@@ -18,15 +18,9 @@ import AmenityCategoryEditorModal from "../locations-amenities/modals/AmenityCat
 import CampusEditorModal from "../locations-amenities/modals/CampusEditorModal";
 import CityEditorModal from "../locations-amenities/modals/CityEditorModal";
 import NeighborhoodEditorModal from "../locations-amenities/modals/NeighborhoodEditorModal";
-// import CampusEditorModal from "../locations-amenities/modals/CampusEditorModal";
-// import CityEditorModal from "../locations-amenities/modals/CityEditorModal";
-// import NeighborhoodEditorModal from "../locations-amenities/modals/NeighborhoodEditorModal";
+import { AdminPanelComponentProps } from "@/lib/types/admin";
 
-interface LocationsAmenitiesProps {
-  serverData: ServerContext;
-}
-
-function LocationsAmenities({ serverData }: LocationsAmenitiesProps) {
+function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
   const { accessToken } = serverData;
 
   // --- 1. Data Hooks ---
