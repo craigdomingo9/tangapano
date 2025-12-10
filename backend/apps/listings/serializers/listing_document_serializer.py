@@ -82,9 +82,9 @@ class ListingDocumentSerializer(DocumentSerializer):
             # If is_full=false (or default logic), exclude full rooms
             # Adjust logic: If user explicitly wants full rooms, show them. 
             # Otherwise, hide full rooms.
-            if params.get('is_full') == 'false' or not params.get('is_full'):
-                if not r.has_vacancy:
-                    continue
+            # if params.get('is_full') == 'false' or not params.get('is_full'):
+            #     if not r.has_vacancy:
+            #         continue
 
             # --- Filter: Price Min ---
             if params.get('price_min'):

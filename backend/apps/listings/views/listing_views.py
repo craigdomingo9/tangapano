@@ -58,7 +58,6 @@ class ListingSearchAPIView(APIView):
         # if params.get('is_full') == 'true':
             # User wants to see full rooms
             # room_must_clauses.append({"term": {"rooms.is_full": True}})
-            # pass
         # else:
             # Default: HIDE full rooms (ensure vacancy)
             # room_must_clauses.append({"term": {"rooms.has_vacancy": True}})
