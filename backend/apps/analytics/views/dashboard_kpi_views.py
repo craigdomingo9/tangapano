@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.db.models import Sum, F, Case, When, Value, DecimalField
+from django.db.models.functions import Coalesce
 
 from users.permissions.admin_permissions import IsSuperAdmin
 from analytics.models import UserSession
@@ -56,12 +58,26 @@ class DashboardKPIView(APIView):
         # --- C. Remaining Units Value (RUV) ---
         ruv_query = Room.objects.filter(
             listing__is_active=True,
-            listing__apply_agent_fee=True, 
             listing__campus__agent__isnull=False
+        ).annotate(
+            # 1. Get the base fee, defaulting to 0 if null (Handling "general_fee = ... or 0")
+            base_fee=Coalesce(
+                F('listing__campus__agent__agent_fee'), 
+                Value(0), 
+                output_field=DecimalField()
+            ),
+            
+            # 2. Replicate the Python "if max_occupants == 1" logic using Case/When
+            calculated_agent_fee=Case(
+                When(max_occupants=1, then=F('base_fee') * 2),
+                default=F('base_fee'),
+                output_field=DecimalField()
+            )
         ).aggregate(
             potential_value=Sum(
-                (F('max_occupants') - F('current_occupants')) * F('listing__campus__agent__agent_fee'),
-                output_field=FloatField()
+                # 3. Now use the database-annotated field for the math
+                (F('max_occupants') - F('current_occupants')) * F('calculated_agent_fee'),
+                output_field=DecimalField()
             )
         )
         remaining_rooms_value = ruv_query['potential_value'] or 0.00
