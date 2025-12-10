@@ -27,7 +27,7 @@ class ListingSearchAPIView(APIView):
         if amenities_str:
             names = [a.strip().lower() for a in amenities_str.split(',') if a.strip()]
             if names:
-                min_match = len(names) if len(names) < 3 else math.ceil(len(names) * 0.33)
+                min_match = len(names) if len(names) < 3 else math.ceil(len(names) * 0.20)
                 should_clauses = [{"term": {"amenity_names": name}} for name in names]
                 must_clauses.append({
                     "bool": {
@@ -53,12 +53,13 @@ class ListingSearchAPIView(APIView):
             room_must_clauses.append({"term": {"rooms.max_occupants": int(params['max_occupants'])}})
 
         # Vacancy Logic (Standard UX)
-        if params.get('is_full') == 'true':
+        # if params.get('is_full') == 'true':
             # User wants to see full rooms
-            room_must_clauses.append({"term": {"rooms.is_full": True}})
-        else:
+            # room_must_clauses.append({"term": {"rooms.is_full": True}})
+            # pass
+        # else:
             # Default: HIDE full rooms (ensure vacancy)
-            room_must_clauses.append({"term": {"rooms.has_vacancy": True}})
+            # room_must_clauses.append({"term": {"rooms.has_vacancy": True}})
 
         # Apply Nested Query
         if room_must_clauses:

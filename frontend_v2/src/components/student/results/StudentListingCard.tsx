@@ -31,12 +31,32 @@ export function StudentListingCard({
 
   const handleExpressInterestClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onExpressInterest(listing.id);
+    if (!isFullyBooked) {
+      onExpressInterest(listing.id);
+    }
   };
+
+  const isFullyBooked = useMemo(() => {
+    if (listing.rooms.length === 0) return false;
+    const totalCapacity = listing.rooms.reduce(
+      (acc, r) => acc + r.max_occupants,
+      0
+    );
+    const totalOccupied = listing.rooms.reduce(
+      (acc, r) => acc + r.current_occupants,
+      0
+    );
+    return totalOccupied >= totalCapacity;
+  }, [listing.rooms]);
 
   return (
     <>
-      <div className="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-all duration-300 flex flex-col h-full">
+      <div
+        className={cn(
+          "group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 transition-all duration-300 flex flex-col h-full",
+          !isFullyBooked && "hover:shadow-md"
+        )}
+      >
         {/* Image Carousel Section */}
         <ImageCarousel
           listing={listing}
@@ -52,6 +72,7 @@ export function StudentListingCard({
             )
           }
           onShare={() => setIsShareOpen(true)}
+          isFullyBooked={isFullyBooked}
         />
 
         <ListingInfo
@@ -59,6 +80,7 @@ export function StudentListingCard({
           isAmenitiesExpanded={isAmenitiesExpanded}
           onToggleAmenities={() => setIsAmenitiesExpanded(!isAmenitiesExpanded)}
           onExpressInterest={handleExpressInterestClick}
+          isFullyBooked={isFullyBooked}
         />
       </div>
 

@@ -16,6 +16,7 @@ interface ImageCarouselProps {
   onNextImage: () => void;
   onPrevImage: () => void;
   onShare: () => void;
+  isFullyBooked: boolean;
 }
 
 export default function ImageCarousel({
@@ -26,6 +27,7 @@ export default function ImageCarousel({
   onNextImage,
   onPrevImage,
   onShare,
+  isFullyBooked,
 }: ImageCarouselProps) {
   const images = listing?.images || [];
 
@@ -59,7 +61,10 @@ export default function ImageCarousel({
           key={currentImage?.display_image}
           src={currentImage.display_image}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 animate-in fade-in slide-in-from-right-4 fill-mode-both touch-pan-y"
+          className={cn(
+            "w-full h-full object-cover transition-transform duration-700 animate-in fade-in slide-in-from-right-4 fill-mode-both touch-pan-y",
+            isFullyBooked && "grayscale contrast-125 opacity-70"
+          )}
           loader={myImageLoader}
           width={100}
           height={100}
@@ -76,7 +81,7 @@ export default function ImageCarousel({
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-90" />
 
       {/* Carousel Controls */}
-      {hasImages && images.length > 1 && (
+      {hasImages && images.length > 1 && !isFullyBooked && (
         <>
           <CarouselControls onPrev={onPrevImage} onNext={onNextImage} />
           <PaginationDots
@@ -94,7 +99,8 @@ export default function ImageCarousel({
             "px-3 py-1.5 rounded-full backdrop-blur-md shadow-lg border flex items-center gap-1.5 transition-transform hover:scale-105 select-none",
             listing.apply_agent_fee
               ? "bg-amber-500/90 border-amber-400/50 text-white shadow-amber-900/10"
-              : "bg-emerald-500/90 border-emerald-400/50 text-white shadow-emerald-900/10 bg-linear-to-r from-emerald-500 to-teal-500"
+              : "bg-emerald-500/90 border-emerald-400/50 text-white shadow-emerald-900/10 bg-linear-to-r from-emerald-500 to-teal-500",
+            isFullyBooked && "opacity-50 grayscale"
           )}
         >
           {listing.apply_agent_fee ? (
@@ -132,6 +138,16 @@ export default function ImageCarousel({
         <div className="absolute top-4 left-4 z-20">
         </div>
       )} */}
+
+      {isFullyBooked && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+          <div className="bg-crimson/90 text-white px-6 py-3 border-4 border-white/20 transform -rotate-12 shadow-2xl backdrop-blur-sm animate-in zoom-in duration-300">
+            <span className="text-xl sm:text-2xl font-black uppercase tracking-widest drop-shadow-md whitespace-nowrap">
+              Fully Booked
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Info Overlay */}
       <ImageOverlay title={title} neighborhood={neighborhood} />
