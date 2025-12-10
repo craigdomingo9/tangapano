@@ -47,36 +47,43 @@ function LandlordDesktopView({
                     key={landlord.id}
                     className="hover:bg-muted/30 transition-colors group"
                   >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-linear-to-br from-muted/50 to-muted/20 flex items-center justify-center text-foreground shadow-inner border border-border/40">
-                          {isCompany ? (
-                            <Building2 className="w-5 h-5" />
-                          ) : (
-                            <User className="w-5 h-5" />
-                          )}
-                        </div>
-                        <div>
-                          <div className="font-bold text-foreground text-sm group-hover:text-lapis transition-colors">
-                            {isCompany
-                              ? landlord.company_name
-                              : landlord.full_name}
-                          </div>
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5 font-medium">
+                    <RouterLink
+                      to={{
+                        page: "landlords",
+                        landlordId: landlord.id.toString(),
+                      }}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-muted/50 to-muted/20 flex items-center justify-center text-foreground shadow-inner border border-border/40">
                             {isCompany ? (
-                              <>
-                                <User className="w-3 h-3" />
-                                {landlord.full_name}
-                              </>
+                              <Building2 className="w-5 h-5" />
                             ) : (
-                              <span className="italic opacity-80">
-                                Individual Landlord
-                              </span>
+                              <User className="w-5 h-5" />
                             )}
                           </div>
+                          <div>
+                            <div className="font-bold text-foreground text-sm group-hover:text-lapis transition-colors">
+                              {isCompany
+                                ? landlord.company_name
+                                : landlord.full_name}
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5 font-medium">
+                              {isCompany ? (
+                                <>
+                                  <User className="w-3 h-3" />
+                                  {landlord.full_name}
+                                </>
+                              ) : (
+                                <span className="italic opacity-80">
+                                  Individual Landlord
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
+                    </RouterLink>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {landlord.is_verified ? (
                         <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xxs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-500/20 shadow-sm uppercase tracking-wider">
