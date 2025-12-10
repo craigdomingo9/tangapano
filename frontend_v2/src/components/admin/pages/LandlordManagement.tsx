@@ -85,9 +85,9 @@ function LandlordManagement({
     setOpenVerifyModal(null);
   }
 
-  if (!landlords) return null;
   if (landlordsIsError) return <ErrorPage type="500" />;
   if (landlordsIsLoading) return <LoadingScreen />;
+  if (!landlords && !landlordsIsLoading) return null;
 
   return (
     <div className="space-y-6 animate-fade-in pb-12 relative">
@@ -164,7 +164,7 @@ function LandlordManagement({
         onClose={() => setOpenVerifyModal(null)}
         onConfirm={handleVerify}
         landlordName={
-          landlords.find(
+          landlords?.find(
             (landlord) => landlord.id.toString() == openVerifyModal?.toString()
           )?.full_name
         }

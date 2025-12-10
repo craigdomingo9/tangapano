@@ -47,13 +47,13 @@ function LandlordDesktopView({
                     key={landlord.id}
                     className="hover:bg-muted/30 transition-colors group"
                   >
-                    <RouterLink
-                      to={{
-                        page: "landlords",
-                        landlordId: landlord.id.toString(),
-                      }}
-                    >
-                      <td className="px-6 py-4">
+                    <td className="px-6 py-4">
+                      <RouterLink
+                        to={{
+                          page: "landlords",
+                          landlordId: landlord.id.toString(),
+                        }}
+                      >
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-xl bg-linear-to-br from-muted/50 to-muted/20 flex items-center justify-center text-foreground shadow-inner border border-border/40">
                             {isCompany ? (
@@ -82,8 +82,8 @@ function LandlordDesktopView({
                             </div>
                           </div>
                         </div>
-                      </td>
-                    </RouterLink>
+                      </RouterLink>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {landlord.is_verified ? (
                         <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xxs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 border border-emerald-500/20 shadow-sm uppercase tracking-wider">
