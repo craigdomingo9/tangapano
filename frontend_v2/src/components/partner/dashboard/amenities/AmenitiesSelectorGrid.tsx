@@ -44,7 +44,7 @@ interface CategoryConfigItem {
  * Configuration mapping backend category slugs to Frontend UI elements.
  * Keys must match the 'category' field in your Django model.
  */
-const CATEGORY_CONFIG: Record<string, CategoryConfigItem> = {
+export const CATEGORY_CONFIG: Record<string, CategoryConfigItem> = {
   connectivity: {
     label: "Connectivity & Utilities",
     icon: Sun,

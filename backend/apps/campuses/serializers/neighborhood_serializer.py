@@ -5,7 +5,7 @@ from .city_summary_serializer import CitySummarySerializer
 
 class NeighborhoodSerializer(serializers.ModelSerializer):
     city = CitySummarySerializer(read_only=True)
-    city_id = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
+    city_id = serializers.PrimaryKeyRelatedField(queryset=City.objects.all(), source="city")
     
     
     class Meta:

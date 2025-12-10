@@ -8,6 +8,10 @@ class AmenityCategorySummarySerializer(serializers.ModelSerializer):
 
 
 class AmenitySerializer(serializers.ModelSerializer):
+    category = AmenityCategorySummarySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), write_only=True, source='category')
+    
     class Meta:
         model = Amenity
-        fields = ['id', 'name', 'display_name', 'category']
+        fields = ['id', 'name', 'display_name', 'category', 'category_id']
+        read_only_fields = ('id', 'category')

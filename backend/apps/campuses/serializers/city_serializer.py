@@ -8,3 +8,4 @@ class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
         fields = ['id', 'name', 'campuses']
+        read_only_fields = ('id', 'campuses')

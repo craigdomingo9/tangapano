@@ -11,7 +11,7 @@ class AmenityViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing Amenity instances.
     """
-    queryset = Amenity.objects.all()
+    queryset = Amenity.objects.all().select_related('category')
     serializer_class = AmenitySerializer
     permission_classes = [permissions.IsAdminUser]
     
