@@ -1,8 +1,6 @@
-import { CATEGORY_CONFIG } from "@/components/partner/dashboard/amenities/AmenitiesSelectorGrid";
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { CheckCircle2, Plus, Tag } from "lucide-react";
-import { useMemo } from "react";
 
 interface AmenitiesTabProps {
   amenityCategories: AmenityCategory[] | undefined;

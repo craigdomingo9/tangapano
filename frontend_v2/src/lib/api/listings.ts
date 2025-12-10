@@ -44,6 +44,7 @@ export const updateAmenities = async (
   selectedIds: (number | string)[],
   accessToken: string
 ) => {
+  console.log(selectedIds);
   await axiosInstance.patch(
     `/listings/landlord-listings/${listingId}/`,
     {

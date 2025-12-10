@@ -155,7 +155,6 @@ function AmenitiesManagement({ params, serverData }: PartnerComponentProps) {
         </div>
 
         <AmenitiesSelectorGrid
-          availableAmenities={availableAmenities || []}
           selectedIds={localSelectedIds}
           onChange={(ids) => setLocalSelectedIds(ids)}
         />

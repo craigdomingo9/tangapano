@@ -50,7 +50,7 @@ class ListingDocument(Document):
     amenities = fields.ObjectField(properties={
         'id': fields.IntegerField(),
         'display_name': fields.KeywordField(),
-        'category': fields.KeywordField(),
+        'category': fields.ObjectField(properties={'name': fields.KeywordField()}),
         'name': fields.KeywordField(),
     })
 
@@ -110,7 +110,9 @@ class ListingDocument(Document):
         return [{
             'id': a.id,
             'display_name': a.display_name,
-            'category': a.category,
+            'category': {
+                'name': a.category.name
+            },
             'name': a.name
         } for a in instance.amenities.all()]
 
