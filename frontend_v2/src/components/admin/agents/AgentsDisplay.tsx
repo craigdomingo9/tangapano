@@ -35,7 +35,7 @@ function AgentsDisplay({
           >
             <div className="flex justify-between items-start mb-4">
               <div className="flex items-center gap-3 overflow-hidden">
-                <div className="w-12 h-12 rounded-xl bg-linear-to-br from-crimson/50 to-lapis/50 dark:from-lapis/20 dark:to-lapis/50 flex items-center justify-center text-white font-bold text-lg shadow-inner border border-white/10 shrink-0">
+                <div className="w-12 h-12 rounded-xl bg-linear-to-br from-airforce to-lapis dark:from-lapis/20 dark:to-lapis/50 flex items-center justify-center text-white font-bold text-lg shadow-inner border border-white/10 shrink-0">
                   {agent.full_name.charAt(0)}
                 </div>
                 <div className="min-w-0">

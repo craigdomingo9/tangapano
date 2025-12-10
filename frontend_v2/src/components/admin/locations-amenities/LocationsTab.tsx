@@ -40,7 +40,7 @@ function LocationsTab({
             Grouped by Metropolitan Area
           </p>
         </div>
-        <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap">
+        <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap justify-center h-10">
           <button
             onClick={() => setAddCityOpen(true)}
             className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer"

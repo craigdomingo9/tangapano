@@ -91,7 +91,7 @@ interface Room {
   updated_at: string;
 }
 
-type Listing = {
+interface Listing {
   id: string;
   title: string;
   landlord: Landlord;
@@ -108,7 +108,7 @@ type Listing = {
   is_available: boolean;
   created_at: string;
   updated_at: string;
-};
+}
 
 interface Interest {
   room: any;
@@ -164,4 +164,16 @@ interface ServerContext {
   // Add other globals here later:
   // notificationsCount?: number;
   // theme?: 'light' | 'dark';
+}
+
+interface Notification {
+  id: string;
+  recipient: User;
+  readonly title: string;
+  readonly message: string;
+  readonly notification_type: "info" | "success" | "warning" | "error";
+  readonly category: "billing" | "listing" | "inquiry" | "system";
+  readonly action_link: string;
+  readonly is_read: boolean;
+  readonly created_at: string;
 }
