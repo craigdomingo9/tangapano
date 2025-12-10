@@ -1,9 +1,11 @@
 from rest_framework import viewsets, permissions
 from interests.models import Interest
-from interests.serializers import InterestSerializer
+from interests.serializers import InterestSerializer, InterestReadSerializer
 from analytics.models import ListingStat
 from notifications.models import Notification
 from django.db.models import F
+
+from users.permissions import IsSuperAdmin
 
 class InterestsViewSet(viewsets.ModelViewSet):
     """
@@ -13,7 +15,17 @@ class InterestsViewSet(viewsets.ModelViewSet):
     queryset = Interest.objects.all()
     serializer_class = InterestSerializer
     permission_classes = [permissions.AllowAny]
-    throttle_scope = "inquiries" # Good practice to rate-limit this
+    throttle_scope = "inquiries"
+
+    def get_permissions(self):
+        if self.action == "create":
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def get_serializer_class(self):
+        if self.action in ["list",]:
+            return InterestReadSerializer
+        return InterestSerializer
     
     def perform_create(self, serializer):
         interest = serializer.save()

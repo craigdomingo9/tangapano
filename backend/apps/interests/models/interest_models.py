@@ -2,6 +2,13 @@ from django.db import models
 from listings.models import Room
 
 class Interest(models.Model):
+    STATUS_CHOICES = [
+        ('new', 'New'),
+        ('contacted', 'Contacted'),
+        ('viewing', 'Viewing Scheduled'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
     MOVE_IN_TIMELINE_CHOICES = [
         ('immediately', 'Immediately (within 1 week)'),
         ('2_weeks', 'Within 2 weeks'),
@@ -43,6 +50,7 @@ class Interest(models.Model):
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='cash')
     agree_to_terms = models.BooleanField(default=False)
     
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

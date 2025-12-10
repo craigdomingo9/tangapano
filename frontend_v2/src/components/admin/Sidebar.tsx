@@ -13,6 +13,7 @@ import {
   Tag,
   UserCheck,
   Home,
+  MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -61,7 +62,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       group: "Listings",
-      items: [{ label: "Inventory", icon: Building, page: "listings" }],
+      items: [
+        { label: "Inventory", icon: Building, page: "listings" },
+        { label: "Inquiries", icon: MessageSquare, page: "inquiries" },
+      ],
     },
     {
       group: "System",
@@ -126,7 +130,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Navigation */}
-        <div className="flex-1 overflow-y-auto py-8 px-3 space-y-8 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto py-8 px-3 space-y-8">
           {navItems.map((group, idx) => (
             <div key={idx}>
               {(!collapsed || mobileOpen) && (

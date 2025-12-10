@@ -1,1 +1,2 @@
 from .interest_serializers import InterestSerializer
+from .interests_read_serializer import InterestReadSerializer

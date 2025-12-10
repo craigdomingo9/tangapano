@@ -28,6 +28,7 @@ const Locations = lazyLoad(
 const Notifications = lazyLoad(
   () => import("@/components/admin/pages/Notifications")
 );
+const Inquiries = lazyLoad(() => import("@/components/admin/pages/Inquiries"));
 
 export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
   [
@@ -71,6 +72,12 @@ export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
       id: "notifications",
       matcher: (p) => p.page === "notifications",
       component: Notifications,
+    },
+
+    {
+      id: "inquiries",
+      matcher: (p) => p.page === "inquiries",
+      component: Inquiries,
     },
 
     {
