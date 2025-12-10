@@ -14,6 +14,8 @@ class ListingSearchAPIView(APIView):
         
         # --- 1. BUILD QUERY (Raw Dict Mode) ---
         must_clauses = [{"match_all": {}}] 
+        
+        must_clauses.append({"term": {"is_locked": False}})
 
         # A. Location Filters (Fixed Field Names)
         if params.get('campus'):

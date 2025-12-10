@@ -18,6 +18,7 @@ class ListingDocument(Document):
     description = fields.TextField()
     distance_from_campus = fields.DoubleField()
     is_active = fields.BooleanField()
+    is_locked = fields.BooleanField()
     created_at = fields.DateField()
     
     # Use ObjectField for Display (Rich Data)
