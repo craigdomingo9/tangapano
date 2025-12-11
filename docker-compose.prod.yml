@@ -385,7 +385,7 @@ services:
       - internet_net
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
+    read_only: false
     tmpfs:
       - /var/cache/nginx:rw,noexec,nosuid
       - /var/run:rw,noexec,nosuid
