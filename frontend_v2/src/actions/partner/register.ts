@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { AxiosError } from "axios";
 import { axiosInstance } from "@/lib/api/config";
 import { registrationSchema } from "@/lib/validations/partner-signup";
+import { USER_COOKIE_NAME } from "@/constants/auth";
 
 export async function signup(rawData: any, domain?: string) {
   // 1. Validate Input
@@ -52,7 +53,7 @@ export async function signup(rawData: any, domain?: string) {
     // 4. Set Cookies (Identical to Login Action)
     const cookieStore = await cookies();
 
-    cookieStore.set("auth_token", token, {
+    cookieStore.set(USER_COOKIE_NAME, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

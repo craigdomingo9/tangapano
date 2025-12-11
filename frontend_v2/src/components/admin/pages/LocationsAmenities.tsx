@@ -120,7 +120,7 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
   };
 
   const handleSaveCampus = (data: any) => {
-    console.log(data);
+    // console.log(data);
     // Data here likely needs to contain { city_id: string, agent_id: string, name: string, etc }
     if (isEditingCampusMode && campusFormData.id) {
       editCampus(

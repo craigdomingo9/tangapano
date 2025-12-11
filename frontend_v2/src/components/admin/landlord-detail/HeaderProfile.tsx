@@ -2,6 +2,7 @@ import {
   AlertTriangle,
   Building2,
   Calendar,
+  LogIn,
   Mail,
   MapPin,
   Phone,
@@ -12,11 +13,15 @@ import {
 interface HeaderProfileProps {
   landlord: Landlord;
   setIsSuspendModalOpen: (val: boolean) => void;
+  handleLoginAsUser: () => void;
+  isImpersonating: boolean;
 }
 
 function HeaderProfile({
   landlord,
   setIsSuspendModalOpen,
+  handleLoginAsUser,
+  isImpersonating,
 }: HeaderProfileProps) {
   if (!landlord) return null;
   return (
@@ -59,6 +64,18 @@ function HeaderProfile({
               </div>
             </div>
             <div className="flex gap-2">
+              <button
+                onClick={handleLoginAsUser}
+                disabled={isImpersonating}
+                className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg text-sm font-bold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-wait cursor-pointer"
+              >
+                {isImpersonating ? (
+                  <span className="w-3.5 h-3.5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+                ) : (
+                  <LogIn className="w-3.5 h-3.5" />
+                )}
+                {isImpersonating ? "Switching..." : "Login as User"}
+              </button>
               <button
                 onClick={() => setIsSuspendModalOpen(true)}
                 className="px-3 py-1.5 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-lg text-sm font-bold transition-all cursor-pointer"

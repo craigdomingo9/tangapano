@@ -4,7 +4,8 @@ from users.views import (
     auth_views, 
     landlord_views, 
     lookup_user_views,
-    AdminLoginView
+    AdminLoginView,
+    AdminPriviledgedAuthView
 )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     
     # Admin Panel Auth
     path("auth/admin/login/", AdminLoginView.as_view(), name="admin-login"),
+    path("auth/admin/temp-auth/", AdminPriviledgedAuthView.as_view(), name="admin-login"),
     
     # Profiles
     path("me/", user_views.UserProfileView.as_view(), name="user-profile"),

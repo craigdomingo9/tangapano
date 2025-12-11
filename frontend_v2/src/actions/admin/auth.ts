@@ -1,11 +1,12 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { AxiosError } from "axios";
 import { axiosInstance } from "@/lib/api/config";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { ADMIN_COOKIE_NAME, USER_COOKIE_NAME } from "@/constants/auth";
 
 // --- Configuration ---
 
@@ -51,7 +52,7 @@ export async function login(data: { username: string; password: string }) {
     const { token } = response.data;
     const cookieStore = await cookies();
 
-    cookieStore.set("auth_token", token, {
+    cookieStore.set(ADMIN_COOKIE_NAME, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -95,4 +96,62 @@ export async function login(data: { username: string; password: string }) {
       },
     };
   }
+}
+
+export async function verifyToken() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
+
+  if (!token) return;
+
+  try {
+    const response = await axiosInstance.get("/users/auth/verify-token/", {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Token Verification Error:", error);
+  }
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete(ADMIN_COOKIE_NAME);
+}
+
+export async function loginAsUser(user_id: number) {
+  const cookieStore = await cookies();
+  const adminToken = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
+
+  const {
+    data: { token: responseToken },
+  } = await axiosInstance.post(
+    "/users/auth/admin/temp-auth/",
+    {
+      user_id,
+    },
+    {
+      headers: {
+        Authorization: `Token ${adminToken}`,
+      },
+    }
+  );
+
+  cookieStore.set(USER_COOKIE_NAME, responseToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60, // 1 hour
+  });
+  // console.log(responseToken);
+
+  // Confirm cookie has been set
+  const tokenSet = cookieStore.get(USER_COOKIE_NAME)?.value;
+
+  const success = tokenSet === responseToken;
+
+  return success;
 }

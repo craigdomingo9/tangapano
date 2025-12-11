@@ -6,6 +6,7 @@ import { axiosInstance } from "@/lib/api/config";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { USER_COOKIE_NAME } from "@/constants/auth";
 
 // --- Configuration ---
 
@@ -54,7 +55,7 @@ export async function login(
     const { token } = response.data;
     const cookieStore = await cookies();
 
-    cookieStore.set("auth_token", token, {
+    cookieStore.set(USER_COOKIE_NAME, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -102,7 +103,7 @@ export async function login(
 
 export async function verifyToken() {
   const cookieStore = await cookies();
-  const token = cookieStore.get("auth_token")?.value;
+  const token = cookieStore.get(USER_COOKIE_NAME)?.value;
 
   if (!token) return;
 
@@ -120,5 +121,5 @@ export async function verifyToken() {
 
 export async function logoutAction() {
   const cookieStore = await cookies();
-  cookieStore.delete("auth_token");
+  cookieStore.delete(USER_COOKIE_NAME);
 }

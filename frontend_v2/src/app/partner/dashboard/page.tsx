@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { PartnerContext } from "@/lib/types/partner";
 import { partnerRoutes } from "@/routing/registries/partner";
 import PartnerRouter from "./PartnerRouter";
+import { USER_COOKIE_NAME } from "@/constants/auth";
 
 export const metadata = {
   title: "Dashboard - Partner Portal",
@@ -15,7 +16,7 @@ export const metadata = {
 
 export default async function Page() {
   const cookieStore = await cookies();
-  const token = cookieStore.get("auth_token")?.value;
+  const token = cookieStore.get(USER_COOKIE_NAME)?.value;
 
   // 1. Fetch on Server (Reliable, uses Cookies)
   const user = await getUser();

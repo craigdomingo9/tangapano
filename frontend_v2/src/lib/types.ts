@@ -57,7 +57,7 @@ interface Agent {
 
 interface Landlord {
   id: number;
-  user: User;
+  user: User | number;
   company_name: string;
   phone_number: string;
   full_name: string;

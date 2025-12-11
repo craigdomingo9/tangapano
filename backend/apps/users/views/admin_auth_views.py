@@ -1,9 +1,10 @@
-from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.views import ObtainAuthToken, APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
+from users.permissions import IsSuperAdmin
 
 User = get_user_model()
 
@@ -23,3 +24,30 @@ class AdminLoginView(ObtainAuthToken):
             return Response({"token": token.key})
         else:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+class AdminPriviledgedAuthView(APIView):
+    """View to allow admin to login into a user's account based on their id only"""
+    permission_classes = [IsSuperAdmin]
+
+    def post(self, request, *args, **kwargs):
+        admin_user = request.user
+
+        if not admin_user.is_superuser and not admin_user.is_staff:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        user_id = request.data.get('user_id')
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "Invalid user id. User does not exist",}, status=status.HTTP_404_NOT_FOUND)
+        
+        if admin_user.is_superuser or admin_user.is_staff:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key})
+        else:
+            return Response({"error": "Invalid user id", }, status=status.HTTP_401_UNAUTHORIZED)
+
+

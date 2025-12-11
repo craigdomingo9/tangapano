@@ -24,7 +24,7 @@ function Modal({
 }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
-      console.log(`${title} isOpen:`, isOpen);
+      // console.log(`${title} isOpen:`, isOpen);
     }
   }, [isOpen]);
   if (!isOpen) return null;
