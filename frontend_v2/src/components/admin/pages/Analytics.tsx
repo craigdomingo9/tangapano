@@ -18,13 +18,13 @@ function Analytics({ serverData }: AdminPanelComponentProps) {
             Deep dive into platform usage and demographics.
           </p>
         </div>
-        <button
+        {/* <button
           className="h-9 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-foreground rounded-lg text-sm font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer"
           onClick={() => infoToast("Feature Coming Soon")}
         >
           <Download className="w-4 h-4" />
           Export CSV
-        </button>
+        </button> */}
       </div>
       <Demographics accessToken={accessToken} />
     </div>

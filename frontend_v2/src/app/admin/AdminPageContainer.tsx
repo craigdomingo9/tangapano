@@ -60,7 +60,10 @@ function AdminPageContainer({ serverData }: { serverData: AdminPanelContext }) {
         collapsed={entities.collapsed}
         setMobileOpen={setMobileOpen}
       />
-      <main className="flex-1 bg-gray-50/50 dark:bg-app-bg overflow-y-auto flex flex-col relative scroll-smooth transition-colors duration-300">
+      <main
+        id="main-content"
+        className="flex-1 bg-gray-50/50 dark:bg-app-bg overflow-y-auto flex flex-col relative scroll-smooth transition-colors duration-300"
+      >
         {/* New Modular Header */}
         <AdminHeader
           mobileMenuOpen={entities.mobileOpen}

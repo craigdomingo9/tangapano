@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, Suspense, useState } from "react";
+import { useEffect, useMemo, Suspense, useState, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { AppRoute, BaseParams } from "./types";
@@ -99,6 +99,7 @@ function RouterContent<P extends BaseParams, C>({
             // 5. PERFORMANCE HINT
             className="w-full"
           >
+            <ScrollTrigger />
             <activeRoute.component
               params={currentParams}
               serverData={serverData}
@@ -133,4 +134,29 @@ export function RouteRenderer<P extends BaseParams, C>(props: Props<P, C>) {
       <RouterContent {...props} />
     </Suspense>
   );
+}
+
+function ScrollTrigger() {
+  useLayoutEffect(() => {
+    // 1. Try to find the scrolling container
+    const scrollContainer = document.getElementById("main-content");
+
+    // 2. Define the scroll logic
+    const handleScroll = () => {
+      // If container exists, scroll IT. If not, fallback to window.
+      if (scrollContainer) {
+        scrollContainer.scrollTo({ top: 0, behavior: "instant" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+    };
+
+    // 3. Fire immediately
+    handleScroll();
+
+    // 4. Fire again on next frame (double-tap safety)
+    requestAnimationFrame(handleScroll);
+  }, []); // Runs on every mount (every route change)
+
+  return null;
 }

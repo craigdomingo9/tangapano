@@ -6,6 +6,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import KPICards from "../inquiries/KPICards";
 import InquiryTable from "../inquiries/InquiryTable";
+import Pagination from "../common-components/Pagination";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -84,6 +85,13 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
       <InquiryTable
         inquiries={paginatedData!!}
         openDetailModal={setIsDetailModalOpen}
+      />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        totalItems={totalItems}
+        itemsPerPage={ITEMS_PER_PAGE}
       />
     </div>
   );

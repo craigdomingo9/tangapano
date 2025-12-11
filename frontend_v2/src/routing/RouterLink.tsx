@@ -49,7 +49,13 @@ export const RouterLink = ({
   };
 
   return (
-    <Link href={href} prefetch={true} onClick={handleClick} {...props}>
+    <Link
+      {...props}
+      href={href}
+      scroll={true}
+      prefetch={true}
+      onClick={handleClick}
+    >
       {children}
     </Link>
   );
