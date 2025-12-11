@@ -206,15 +206,6 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
       - /usr/share/elasticsearch/config/jvm.options.d # Sometimes needs write
-    security_opt:
-      - no-new-privileges:true
-    # Elasticsearch needs CHOWN to fix permissions on data volume at startup
-    cap_drop:
-      - ALL
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
     deploy:
       resources:
         limits:
