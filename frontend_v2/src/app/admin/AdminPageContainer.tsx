@@ -1,6 +1,5 @@
 "use client";
 
-import { logoutAction } from "@/actions/partner/auth";
 import createEntityStore from "@/lib/stores/entityStore";
 import Sidebar from "../../components/admin/Sidebar";
 import AdminHeader from "../../components/admin/AdminHeader";
@@ -8,6 +7,8 @@ import { useTheme } from "next-themes";
 import { RouteRenderer } from "@/routing/RouteRenderer";
 import { adminPanelRoutes } from "@/routing/registries/admin";
 import { AdminPanelContext } from "@/lib/types/admin";
+import { logoutAction } from "@/actions/admin/auth";
+import { successToast } from "@/lib/toast";
 
 interface SideBarState {
   collapsed: boolean;
@@ -31,6 +32,7 @@ function AdminPageContainer({ serverData }: { serverData: AdminPanelContext }) {
   const { entities, setEntities } = useSidebar();
   async function onLogout() {
     await logoutAction();
+    successToast("Logged out successfully. Until next time ᕙ(▀̿̿ĺ̯̿̿▀̿ ̿) ᕗ");
   }
 
   function setMobileOpen(open: boolean) {
@@ -53,7 +55,7 @@ function AdminPageContainer({ serverData }: { serverData: AdminPanelContext }) {
   return (
     <div className="flex h-screen bg-background text-foreground font-sans overflow-hidden selection:bg-primary/30 selection:text-primary-foreground transition-colors duration-300">
       <Sidebar
-        onLogout={() => onLogout()}
+        onLogout={onLogout}
         mobileOpen={entities.mobileOpen}
         collapsed={entities.collapsed}
         setMobileOpen={setMobileOpen}

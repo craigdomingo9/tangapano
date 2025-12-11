@@ -178,8 +178,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div
             className={`flex items-center ${
               collapsed ? "justify-center" : "justify-start gap-3 px-3"
-            } py-3 w-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all duration-200 group`}
-            onClick={() => onLogout}
+            } py-3 w-full cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all duration-200 group`}
+            onClick={onLogout}
           >
             <LogOut className="w-4 h-4 shrink-0" />
             {(!collapsed || mobileOpen) && (
