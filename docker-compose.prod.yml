@@ -115,14 +115,11 @@ services:
       - data_net # 🔒 Internal Only
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
     tmpfs:
       - /var/run/postgresql:rw,noexec,nosuid
       - /tmp:rw,noexec,nosuid
     security_opt:
       - no-new-privileges:true
-    cap_drop:
-      - ALL
     deploy:
       resources:
         limits:
@@ -174,16 +171,13 @@ services:
     labels:
       "com.tangapano.service": "redis"
     networks:
-      - data_net # 🔒 Internal Only
+      - data_net
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
     security_opt:
       - no-new-privileges:true
-    cap_drop:
-      - ALL
     deploy:
       resources:
         limits:
@@ -209,7 +203,6 @@ services:
       - data_net # 🔒 Internal Only
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
       - /usr/share/elasticsearch/config/jvm.options.d # Sometimes needs write
@@ -242,15 +235,7 @@ services:
     restart: unless-stopped
     networks:
       - data_net # 🔒 Internal Only
-    # 🔒 TITANIUM SECURITY
-    logging: *default-logging
-    read_only: true
-    tmpfs:
-      - /tmp
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
+    user: root
     deploy:
       resources:
         limits:
@@ -270,6 +255,8 @@ services:
       "com.tangapano.service": "pgadmin"
     networks:
       - data_net
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
     read_only: true
@@ -373,9 +360,6 @@ services:
       "com.tangapano.service": "cert-renewer"
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
-    tmpfs:
-      - /tmp
     security_opt:
       - no-new-privileges:true
     networks:
@@ -465,7 +449,7 @@ services:
       - internet_net # Needs to scrape Backend
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
+    read_only: false
     tmpfs:
       - /tmp
     security_opt:
@@ -490,7 +474,7 @@ services:
       "com.tangapano.service": "grafana"
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
+    read_only: false
     tmpfs:
       - /tmp
     security_opt:
@@ -531,6 +515,7 @@ volumes:
   static_volume:
   media_volume:
   redis_data:
+  pgadmin_data:
 
 # -----------------------------------------------------------------
 # NETWORK DEFINITIONS
