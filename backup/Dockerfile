@@ -1,29 +1,30 @@
 FROM python:3.9-slim
 
-# Install system dependencies including PostgreSQL client
 RUN apt-get update && apt-get install -y \
     postgresql-client \
-    nano \
     dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Create non-root user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
 COPY . /app
 
-# Convert to unix file
-RUN dos2unix ./entrypoint.sh
-# Make entrypoint executable
-RUN chmod +x ./entrypoint.sh
+# Fix permissions
+RUN dos2unix ./entrypoint.sh && \
+    chmod +x ./entrypoint.sh && \
+    chown -R appuser:appgroup /app
 
-# Create backup directories
-RUN mkdir -p /app/backups/db /app/backups/images
+# Create backup directories with correct ownership
+RUN mkdir -p /app/backups/db /app/backups/images && \
+    chown -R appuser:appgroup /app/backups
 
-# Run the backup services
+# 🔒 RUN AS NON-ROOT
+USER appuser
+
 CMD ["./entrypoint.sh"]

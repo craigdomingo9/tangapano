@@ -1,6 +1,19 @@
 name: Tangapano
 
+# -----------------------------------------------------------------
+# ♻️ REUSABLE LOGGING CONFIGURATION
+# -----------------------------------------------------------------
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
+  # -----------------------------------------------------------------
+  # BACKEND (The Bridge)
+  # -----------------------------------------------------------------
+  # Connects to BOTH networks.
   backend:
     build:
       context: ./backend
@@ -16,78 +29,105 @@ services:
       - REBUILD_SEARCH_INDEX=on
     env_file:
       - .env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - pgbouncer
     restart: always
-    networks:
-      - app_net
     labels:
       "com.tangapano.service": "backend"
+    networks:
+      - internet_net
+      - data_net
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid # Writable temp, but cannot execute scripts in it
+      - /run
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 2500M
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - NEXT_PUBLIC_API_URL=http://backend:8000/api/
-  #     - NEXT_PUBLIC_CLIENT_URL=http://localhost/api/
-  #     - NEXT_PUBLIC_DOMAIN=https://tangapano.co.zw
-  #     - NODE_ENV=production
-  #     - NEXT_TELEMETRY_DISABLED=1
-  #   depends_on:
-  #     - backend
-  #   restart: always
-  #   networks:
-  #     - app_net
-  #   labels:
-  #     "com.tangapano.service": "frontend"
-
+  # -----------------------------------------------------------------
+  # FRONTEND
+  # -----------------------------------------------------------------
   frontend:
     build:
       context: ./frontend_v2
       dockerfile: ./Dockerfile
-    ports:
-      - "3000:3000"
     environment:
-      # --- PUBLIC (For the Browser) ---
-      # Points to Nginx (https://tangapano.co.zw/api)
-      # MUST match your actual domain. Do not use localhost here for production.
       - NEXT_PUBLIC_API_URL=https://tangapano.co.zw/api
-
-      # --- PRIVATE (For Next.js Server) ---
-      # Points directly to the Django container (http://backend:8000/api)
-      # This variable is NOT prefixed with NEXT_PUBLIC, so it stays secret on the server.
       - INTERNAL_API_URL=http://backend:8000/api
-
       - NEXT_PUBLIC_DOMAIN=https://tangapano.co.zw
       - NEXT_TELEMETRY_DISABLED=1
       - NODE_ENV=production
+    expose:
+      - "3000"
     depends_on:
       - backend
     restart: always
-    networks:
-      - app_net
     labels:
       "com.tangapano.service": "frontend"
+    networks:
+      - internet_net
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1500M
+
+  # -----------------------------------------------------------------
+  # DATA LAYER (Secure Vault - No Internet)
+  # -----------------------------------------------------------------
+  # All these services act as if they are in an air-gapped room.
 
   db:
-    image: postgres:17
+    image: postgres:17-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
     env_file:
       - .env
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     restart: unless-stopped
-    networks:
-      - app_net
     labels:
       "com.tangapano.service": "db"
+    networks:
+      - data_net # 🔒 Internal Only
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /var/run/postgresql:rw,noexec,nosuid
+      - /tmp:rw,noexec,nosuid
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 4096M
 
   pgbouncer:
     image: edoburu/pgbouncer:v1.24.0-p0
@@ -96,85 +136,162 @@ services:
       - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt
     env_file:
       - .env
-    ports:
-      - "6432:6432"
     depends_on:
       - db
-    networks:
-      - app_net
     restart: unless-stopped
     labels:
       "com.tangapano.service": "pgbouncer"
+    networks:
+      - data_net # 🔒 Internal Only
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
 
   redis:
-    image: redis:8.2.1
-    command: redis-server /usr/local/etc/redis/redis.conf
+    image: redis:7-alpine
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis_data:/data
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     restart: unless-stopped
     depends_on:
       - db
-    networks:
-      - app_net
     labels:
       "com.tangapano.service": "redis"
+    networks:
+      - data_net # 🔒 Internal Only
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1024M
 
-  # --- Elasticsearch Service ---
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - xpack.ml.enabled=false
       - xpack.graph.enabled=false
       - xpack.watcher.enabled=false
       - JAVA_OPTS=-Djava.security.egd=file:/dev/urandom
-    ports:
-      - "9200:9200"
     volumes:
       - es_data:/usr/share/elasticsearch/data
     labels:
       "com.tangapano.service": "elasticsearch"
     networks:
-      - app_net
+      - data_net # 🔒 Internal Only
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+      - /usr/share/elasticsearch/config/jvm.options.d # Sometimes needs write
+    security_opt:
+      - no-new-privileges:true
+    # Elasticsearch needs CHOWN to fix permissions on data volume at startup
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
     deploy:
-        resources:
-            limits:
-                cpus: '3.0'
-                memory: 10G
+      resources:
+        limits:
+          cpus: "2.5"
+          memory: 6G
 
+  # -----------------------------------------------------------------
+  # ADMIN TOOLS (Internal Network + SSH Tunnel)
+  # -----------------------------------------------------------------
   redis-commander:
     image: rediscommander/redis-commander:latest
     environment:
-      - REDIS_HOSTS=local:redis:6379
+      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD}
     ports:
-      - "8081:8081"
+      - "127.0.0.1:8081:8081"
     depends_on:
       - redis
     restart: unless-stopped
     networks:
-      - app_net
-    labels:
-      "com.tangapano.service": "redis-commander"
+      - data_net # 🔒 Internal Only
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 256M
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:8
     env_file:
       - .env
     ports:
-      - "5050:80"
+      - "127.0.0.1:5050:80"
     depends_on:
       - db
     restart: always
-    networks:
-      - app_net
     labels:
       "com.tangapano.service": "pgadmin"
+    networks:
+      - data_net
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/lib/pgadmin
+      - /var/log/pgadmin
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
+  # -----------------------------------------------------------------
+  # UTILITIES
+  # -----------------------------------------------------------------
+  # Backup connects to both because it needs to read DB (data_net)
+  # and potentially upload to S3/Cloud (internet_net).
   backup:
     build: ./backup
     depends_on:
@@ -186,14 +303,23 @@ services:
     volumes:
       - media_volume:/app/media
     restart: unless-stopped
-    networks:
-      - app_net
     dns:
       - 8.8.8.8
-      - 1.1.1.1
     profiles: ["backup"]
     labels:
       "com.tangapano.service": "backup"
+    networks:
+      - data_net
+      - internet_net
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
 
   db-restore:
     build: ./restore
@@ -201,15 +327,15 @@ services:
       - .env
     depends_on:
       - db
-    networks:
-      - app_net
     command: ["/app/docker-db-restore.sh"]
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     profiles: ["restore"]
     labels:
       "com.tangapano.service": "db-restore"
+    networks:
+      - data_net
+    logging: *default-logging
+    security_opt:
+      - no-new-privileges:true
 
   images-restore:
     build: ./restore
@@ -217,21 +343,56 @@ services:
       - .env
     volumes:
       - media_volume:/app/media
-    networks:
-      - app_net
     command: ["/app/docker-images-restore.sh"]
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     profiles: ["restore"]
     labels:
       "com.tangapano.service": "images-restore"
+    networks:
+      - internet_net
+    logging: *default-logging
+    security_opt:
+      - no-new-privileges:true
 
+  cert-renewer:
+    build:
+      context: ./cert-renewer
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOMAIN=tangapano.co.zw
+      - EMAIL=craigdomingo9@gmail.com
+      - STAGING=0
+      - NGINX_LABEL=com.tangapano.service=nginx
+      - RENEWAL_INTERVAL_HOURS=12
+    restart: always
+    depends_on:
+      - nginx
+    labels:
+      "com.tangapano.service": "cert-renewer"
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - internet_net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 128M
+
+  # -----------------------------------------------------------------
+  # PUBLIC FACING
+  # -----------------------------------------------------------------
   nginx:
     image: nginx:stable-alpine
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      # - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf # dev
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - static_volume:/app/static
@@ -245,40 +406,40 @@ services:
       - frontend
       - backend
     restart: always
-    command: 'nginx -g "daemon off;"' # Just run Nginx
-    networks:
-      - app_net
+    command: 'nginx -g "daemon off;"'
     labels:
       "com.tangapano.service": "nginx"
-
-  cert-renewer:
-    build:
-      context: ./cert-renewer
-    volumes:
-      # Share the same volumes
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-      # Mount the Docker socket to control Nginx
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      # --- THIS MAKES IT REUSABLE ---
-      - DOMAIN=tangapano.co.zw
-      - EMAIL=craigdomingo9@gmail.com
-      - STAGING=0 # Use 0 for production, 1 for testing/development
-      - NGINX_LABEL=com.tangapano.service=nginx
-      - RENEWAL_INTERVAL_HOURS=12
-    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
     networks:
-      - app_net
-    depends_on:
-      - nginx # Wait for Nginx (with its dummy certs) to be running
-    labels:
-      "com.tangapano.service": "cert-renewer"
+      - internet_net
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:rw,noexec,nosuid
+      - /var/run:rw,noexec,nosuid
+      - /tmp:rw,noexec,nosuid
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
 
+  # -----------------------------------------------------------------
+  # MONITORING
+  # -----------------------------------------------------------------
   prometheus:
     image: prom/prometheus:latest
-    ports:
-      - "9000:9090"
+    expose:
+      - "9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
@@ -292,16 +453,30 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-    networks:
-      - app_net
     profiles: ["metrics"]
     labels:
       "com.tangapano.service": "prometheus"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 2048M
+    networks:
+      - internet_net # Needs to scrape Backend
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
 
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "9001:3000"
+      - "127.0.0.1:9001:3000"
     env_file:
       - .env
     volumes:
@@ -310,33 +485,43 @@ services:
     depends_on:
       - prometheus
     restart: unless-stopped
-    networks:
-      - app_net
     profiles: ["metrics"]
     labels:
       "com.tangapano.service": "grafana"
+    # 🔒 TITANIUM SECURITY
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      - internet_net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
 
-  # --- MONITOR SERVICE ---
   health-monitor:
     build: ./health-monitor
     restart: always
     volumes:
-      # 1. This is the "Docker-out-of-Docker" (DooD) magic:
-      #    It maps the host's Docker socket into the container,
-      #    giving the Python 'docker' library control over
-      #    its sibling containers.
       - /var/run/docker.sock:/var/run/docker.sock
-
-      # 2. Mount the config file so you can change it without rebuilding
       - ./health-monitor/services.yaml:/app/services.yaml:ro
-
-      # 3. Mount the log folder for persistence
       - .health-monitor/logs:/app/logs
-
-    networks:
-      - app_net
     labels:
       "com.tangapano.service": "health-monitor"
+    logging: *default-logging
+    networks:
+      - internet_net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 256M
 
 volumes:
   postgres_data:
@@ -347,6 +532,15 @@ volumes:
   media_volume:
   redis_data:
 
+# -----------------------------------------------------------------
+# NETWORK DEFINITIONS
+# -----------------------------------------------------------------
 networks:
-  app_net:
+  # 🌍 Network WITH Internet Access
+  internet_net:
     driver: bridge
+
+  # 🔒 Network WITHOUT Internet Access (The Vault)
+  data_net:
+    driver: bridge
+    internal: true

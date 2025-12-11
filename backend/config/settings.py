@@ -42,6 +42,9 @@ if allowed_hosts:
     ALLOWED_HOSTS = json.loads(allowed_hosts)
 
 
+# Obscure the Admin URL
+ADMIN_URL = 'super-secret-admin/' 
+
 # CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
 cors_allowed_origins = os.environ.get('CORS_ALLOWED_ORIGINS', '')
@@ -93,6 +96,7 @@ INSTALLED_APPS = [
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': f"http://{os.environ.get('ELASTICSEARCH_HOST', 'localhost')}:9200",
+        'http_auth': ('elastic', os.environ.get('ELASTIC_PASSWORD')),
         'request_timeout': 60
     },
 }
@@ -247,14 +251,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379",
+        "LOCATION": f"redis://:{os.environ.get('REDIS_PASSWORD')}@redis:6379",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 }
 
-CACHE_TTL = timedelta(days=1).total_seconds()  # 1 week
+CACHE_TTL = timedelta(days=1).total_seconds()  # 1 day
 
 # ImageKit Configuration
 IMAGEKIT_DEFAULT_IMAGE_KIT_ENGINE = 'imagekit.engines.Pillow'

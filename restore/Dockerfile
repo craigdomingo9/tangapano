@@ -1,32 +1,32 @@
 FROM python:3.9-slim
 
-# Install system dependencies including PostgreSQL client and megatools
 RUN apt-get update && apt-get install -y \
     postgresql-client \
     dos2unix \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Create non-root user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-
-# Copy restore scripts
 COPY . .
 
-# Set execution permissions
-RUN chmod +x docker-db-restore.sh docker-images-restore.sh
+# Fix permissions
+RUN chmod +x docker-db-restore.sh docker-images-restore.sh && \
+    dos2unix ./docker-db-restore.sh && \
+    dos2unix ./docker-images-restore.sh && \
+    chown -R appuser:appgroup /app
 
-# Convert to unix file
-RUN dos2unix ./docker-db-restore.sh
-RUN dos2unix ./docker-images-restore.sh
+# Create restore directories with ownership
+RUN mkdir -p /restore/db /restore/images && \
+    chown -R appuser:appgroup /restore
 
-# Create restore directories
-RUN mkdir -p /restore/db /restore/images
+# 🔒 RUN AS NON-ROOT
+USER appuser
 
-# Default command (can be overridden)
 CMD ["/app/docker-db-restore.sh", "--help"]

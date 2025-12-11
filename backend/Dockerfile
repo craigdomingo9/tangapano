@@ -5,37 +5,40 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies
+# Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     dos2unix \
     netcat-openbsd \
-    nano \
     curl \
-    net-tools \
-    iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-
 # ---------- Development Stage ----------
 FROM base AS development
 COPY . /app/
-
-# FIX: Point directly to the script
+RUN chmod +x /app/entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh"]
-
-# FIX: Standard CMD array
 CMD ["python", "manage.py", "runserver_plus", "0.0.0.0:8000", "--reloader-type", "stat"]
 
-# ---------- Production Stage ----------
+# ---------- Production Stage (Hardened) ----------
 FROM base AS production
+
+# Create a dedicated non-root user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
 COPY . /app/
 
-# FIX: Point directly to the script
+# Fix permissions
+RUN chmod +x /app/entrypoint.sh && \
+    chown -R appuser:appgroup /app
+
+# 🔒 RUN AS NON-ROOT
+USER appuser
+
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-# FIX: Standard CMD array
+# Optimized Gunicorn command
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "5", "--timeout", "120", "--worker-class", "gthread", "--threads", "4", "config.wsgi:application"]
