@@ -260,10 +260,6 @@ services:
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
     read_only: true
-    tmpfs:
-      - /tmp
-      - /var/lib/pgadmin
-      - /var/log/pgadmin
     security_opt:
       - no-new-privileges:true
     cap_drop:
