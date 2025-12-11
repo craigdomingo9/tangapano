@@ -7,6 +7,7 @@ import { useState } from "react";
 import KPICards from "../inquiries/KPICards";
 import InquiryTable from "../inquiries/InquiryTable";
 import Pagination from "../common-components/Pagination";
+import InquiryDetailsModal from "../inquiries/InquiryDetailsModal";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -92,6 +93,11 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
         onPageChange={handlePageChange}
         totalItems={totalItems}
         itemsPerPage={ITEMS_PER_PAGE}
+      />
+      <InquiryDetailsModal
+        inquiry={isDetailModalOpen}
+        isOpen={!!isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(null)}
       />
     </div>
   );

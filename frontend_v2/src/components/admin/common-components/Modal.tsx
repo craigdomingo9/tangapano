@@ -9,8 +9,9 @@ interface ModalProps {
   title: string;
   subTitle?: string;
   children: React.ReactNode;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
   noPadding?: boolean;
+  containerClassName?: string;
 }
 
 function Modal({
@@ -21,6 +22,7 @@ function Modal({
   children,
   footer,
   noPadding,
+  containerClassName,
 }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
@@ -38,7 +40,12 @@ function Modal({
         />
 
         {/* Modal Content */}
-        <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-xl shadow-xl overflow-hidden animate-[fadeIn_0.2s_ease-out] border border-slate-200 dark:border-slate-800">
+        <div
+          className={cn(
+            "relative w-full max-w-md bg-white dark:bg-slate-900 rounded-xl shadow-xl overflow-hidden animate-[fadeIn_0.2s_ease-out] border border-slate-200 dark:border-slate-800",
+            containerClassName
+          )}
+        >
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -59,9 +66,11 @@ function Modal({
           <div className={cn(!noPadding && "p-6 space-y-6")}>
             {children}
             {/* Footer Actions */}
-            <div className="flex gap-3 pt-4 justify-end border-t border-slate-50 dark:border-slate-800">
-              {footer}
-            </div>
+            {footer && (
+              <div className="flex gap-3 pt-4 justify-end border-t border-slate-50 dark:border-slate-800">
+                {footer}
+              </div>
+            )}
           </div>
         </div>
       </div>
