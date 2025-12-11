@@ -157,3 +157,34 @@ echo "2. Kernel Hardening:"
 sysctl net.ipv4.tcp_syncookies
 echo "-----------------------------------------------------"
 echo "👉 NEXT STEP: Reboot your server to ensure all kernel changes take full effect."
+
+
+# ------------------------------------------------------------------------------
+# 6. DATABASE OPTIMIZATIONS (Redis)
+# ------------------------------------------------------------------------------
+echo "⚡ Applying Redis Kernel Optimizations..."
+
+# Fix: Memory Overcommit (Prevents Redis background save failures)
+sysctl vm.overcommit_memory=1
+echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf
+
+# Fix: Disable Transparent Huge Pages (THP)
+# Redis performs poorly with THP enabled. This disables it at boot.
+echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
+echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
+
+# Create a systemd service to persist THP disable after reboot
+cat <<EOF > /etc/systemd/system/disable-thp.service
+[Unit]
+Description=Disable Transparent Huge Pages (THP)
+After=sysinit.target local-fs.target
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo never > /sys/kernel/mm/transparent_hugepage/enabled; echo never > /sys/kernel/mm/transparent_hugepage/defrag'
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable disable-thp.service
+echo "✅ Redis optimizations applied."
+
