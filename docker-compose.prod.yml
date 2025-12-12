@@ -303,6 +303,7 @@ services:
       "com.tangapano.service": "db-restore"
     networks:
       - data_net
+      - internet_net
     logging: *default-logging
     security_opt:
       - no-new-privileges:true
