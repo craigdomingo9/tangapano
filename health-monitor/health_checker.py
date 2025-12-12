@@ -2,6 +2,10 @@ import requests
 import socket
 from typing import Tuple
 
+headers = {
+    'User-Agent': 'Tangapano-Internal-Monitor'
+}
+
 class HealthChecker:
     """Performs the health check for a given service."""
     
@@ -17,7 +21,7 @@ class HealthChecker:
     def _check_http(self, target_url: str) -> Tuple[bool, str]:
         """Checks an HTTP(S) endpoint."""
         try:
-            response = requests.get(target_url, timeout=5)
+            response = requests.get(target_url, headers=headers, timeout=5)
             if 200 <= response.status_code < 300:
                 return (True, f"HTTP {response.status_code}")
             else:
