@@ -9,7 +9,7 @@ def get_logger():
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler('restore_db.log'),
+                logging.FileHandler('/tmp/restore_images.log'),
                 logging.StreamHandler()
             ]
         )
