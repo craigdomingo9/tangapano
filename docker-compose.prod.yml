@@ -314,6 +314,7 @@ services:
       - media_volume:/app/media
     command: ["/app/docker-images-restore.sh"]
     profiles: ["restore"]
+    user: root
     labels:
       "com.tangapano.service": "images-restore"
     networks:
