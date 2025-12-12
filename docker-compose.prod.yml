@@ -282,7 +282,7 @@ services:
       - internet_net
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
+    user: root
     tmpfs:
       - /tmp
     security_opt:
