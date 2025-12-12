@@ -1,5 +1,5 @@
 from django.contrib import admin
-from listings.models import Listing, Amenity, Room, ListingImage
+from listings.models import Listing, Amenity, Room, ListingImage, ListingLocation
 
 @admin.register(Listing)
 class ListingAdmin(admin.ModelAdmin):
@@ -24,3 +24,4 @@ class RoomAdmin(admin.ModelAdmin):
 # Register Amenity and ListingImage as standard
 admin.site.register(Amenity)
 admin.site.register(ListingImage)
+admin.site.register(ListingLocation)

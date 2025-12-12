@@ -6,6 +6,7 @@ from campuses.models import Campus, Neighborhood
 from .amenity_serializer import AmenitySerializer
 from .listing_image_serializer import ListingImageSerializer
 from users.serializers import LandlordSerializer
+from .listing_location_serializer import ListingMapSerializer
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -15,6 +16,7 @@ class ListingSerializer(serializers.ModelSerializer):
     neighborhood = NeighborhoodSerializer(read_only=True)
     landlord = LandlordSerializer(read_only=True)
     images = ListingImageSerializer(many=True, read_only=True, source='ordered_images')
+    location = ListingMapSerializer()
 
     class Meta:
         model = Listing
