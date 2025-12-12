@@ -283,6 +283,7 @@ services:
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
     user: root
+    read_only: false
     tmpfs:
       - /tmp
     security_opt:
