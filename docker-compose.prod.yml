@@ -305,8 +305,6 @@ services:
       - data_net
       - internet_net
     logging: *default-logging
-    security_opt:
-      - no-new-privileges:true
 
   images-restore:
     build: ./restore
@@ -321,8 +319,6 @@ services:
     networks:
       - internet_net
     logging: *default-logging
-    security_opt:
-      - no-new-privileges:true
 
   cert-renewer:
     build:
