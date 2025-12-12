@@ -1,4 +1,10 @@
-import { Image as ImageIcon, Info, Share2, Sparkles } from "lucide-react";
+import {
+  Image as ImageIcon,
+  Info,
+  MapPin,
+  Share2,
+  Sparkles,
+} from "lucide-react";
 import CarouselControls from "./CarouselControls";
 import PaginationDots from "./PaginationDots";
 import ImageOverlay from "./ImageOverlay";
@@ -17,6 +23,8 @@ interface ImageCarouselProps {
   onPrevImage: () => void;
   onShare: () => void;
   isFullyBooked: boolean;
+  showMap: boolean;
+  setShowMap: (state: boolean) => void;
 }
 
 export default function ImageCarousel({
@@ -28,6 +36,8 @@ export default function ImageCarousel({
   onPrevImage,
   onShare,
   isFullyBooked,
+  showMap,
+  setShowMap,
 }: ImageCarouselProps) {
   const images = listing?.images || [];
 
@@ -51,10 +61,7 @@ export default function ImageCarousel({
   });
 
   return (
-    <div
-      {...swipeHandlers}
-      className="relative aspect-16/10 bg-slate-100 dark:bg-slate-800 overflow-hidden"
-    >
+    <div {...swipeHandlers}>
       {/* Image Display */}
       {currentImage ? (
         <Image
@@ -114,13 +121,15 @@ export default function ImageCarousel({
         </div>
         {/* Right Side Actions */}
         <div className="flex items-center gap-2">
-          {/* Caption Badge */}
-          <div className="px-2.5 py-1 rounded-md bg-black/40 backdrop-blur-md border border-white/10 shadow-sm flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/80"></span>
-            <span className="text-xxs font-bold text-white uppercase tracking-wider">
-              {currentImage?.caption}
-            </span>
-          </div>
+          {!showMap && currentImage?.caption && (
+            <div className="px-2.5 py-1 rounded-md bg-black/40 backdrop-blur-md border border-white/10 shadow-sm flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-white/80"></span>
+              <span className="text-xxs font-bold text-white uppercase tracking-wider">
+                {currentImage?.caption}
+              </span>
+            </div>
+          )}
+
           {/* Share Button */}
           <button
             onClick={(e) => {
@@ -133,11 +142,6 @@ export default function ImageCarousel({
           </button>
         </div>
       </div>
-
-      {/* {currentImage?.caption && (
-        <div className="absolute top-4 left-4 z-20">
-        </div>
-      )} */}
 
       {isFullyBooked && (
         <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">

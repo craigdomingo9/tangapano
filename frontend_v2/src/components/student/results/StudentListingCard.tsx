@@ -1,20 +1,10 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  Image,
-  Link,
-  MapPin,
-  Share2,
-} from "lucide-react";
 import { useState, useMemo } from "react";
 import { ShareDialog } from "./ShareDialog";
 import ImageCarousel from "./card-sections/ImageCarousel";
 import ListingInfo from "./card-sections/ListingInfo";
+import MapView from "./card-sections/MapView";
+import MapToggleButton from "./MapToggleButton";
 
 interface StudentListingCardProps {
   listing: Listing;
@@ -28,6 +18,7 @@ export function StudentListingCard({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isAmenitiesExpanded, setIsAmenitiesExpanded] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   const handleExpressInterestClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -57,24 +48,36 @@ export function StudentListingCard({
           !isFullyBooked && "hover:shadow-md"
         )}
       >
-        {/* Image Carousel Section */}
-        <ImageCarousel
-          listing={listing}
-          title={listing.title}
-          neighborhood={listing.neighborhood.name}
-          currentImageIndex={currentImageIndex}
-          onNextImage={() =>
-            setCurrentImageIndex((prev) => (prev + 1) % listing.images.length)
-          }
-          onPrevImage={() =>
-            setCurrentImageIndex((prev) =>
-              prev === 0 ? listing.images.length - 1 : prev - 1
-            )
-          }
-          onShare={() => setIsShareOpen(true)}
-          isFullyBooked={isFullyBooked}
-        />
+        <div className="relative aspect-16/10 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+          {showMap ? (
+            <MapView listing={listing} />
+          ) : (
+            <ImageCarousel
+              listing={listing}
+              title={listing.title}
+              showMap={showMap}
+              setShowMap={(state: boolean) => setShowMap(state)}
+              neighborhood={listing.neighborhood.name}
+              currentImageIndex={currentImageIndex}
+              onNextImage={() =>
+                setCurrentImageIndex(
+                  (prev) => (prev + 1) % listing.images.length
+                )
+              }
+              onPrevImage={() =>
+                setCurrentImageIndex((prev) =>
+                  prev === 0 ? listing.images.length - 1 : prev - 1
+                )
+              }
+              onShare={() => setIsShareOpen(true)}
+              isFullyBooked={isFullyBooked}
+            />
+          )}
+          {/* Map Toggle Button - Bottom Right */}
+          <MapToggleButton showMap={showMap} setShowMap={setShowMap} />
+        </div>
 
+        {/* Listing Info Section */}
         <ListingInfo
           listing={listing}
           isAmenitiesExpanded={isAmenitiesExpanded}
