@@ -484,6 +484,7 @@ services:
     logging: *default-logging
     networks:
       - internet_net
+      - data_net.
     deploy:
       resources:
         limits:
