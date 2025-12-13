@@ -38,35 +38,35 @@ git pull origin main
 # 4. BUILD IMAGES
 # DOCKER_BUILDKIT=1 ensures parallel, faster builds
 log "🔨 Building Docker images..."
-DOCKER_BUILDKIT=1 docker-compose -f docker-compose.prod.yml build backend frontend
+DOCKER_BUILDKIT=1 docker compose -f docker-compose.prod.yml build backend frontend
 
 # 5. START DATA LAYER (The Vault)
 # We prioritize the data layer to ensure DBs are up before the app tries to connect
 log "🗄️  Ensuring Data Layer (DB, Redis, Elastic) is up..."
-docker-compose -f docker-compose.prod.yml up -d db redis elasticsearch pgbouncer
+docker compose -f docker-compose.prod.yml up -d db redis pgbouncer
 
 # Wait a moment for Postgres/Elastic to initialize if they were restarted
-sleep 5
+sleep 10
 
 # 6. RUN MIGRATIONS & STATIC FILES
 # Note: We use 'exec -T' because we know backend is running from step 5,
 # or we start it now to be safe.
 log "⚙️  Running Database Migrations..."
-docker-compose -f docker-compose.prod.yml up -d backend
-docker-compose -f docker-compose.prod.yml exec -T backend python manage.py migrate --noinput
+docker compose -f docker-compose.prod.yml up -d backend
+docker compose -f docker-compose.prod.yml exec -T backend python manage.py migrate --noinput
 
 log "🎨 Collecting Static Files..."
 # This works despite read_only: true because we mounted a volume at /app/static
-docker-compose -f docker-compose.prod.yml exec -T backend python manage.py collectstatic --noinput
+docker compose -f docker-compose.prod.yml exec -T backend python manage.py collectstatic --noinput
 # 7. RELOAD FRONTEND & NGINX
 # We do this last to minimize downtime (Zero-Downtime Rolling Update)
 log "🔄 Updating Frontend and Nginx..."
-docker-compose -f docker-compose.prod.yml up -d frontend nginx
+docker compose -f docker-compose.prod.yml up -d frontend nginx
 
 # 8. RELOAD UTILITIES
 # Ensure monitoring and background tasks are fresh
 log "📈 Updating Monitoring & Utils..."
-docker-compose -f docker-compose.prod.yml up -d cert-renewer prometheus grafana backup health-monitor
+docker compose -f docker-compose.prod.yml up -d cert-renewer prometheus grafana backup health-monitor
 
 # 9. CLEANUP
 log "🧹 Cleaning up unused Docker images..."
