@@ -2,7 +2,7 @@
 TITLE Secure Tunnel to Tangapano VPS
 
 :: --- CONFIGURATION ---
-set VPS_USER=root
+set VPS_USER=deploy
 set VPS_HOST=tangapano.co.zw
 :: Path to key is usually optional if you have it in C:\Users\You\.ssh\id_rsa
 :: otherwise add: -i "C:\path\to\key.pem" to the ssh command below
