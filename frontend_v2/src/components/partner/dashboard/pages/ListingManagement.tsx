@@ -12,6 +12,7 @@ import { api, ListingPayload } from "@/lib/api/listings";
 import { errorToast, successToast } from "@/lib/toast";
 import PropertyDetailsManager from "../listings/PropertyDetailsManager";
 import { PartnerComponentProps } from "@/lib/types/partner";
+import useListingsPartner from "@/hooks/partner/use-listing";
 
 // Form State uses IDs, not Objects
 export interface ListingFormState {
@@ -53,7 +54,10 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
   const pageTitle = isEditMode ? "Edit Property Details" : "Add New Property";
 
   // Fetch Listing (only if editing)
-  const { data: listing, isLoading } = useListingDetail(listingId!, isEditMode);
+  const { listing, listingIsLoading } = useListingsPartner(
+    accessToken,
+    listingId
+  );
 
   // Local Form Store
   const {
@@ -118,6 +122,9 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
       return;
     }
 
+    const hasLocation =
+      formData.location.latitude && formData.location.longitude;
+
     // Transform ListingFormState to API Payload
     const payload: ListingPayload = {
       title: formData.title,
@@ -125,8 +132,8 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
       neighborhood: formData.neighborhood,
       distance_from_campus: formData.distance_from_campus,
       apply_agent_fee: formData.apply_agent_fee,
-      location: formData.location,
     };
+    if (hasLocation) payload["location"] = formData.location;
 
     mutation.mutate(payload);
   };
@@ -138,7 +145,7 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
 
   // Guards
   if (!accessToken) return <ErrorPage type="access" />;
-  if (isLoading && isEditMode) return <LoadingScreen />;
+  if (listingIsLoading && isEditMode) return <LoadingScreen />;
   if (!listing && isEditMode) return <ErrorPage type="404" />;
   if (!listing && !isEditMode && mode !== "create") return <LoadingScreen />;
 
