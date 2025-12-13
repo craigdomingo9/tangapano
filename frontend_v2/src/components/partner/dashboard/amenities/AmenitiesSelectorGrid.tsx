@@ -1,5 +1,5 @@
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
-import useAmenityCategoriesPartner from "@/hooks/partner.ts/use-amenity-categories";
+import useAmenityCategoriesPartner from "@/hooks/partner/use-amenity-categories";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { ErrorPage } from "../overview/ErrorPage";

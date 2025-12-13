@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import { useSwipe } from "@/hooks/use-swipe"; // Adjust path as needed
 import MapToggleButton from "../results/buttons/MapToggleButton";
 import FullScreenListingMap from "@/components/common/maps/FullScreenListingMap";
+import useWindowFocus from "@/hooks/utils/use-window-focus";
+import { cn } from "@/lib/utils";
 
 interface ListingDetailHeroProps {
   listing: any;
@@ -14,6 +16,10 @@ interface ListingDetailHeroProps {
 function ListingDetailHero({ listing }: ListingDetailHeroProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showMap, setShowMap] = useState(false);
+  const isFocused = useWindowFocus();
+
+  console.log(isFocused);
+
   const hasLocation = !(
     !listing.location ||
     !listing.location.lat ||
@@ -51,12 +57,18 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
       {hasImages ? (
         <>
           {/* --- MOBILE: Simple Full Cover --- */}
-          <div className="block md:hidden w-full h-full relative">
+          <div
+            className="block md:hidden w-full h-full relative select-none"
+            onContextMenu={(e) => e.preventDefault()}
+          >
             <Image
               key={activeImageIndex}
               src={listing.images[activeImageIndex].display_image}
               alt={listing.title}
-              className="object-cover transition-transform duration-700 animate-in fade-in slide-in-from-right-4 fill-mode-both touch-pan-y"
+              className={cn(
+                "object-cover transition-transform duration-700 animate-in fade-in slide-in-from-right-4 fill-mode-both touch-pan-y",
+                !isFocused && "blur-md scale-105"
+              )}
               loader={myImageLoader}
               fill
               preload
@@ -68,7 +80,10 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
           </div>
 
           {/* --- DESKTOP: Cinematic Ambient Mode --- */}
-          <div className="hidden md:flex relative w-full h-full items-center justify-center bg-black">
+          <div
+            className="hidden md:flex relative w-full h-full items-center justify-center bg-black select-none"
+            onContextMenu={(e) => e.preventDefault()}
+          >
             {/* Layer 1: Ambient Blur */}
             <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
               <Image
@@ -77,7 +92,10 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
                 alt="Background ambience"
                 loader={myImageLoader}
                 fill
-                className="object-cover blur-3xl scale-110 opacity-60"
+                className={cn(
+                  "object-cover transition-transform duration-700 animate-in fade-in blur-3xl scale-110 opacity-60",
+                  !isFocused && "blur-md scale-105"
+                )}
                 preload
                 draggable={false}
               />
@@ -90,7 +108,10 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
                 key={`main-${activeImageIndex}`}
                 src={listing.images[activeImageIndex].display_image}
                 alt={listing.title}
-                className="object-contain max-w-full max-h-full drop-shadow-2xl shadow-black"
+                className={cn(
+                  "object-contain transition-transform duration-700 animate-in fade-in max-w-full max-h-full drop-shadow-2xl shadow-black",
+                  !isFocused && "blur-md scale-105"
+                )}
                 loader={myImageLoader}
                 width={1200}
                 height={800}

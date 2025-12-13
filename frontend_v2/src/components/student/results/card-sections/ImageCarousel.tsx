@@ -13,6 +13,7 @@ import myImageLoader from "@/lib/images/image-loader";
 import { getShimmerUrl } from "@/lib/images/shimmer";
 import { useSwipe } from "@/hooks/use-swipe";
 import { cn } from "@/lib/utils";
+import useWindowFocus from "@/hooks/utils/use-window-focus";
 
 interface ImageCarouselProps {
   listing: Listing;
@@ -40,6 +41,7 @@ export default function ImageCarousel({
   setShowMap,
 }: ImageCarouselProps) {
   const images = listing?.images || [];
+  const isFocused = useWindowFocus();
 
   const hasImages = images.length > 0;
   const currentImage = hasImages ? images[currentImageIndex] : null;
@@ -61,7 +63,11 @@ export default function ImageCarousel({
   });
 
   return (
-    <div {...swipeHandlers}>
+    <div
+      {...swipeHandlers}
+      className="select-none"
+      onContextMenu={(e) => e.preventDefault()}
+    >
       {/* Image Display */}
       {currentImage ? (
         <Image
@@ -70,7 +76,8 @@ export default function ImageCarousel({
           alt={title}
           className={cn(
             "w-full h-full object-cover transition-transform duration-700 animate-in fade-in slide-in-from-right-4 fill-mode-both touch-pan-y",
-            isFullyBooked && "grayscale contrast-125 opacity-70"
+            isFullyBooked && "grayscale contrast-125 opacity-70",
+            !isFocused && "blur-md scale-105"
           )}
           loader={myImageLoader}
           width={100}
