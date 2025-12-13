@@ -7,7 +7,7 @@ import ResultsNavigation from "../results/ResultsNavigation";
 import LoadingState from "../results/states/LoadingState";
 import ErrorState from "../results/states/ErrorState";
 import ResultsGrid from "../results/ResultsGrid";
-import LoadMoreButton from "../results/LoadMoreButton";
+import LoadMoreButton from "../results/buttons/LoadMoreButton";
 import EndOfResults from "../results/states/EndOfResults";
 import EmptyState from "../results/states/EmptyState";
 import { useRouterPush } from "@/hooks/use-router-push";

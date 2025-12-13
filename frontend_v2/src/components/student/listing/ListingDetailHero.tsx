@@ -4,13 +4,24 @@ import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useSwipe } from "@/hooks/use-swipe"; // Adjust path as needed
+import MapToggleButton from "../results/buttons/MapToggleButton";
+import FullScreenListingMap from "@/components/common/maps/FullScreenListingMap";
 
 interface ListingDetailHeroProps {
-  listing: any;
+  listing: Listing;
 }
 
 function ListingDetailHero({ listing }: ListingDetailHeroProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [showMap, setShowMap] = useState(false);
+  const hasLocation = !(
+    !listing.location ||
+    !listing.location.lat ||
+    !listing.location.lon ||
+    !listing.campus_location ||
+    !listing.campus_location.lat ||
+    !listing.campus_location.lon
+  );
 
   const hasImages = listing.images && listing.images.length > 0;
 
@@ -122,6 +133,19 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
+      )}
+      {hasLocation && (
+        <MapToggleButton
+          showMap={showMap}
+          setShowMap={(show: boolean) => setShowMap(show)}
+          containerClassName="bottom-20 left-4 lg:left-40 xl:left-60"
+        />
+      )}
+      {showMap && hasLocation && (
+        <FullScreenListingMap
+          listing={listing}
+          turnFullScreenOff={() => setShowMap(false)}
+        />
       )}
     </div>
   );

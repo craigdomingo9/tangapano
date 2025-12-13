@@ -106,8 +106,15 @@ interface Listing {
   is_locked: boolean;
   is_active: boolean;
   is_available: boolean;
+  location?: Location;
+  campus_location?: Location;
   created_at: string;
   updated_at: string;
+}
+
+interface Location {
+  lon: number;
+  lat: number;
 }
 
 interface Interest {

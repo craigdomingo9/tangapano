@@ -11,12 +11,15 @@ class RetrieveListingSerializer(serializers.ModelSerializer):
     rooms = serializers.SerializerMethodField()
     campus = CampusSerializer(read_only=True)
     images = ListingImageSerializer(many=True, read_only=True)
+    location = serializers.SerializerMethodField()
+    campus_location = serializers.SerializerMethodField()
     
     class Meta:
         model = Listing
         fields = [
             'id', 'landlord', 'title', 'description', 'images',
             'amenities',
+            'location', 'campus_location',
             'campus', 'neighborhood',
             'apply_agent_fee', 'is_locked',
             'distance_from_campus', 'is_active', 'rooms',
@@ -37,6 +40,21 @@ class RetrieveListingSerializer(serializers.ModelSerializer):
             r_data['room_number'] = index # Inject number here
             data.append(r_data)
         return data
+
+    def get_location(self, obj):
+        if not hasattr(obj, 'location'): return {}
+        location = {
+            "lat": obj.location.fuzzy_latitude,
+            "lon": obj.location.fuzzy_longitude,
+        }
+        return location
+
+    def get_campus_location(self, obj):
+        location = {
+            "lat": obj.campus.latitude,
+            "lon": obj.campus.longitude,
+        }
+        return location
     
     def to_representation(self, instance):
         # Get the original representation (the dictionary)

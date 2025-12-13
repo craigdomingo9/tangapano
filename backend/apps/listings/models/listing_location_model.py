@@ -23,7 +23,7 @@ class ListingLocation(models.Model):
 
     def _generate_fuzzy_coords(self):
         """Generates random point in 200m-500m annulus."""
-        R_MIN, R_MAX = 200, 500
+        R_MIN, R_MAX = 50, 120
         DEG_TO_RAD = math.pi / 180
 
         # Uniform distribution logic

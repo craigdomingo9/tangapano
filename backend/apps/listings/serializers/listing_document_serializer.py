@@ -39,6 +39,8 @@ class ListingDocumentSerializer(DocumentSerializer):
     images = serializers.ListField(child=serializers.DictField())
     amenities = serializers.ListField(child=serializers.DictField())
     rooms = serializers.SerializerMethodField()
+    location = serializers.DictField()
+    campus_location = serializers.DictField()
 
     class Meta:
         document = ListingDocument

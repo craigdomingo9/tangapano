@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { FormInput } from "@/components/common-components/form-input";
+import { FormInput } from "@/components/common/form-input";
 import {
   loginSchema,
   type LoginFormData,

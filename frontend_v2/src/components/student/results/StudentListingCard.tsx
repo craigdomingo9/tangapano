@@ -3,8 +3,11 @@ import { useState, useMemo } from "react";
 import { ShareDialog } from "./ShareDialog";
 import ImageCarousel from "./card-sections/ImageCarousel";
 import ListingInfo from "./card-sections/ListingInfo";
-import MapView from "./card-sections/MapView";
-import MapToggleButton from "./MapToggleButton";
+import MapToggleButton from "./buttons/MapToggleButton";
+import { Globe, Layers, Maximize, X } from "lucide-react";
+import { LazyMapWrapper } from "@/components/common/maps/LazyMapWrapper";
+import { Button } from "@/components/ui/button";
+import FullScreenListingMap from "../../common/maps/FullScreenListingMap";
 
 interface StudentListingCardProps {
   listing: Listing;
@@ -19,6 +22,15 @@ export function StudentListingCard({
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isAmenitiesExpanded, setIsAmenitiesExpanded] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
+  const hasLocation = !(
+    !listing.location ||
+    !listing.location.lat ||
+    !listing.location.lon ||
+    !listing.campus_location ||
+    !listing.campus_location.lat ||
+    !listing.campus_location.lon
+  );
 
   const handleExpressInterestClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,7 +62,7 @@ export function StudentListingCard({
       >
         <div className="relative aspect-16/10 bg-slate-100 dark:bg-slate-800 overflow-hidden">
           {showMap ? (
-            <MapView listing={listing} />
+            <LazyMapWrapper listing={listing} />
           ) : (
             <ImageCarousel
               listing={listing}
@@ -74,7 +86,24 @@ export function StudentListingCard({
             />
           )}
           {/* Map Toggle Button - Bottom Right */}
-          <MapToggleButton showMap={showMap} setShowMap={setShowMap} />
+
+          {hasLocation && (
+            <MapToggleButton showMap={showMap} setShowMap={setShowMap} />
+          )}
+          {showMap && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMapFullscreen(true);
+                }}
+                className="absolute cursor-pointer top-2 right-2 p-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-lg text-slate-600 dark:text-slate-300 shadow-sm hover:scale-110 transition-transform hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                title="Maximize Map"
+              >
+                <Maximize className="w-4 h-4" />
+              </button>
+            </>
+          )}
         </div>
 
         {/* Listing Info Section */}
@@ -86,6 +115,14 @@ export function StudentListingCard({
           isFullyBooked={isFullyBooked}
         />
       </div>
+
+      {/* Fullscreen Map Modal */}
+      {isMapFullscreen && hasLocation && (
+        <FullScreenListingMap
+          listing={listing}
+          turnFullScreenOff={() => setIsMapFullscreen(false)}
+        />
+      )}
 
       <ShareDialog
         isOpen={isShareOpen}

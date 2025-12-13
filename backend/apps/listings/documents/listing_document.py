@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-from listings.models import Listing, Room
+from listings.models import Listing, Room, ListingLocation
 
 @registry.register_document
 class ListingDocument(Document):
@@ -67,6 +67,15 @@ class ListingDocument(Document):
         'is_full': fields.BooleanField(),
         'has_vacancy': fields.BooleanField(),
     })
+    
+    # --- 4. LOCATION FIELDS ---
+    # Public/Fuzzy Location (Safe for Frontend & Map Display)
+    location = fields.GeoPointField()
+    
+    # Campus Location (Lon & Lat)
+    campus_location = fields.ObjectField()
+    
+    # --- DOCUMENT SETTINGS & OPTIMIZATIONS ---
 
     class Index:
         name = 'listings'
@@ -74,12 +83,12 @@ class ListingDocument(Document):
 
     class Django:
         model = Listing
-        related_models = [Room]
+        related_models = [Room, ListingLocation]
 
     def get_queryset(self):
         # Massive Optimization: Fetch everything needed for indexing in 1 go
         return super().get_queryset().select_related(
-            'landlord', 'campus__city', 'neighborhood'
+            'landlord', 'campus__city', 'neighborhood', 'location'
         ).prefetch_related(
             'rooms', 'amenities', 'images', 'campus__agent'
         )
@@ -97,6 +106,8 @@ class ListingDocument(Document):
 
     def get_instances_from_related(self, related_instance):
         if isinstance(related_instance, Room):
+            return related_instance.listing
+        if isinstance(related_instance, ListingLocation):
             return related_instance.listing
         return None
 
@@ -132,6 +143,29 @@ class ListingDocument(Document):
             'name': instance.campus.name,
             'city': {'name': instance.campus.city.name}
         }
+    
+    # --- DATA PREPARATION (LOCATION) ---
+
+    def prepare_location(self, instance):
+        """
+        Returns the FUZZY coordinates.
+        This is what the frontend will receive in the _source.
+        """
+        # Safety check if location object exists
+        if hasattr(instance, 'location') and instance.location:
+            return {
+                'lat': instance.location.fuzzy_latitude,
+                'lon': instance.location.fuzzy_longitude
+            }
+        return None
+    
+    def prepare_campus_location(self, instance):
+        if hasattr(instance, 'campus') and (instance.campus.latitude and instance.campus.longitude):
+            return {
+                'lat': instance.campus.latitude or 0,
+                'lon': instance.campus.longitude or 0
+            }
+
 
     def prepare_images(self, instance):
         # Only index necessary image data to keep index size down

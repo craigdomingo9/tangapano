@@ -4,11 +4,21 @@ import { ImageIcon, MapPin } from "lucide-react";
 interface MapToggleButtonProps {
   showMap: boolean;
   setShowMap: (state: boolean) => void;
+  containerClassName?: string;
 }
 
-function MapToggleButton({ showMap, setShowMap }: MapToggleButtonProps) {
+function MapToggleButton({
+  showMap,
+  setShowMap,
+  containerClassName,
+}: MapToggleButtonProps) {
   return (
-    <div className="absolute bottom-4 right-4 z-30 cursor-pointer">
+    <div
+      className={cn(
+        "absolute bottom-4 right-4 z-30 cursor-pointer",
+        containerClassName
+      )}
+    >
       <button
         onClick={(e) => {
           e.stopPropagation();

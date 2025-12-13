@@ -28,6 +28,9 @@ interface ErrorPageProps {
 export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
   const router = useRouter();
 
+  const refreshDefault = () =>
+    window !== undefined ? window.location.reload() : "";
+
   // Configuration for different error states
   const errorConfig = {
     "500": {
@@ -38,7 +41,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
       code: "Error 500",
       primaryAction: "Try Again",
       secondaryAction: "Check Status",
-      primaryActionFn: refreshFn,
+      primaryActionFn: refreshFn || refreshDefault,
       secondaryActionFn: () => null,
     },
     "404": {
@@ -49,7 +52,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
       code: "Error 404",
       primaryAction: "Refresh",
       secondaryAction: "Support",
-      primaryActionFn: refreshFn,
+      primaryActionFn: refreshFn || refreshDefault,
       secondaryActionFn: () => router.push("/partner/dashboard?page=support"),
     },
     maintenance: {
@@ -60,7 +63,7 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({ type, refreshFn }) => {
       code: "Maintenance Mode",
       primaryAction: "Refresh",
       secondaryAction: "Support",
-      primaryActionFn: refreshFn,
+      primaryActionFn: refreshFn || refreshDefault,
       secondaryActionFn: () => router.push("/partner/dashboard?page=support"),
     },
     access: {
