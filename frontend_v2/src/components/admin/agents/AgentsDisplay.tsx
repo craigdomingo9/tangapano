@@ -70,7 +70,7 @@ function AgentsDisplay({
 
             <button
               onClick={() => handleEditClick(agent)}
-              className="w-full mt-auto py-2 bg-muted/30 hover:bg-lapis/20 hover:text-lapis rounded-lg text-xs font-bold cursor-pointer transition-all border border-border/40 hover:border-lapis/20 flex items-center justify-center gap-2"
+              className="w-full mt-auto py-2 bg-lapis/10 hover:bg-lapis/20 hover:text-lapis rounded-lg text-xs font-bold cursor-pointer transition-all border border-border/40 hover:border-lapis/20 flex items-center justify-center gap-2 h-10"
             >
               <Edit className="w-3 h-3" /> Manage Profile
             </button>

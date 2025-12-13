@@ -60,39 +60,46 @@ function InventoryDesktopView({
                     className="hover:bg-muted/30 transition-colors group"
                   >
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden shrink-0 border border-border/40 relative">
-                          {listing.main_image ? (
-                            <Image
-                              src={listing.main_image}
-                              alt={listing.title || "Property"}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                              loader={myImageLoader}
-                              width={100}
-                              height={100}
-                              placeholder="blur"
-                              blurDataURL={getShimmerUrl(700, 475)}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                              <MapPin className="w-5 h-5" />
-                            </div>
-                          )}
-                          {listing.is_locked && (
-                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                              <Lock className="w-4 h-4 text-white" />
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <div className="font-bold truncate text-ellipsis text-foreground text-sm group-hover:text-lapis transition-colors">
-                            {listing.title || "Untitled Property"}
+                      <RouterLink
+                        to={{
+                          page: "listings",
+                          listingId: listing.id.toString(),
+                        }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden shrink-0 border border-border/40 relative">
+                            {listing.main_image ? (
+                              <Image
+                                src={listing.main_image}
+                                alt={listing.title || "Property"}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                loader={myImageLoader}
+                                width={100}
+                                height={100}
+                                placeholder="blur"
+                                blurDataURL={getShimmerUrl(700, 475)}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                                <MapPin className="w-5 h-5" />
+                              </div>
+                            )}
+                            {listing.is_locked && (
+                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                <Lock className="w-4 h-4 text-white" />
+                              </div>
+                            )}
                           </div>
-                          <div className="text-xs text-muted-foreground mt-0.5 font-medium">
-                            {listing.landlord_name || "Unknown Landlord"}
+                          <div>
+                            <div className="font-bold truncate text-ellipsis text-foreground text-sm group-hover:text-lapis transition-colors">
+                              {listing.title || "Untitled Property"}
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-0.5 font-medium">
+                              {listing.landlord_name || "Unknown Landlord"}
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </RouterLink>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-1.5 text-muted-foreground text-xs font-medium bg-muted/30 border border-border/20 w-fit px-2 py-1 rounded truncate text-ellipsis">
