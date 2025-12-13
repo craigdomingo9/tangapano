@@ -2,16 +2,17 @@ import { useCampuses } from "@/hooks/use-reference-data";
 import React, { useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { Briefcase, Loader2, Sparkles, TrendingUp, User } from "lucide-react";
-import { FormState } from "../pages/ListingManagement";
+import { ListingFormState } from "../pages/ListingManagement";
+import LocationCapture from "./LocationCapture";
 
 interface PropertyDetailsManagerProps {
   title: string;
   subtitle: string;
   onCancel: () => void;
   // onChange signature matches the FormState structure
-  onChange: (field: keyof FormState, value: any) => void;
+  onChange: (field: keyof ListingFormState, value: any) => void;
   onSave: () => void;
-  formState: FormState;
+  formState: ListingFormState;
   isSaving: boolean;
 }
 
@@ -219,6 +220,8 @@ function PropertyDetailsManager({
             </button>
           </div>
         </div>
+
+        <LocationCapture listing={formState} handleChange={onChange} />
 
         {/* Agent Fee Switch */}
         <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">

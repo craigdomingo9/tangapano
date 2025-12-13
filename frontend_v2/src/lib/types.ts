@@ -5,6 +5,8 @@ interface Campus {
   address: string;
   neighborhoods: Neighborhood[];
   agent: Agent;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 interface City {

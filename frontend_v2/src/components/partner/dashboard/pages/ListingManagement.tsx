@@ -14,24 +14,33 @@ import PropertyDetailsManager from "../listings/PropertyDetailsManager";
 import { PartnerComponentProps } from "@/lib/types/partner";
 
 // Form State uses IDs, not Objects
-export interface FormState {
+export interface ListingFormState {
   title: string;
   campus: string; // Storing the ID
   neighborhood: string; // Storing the ID
   distance_from_campus: number;
   apply_agent_fee: boolean;
+  location: {
+    latitude: number | null;
+    longitude: number | null;
+  };
 }
 
-const INITIAL_STATE: FormState = {
+const INITIAL_STATE: ListingFormState = {
   title: "",
   campus: "",
   neighborhood: "",
   distance_from_campus: 0,
   apply_agent_fee: false,
+  location: {
+    latitude: null,
+    longitude: null,
+  },
 };
 
 // Store for local form state
-export const usePropertyDetails = createEntityStore<FormState>(INITIAL_STATE);
+export const usePropertyDetails =
+  createEntityStore<ListingFormState>(INITIAL_STATE);
 
 function ListingManagement({ params, serverData }: PartnerComponentProps) {
   const { push } = useRouterPush();
@@ -64,6 +73,10 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
         neighborhood: listing.neighborhood.id, // Extract ID from object
         distance_from_campus: parsedDist,
         apply_agent_fee: listing.apply_agent_fee,
+        location: {
+          latitude: listing.location?.lat ?? null,
+          longitude: listing.location?.lon ?? null,
+        },
       });
     } else if (!isEditMode) {
       // Reset to initial if creating new
@@ -105,20 +118,21 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
       return;
     }
 
-    // Transform FormState to API Payload
+    // Transform ListingFormState to API Payload
     const payload: ListingPayload = {
       title: formData.title,
       campus: formData.campus, // Backend expects snake_case ID
       neighborhood: formData.neighborhood,
       distance_from_campus: formData.distance_from_campus,
       apply_agent_fee: formData.apply_agent_fee,
+      location: formData.location,
     };
 
     mutation.mutate(payload);
   };
 
   // 4. Field Change Handler (passed to child)
-  function handleFieldChange(field: keyof FormState, value: any) {
+  function handleFieldChange(field: keyof ListingFormState, value: any) {
     setFormData({ ...formData, [field]: value });
   }
 

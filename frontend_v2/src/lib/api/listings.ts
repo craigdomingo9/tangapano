@@ -60,6 +60,10 @@ export interface ListingPayload {
   neighborhood: string; // Send ID, not object
   distance_from_campus: number;
   apply_agent_fee: boolean;
+  location?: {
+    latitude: number | null;
+    longitude: number | null;
+  };
 }
 
 export const api = {

@@ -40,7 +40,7 @@ function LocationsTab({
             Grouped by Metropolitan Area
           </p>
         </div>
-        <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap justify-center h-10">
+        <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap justify-center h-20 sm:h-10">
           <button
             onClick={() => setAddCityOpen(true)}
             className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer"
@@ -87,7 +87,7 @@ function LocationsTab({
               {location.campuses.map((campus) => (
                 <div
                   key={campus.id}
-                  className="group relative bg-card/60 backdrop-blur-md border border-border/40 rounded-2xl p-6 hover:bg-card/80 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                  className="group relative bg-card/60 backdrop-blur-md border border-border/40 rounded-2xl p-6 hover:bg-card/80 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                 >
                   {/* Decorative Gradient Line */}
                   <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-lapis/0 via-lapis/50 to-lapis/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
