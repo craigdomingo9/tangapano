@@ -110,7 +110,7 @@ function ListingDetailHero({ listing }: ListingDetailHeroProps) {
 
       {/* --- Navigation Controls --- */}
       {hasImages && listing.images.length > 1 && (
-        <div className="absolute z-20 bottom-20 right-4 lg:right-40 xl:right-60 flex gap-2">
+        <div className="absolute z-40 bottom-20 right-4 lg:right-40 xl:right-60 flex gap-2">
           <button
             onClick={(e) => {
               e.stopPropagation();
