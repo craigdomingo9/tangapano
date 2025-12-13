@@ -1,3 +1,3 @@
-from .campus_serializer import CampusSerializer
+from .campus_serializer import CampusSerializer, CampusCreateSerializer
 from .neighborhood_serializer import NeighborhoodSerializer
 from .city_serializer import CitySerializer

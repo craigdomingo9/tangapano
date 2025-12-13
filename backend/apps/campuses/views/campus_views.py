@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import viewsets
 from campuses.models import Campus
-from campuses.serializers import CampusSerializer
+from campuses.serializers import CampusSerializer, CampusCreateSerializer
 from rest_framework import permissions
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
@@ -30,6 +30,11 @@ class CampusViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [permissions.AllowAny]
         return super().get_permissions()
+    
+    def get_serializer_class(self):
+        if self.action not in ["list", "retrieve"]:
+            return CampusCreateSerializer
+        return CampusSerializer
     
     def get_queryset(self):
         return Campus.objects.select_related('agent', 'city').prefetch_related(

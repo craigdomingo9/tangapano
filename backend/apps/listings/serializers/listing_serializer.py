@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from listings.models import Listing, Amenity
+from listings.models import Listing, Amenity, ListingLocation
 from .room_serializer import RoomSerializer
 from campuses.serializers import CampusSerializer, NeighborhoodSerializer
 from campuses.models import Campus, Neighborhood
@@ -42,9 +42,17 @@ class ListingSerializer(serializers.ModelSerializer):
         return data
 
 
+class ListingLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListingLocation
+        fields = ['latitude', 'longitude'] 
+
 class ListingCreateSerializer(serializers.ModelSerializer):
     campus = serializers.PrimaryKeyRelatedField(queryset=Campus.objects.all(), required=False)
     neighborhood = serializers.PrimaryKeyRelatedField(queryset=Neighborhood.objects.all(), required=False)
+    
+    location = ListingLocationSerializer(required=False, write_only=True)
+    
     amenity_ids = serializers.PrimaryKeyRelatedField(
         queryset=Amenity.objects.all(),
         many=True,
@@ -56,12 +64,37 @@ class ListingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = [
-            'id', 'landlord', 'title', 'description', 'images',
+            'title', 
             'amenity_ids',
-            'campus', 'neighborhood',
-            'apply_agent_fee', 'is_locked',
-            'distance_from_campus', 'is_active',
-            'created_at', 'updated_at'
+            'campus', 'neighborhood', 'location',
+            'apply_agent_fee', 
+            'distance_from_campus', 
         ]
-        read_only_fields = ('id', 'created_at', 'updated_at')
-        depth = 1
+    
+    def create(self, validated_data):
+        location_data = validated_data.pop("location", None)
+        
+        listing = super().create(validated_data)
+        
+        if location_data:
+            ListingLocation.objects.create(listing=listing, **location_data)
+        
+        return listing
+    
+
+    def update(self, instance, validated_data):
+        location_data = validated_data.pop("location", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if location_data:
+            if hasattr(instance, 'location') and instance.location:
+                for attr, value in location_data.items():
+                    setattr(instance.location, attr, value)
+                instance.location.save()
+            else:
+                ListingLocation.objects.create(listing=instance, **location_data)
+
+        return instance

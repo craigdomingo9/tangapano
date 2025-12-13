@@ -17,8 +17,8 @@ class Campus(models.Model):
     
     # Physical Location (Public Data - No Privacy Needed)
     address = models.CharField(max_length=255, blank=True, null=True)
-    latitude = models.FloatField(help_text="Exact GPS Latitude")
-    longitude = models.FloatField(help_text="Exact GPS Longitude")
+    latitude = models.FloatField(help_text="Exact GPS Latitude", blank=True, null=True)
+    longitude = models.FloatField(help_text="Exact GPS Longitude", blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
