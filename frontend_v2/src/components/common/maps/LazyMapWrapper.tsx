@@ -43,8 +43,10 @@ export const LazyMapWrapper: React.FC<LazyMapProps> = ({
     <div
       ref={containerRef}
       className={cn(
-        "h-[400px] w-full rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 relative z-0",
-        isFullScreen && "h-[90vh]"
+        "relative h-full w-full overflow-hidden bg-slate-100 dark:bg-slate-900 z-0",
+        isFullScreen
+          ? "rounded-none border-none"
+          : "border border-slate-200 dark:border-slate-800"
       )}
     >
       {isVisible ? <ListingMap listing={listing} /> : <MapSkeleton />}

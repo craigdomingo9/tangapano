@@ -21,7 +21,7 @@ class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = [
-            'id', 'title', 'description', 'landlord',
+            'id', 'title', 'description', 'location', 'landlord',
             'campus', 'neighborhood', 'amenities', 
             'rooms', 'images', 'distance_from_campus',
             'apply_agent_fee', 'is_locked', 'is_active',

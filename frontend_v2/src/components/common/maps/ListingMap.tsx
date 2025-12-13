@@ -1,7 +1,7 @@
 // components/map/ListingMap.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -9,11 +9,11 @@ import {
   Circle,
   Polyline,
   Popup,
+  useMap,
 } from "react-leaflet";
-import { divIcon, LatLngExpression } from "leaflet";
+import { divIcon, LatLngBounds, LatLngExpression } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MapPin, GraduationCap, ShieldCheck, MapPinOff } from "lucide-react";
-import "leaflet/dist/leaflet.css";
 import IsSatelliteButton from "@/components/student/results/buttons/IsSatelliteButton";
 
 // --- Icon Helper ---
@@ -36,6 +36,35 @@ const createLeafletIcon = (icon: React.ReactElement, color: string) => {
     iconAnchor: [18, 36],
     popupAnchor: [0, -36],
   });
+};
+
+const MapController = ({
+  bounds,
+  isFullScreen,
+}: {
+  bounds: LatLngBounds;
+  isFullScreen: boolean; // We can detect context if needed, or just rely on mount
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    // A. Wait for modal animation to finish (300ms) before resizing
+    // This prevents the "grey tiles" or incorrect centering glitch
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+
+      // B. Fit the map to show BOTH the Listing and the Campus
+      map.fitBounds(bounds, {
+        padding: [25, 25], // Add 50px padding so markers aren't on the edge
+        maxZoom: 16, // Don't zoom in too close if points are near
+        animate: true,
+      });
+    }, 400); // 400ms > 300ms transition duration
+
+    return () => clearTimeout(timer);
+  }, [map, bounds, isFullScreen]);
+
+  return null;
 };
 
 const ListingMap: React.FC<{
@@ -63,6 +92,10 @@ const ListingMap: React.FC<{
     listing.campus_location?.lat,
     listing.campus_location?.lon,
   ];
+
+  // CALCULATE BOUNDS
+  // We create a bounding box that contains both coordinates
+  const bounds = new LatLngBounds([listingPos, campusPos]);
 
   /// 1. TILE LAYER: Standard OpenStreetMap
   const tileConfig = isSatellite
@@ -100,7 +133,7 @@ const ListingMap: React.FC<{
           url={tileConfig.url}
           maxZoom={isSatellite ? 17 : 19}
         />
-
+        <MapController bounds={bounds} isFullScreen={true} />
         {/* 2. CAMPUS MARKER (Blue) */}
         <Marker
           position={campusPos}
@@ -110,7 +143,7 @@ const ListingMap: React.FC<{
           )} // Blue-600
         >
           <Popup className="font-sans font-bold text-sm">
-            University Campus
+            {listing.campus.name}
           </Popup>
         </Marker>
 
