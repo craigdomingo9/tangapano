@@ -55,9 +55,9 @@ log "⚙️  Running Database Migrations..."
 docker compose -f docker-compose.prod.yml up -d backend
 docker compose -f docker-compose.prod.yml exec -T backend python manage.py migrate --noinput
 
-log "🎨 Collecting Static Files..."
+# log "🎨 Collecting Static Files..."
 # This works despite read_only: true because we mounted a volume at /app/static
-docker compose -f docker-compose.prod.yml exec -T backend python manage.py collectstatic --noinput
+# docker compose -f docker-compose.prod.yml exec -T backend python manage.py collectstatic --noinput
 # 7. RELOAD FRONTEND & NGINX
 # We do this last to minimize downtime (Zero-Downtime Rolling Update)
 log "🔄 Updating Frontend and Nginx..."
@@ -66,7 +66,7 @@ docker compose -f docker-compose.prod.yml up -d frontend nginx
 # 8. RELOAD UTILITIES
 # Ensure monitoring and background tasks are fresh
 log "📈 Updating Monitoring & Utils..."
-docker compose -f docker-compose.prod.yml up -d cert-renewer prometheus grafana backup health-monitor
+docker compose -f docker-compose.prod.yml up -d cert-renewer backup health-monitor
 
 # 9. CLEANUP
 log "🧹 Cleaning up unused Docker images..."
