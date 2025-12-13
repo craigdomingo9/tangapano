@@ -8,7 +8,7 @@ import MapToggleButton from "../results/buttons/MapToggleButton";
 import FullScreenListingMap from "@/components/common/maps/FullScreenListingMap";
 
 interface ListingDetailHeroProps {
-  listing: Listing;
+  listing: any;
 }
 
 function ListingDetailHero({ listing }: ListingDetailHeroProps) {
