@@ -16,6 +16,7 @@ const ListingDetail = lazyLoad(
 const ExpressInterest = lazyLoad(
   () => import("@/components/student/pages/ExpressInterest")
 );
+const Support = lazyLoad(() => import("@/components/student/pages/Support"));
 
 export const studentRoutes: AppRoute<StudentParams, StudentContext>[] = [
   // 1. EXPRESS INTEREST PAGE
@@ -46,5 +47,12 @@ export const studentRoutes: AppRoute<StudentParams, StudentContext>[] = [
     id: "student-home",
     matcher: (p) => p.page === "home",
     component: StudentHome,
+  },
+
+  // 5. Support PAGE
+  {
+    id: "student-support",
+    matcher: (p) => p.page === "support",
+    component: Support,
   },
 ];

@@ -1,4 +1,5 @@
-import { MessageCircleMore } from "lucide-react";
+import { RouterLink } from "@/routing/RouterLink";
+import { MessageCircleMore, Router } from "lucide-react";
 
 function StudentFooter() {
   return (
@@ -19,12 +20,14 @@ function StudentFooter() {
 
       <div className="w-full border-t border-slate-200/50 dark:border-slate-700/50"></div>
 
-      <div className="flex justify-center pb-6">
-        <button className="text-slate-500 dark:text-slate-400 hover:text-crimson dark:hover:text-red-400 font-semibold text-sm flex items-center gap-2 transition-colors px-4 py-2 rounded-lg hover:bg-crimson/5 dark:hover:bg-red-900/20 cursor-pointer">
-          <MessageCircleMore className="w-4 h-4" />
-          Need Help? Contact Support
-        </button>
-      </div>
+      <RouterLink to={{ page: "support" }}>
+        <div className="flex justify-center pb-6">
+          <button className="text-slate-500 dark:text-slate-400 hover:text-crimson dark:hover:text-red-400 font-semibold text-sm flex items-center gap-2 transition-colors px-4 py-2 rounded-lg hover:bg-crimson/5 dark:hover:bg-red-900/20 cursor-pointer">
+            <MessageCircleMore className="w-4 h-4" />
+            Need Help? Contact Support
+          </button>
+        </div>
+      </RouterLink>
     </div>
   );
 }

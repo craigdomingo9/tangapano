@@ -7,7 +7,7 @@ export interface StudentContext {
 // 2. The URL Parameters
 export interface StudentParams {
   // Navigation
-  page?: "listing" | "search" | "interest" | "home";
+  page?: "listing" | "search" | "interest" | "home" | "support";
   listingId?: string; // For Detail & Express Interest
 
   // Search Filters (Matches your query string)

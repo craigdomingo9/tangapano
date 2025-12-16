@@ -1,9 +1,8 @@
 "use client";
 import { MessageCircle, Phone } from "lucide-react";
-import OverviewFooter from "../overview/OverviewFooter";
 import { FullScreenView } from "@/components/ui/FullScreenView";
 import { useRouterPush } from "@/hooks/use-router-push";
-import { PartnerComponentProps, PartnerParams } from "@/lib/types/partner";
+import { StudentComponentProps, StudentParams } from "@/lib/types/student";
 
 interface SupportContact {
   initials: string;
@@ -39,15 +38,15 @@ const SUPPORT_TEAM: SupportContact[] = [
   },
 ];
 
-export default function Support({}: PartnerComponentProps) {
+export default function Support({}: StudentComponentProps) {
   const handleWhatsApp = (phone: string) => {
     const cleanPhone = phone.replace(/[\s+]/g, "");
     window.open(`https://wa.me/${cleanPhone}`, "_blank");
   };
-  const { push } = useRouterPush<PartnerParams>();
+  const { push } = useRouterPush<StudentParams>();
 
   return (
-    <FullScreenView title="Support" onBack={() => push({ page: "overview" })}>
+    <FullScreenView title="Support" onBack={() => push({ page: "home" })}>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans flex flex-col transition-colors duration-300">
         <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 flex flex-col items-center mb-10">
           {/* Hero Text */}
@@ -111,7 +110,7 @@ export default function Support({}: PartnerComponentProps) {
         </main>
 
         {/* Footer with Link Back to Student Portal */}
-        <OverviewFooter />
+        {/* <OverviewFooter /> */}
       </div>
     </FullScreenView>
   );
