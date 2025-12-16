@@ -100,8 +100,8 @@ function AmenitiesManagement({ params, serverData }: PartnerComponentProps) {
       // If we were trying to leave, now we can leave
       if (showUnsavedModal) {
         setShowUnsavedModal(false);
-        push({ page: "overview" });
       }
+      push({ page: "overview" });
     },
     onError: () => {
       errorToast("Failed to update amenities");

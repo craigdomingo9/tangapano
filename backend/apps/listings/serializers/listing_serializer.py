@@ -84,10 +84,16 @@ class ListingCreateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         location_data = validated_data.pop("location", None)
-
+        amenities = validated_data.pop("amenities", None)
+        
+        
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+        
         instance.save()
+        
+        if amenities is not None:
+            instance.amenities.set(amenities)
 
         if location_data:
             if hasattr(instance, 'location') and instance.location:

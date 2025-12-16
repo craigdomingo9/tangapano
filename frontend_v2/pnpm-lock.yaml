@@ -53,6 +53,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.91.1
         version: 5.91.1(@tanstack/react-query@5.90.12(react@19.2.3))(react@19.2.3)
+      ai:
+        specifier: ^5.0.113
+        version: 5.0.113(zod@4.2.0)
       axios:
         specifier: ^1.13.2
         version: 1.13.2
