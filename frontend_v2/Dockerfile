@@ -11,8 +11,8 @@ RUN apk add --no-cache libc6-compat
 FROM base AS deps
 COPY package*.json ./
 # Cache mount for faster installs
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci
+# RUN --mount=type=cache,target=/root/.npm \
+RUN npm install
 
 # ---------- Development ----------
 FROM base AS development
