@@ -1,24 +1,27 @@
+import json
 from typing import List
 
 class ManifestMixin:
     """
-    Requires host class to implement:
-    - download_file_to_memory(remote_path) -> str
-    - upload_text(content, remote_path) -> bool
+    Implements 'get_known_hashes' by utilizing the host's 
+    'read_file' and 'upload_file' methods.
     """
     
     MANIFEST_FILE = "manifest.json"
 
+    # NOTE: We do not define abstract methods here. 
+    # We assume 'self' adheres to ICloudProvider.
+
     def get_known_hashes(self) -> List[str]:
-        """Downloads manifest and extracts list of existing hashes."""
-        # TODO: Implement download and JSON parsing
-        return []
+        try:
+            # Uses the Interface's standard method
+            content = self.read_file(self.MANIFEST_FILE)
+            data = json.loads(content)
+            return [item['hash'] for item in data.get('backups', [])]
+        except Exception:
+            return []
 
     def sync_manifest(self, local_file_path: str) -> bool:
-        """
-        Checks if local file exists in manifest. 
-        If no, updates manifest in memory and uploads new version.
-        Returns: True if file should be uploaded, False if duplicate.
-        """
-        # TODO: Implement hash check and manifest update
+        # TODO: Implement full sync logic using self.read_file() and self.upload_file()
+        
         return True

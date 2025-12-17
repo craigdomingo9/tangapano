@@ -2,3 +2,4 @@ from .backup_mixins import CompressionMixin
 from .cloud_mixins import RetryMixin
 from .manifest_mixins import ManifestMixin
 from .logger_mixins import LoggerMixin
+from .postgres_mixins import PostgresMixin
