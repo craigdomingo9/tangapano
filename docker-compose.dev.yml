@@ -59,7 +59,6 @@ services:
   backup:
     build: ./backup_v2
     container_name: backup
-    init: true
     depends_on:
       - db
     env_file:
@@ -67,6 +66,7 @@ services:
     environment:
       - MEGA_DB_FOLDER=db-daily-backups_v2-test
       - MEGA_IMAGES_FOLDER=media-weekly-backups_v2-test
+      - ENV=development
     volumes:
       - media_volume:/app/media
     restart: unless-stopped

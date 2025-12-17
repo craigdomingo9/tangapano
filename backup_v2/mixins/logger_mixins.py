@@ -4,8 +4,10 @@ import logging
 class LoggerMixin:
     def __init__(self):
         os.makedirs('logs', exist_ok=True)
+        environment = os.getenv("ENV", "production")
+        log_level = logging.DEBUG if environment == "development" else logging.INFO
         self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(log_level)
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         self.logger.handlers = [logging.StreamHandler(), logging.FileHandler('logs/backup.log')]
         self.logger.handlers[0].setFormatter(formatter)

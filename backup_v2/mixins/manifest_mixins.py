@@ -9,17 +9,18 @@ class ManifestMixin:
     
     MANIFEST_FILE = "manifest.json"
 
-    # NOTE: We do not define abstract methods here. 
-    # We assume 'self' adheres to ICloudProvider.
-
-    def get_known_hashes(self) -> List[str]:
-        try:
-            # Uses the Interface's standard method
-            content = self.read_file(self.MANIFEST_FILE)
+    def get_known_hashes(self) -> set[str]:
+        content = self.read_file(self.MANIFEST_FILE, logger=self.logger)
+        
+        if content is None:
+            return set()
+        try:   
             data = json.loads(content)
-            return [item['hash'] for item in data.get('backups', [])]
-        except Exception:
-            return []
+            
+            return {entry['hash'] for entry in data.get('backups', [])}
+        except json.JSONDecodeError:
+            self.logger.log_error("Failed to decode manifest JSON content.")
+            return set()
 
     def sync_manifest(self, local_file_path: str) -> bool:
         # TODO: Implement full sync logic using self.read_file() and self.upload_file()

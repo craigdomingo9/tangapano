@@ -12,7 +12,7 @@ class PostgresProvider(IBackupProvider, PostgresMixin, LoggerMixin, CompressionM
         self.db_name = os.getenv("POSTGRES_DB", "db")
         self.backup_dir = os.getenv("DB_BACKUP_DIR", "/tmp/backups/db")
     
-    def create_local_backup(self, ignore_hashes: set[str]) -> str | None:
+    def create_local_backup(self) -> str | None:
         self.logger.log_info("Creating PostgreSQL backup...")
         
         self.wait_for_postgres(

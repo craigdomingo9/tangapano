@@ -1,5 +1,6 @@
+import os
 from providers import MEGAProvider, PostgresProvider
-from interfaces import ICloudProvider, IBackupProvider, IBackupSystem
+from interfaces import IBackupSystem
 
 class PostgresMegaSystem(IBackupSystem):
     def __init__(self):
@@ -9,6 +10,7 @@ class PostgresMegaSystem(IBackupSystem):
         self.system_name = "Postgres Mega System"
         self.source = PostgresProvider()
         self.dest = MEGAProvider()
+        self.folder_name = os.getenv("MEGA_DB_FOLDER", "db-daily_v2-backups-test")
         
     def run_cycle(self):
         """
@@ -17,15 +19,12 @@ class PostgresMegaSystem(IBackupSystem):
         print("Running backup cycle for Postgres Mega System...")
         if not self.dest.connect(): return
 
-        # 2. Get Intelligence (Bridge Pattern)
-        known_hashes = self.dest.get_known_hashes()
+        # Create Backup (Source Deduplication)
+        artifact = self.source.create_local_backup()
 
-        # 3. Create Backup (Source Deduplication)
-        artifact = self.source.create_local_backup(ignore_hashes=known_hashes)
-
-        # 4. Upload (Destination Deduplication/Manifest Update)
+        # Upload
         if artifact:
-            self.dest.upload_file(artifact)
+            self.dest.upload_file(artifact, remote_folder=self.folder_name)
         print("Backup cycle completed for Postgres Mega System.")
 
 
