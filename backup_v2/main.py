@@ -3,6 +3,7 @@ import signal
 import sys
 import logging
 from apscheduler.schedulers.blocking import BlockingScheduler
+from datetime import datetime
 
 from systems import PostgresMegaSystem, ImageBackupSystem
 
@@ -44,7 +45,10 @@ def main():
         'interval', 
         hours=pg_interval,
         id='postgres_job',
-        name='Postgres S3 Backup'
+        name='Postgres S3 Backup',
+        next_run_time=datetime.now(),
+        coalesce=True,
+        max_instances=1
     )
 
     # --- JOB 2: Image Archival (Bulk Data) ---
@@ -55,7 +59,10 @@ def main():
         'interval', 
         hours=img_interval,
         id='image_job',
-        name='Image Weekly Archival'
+        name='Image Weekly Archival',
+        next_run_time=datetime.now(),
+        coalesce=True,
+        max_instances=1
     )
     
     # 5. Start the Daemon

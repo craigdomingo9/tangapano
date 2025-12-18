@@ -64,8 +64,8 @@ services:
     env_file:
       - .env
     environment:
-      - MEGA_DB_FOLDER=TangaPanoPostgresDailyBackups
-      - MEGA_IMAGES_FOLDER=TangaPanoImagesWeeklyBackups
+      - MEGA_DB_FOLDER=TangaPanoPostgresDailyBackupsDev
+      - MEGA_IMAGES_FOLDER=TangaPanoImagesWeeklyBackupsDev
       - ENV=development
       - NUCLEAR_INIT=false
     volumes:

@@ -44,7 +44,7 @@ class PostgresProvider(IBackupProvider, PostgresMixin, LoggerMixin, CompressionM
             mode="single"
         )
         
-        if not compressed_path:
+        if not compressed_path or not self.verify_compression(compressed_path):
             self.logger.log_error("Compression failed. Backup aborted.")
             return None
 

@@ -263,18 +263,20 @@ services:
   # Backup connects to both because it needs to read DB (data_net)
   # and potentially upload to S3/Cloud (internet_net).
   backup:
-    build: ./backup
+    build: ./backup_v2
+    container_name: backup
     depends_on:
       - db
     env_file:
       - .env
     environment:
-      - PACK_ALL_INTO_ONE_ZIP=false
+      - MEGA_DB_FOLDER=TangaPanoPostgresDailyBackups
+      - MEGA_IMAGES_FOLDER=TangaPanoImagesWeeklyBackups
+      - ENV=production
+      - NUCLEAR_INIT=false
     volumes:
       - media_volume:/app/media
     restart: unless-stopped
-    dns:
-      - 8.8.8.8
     labels:
       "com.tangapano.service": "backup"
     networks:
