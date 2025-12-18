@@ -288,6 +288,7 @@ services:
     read_only: false
     tmpfs:
       - /tmp
+      - /app/logs:rw,noexec,nosuid
     security_opt:
       - no-new-privileges:true
     cap_drop:
