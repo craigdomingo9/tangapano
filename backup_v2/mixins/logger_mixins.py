@@ -9,7 +9,7 @@ class LoggerMixin:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(log_level)
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        self.logger.handlers = [logging.StreamHandler(), logging.FileHandler('logs/backup.log')]
+        self.logger.handlers = [logging.StreamHandler(), logging.FileHandler('app/logs/backup.log')]
         self.logger.handlers[0].setFormatter(formatter)
         self.logger.handlers[1].setFormatter(formatter)
 
