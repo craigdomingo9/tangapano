@@ -64,9 +64,10 @@ services:
     env_file:
       - .env
     environment:
-      - MEGA_DB_FOLDER=db-daily-backups_v2-test
-      - MEGA_IMAGES_FOLDER=media-weekly-backups_v2-test
+      - MEGA_DB_FOLDER=TangaPanoPostgresDailyBackups
+      - MEGA_IMAGES_FOLDER=TangaPanoImagesWeeklyBackups
       - ENV=development
+      - NUCLEAR_INIT=false
     volumes:
       - media_volume:/app/media
     restart: unless-stopped

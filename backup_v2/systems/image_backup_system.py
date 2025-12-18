@@ -17,7 +17,7 @@ class ImageBackupSystem(IBackupSystem):
 
         # 3. Configuration Flags
         self.nuclear_mode = os.getenv("NUCLEAR_INIT", "false").lower() == "true"
-        self.remote_folder = os.getenv("MEGA_REMOTE_FOLDER", "/WeeklyBackups")
+        self.remote_folder = os.getenv("MEGA_IMAGES_FOLDER", "/TangaPanoImagesWeeklyBackups")
 
     def _get_target_filename(self) -> str:
         """
@@ -58,10 +58,11 @@ class ImageBackupSystem(IBackupSystem):
             print("   [Info] No eligible files found. Nothing to backup.")
             return
 
-        # 5. Upload (Destination Logic)
-        print(f"   [Info] Uploading {local_artifact} to MEGA folder: '{self.remote_folder}'...")
+        # 5. Safe Upload (The Fix)
+        # We explicitly use the safe_upload method now
+        print(f"   [Info] performing SAFE UPLOAD of {target_zip_name} to '{self.remote_folder}'...")
         
-        success = self.dest.upload_file(
+        success = self.dest.safe_upload(
             local_path=local_artifact,
             remote_folder=self.remote_folder
         )
