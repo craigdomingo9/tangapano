@@ -3,7 +3,6 @@ import signal
 import sys
 import logging
 from apscheduler.schedulers.blocking import BlockingScheduler
-from apscheduler.triggers.cron import CronTrigger
 
 from systems import PostgresMegaSystem, ImageBackupSystem
 
