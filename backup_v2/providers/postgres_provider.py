@@ -39,7 +39,7 @@ class PostgresProvider(IBackupProvider, PostgresMixin, LoggerMixin, CompressionM
         self.logger.log_info(f"Database dumped to {backup_path}. Now compressing...")
 
         compressed_path = self.compress_file(
-            file_path=backup_path,
+            source_path=backup_path,
             output_path=f"{backup_path}.zip",
             mode="single"
         )

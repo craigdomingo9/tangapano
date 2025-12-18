@@ -26,5 +26,3 @@ class PostgresMegaSystem(IBackupSystem):
         if artifact:
             self.dest.upload_file(artifact, remote_folder=self.folder_name)
         print("Backup cycle completed for Postgres Mega System.")
-
-

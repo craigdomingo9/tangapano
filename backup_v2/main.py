@@ -1,10 +1,11 @@
-from systems import PostgresMegaSystem
+from systems import PostgresMegaSystem, ImageBackupSystem
 
 
 def main():
     
     systems = [
         PostgresMegaSystem(),
+        ImageBackupSystem(),
     ]
     
     for system in systems:

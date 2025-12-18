@@ -1,7 +1,6 @@
 from datetime import datetime
 import os
 import subprocess
-import zipfile
 import time
 from .logger_mixins import LoggerMixin
 
