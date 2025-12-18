@@ -3,7 +3,7 @@ import logging
 
 class LoggerMixin:
     def __init__(self):
-        os.makedirs('logs', exist_ok=True)
+        os.makedirs('app/logs', exist_ok=True)
         environment = os.getenv("ENV", "production")
         log_level = logging.DEBUG if environment == "development" else logging.INFO
         self.logger = logging.getLogger(__name__)
