@@ -1,9 +1,13 @@
+import useEmployees from "@/hooks/admin/use-employees";
 import { AdminPanelComponentProps } from "@/lib/types/admin";
 import React from "react";
 
 function EmployeeManagement({
     serverData: { accessToken },
 }: AdminPanelComponentProps) {
+    const { employees, employeesIsLoading } = useEmployees(accessToken);
+    console.log("Employees data:", employees);
+
     return (
         <div className="space-y-6 animate-fade-in pb-12">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-border/40 pb-6">
