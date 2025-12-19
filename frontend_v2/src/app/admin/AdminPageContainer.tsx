@@ -35,6 +35,8 @@ function AdminPageContainer({ serverData }: { serverData: AdminPanelContext }) {
     successToast("Logged out successfully. Until next time ᕙ(▀̿̿ĺ̯̿̿▀̿ ̿) ᕗ");
   }
 
+  console.log(serverData.user);
+
   function setMobileOpen(open: boolean) {
     setEntities({
       ...entities,

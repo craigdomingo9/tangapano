@@ -4,3 +4,5 @@ from .landlord_views import LandlordRetrieveUpdateView
 from .lookup_user_views import UserLookupView
 from .admin_views import AdminLandlordViewSet, AdminAgentViewSet
 from .admin_auth_views import AdminLoginView, AdminPriviledgedAuthView
+from .employee_views import EmployeeViewSet, DepartmentViewSet, RoleViewSet
+

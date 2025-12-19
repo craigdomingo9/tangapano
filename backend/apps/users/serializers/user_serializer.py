@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from users.models import Landlord, Agent
 from .landlord_serializer import LandlordSerializer
 from .agent_serializer import AgentSerializer
+from .employee_serializers import EmployeeSerializer
 
 User = get_user_model()
 
@@ -10,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     # Nest the full profile serializers for read operations
     landlord_profile = LandlordSerializer(required=False)
     agent_profile = AgentSerializer(required=False)
+    employee_profile = EmployeeSerializer(required=False)
 
     class Meta:
         model = User
@@ -21,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "role",
             "landlord_profile",
+            "employee_profile",
             "agent_profile",
         ]
         read_only_fields = ["id", "role"] # Usually username shouldn't change easily

@@ -44,3 +44,22 @@ class LandlordAdmin(admin.ModelAdmin):
     def mark_as_unverified(self, request, queryset):
         rows_updated = queryset.update(is_verified=False)
         self.message_user(request, f"{rows_updated} landlords marked unverified.")
+
+from users.models import Department, Role, Employee
+
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    search_fields = ('name',)
+
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    search_fields = ('name',)
+    filter_horizontal = ('permissions',)
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'department', 'role', 'date_hired')
+    list_filter = ('department', 'role')
+    search_fields = ('user__username', 'user__first_name', 'user__last_name')

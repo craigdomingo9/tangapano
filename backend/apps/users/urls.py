@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from users.views import (
     user_views, 
     auth_views, 
@@ -27,3 +27,16 @@ urlpatterns = [
     path("all/", user_views.UserListView.as_view(), name="user-list"),
     path("lookup/", lookup_user_views.UserLookupView.as_view(), name="user-lookup"),
 ]
+
+from rest_framework.routers import DefaultRouter
+from users.views import EmployeeViewSet, DepartmentViewSet, RoleViewSet
+
+router = DefaultRouter()
+router.register(r'employees', EmployeeViewSet, basename='employee')
+router.register(r'departments', DepartmentViewSet, basename='department')
+router.register(r'roles', RoleViewSet, basename='role')
+
+urlpatterns += [
+    path('', include(router.urls)),
+]
+

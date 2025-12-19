@@ -7,6 +7,7 @@ class User(AbstractUser):
         ("landlord", "Landlord"),
         ("agent", "Agent"),
         ("admin", "Admin"),
+        ("employee", "Employee"),
     ]
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
