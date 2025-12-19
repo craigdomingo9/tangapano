@@ -1,7 +1,7 @@
 import { axiosInstance } from "../config";
 
-export async function fetchRolesAdmin(accessToken: string) {
-    const { data } = await axiosInstance.get("/users/roles/", {
+export async function fetchRolesAdmin(accessToken: string): Promise<Role[]> {
+    const { data } = await axiosInstance.get<Role[]>("/users/roles/", {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
@@ -9,8 +9,8 @@ export async function fetchRolesAdmin(accessToken: string) {
     return data;
 }
 
-export async function createRoleFn(accessToken: string, payload: any) {
-    const { data } = await axiosInstance.post("/users/roles/", payload, {
+export async function createRoleFn(accessToken: string, payload: Partial<Role>): Promise<Role> {
+    const { data } = await axiosInstance.post<Role>("/users/roles/", payload, {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
@@ -18,8 +18,8 @@ export async function createRoleFn(accessToken: string, payload: any) {
     return data;
 }
 
-export async function fetchRoleDetailFn(accessToken: string, id: number) {
-    const { data } = await axiosInstance.get(`/users/roles/${id}/`, {
+export async function fetchRoleDetailFn(accessToken: string, id: number): Promise<Role> {
+    const { data } = await axiosInstance.get<Role>(`/users/roles/${id}/`, {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
@@ -29,10 +29,10 @@ export async function fetchRoleDetailFn(accessToken: string, id: number) {
 
 export async function updateRoleFn(
     accessToken: string,
-    payload: any,
+    payload: Partial<Role>,
     id: number
-) {
-    const { data } = await axiosInstance.patch(
+): Promise<Role> {
+    const { data } = await axiosInstance.patch<Role>(
         `/users/roles/${id}/`,
         payload,
         {
@@ -44,11 +44,10 @@ export async function updateRoleFn(
     return data;
 }
 
-export async function deleteRoleFn(accessToken: string, id: number) {
-    const { data } = await axiosInstance.delete(`/users/roles/${id}/`, {
+export async function deleteRoleFn(accessToken: string, id: number): Promise<void> {
+    await axiosInstance.delete(`/users/roles/${id}/`, {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
     });
-    return data;
 }

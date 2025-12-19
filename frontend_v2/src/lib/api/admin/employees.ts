@@ -1,7 +1,7 @@
 import { axiosInstance } from "../config";
 
-export async function fetchEmployeesAdmin(accessToken: string) {
-    const { data } = await axiosInstance.get("/users/employees/", {
+export async function fetchEmployeesAdmin(accessToken: string): Promise<Employee[]> {
+    const { data } = await axiosInstance.get<Employee[]>("/users/employees/", {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
@@ -9,8 +9,8 @@ export async function fetchEmployeesAdmin(accessToken: string) {
     return data;
 }
 
-export async function createEmployeeFn(accessToken: string, payload: any) {
-    const { data } = await axiosInstance.post("/users/employees/", payload, {
+export async function createEmployeeFn(accessToken: string, payload: any): Promise<Employee> {
+    const { data } = await axiosInstance.post<Employee>("/users/employees/", payload, {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
@@ -18,8 +18,8 @@ export async function createEmployeeFn(accessToken: string, payload: any) {
     return data;
 }
 
-export async function fetchEmployeeDetailFn(accessToken: string, id: number) {
-    const { data } = await axiosInstance.get(`/users/employees/${id}/`, {
+export async function fetchEmployeeDetailFn(accessToken: string, id: number): Promise<Employee> {
+    const { data } = await axiosInstance.get<Employee>(`/users/employees/${id}/`, {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
@@ -31,8 +31,8 @@ export async function updateEmployeeFn(
     accessToken: string,
     payload: any,
     id: number
-) {
-    const { data } = await axiosInstance.patch(
+): Promise<Employee> {
+    const { data } = await axiosInstance.patch<Employee>(
         `/users/employees/${id}/`,
         payload,
         {
@@ -44,11 +44,10 @@ export async function updateEmployeeFn(
     return data;
 }
 
-export async function deleteEmployeeFn(accessToken: string, id: number) {
-    const { data } = await axiosInstance.delete(`/users/employees/${id}/`, {
+export async function deleteEmployeeFn(accessToken: string, id: number): Promise<void> {
+    await axiosInstance.delete(`/users/employees/${id}/`, {
         headers: {
             Authorization: `Token ${accessToken}`,
         },
     });
-    return data;
 }
