@@ -9,6 +9,7 @@ declare global {
         last_name: string;
         landlord_profile: Landlord;
         agent_profile: Agent;
+        employee_profile: Employee;
     }
 
     interface Permission {
