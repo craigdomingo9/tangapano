@@ -58,6 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { label: "Landlords", icon: Users, page: "landlords" },
         { label: "Agents", icon: UserCheck, page: "agents" },
+        { label: "Employees", icon: Users, page: "employees" },
       ],
     },
     {
@@ -91,18 +92,15 @@ const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside
-        className={`${mobileClasses} ${!mobileOpen ? "hidden" : ""} md:flex ${
-          !mobileOpen && !collapsed ? "md:w-72" : ""
-        } ${
-          collapsed ? "md:w-20" : ""
-        } h-screen overflow-y-auto flex-col transition-all z-50 border-r border-border/40 bg-card animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both`}
+        className={`${mobileClasses} ${!mobileOpen ? "hidden" : ""} md:flex ${!mobileOpen && !collapsed ? "md:w-72" : ""
+          } ${collapsed ? "md:w-20" : ""
+          } h-screen overflow-y-auto flex-col transition-all z-50 border-r border-border/40 bg-card animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both`}
         key={collapsed ? "collapsed" : "expanded"}
       >
         {/* Logo Section */}
         <div
-          className={`h-20 flex flex-col justify-center ${
-            collapsed ? "items-center" : "items-start px-6"
-          } transition-all border-b border-border/40`}
+          className={`h-20 flex flex-col justify-center ${collapsed ? "items-center" : "items-start px-6"
+            } transition-all border-b border-border/40`}
         >
           {!collapsed || mobileOpen ? (
             <div className="flex flex-col self-start animate-fade-in">
@@ -145,20 +143,18 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <RouterLink
                       onClick={() => setMobileOpen && setMobileOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative
-                        ${
-                          active
-                            ? "bg-lapis dark:bg-sky-500/90 dark:text-white/90 text-primary-foreground shadow-sm"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                        ${active
+                          ? "bg-lapis dark:bg-sky-500/90 dark:text-white/90 text-primary-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         }`}
                       key={item.page}
                       to={{ page: item.page }}
                     >
                       <item.icon
-                        className={`w-4 h-4 shrink-0 transition-colors relative z-10 ${
-                          active
+                        className={`w-4 h-4 shrink-0 transition-colors relative z-10 ${active
                             ? "text-primary-foreground dark:text-white/90"
                             : "text-muted-foreground group-hover:text-foreground"
-                        }`}
+                          }`}
                       />
                       {(!collapsed || mobileOpen) && (
                         <span className="whitespace-nowrap relative z-10">
@@ -174,9 +170,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Footer */}
           <div className="p-4 border-t border-border/40">
             <div
-              className={`flex items-center ${
-                collapsed ? "justify-center" : "justify-start gap-3 px-3"
-              } py-3 w-full cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all duration-200 group`}
+              className={`flex items-center ${collapsed ? "justify-center" : "justify-start gap-3 px-3"
+                } py-3 w-full cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-all duration-200 group`}
               onClick={onLogout}
             >
               <LogOut className="w-4 h-4 shrink-0" />

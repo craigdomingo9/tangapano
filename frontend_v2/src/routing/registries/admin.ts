@@ -29,6 +29,9 @@ const Notifications = lazyLoad(
   () => import("@/components/admin/pages/Notifications")
 );
 const Inquiries = lazyLoad(() => import("@/components/admin/pages/Inquiries"));
+const EmployeeManagement = lazyLoad(
+  () => import("@/components/admin/pages/EmployeeManagement")
+);
 
 export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
   [
@@ -90,6 +93,12 @@ export const adminPanelRoutes: AppRoute<AdminPanelParams, AdminPanelContext>[] =
       id: "listing-detail",
       matcher: (p) => p.page === "listings" && !!p.listingId,
       component: ListingDetail,
+    },
+
+    {
+      id: "employee-management",
+      matcher: (p) => p.page === "employees",
+      component: EmployeeManagement,
     },
 
     {
