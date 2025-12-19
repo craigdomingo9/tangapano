@@ -75,41 +75,38 @@ services:
       - app_net
     profiles: ["backup"]
 
-  db-restore:
-    build: ./restore
-    container_name: db_restore
+  restore:
+    build: ./restore_v2
+    container_name: restore
+    volumes:
+      - media_volume:/app/data/images
+      - restore_staging:/tmp/restore_staging
     env_file:
       - .env
     environment:
-      - MEGA_DB_FOLDER=db-daily-backups-test
-      - MEGA_IMAGES_FOLDER=media-weekly-backups-test
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - MEGA_EMAIL=${MEGA_EMAIL}
+      - MEGA_PASSWORD=${MEGA_PASSWORD}
+      - STAGING_DIR=/tmp/restore_staging
+      - RESTORE_DESTINATION=/app/media # Used only for MEDIA restores
+      - RESTORE_TYPE=${RESTORE_TYPE:-SQL}  # IMAGES or SQL
+      - RESTORE_MODE=${RESTORE_MODE:-LATEST} # LATEST or TIMESTAMP
+      - REMOTE_FOLDER=TangaPanoPostgresDailyBackups # TangaPanoImagesWeeklyBackups | TangaPanoPostgresDailyBackups
     depends_on:
       - db
+    profiles: ["restore"]
     networks:
       - app_net
-    command: ["/app/docker-db-restore.sh"]
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    profiles: ["restore"]
-
-  images-restore:
-    build: ./restore
-    container_name: images_restore
-    env_file:
-      - .env
-    environment:
-      - MEGA_DB_FOLDER=db-daily-backups-test
-      - MEGA_IMAGES_FOLDER=media-weekly-backups-test
-    volumes:
-      - media_volume:/app/media
-    networks:
-      - app_net
-    command: ["/app/docker-images-restore.sh"]
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    profiles: ["restore"]
+    restart: "no"
+    user: root
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
 
   redis:
     container_name: redis
@@ -233,6 +230,7 @@ volumes:
   media_volume:
   # node_modules_volume:
   redis_data:
+  restore_staging:
 
 networks:
   app_net:
