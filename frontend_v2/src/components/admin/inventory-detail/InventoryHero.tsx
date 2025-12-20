@@ -6,15 +6,22 @@ import Image from "next/image";
 
 interface InventoryHeroProps {
   listing: Inventory;
+  user: User;
   setIsPreviewModalOpen: (val: boolean) => void;
   setIsLockModalOpen: (val: boolean) => void;
 }
 
 function InventoryHero({
   listing,
+  user,
   setIsPreviewModalOpen,
   setIsLockModalOpen,
 }: InventoryHeroProps) {
+  // Check if user has permission to change listing
+  const hasChangeListingPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "change_listing"
+  ) ?? false;
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 relative h-80 rounded-2xl overflow-hidden shadow-2xl group border border-border/40 bg-card">
@@ -42,11 +49,10 @@ function InventoryHero({
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span
-                  className={`px-2 py-1 backdrop-blur-md text-xxs font-bold rounded uppercase tracking-wider border ${
-                    !listing?.is_locked
+                  className={`px-2 py-1 backdrop-blur-md text-xxs font-bold rounded uppercase tracking-wider border ${!listing?.is_locked
                       ? "bg-emerald-500/20 text-emerald-100 border-emerald-500/30"
                       : "bg-red-500/20 text-red-100 border-red-500/30"
-                  }`}
+                    }`}
                 >
                   {listing?.is_locked ? "Locked" : "Active"}
                 </span>
@@ -76,14 +82,16 @@ function InventoryHero({
             {listing.is_locked ? (
               <button
                 onClick={() => setIsLockModalOpen(true)}
-                className="w-full py-3 bg-emerald-500/10 text-emerald-500 border-emerald-500/20 border rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+                disabled={!hasChangeListingPermission}
+                className="w-full py-3 bg-emerald-500/10 text-emerald-500 border-emerald-500/20 border rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Unlock className="w-4 h-4" /> Unlock Listing
               </button>
             ) : (
               <button
                 onClick={() => setIsLockModalOpen(true)}
-                className="w-full py-3 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+                disabled={!hasChangeListingPermission}
+                className="w-full py-3 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Lock className="w-4 h-4" /> Lock Listing
               </button>

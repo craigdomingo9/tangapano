@@ -15,15 +15,22 @@ import Image from "next/image";
 
 interface InventoryDesktopViewProps {
   data: Inventory[];
+  user: User;
   openLockModal: (inv: Inventory) => void;
 }
 
 function InventoryDesktopView({
   data,
+  user,
   openLockModal,
 }: InventoryDesktopViewProps) {
   // SAFETY CHECK: Ensure data is an array
   const hasData = Array.isArray(data) && data.length > 0;
+
+  // Check if user has permission to change listing
+  const hasChangeListingPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "change_listing"
+  ) ?? false;
 
   return (
     <div className="hidden md:block bg-card/40 backdrop-blur-xl border border-border/40 rounded-2xl shadow-xl overflow-hidden">
@@ -137,11 +144,10 @@ function InventoryDesktopView({
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-xxs font-bold uppercase tracking-wide border ${
-                          !listing.is_locked
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-xxs font-bold uppercase tracking-wide border ${!listing.is_locked
                             ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
                             : "bg-destructive/10 text-destructive border-destructive/20"
-                        }`}
+                          }`}
                       >
                         {!listing.is_locked ? (
                           <CheckCircle className="w-3 h-3 mr-1" />
@@ -158,11 +164,11 @@ function InventoryDesktopView({
                           onClick={() =>
                             openLockModal && openLockModal(listing)
                           }
-                          className={`p-1.5 rounded-lg transition-colors border cursor-pointer ${
-                            listing.is_locked
+                          disabled={!hasChangeListingPermission}
+                          className={`p-1.5 rounded-lg transition-colors border cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed ${listing.is_locked
                               ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20"
                               : "bg-muted/30 text-muted-foreground border-border/40 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/20"
-                          }`}
+                            }`}
                           title={
                             listing.is_locked
                               ? "Unlock Listing"

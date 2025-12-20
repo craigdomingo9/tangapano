@@ -8,16 +8,23 @@ interface InventoryStatsProps {
 }
 
 function InventoryStats({ listing }: InventoryStatsProps) {
+  // Safely extract stats with fallback values
+  const totalViews = listing?.stats?.total_views?.toString() ?? "0";
+  const totalInquiries = listing?.stats?.total_inquiries?.toString() ?? "0";
+  const totalBeds = listing?.vacancy_stats?.total ?? 0;
+  const filledBeds = listing?.vacancy_stats?.filled ?? 0;
+  const vacantBeds = totalBeds - filledBeds;
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
         label="Total Views"
-        value={listing?.stats.total_views.toString()!!}
+        value={totalViews}
         icon={Eye}
       />
       <StatCard
         label="Inquiries"
-        value={listing?.stats.total_inquiries.toString()!!}
+        value={totalInquiries}
         icon={MessageCircle}
       />
       <div className="bg-card/40 backdrop-blur-xl border border-border/40 rounded-xl p-6 shadow-sm">
@@ -31,9 +38,9 @@ function InventoryStats({ listing }: InventoryStatsProps) {
             Vacancy
           </h3>
           <span className="text-2xl font-bold text-foreground tracking-tight">
-            {listing?.vacancy_stats?.total!! - listing?.vacancy_stats.filled!!}{" "}
+            {vacantBeds}{" "}
             <span className="text-sm text-muted-foreground font-normal">
-              / {listing?.vacancy_stats.total} beds
+              / {totalBeds} beds
             </span>
           </span>
         </div>

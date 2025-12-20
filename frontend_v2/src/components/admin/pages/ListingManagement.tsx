@@ -14,7 +14,7 @@ import ListingLockModal from "../inventory-list/ListingLockModal";
 const ITEMS_PER_PAGE = 6;
 
 function ListingManagement({
-  serverData: { accessToken },
+  serverData: { accessToken, user },
 }: AdminPanelComponentProps) {
   const [openLockModal, setOpenLockModal] = useState<Inventory | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,10 +100,12 @@ function ListingManagement({
         <div className="flex flex-col">
           <InventoryDesktopView
             data={paginatedListings}
+            user={user}
             openLockModal={(inv: Inventory) => setOpenLockModal(inv)}
           />
           <InventoryMobileView
             data={paginatedListings}
+            user={user}
             openLockModal={(inv: Inventory) => setOpenLockModal(inv)}
           />
         </div>

@@ -26,7 +26,7 @@ import useIsMobile from "@/hooks/use-is-mobile";
 import ListingLockModal from "../inventory-list/ListingLockModal";
 
 function ListingDetail({
-  serverData: { accessToken },
+  serverData: { accessToken, user },
   params: { listingId },
 }: AdminPanelComponentProps) {
   const {
@@ -66,6 +66,7 @@ function ListingDetail({
         {/* Hero Section */}
         <InventoryHero
           listing={invDetail!!}
+          user={user}
           setIsLockModalOpen={changeModalOpen}
           setIsPreviewModalOpen={changePreviewOpen}
         />
