@@ -18,12 +18,14 @@ interface AgentDisplayProps {
   data: AdminAgent[];
   searchQuery: string;
   handleEditClick: (agent: AdminAgent) => void;
+  hasChangeAgentPermission: boolean;
 }
 
 function AgentsDisplay({
   data,
   searchQuery,
   handleEditClick,
+  hasChangeAgentPermission,
 }: AgentDisplayProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -70,7 +72,8 @@ function AgentsDisplay({
 
             <button
               onClick={() => handleEditClick(agent)}
-              className="w-full mt-auto py-2 bg-lapis/10 hover:bg-lapis/20 hover:text-lapis rounded-lg text-xs font-bold cursor-pointer transition-all border border-border/40 hover:border-lapis/20 flex items-center justify-center gap-2 h-10"
+              disabled={!hasChangeAgentPermission}
+              className="w-full mt-auto py-2 bg-lapis/10 hover:bg-lapis/20 hover:text-lapis rounded-lg text-xs font-bold cursor-pointer transition-all border border-border/40 hover:border-lapis/20 flex items-center justify-center gap-2 h-10 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <Edit className="w-3 h-3" /> Manage Profile
             </button>

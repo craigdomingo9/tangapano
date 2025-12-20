@@ -44,7 +44,7 @@ const useModalState = createEntityStore<ModalState>(initialModalState);
 const useAgentFormData = createEntityStore<AgentFormData>(initialAgentFormData);
 
 function AgentManagement({
-  serverData: { accessToken },
+  serverData: { accessToken, user },
 }: AdminPanelComponentProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const { data: campuses } = useCampuses();
@@ -56,6 +56,15 @@ function AgentManagement({
   const { entities: modalState, setEntities: setModalState } = useModalState();
   const { entities: formData, setEntities: setFormData } = useAgentFormData();
   const { isOpen, mode, selectedAgent } = modalState;
+
+  // Check permissions
+  const hasAddAgentPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "add_agent"
+  ) ?? false;
+
+  const hasChangeAgentPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "change_agent"
+  ) ?? false;
 
   // 2. Dedicated Setter Functions (better type safety and readability)
 
@@ -159,7 +168,8 @@ function AgentManagement({
             </div>
             <button
               onClick={onAddAgentClick}
-              className="bg-lapis cursor-pointer hover:bg-lapis/90 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center"
+              disabled={!hasAddAgentPermission}
+              className="bg-lapis cursor-pointer hover:bg-lapis/90 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <Plus className="w-4 h-4" /> Add New Agent
             </button>
@@ -169,6 +179,7 @@ function AgentManagement({
           data={filteredAgents}
           handleEditClick={onEditAgentClick}
           searchQuery={searchQuery}
+          hasChangeAgentPermission={hasChangeAgentPermission}
         />
       </div>
       <Modal
