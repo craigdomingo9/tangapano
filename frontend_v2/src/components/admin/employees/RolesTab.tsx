@@ -9,6 +9,8 @@ interface RolesTabProps {
     onPageChange: (page: number) => void;
     onEdit: (role: Role) => void;
     onCreate: () => void;
+    hasAddRolePermission: boolean;
+    hasChangeRolePermission: boolean;
 }
 
 const RolesTab: React.FC<RolesTabProps> = ({
@@ -17,14 +19,17 @@ const RolesTab: React.FC<RolesTabProps> = ({
     currentPage,
     onPageChange,
     onEdit,
-    onCreate
+    onCreate,
+    hasAddRolePermission,
+    hasChangeRolePermission
 }) => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 space-y-6">
                 <button
                     onClick={onCreate}
-                    className="cursor-pointer w-full h-14 bg-lapis text-white rounded-2xl font-bold text-sm shadow-xl shadow-lapis/20 hover:bg-lapis/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+                    disabled={!hasAddRolePermission}
+                    className="cursor-pointer w-full h-14 bg-lapis text-white rounded-2xl font-bold text-sm shadow-xl shadow-lapis/20 hover:bg-lapis/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> Create Security Role
                 </button>
@@ -37,7 +42,8 @@ const RolesTab: React.FC<RolesTabProps> = ({
                         <button
                             key={role.id}
                             onClick={() => onEdit(role)}
-                            className="cursor-pointer w-full p-6 flex flex-col items-start hover:bg-lapis/[0.03] active:bg-lapis/[0.08] transition-all group text-left"
+                            disabled={!hasChangeRolePermission}
+                            className="cursor-pointer w-full p-6 flex flex-col items-start hover:bg-lapis/[0.03] active:bg-lapis/[0.08] transition-all group text-left disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             <div className="flex items-center justify-between w-full mb-2">
                                 <span className="font-bold font-bold group-hover:text-lapis transition-colors text-lg tracking-tight">{role.name}</span>

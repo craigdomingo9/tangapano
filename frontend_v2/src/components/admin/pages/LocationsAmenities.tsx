@@ -41,7 +41,7 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
   ) ?? false;
 
   const hasAddAmenityCategoryPermission = user?.employee_profile?.role?.permissions?.some(
-    (permission) => permission.codename === "add_amenitycategory"
+    (permission) => permission.codename === "add_category"
   ) ?? false;
 
   const hasAddAmenityPermission = user?.employee_profile?.role?.permissions?.some(

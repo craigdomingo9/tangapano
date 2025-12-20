@@ -11,6 +11,8 @@ interface EmployeesTabProps {
     onCreate: () => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
+    hasAddEmployeePermission: boolean;
+    hasChangeEmployeePermission: boolean;
 }
 
 const EmployeesTab: React.FC<EmployeesTabProps> = ({
@@ -21,7 +23,9 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
     onEdit,
     onCreate,
     searchQuery,
-    setSearchQuery
+    setSearchQuery,
+    hasAddEmployeePermission,
+    hasChangeEmployeePermission
 }) => {
     return (
         <div className="space-y-6">
@@ -38,7 +42,8 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                 </div>
                 <button
                     onClick={onCreate}
-                    className="cursor-pointer flex items-center gap-2 px-6 h-11 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-lg shadow-lapis/20 w-full sm:w-auto justify-center group"
+                    disabled={!hasAddEmployeePermission}
+                    className="cursor-pointer flex items-center gap-2 px-6 h-11 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-lg shadow-lapis/20 w-full sm:w-auto justify-center group disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                     <UserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" /> Register Personnel
                 </button>
@@ -60,7 +65,8 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                             </div>
                             <button
                                 onClick={() => onEdit(emp)}
-                                className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis active:scale-90 transition-all"
+                                disabled={!hasChangeEmployeePermission}
+                                className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis active:scale-90 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 <Edit className="w-4 h-4" />
                             </button>
@@ -147,7 +153,8 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                                     <td className="px-8 py-5 text-right">
                                         <button
                                             onClick={() => onEdit(emp)}
-                                            className="cursor-pointer p-3 bg-muted/20 hover:bg-lapis/10 text-muted-foreground hover:text-lapis rounded-xl transition-all active:scale-90"
+                                            disabled={!hasChangeEmployeePermission}
+                                            className="cursor-pointer p-3 bg-muted/20 hover:bg-lapis/10 text-muted-foreground hover:text-lapis rounded-xl transition-all active:scale-90 disabled:opacity-70 disabled:cursor-not-allowed"
                                         >
                                             <Edit className="w-4.5 h-4.5" />
                                         </button>

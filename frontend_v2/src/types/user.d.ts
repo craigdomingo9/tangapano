@@ -65,7 +65,7 @@ declare global {
         | 'view_listing' | 'add_listing' | 'change_listing' | 'delete_listing'
         | 'view_room' | 'add_room' | 'change_room' | 'delete_room'
         | 'view_amenity' | 'add_amenity' | 'change_amenity' | 'delete_amenity'
-        | 'view_amenitycategory' | 'add_amenitycategory' | 'change_amenitycategory' | 'delete_amenitycategory'
+        | 'view_category' | 'add_category' | 'change_category' | 'delete_category'
         | 'view_listingimage' | 'add_listingimage' | 'change_listingimage' | 'delete_listingimage'
         | 'view_listinglocation' | 'add_listinglocation' | 'change_listinglocation' | 'delete_listinglocation'
         | 'view_notification' | 'add_notification' | 'change_notification' | 'delete_notification';

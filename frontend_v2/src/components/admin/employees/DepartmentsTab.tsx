@@ -9,6 +9,8 @@ interface DepartmentsTabProps {
     onPageChange: (page: number) => void;
     onEdit: (dept: Department) => void;
     onCreate: () => void;
+    hasAddDepartmentPermission: boolean;
+    hasChangeDepartmentPermission: boolean;
 }
 
 const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
@@ -17,7 +19,9 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
     currentPage,
     onPageChange,
     onEdit,
-    onCreate
+    onCreate,
+    hasAddDepartmentPermission,
+    hasChangeDepartmentPermission
 }) => {
     return (
         <div className="space-y-8">
@@ -28,7 +32,8 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                 </div>
                 <button
                     onClick={onCreate}
-                    className="cursor-pointer w-full md:w-auto flex text-white items-center justify-center gap-2 h-12 px-8 bg-lapis backdrop-blur-md border border-border/40 hover:bg-lapis/90 active:scale-95 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm"
+                    disabled={!hasAddDepartmentPermission}
+                    className="cursor-pointer w-full md:w-auto flex text-white items-center justify-center gap-2 h-12 px-8 bg-lapis backdrop-blur-md border border-border/40 hover:bg-lapis/90 active:scale-95 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-4 h-4" /> New Dept
                 </button>
@@ -44,7 +49,8 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => onEdit(dept)}
-                                    className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis transition-all active:scale-90"
+                                    disabled={!hasChangeDepartmentPermission}
+                                    className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis transition-all active:scale-90 disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     <Edit className="w-4 h-4" />
                                 </button>

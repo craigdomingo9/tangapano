@@ -19,8 +19,33 @@ import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
 const ITEMS_PER_PAGE = 6;
 
 function EmployeeManagement({
-    serverData: { accessToken },
+    serverData: { accessToken, user },
 }: AdminPanelComponentProps) {
+    // Permission checks
+    const hasAddEmployeePermission = user?.employee_profile?.role?.permissions?.some(
+        (permission) => permission.codename === "add_employee"
+    ) ?? false;
+
+    const hasChangeEmployeePermission = user?.employee_profile?.role?.permissions?.some(
+        (permission) => permission.codename === "change_employee"
+    ) ?? false;
+
+    const hasAddRolePermission = user?.employee_profile?.role?.permissions?.some(
+        (permission) => permission.codename === "add_role"
+    ) ?? false;
+
+    const hasChangeRolePermission = user?.employee_profile?.role?.permissions?.some(
+        (permission) => permission.codename === "change_role"
+    ) ?? false;
+
+    const hasAddDepartmentPermission = user?.employee_profile?.role?.permissions?.some(
+        (permission) => permission.codename === "add_department"
+    ) ?? false;
+
+    const hasChangeDepartmentPermission = user?.employee_profile?.role?.permissions?.some(
+        (permission) => permission.codename === "change_department"
+    ) ?? false;
+
     const [activeTab, setActiveTab] = useState<'employees' | 'roles' | 'departments'>('employees');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -213,6 +238,8 @@ function EmployeeManagement({
                         onCreate={() => { setSelectedEmployee(null); setEmployeeModalOpen(true); }}
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
+                        hasAddEmployeePermission={hasAddEmployeePermission}
+                        hasChangeEmployeePermission={hasChangeEmployeePermission}
                     />
                 )}
 
@@ -224,6 +251,8 @@ function EmployeeManagement({
                         onPageChange={setRolePage}
                         onEdit={(role) => { setSelectedRole(role); setRoleModalOpen(true); }}
                         onCreate={() => { setSelectedRole(null); setRoleModalOpen(true); }}
+                        hasAddRolePermission={hasAddRolePermission}
+                        hasChangeRolePermission={hasChangeRolePermission}
                     />
                 )}
 
@@ -235,6 +264,8 @@ function EmployeeManagement({
                         onPageChange={setDeptPage}
                         onEdit={(dept) => { setSelectedDept(dept); setDeptModalOpen(true); }}
                         onCreate={() => { setSelectedDept(null); setDeptModalOpen(true); }}
+                        hasAddDepartmentPermission={hasAddDepartmentPermission}
+                        hasChangeDepartmentPermission={hasChangeDepartmentPermission}
                     />
                 )}
             </div>
