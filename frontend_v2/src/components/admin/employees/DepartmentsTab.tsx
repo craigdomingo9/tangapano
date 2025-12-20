@@ -23,12 +23,12 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-2">
                 <div>
-                    <h3 className="text-xl font-black text-foreground tracking-tight">Departmental Units</h3>
-                    <p className="text-xs font-semibold text-muted-foreground opacity-70">Governing organizational hierarchy</p>
+                    <h3 className="text-xl font-bold tracking-tight">Departmental Units</h3>
+                    <p className="text-xs font-bold text-muted-foreground opacity-70">Governing organizational hierarchy</p>
                 </div>
                 <button
                     onClick={onCreate}
-                    className="w-full md:w-auto flex items-center justify-center gap-2 h-12 px-8 bg-card/60 backdrop-blur-md border border-border/40 text-foreground hover:bg-muted/50 active:scale-95 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-sm"
+                    className="w-full md:w-auto flex text-white items-center justify-center gap-2 h-12 px-8 bg-lapis backdrop-blur-md border border-border/40 hover:bg-lapis/90 active:scale-95 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm"
                 >
                     <Plus className="w-4 h-4" /> New Dept
                 </button>
@@ -38,7 +38,7 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                 {departments.map((dept) => (
                     <div key={dept.id} className="bg-card/30 backdrop-blur-2xl border border-border/40 rounded-[2.5rem] p-7 shadow-xl hover:shadow-2xl hover:shadow-lapis/5 hover:-translate-y-1 transition-all group flex flex-col relative overflow-hidden">
                         <div className="flex justify-between items-start mb-6">
-                            <div className="p-4 bg-lapis/10 rounded-[1.5rem] text-lapis border border-lapis/10 shadow-inner group-hover:bg-lapis group-hover:text-lapis-foreground transition-all duration-500">
+                            <div className="p-4 bg-lapis/10 rounded-3xl text-lapis border border-lapis/10 shadow-inner group-hover:bg-lapis group-hover:text-lapis-foreground transition-all duration-500">
                                 <Building className="w-7 h-7" />
                             </div>
                             <div className="flex gap-2">
@@ -50,22 +50,22 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                                 </button>
                             </div>
                         </div>
-                        <h4 className="font-black text-foreground text-xl mb-3 tracking-tight">{dept.name}</h4>
-                        <p className="text-sm text-muted-foreground font-semibold leading-relaxed opacity-80 flex-1">{dept.description || 'No specific scope defined.'}</p>
+                        <h4 className="font-bold text-xl mb-3 tracking-tight">{dept.name}</h4>
+                        <p className="text-sm text-muted-foreground font-bold leading-relaxed opacity-80 flex-1">{dept.description || 'No specific scope defined.'}</p>
 
                         <div className="mt-8 pt-6 border-t border-border/40 flex items-center justify-between">
                             <div className="flex -space-x-3">
                                 {/* Placeholder for user avatars if we had them related to dept */}
                                 {[1, 2, 3].map(i => (
-                                    <div key={i} className="w-9 h-9 rounded-2xl border-2 border-card bg-muted/60 backdrop-blur-sm flex items-center justify-center text-[10px] font-black text-lapis shadow-sm">
+                                    <div key={i} className="w-9 h-9 rounded-2xl border-2 border-card bg-muted/60 backdrop-blur-sm flex items-center justify-center text-[10px] font-bold text-lapis shadow-sm">
                                         U{i}
                                     </div>
                                 ))}
-                                <div className="w-9 h-9 rounded-2xl border-2 border-card bg-lapis text-lapis-foreground flex items-center justify-center text-[10px] font-black shadow-lg">
+                                <div className="w-9 h-9 rounded-2xl border-2 border-card bg-lapis text-lapis-foreground flex items-center justify-center text-[10px] font-bold shadow-lg">
                                     +12
                                 </div>
                             </div>
-                            <span className="text-[10px] font-black text-lapis uppercase tracking-[0.2em] opacity-80">Operational</span>
+                            <span className="text-[10px] font-bold text-lapis uppercase tracking-[0.2em] opacity-80">Operational</span>
                         </div>
                     </div>
                 ))}

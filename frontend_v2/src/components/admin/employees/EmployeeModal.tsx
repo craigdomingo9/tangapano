@@ -51,12 +51,12 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
             containerClassName="max-w-2xl max-h-[85vh] overflow-y-auto"
             footer={
                 <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
-                    <button type="button" onClick={onClose} className="px-6 py-3 md:py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all">Cancel</button>
+                    <button type="button" onClick={onClose} className="px-6 py-3 md:py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:font-bold hover:bg-muted/50 transition-all">Cancel</button>
                     <button
                         form="employee-form"
                         type="submit"
                         disabled={isLoading}
-                        className="px-6 py-3 md:py-2.5 bg-lapis hover:bg-lapis/90 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-xl shadow-lapis/20 active:scale-[0.98] transition-all disabled:opacity-50"
+                        className="px-6 py-3 md:py-2.5 bg-lapis hover:bg-lapis/90 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl shadow-lapis/20 active:scale-[0.98] transition-all disabled:opacity-50"
                     >
                         {isLoading ? 'Saving...' : 'Commit Changes'}
                     </button>
@@ -66,29 +66,29 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
             <form id="employee-form" onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">First Name</label>
-                        <input name="first_name" type="text" defaultValue={employee?.user.first_name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">First Name</label>
+                        <input name="first_name" type="text" defaultValue={employee?.user.first_name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Last Name</label>
-                        <input name="last_name" type="text" defaultValue={employee?.user.last_name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Last Name</label>
+                        <input name="last_name" type="text" defaultValue={employee?.user.last_name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Enterprise Email</label>
-                    <input name="email" type="email" defaultValue={employee?.user.email} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Enterprise Email</label>
+                    <input name="email" type="email" defaultValue={employee?.user.email} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Department Unit</label>
-                        <select name="department_id" defaultValue={employee?.department?.id} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all h-12">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Department Unit</label>
+                        <select name="department_id" defaultValue={employee?.department?.id} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all h-12">
                             <option value="">Select Department</option>
                             {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
                         </select>
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Access Role</label>
-                        <select name="role_id" defaultValue={employee?.role?.id} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all h-12">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Access Role</label>
+                        <select name="role_id" defaultValue={employee?.role?.id} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all h-12">
                             <option value="">Select Role</option>
                             {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
                         </select>
@@ -96,17 +96,17 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Contact Phone</label>
-                        <input name="phone_number" type="text" defaultValue={employee?.phone_number || ''} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Contact Phone</label>
+                        <input name="phone_number" type="text" defaultValue={employee?.phone_number || ''} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Hiring Timestamp</label>
-                        <input name="date_hired" type="date" defaultValue={employee?.date_hired?.split('T')[0] || ''} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Hiring Timestamp</label>
+                        <input name="date_hired" type="date" defaultValue={employee?.date_hired?.split('T')[0] || ''} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Address</label>
-                    <input name="address" type="text" defaultValue={employee?.address || ''} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Address</label>
+                    <input name="address" type="text" defaultValue={employee?.address || ''} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                 </div>
             </form>
         </Modal>
