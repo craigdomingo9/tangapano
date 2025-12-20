@@ -9,6 +9,9 @@ interface AmenitiesTabProps {
   setAddAmenity: (amenity: boolean) => void;
   setAddCategoryOpen: (amenity: boolean) => void;
   setEditAmenity: (amenity: Amenity) => void;
+  hasAddAmenityCategoryPermission: boolean;
+  hasAddAmenityPermission: boolean;
+  hasChangeAmenityPermission: boolean;
 }
 
 interface GroupedAmenities {
@@ -22,6 +25,9 @@ function AmenitiesTab({
   setAddAmenity,
   setEditAmenity,
   setAddCategoryOpen,
+  hasAddAmenityCategoryPermission,
+  hasAddAmenityPermission,
+  hasChangeAmenityPermission,
 }: AmenitiesTabProps) {
   // Guards
   if (isLoading) return <LoadingScreen />;
@@ -43,14 +49,16 @@ function AmenitiesTab({
         <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap sm:h-10">
           <button
             onClick={() => setAddCategoryOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer"
+            disabled={!hasAddAmenityCategoryPermission}
+            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             Add Category
           </button>
           <button
             onClick={() => setAddAmenity(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-lapis text-lapis-foreground rounded-lg text-xs font-bold hover:bg-lapis/90 transition-all shadow-lg shadow-lapis/20 flex-1 sm:flex-none justify-center group cursor-pointer"
+            disabled={!hasAddAmenityPermission}
+            className="flex items-center gap-2 px-4 py-2 bg-lapis text-lapis-foreground rounded-lg text-xs font-bold hover:bg-lapis/90 transition-all shadow-lg shadow-lapis/20 flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             Add Amenity
@@ -73,9 +81,12 @@ function AmenitiesTab({
                 <div
                   key={i}
                   className="group relative"
-                  onClick={() => setEditAmenity(amenity)}
+                  onClick={() => hasChangeAmenityPermission && setEditAmenity(amenity)}
                 >
-                  <div className="flex items-center text-muted-foreground gap-2 px-3 py-1.5 bg-muted/40 border border-border/40 rounded-lg shadow-sm cursor-pointer hover:border-lapis/50 hover:text-lapis transition-all duration-300">
+                  <div className={`flex items-center text-muted-foreground gap-2 px-3 py-1.5 bg-muted/40 border border-border/40 rounded-lg shadow-sm transition-all duration-300 ${hasChangeAmenityPermission
+                      ? "cursor-pointer hover:border-lapis/50 hover:text-lapis"
+                      : "opacity-70 cursor-not-allowed"
+                    }`}>
                     <Tag className="w-3.5 h-3.5 opacity-70" />
                     <span className="text-xs font-bold">
                       {amenity.display_name}

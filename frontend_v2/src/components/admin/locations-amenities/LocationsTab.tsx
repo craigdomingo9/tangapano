@@ -11,6 +11,10 @@ interface LocationsTabProps {
   setAddCampusOpen: (val: boolean) => void;
   isLoading: boolean;
   isError: boolean;
+  hasAddCityPermission: boolean;
+  hasAddNeighborhoodPermission: boolean;
+  hasAddCampusPermission: boolean;
+  hasChangeCampusPermission: boolean;
 }
 
 function LocationsTab({
@@ -21,6 +25,10 @@ function LocationsTab({
   setAddCampusOpen,
   isLoading,
   isError,
+  hasAddCityPermission,
+  hasAddNeighborhoodPermission,
+  hasAddCampusPermission,
+  hasChangeCampusPermission,
 }: LocationsTabProps) {
   // Guards
   if (isLoading) return <LoadingScreen />;
@@ -43,21 +51,24 @@ function LocationsTab({
         <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap justify-center h-20 sm:h-10">
           <button
             onClick={() => setAddCityOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer"
+            disabled={!hasAddCityPermission}
+            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             City
           </button>
           <button
             onClick={() => setAddNeighborhoodOpen("")}
-            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer"
+            disabled={!hasAddNeighborhoodPermission}
+            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             Neighborhood
           </button>
           <button
             onClick={() => setAddCampusOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-lapis text-lapis-foreground rounded-lg text-xs font-bold hover:bg-lapis/90 transition-all shadow-lg shadow-lapis/20 flex-1 sm:flex-none justify-center group cursor-pointer"
+            disabled={!hasAddCampusPermission}
+            className="flex items-center gap-2 px-4 py-2 bg-lapis text-lapis-foreground rounded-lg text-xs font-bold hover:bg-lapis/90 transition-all shadow-lg shadow-lapis/20 flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             Add Campus
@@ -108,7 +119,8 @@ function LocationsTab({
                     </div>
                     <button
                       onClick={() => setEditCampusOpen(campus)}
-                      className="p-2 text-muted-foreground hover:text-lapis hover:bg-lapis/10 rounded-lg transition-colors sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer"
+                      disabled={!hasChangeCampusPermission}
+                      className="p-2 text-muted-foreground hover:text-lapis hover:bg-lapis/10 rounded-lg transition-colors sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                       title="Edit Campus"
                     >
                       <Edit2 className="w-4 h-4" />
@@ -133,7 +145,8 @@ function LocationsTab({
                       ))}
                       <button
                         onClick={() => setEditCampusOpen(campus)}
-                        className="inline-flex items-center justify-center px-2 py-1 rounded-md text-xs font-bold text-lapis bg-lapis/5 hover:bg-lapis/10 hover:text-lapis transition-colors border border-dashed border-lapis/20 cursor-pointer"
+                        disabled={!hasChangeCampusPermission}
+                        className="inline-flex items-center justify-center px-2 py-1 rounded-md text-xs font-bold text-lapis bg-lapis/5 hover:bg-lapis/10 hover:text-lapis transition-colors border border-dashed border-lapis/20 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                       >
                         <Plus className="w-3 h-3" />
                       </button>

@@ -21,7 +21,36 @@ import NeighborhoodEditorModal from "../locations-amenities/modals/NeighborhoodE
 import { AdminPanelComponentProps } from "@/lib/types/admin";
 
 function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
-  const { accessToken } = serverData;
+  const { accessToken, user } = serverData;
+
+  // Permission checks
+  const hasAddCityPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "add_city"
+  ) ?? false;
+
+  const hasAddNeighborhoodPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "add_neighborhood"
+  ) ?? false;
+
+  const hasAddCampusPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "add_campus"
+  ) ?? false;
+
+  const hasChangeCampusPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "change_campus"
+  ) ?? false;
+
+  const hasAddAmenityCategoryPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "add_amenitycategory"
+  ) ?? false;
+
+  const hasAddAmenityPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "add_amenity"
+  ) ?? false;
+
+  const hasChangeAmenityPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "change_amenity"
+  ) ?? false;
 
   // --- 1. Data Hooks ---
 
@@ -203,6 +232,10 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
               setAddNeighborhoodOpen={handleOpenAddNeighborhood}
               setAddCampusOpen={handleOpenAddCampus}
               setEditCampusOpen={handleOpenEditCampus}
+              hasAddCityPermission={hasAddCityPermission}
+              hasAddNeighborhoodPermission={hasAddNeighborhoodPermission}
+              hasAddCampusPermission={hasAddCampusPermission}
+              hasChangeCampusPermission={hasChangeCampusPermission}
             />
           ) : (
             <AmenitiesTab
@@ -212,6 +245,9 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
               setAddCategoryOpen={() => setIsCategoryModalOpen(true)}
               setAddAmenity={handleOpenAddAmenity}
               setEditAmenity={handleOpenEditAmenity}
+              hasAddAmenityCategoryPermission={hasAddAmenityCategoryPermission}
+              hasAddAmenityPermission={hasAddAmenityPermission}
+              hasChangeAmenityPermission={hasChangeAmenityPermission}
             />
           )}
         </div>
