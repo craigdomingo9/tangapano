@@ -24,7 +24,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
             <div className="lg:col-span-1 space-y-6">
                 <button
                     onClick={onCreate}
-                    className="w-full h-14 bg-lapis text-white rounded-2xl font-bold text-sm shadow-xl shadow-lapis/20 hover:bg-lapis/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+                    className="cursor-pointer w-full h-14 bg-lapis text-white rounded-2xl font-bold text-sm shadow-xl shadow-lapis/20 hover:bg-lapis/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
                 >
                     <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> Create Security Role
                 </button>
@@ -37,7 +37,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
                         <button
                             key={role.id}
                             onClick={() => onEdit(role)}
-                            className="w-full p-6 flex flex-col items-start hover:bg-lapis/[0.03] active:bg-lapis/[0.08] transition-all group text-left"
+                            className="cursor-pointer w-full p-6 flex flex-col items-start hover:bg-lapis/[0.03] active:bg-lapis/[0.08] transition-all group text-left"
                         >
                             <div className="flex items-center justify-between w-full mb-2">
                                 <span className="font-bold font-bold group-hover:text-lapis transition-colors text-lg tracking-tight">{role.name}</span>

@@ -58,12 +58,12 @@ const RoleModal: React.FC<RoleModalProps> = ({
             containerClassName="max-w-5xl max-h-[85vh] overflow-y-auto"
             footer={
                 <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
-                    <button type="button" onClick={onClose} className="px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:font-bold transition-all">Abort</button>
+                    <button type="button" onClick={onClose} className="cursor-pointer px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:font-bold transition-all">Abort</button>
                     <button
                         form="role-form"
                         type="submit"
                         disabled={isLoading}
-                        className="px-8 py-3 bg-lapis hover:bg-lapis/90 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl shadow-lapis/20 active:scale-[0.98] transition-all disabled:opacity-50"
+                        className="cursor-pointer px-8 py-3 bg-lapis hover:bg-lapis/90 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl shadow-lapis/20 active:scale-[0.98] transition-all disabled:opacity-50"
                     >
                         {isLoading ? 'Saving...' : 'Propagate Policy'}
                     </button>

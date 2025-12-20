@@ -38,7 +38,7 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                 </div>
                 <button
                     onClick={onCreate}
-                    className="flex items-center gap-2 px-6 h-11 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-lg shadow-lapis/20 w-full sm:w-auto justify-center group"
+                    className="cursor-pointer flex items-center gap-2 px-6 h-11 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-lg shadow-lapis/20 w-full sm:w-auto justify-center group"
                 >
                     <UserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" /> Register Personnel
                 </button>
@@ -60,7 +60,7 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                             </div>
                             <button
                                 onClick={() => onEdit(emp)}
-                                className="p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis active:scale-90 transition-all"
+                                className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis active:scale-90 transition-all"
                             >
                                 <Edit className="w-4 h-4" />
                             </button>
@@ -113,7 +113,7 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                         </thead>
                         <tbody className="divide-y divide-border/30">
                             {employees.map((emp) => (
-                                <tr key={emp.id} className="hover:bg-lapis/[0.02] transition-colors group">
+                                <tr key={emp.id} className="cursor-default hover:bg-lapis/[0.02] transition-colors group">
                                     <td className="px-8 py-5">
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 rounded-2xl bg-lapis/5 text-lapis flex items-center justify-center font-bold text-xl border border-lapis/10 shadow-inner group-hover:scale-110 group-hover:bg-lapis group-hover:text-lapis-foreground transition-all duration-500">
@@ -147,7 +147,7 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                                     <td className="px-8 py-5 text-right">
                                         <button
                                             onClick={() => onEdit(emp)}
-                                            className="p-3 bg-muted/20 hover:bg-lapis/10 text-muted-foreground hover:text-lapis rounded-xl transition-all active:scale-90"
+                                            className="cursor-pointer p-3 bg-muted/20 hover:bg-lapis/10 text-muted-foreground hover:text-lapis rounded-xl transition-all active:scale-90"
                                         >
                                             <Edit className="w-4.5 h-4.5" />
                                         </button>

@@ -172,7 +172,7 @@ function EmployeeManagement({
             <div className="flex p-1 bg-muted/30 border border-border/40 rounded-xl w-full sm:w-fit overflow-x-auto">
                 <button
                     onClick={() => { setActiveTab('employees'); setSearchQuery(''); }}
-                    className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'employees'
+                    className={`cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'employees'
                         ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                         }`}
@@ -182,7 +182,7 @@ function EmployeeManagement({
                 </button>
                 <button
                     onClick={() => { setActiveTab('roles'); setSearchQuery(''); }}
-                    className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'roles'
+                    className={`cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'roles'
                         ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                         }`}
@@ -192,7 +192,7 @@ function EmployeeManagement({
                 </button>
                 <button
                     onClick={() => { setActiveTab('departments'); setSearchQuery(''); }}
-                    className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'departments'
+                    className={`cursor-pointer flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'departments'
                         ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                         }`}

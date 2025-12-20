@@ -51,12 +51,12 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
             containerClassName="max-w-2xl max-h-[85vh] overflow-y-auto"
             footer={
                 <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
-                    <button type="button" onClick={onClose} className="px-6 py-3 md:py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:font-bold hover:bg-muted/50 transition-all">Cancel</button>
+                    <button type="button" onClick={onClose} className="cursor-pointer px-6 py-3 md:py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:font-bold hover:bg-muted/50 transition-all">Cancel</button>
                     <button
                         form="employee-form"
                         type="submit"
                         disabled={isLoading}
-                        className="px-6 py-3 md:py-2.5 bg-lapis hover:bg-lapis/90 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl shadow-lapis/20 active:scale-[0.98] transition-all disabled:opacity-50"
+                        className="cursor-pointer px-6 py-3 md:py-2.5 bg-lapis hover:bg-lapis/90 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl shadow-lapis/20 active:scale-[0.98] transition-all disabled:opacity-50"
                     >
                         {isLoading ? 'Saving...' : 'Commit Changes'}
                     </button>

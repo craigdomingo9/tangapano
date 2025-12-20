@@ -28,7 +28,7 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                 </div>
                 <button
                     onClick={onCreate}
-                    className="w-full md:w-auto flex text-white items-center justify-center gap-2 h-12 px-8 bg-lapis backdrop-blur-md border border-border/40 hover:bg-lapis/90 active:scale-95 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm"
+                    className="cursor-pointer w-full md:w-auto flex text-white items-center justify-center gap-2 h-12 px-8 bg-lapis backdrop-blur-md border border-border/40 hover:bg-lapis/90 active:scale-95 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm"
                 >
                     <Plus className="w-4 h-4" /> New Dept
                 </button>
@@ -44,7 +44,7 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => onEdit(dept)}
-                                    className="p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis transition-all active:scale-90"
+                                    className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis transition-all active:scale-90"
                                 >
                                     <Edit className="w-4 h-4" />
                                 </button>
