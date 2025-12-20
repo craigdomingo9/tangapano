@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { loginAsUser } from "@/actions/admin/auth";
 
 function LandlordDetail({
-  serverData: { accessToken },
+  serverData: { accessToken, user },
   params: { landlordId },
 }: AdminPanelComponentProps) {
   const {
@@ -50,8 +50,7 @@ function LandlordDetail({
         if (!success) throw Error;
 
         successToast(
-          `You are now logged in ${
-            landlord.full_name ? `as ${landlord.full_name}` : ""
+          `You are now logged in ${landlord.full_name ? `as ${landlord.full_name}` : ""
           } for the next hour.`
         );
         router.push("/partner/dashboard");
@@ -78,6 +77,7 @@ function LandlordDetail({
 
         <HeaderProfile
           landlord={landlord!!}
+          user={user}
           setIsSuspendModalOpen={(val: boolean) => setIsSuspendModalOpen(val)}
           handleLoginAsUser={handleLoginAsUser}
           isImpersonating={isPending}

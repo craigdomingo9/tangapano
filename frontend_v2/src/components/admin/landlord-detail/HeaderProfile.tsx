@@ -12,6 +12,7 @@ import {
 
 interface HeaderProfileProps {
   landlord: Landlord;
+  user: User;
   setIsSuspendModalOpen: (val: boolean) => void;
   handleLoginAsUser: () => void;
   isImpersonating: boolean;
@@ -19,11 +20,18 @@ interface HeaderProfileProps {
 
 function HeaderProfile({
   landlord,
+  user,
   setIsSuspendModalOpen,
   handleLoginAsUser,
   isImpersonating,
 }: HeaderProfileProps) {
   if (!landlord) return null;
+
+  // Check if user has permission to change landlord
+  const hasChangeLandlordPermission = user?.employee_profile?.role?.permissions?.some(
+    (permission) => permission.codename === "change_landlord"
+  ) ?? false;
+
   return (
     <div className="bg-card/40 backdrop-blur-xl border border-border/40 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
       <div className="flex flex-col md:flex-row gap-6 items-center md:items-start relative z-10">
@@ -66,8 +74,8 @@ function HeaderProfile({
             <div className="flex gap-2">
               <button
                 onClick={handleLoginAsUser}
-                disabled={isImpersonating}
-                className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg text-sm font-bold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-wait cursor-pointer"
+                disabled={isImpersonating || !hasChangeLandlordPermission}
+                className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg text-sm font-bold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isImpersonating ? (
                   <span className="w-3.5 h-3.5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
@@ -78,7 +86,8 @@ function HeaderProfile({
               </button>
               <button
                 onClick={() => setIsSuspendModalOpen(true)}
-                className="px-3 py-1.5 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-lg text-sm font-bold transition-all cursor-pointer"
+                disabled={!hasChangeLandlordPermission}
+                className="px-3 py-1.5 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-lg text-sm font-bold transition-all disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
               >
                 Suspend
               </button>
