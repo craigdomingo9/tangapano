@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from users.models import Landlord, Agent
 from .landlord_serializer import LandlordSerializer
 from .agent_serializer import AgentSerializer
-from .employee_serializers import EmployeeSerializer
+from .employee_serializer import EmployeeSerializer
 
 User = get_user_model()
 

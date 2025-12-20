@@ -25,20 +25,20 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
 }) => {
     return (
         <div className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-card/30 backdrop-blur-2xl border border-border/40 p-4 rounded-2xl shadow-sm">
-                <div className="relative group w-full md:w-96">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-card/40 backdrop-blur-xl border border-border/40 p-4 rounded-2xl shadow-sm">
+                <div className="relative group w-full sm:w-96">
                     <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-lapis transition-colors" />
                     <input
                         type="text"
-                        placeholder="Filter personnel by name, email or dept..."
+                        placeholder="Search staff by name, unit, or email..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10 pr-4 h-11 md:h-12 w-full bg-background/50 border border-border/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all text-foreground placeholder:text-muted-foreground/60 shadow-inner"
+                        className="pl-10 pr-4 h-11 w-full bg-background/50 border border-border/60 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all text-foreground placeholder:text-muted-foreground/60 shadow-inner"
                     />
                 </div>
                 <button
                     onClick={onCreate}
-                    className="flex items-center gap-2 px-8 h-11 md:h-12 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-xl shadow-lapis/20 w-full md:w-auto justify-center group"
+                    className="flex items-center gap-2 px-6 h-11 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-lg shadow-lapis/20 w-full sm:w-auto justify-center group"
                 >
                     <UserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" /> Register Personnel
                 </button>
@@ -47,14 +47,14 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
             {/* Mobile View */}
             <div className="md:hidden space-y-4 px-1">
                 {employees.map((emp) => (
-                    <div key={emp.id} className="bg-card/40 backdrop-blur-xl border border-border/40 rounded-3xl p-5 shadow-lg active:bg-muted/30 transition-all">
+                    <div key={emp.id} className="bg-card/40 backdrop-blur-xl border border-border/40 rounded-[2rem] p-6 shadow-sm active:bg-muted/30 transition-all relative overflow-hidden group">
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-lapis/20 to-lapis/5 text-lapis flex items-center justify-center font-black text-xl border border-lapis/20 shadow-inner">
-                                    {emp.user.first_name.charAt(0)}
+                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-lapis/20 to-lapis/5 text-lapis flex items-center justify-center font-bold text-xl border border-lapis/20 shadow-inner">
+                                    {(emp.user.first_name || '?').charAt(0)}
                                 </div>
-                                <div className="space-y-0.5">
-                                    <div className="font-black text-foreground text-base tracking-tight">{emp.user.first_name} {emp.user.last_name}</div>
+                                <div>
+                                    <div className="font-bold text-foreground text-base tracking-tight">{emp.user.first_name || 'Unknown'} {emp.user.last_name || ''}</div>
                                     <div className="text-xs text-lapis font-bold uppercase tracking-widest">{emp.role?.name || "No Role"}</div>
                                 </div>
                             </div>
@@ -99,15 +99,15 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
             </div>
 
             {/* Desktop View */}
-            <div className="hidden md:block bg-card/30 backdrop-blur-2xl border border-border/40 rounded-[2rem] shadow-2xl overflow-hidden">
+            <div className="hidden md:block bg-card/30 backdrop-blur-2xl border border-border/40 rounded-[2rem] shadow-xl overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left">
-                        <thead className="text-[11px] text-muted-foreground uppercase bg-muted/20 border-b border-border/40 font-black tracking-[0.1em]">
+                        <thead className="text-[11px] text-muted-foreground uppercase bg-muted/20 border-b border-border/40 font-bold tracking-widest">
                             <tr>
                                 <th className="px-8 py-5">Personnel</th>
-                                <th className="px-8 py-5">Assignment</th>
+                                <th className="px-8 py-5">Mission Assignment</th>
                                 <th className="px-8 py-5">Contact Points</th>
-                                <th className="px-8 py-5">Tenure</th>
+                                <th className="px-8 py-5">Joined On</th>
                                 <th className="px-8 py-5 text-right">Access</th>
                             </tr>
                         </thead>
@@ -117,10 +117,10 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                                     <td className="px-8 py-5">
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 rounded-2xl bg-lapis/5 text-lapis flex items-center justify-center font-black text-xl border border-lapis/10 shadow-inner group-hover:scale-110 group-hover:bg-lapis group-hover:text-lapis-foreground transition-all duration-500">
-                                                {emp.user.first_name.charAt(0)}
+                                                {(emp.user.first_name || '?').charAt(0)}
                                             </div>
                                             <div>
-                                                <div className="font-black text-foreground text-base tracking-tight">{emp.user.first_name} {emp.user.last_name}</div>
+                                                <div className="font-black text-foreground text-base tracking-tight">{emp.user.first_name || 'Unknown'} {emp.user.last_name || ''}</div>
                                                 <div className="text-xs text-muted-foreground font-semibold opacity-70 group-hover:opacity-100 transition-opacity">{emp.user.email}</div>
                                             </div>
                                         </div>

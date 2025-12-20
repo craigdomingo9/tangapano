@@ -105,12 +105,27 @@ function EmployeeManagement({
 
     // Actions
     const handleEmployeeSubmit = (data: any) => {
+        // Construct payload with nested user object
+        const payload = {
+            user: {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                email: data.email,
+                username: data.email?.split('@')[0] || data.username // Fallback username generation if not provided
+            },
+            department_id: data.department_id,
+            role_id: data.role_id,
+            phone_number: data.phone_number,
+            date_hired: data.date_hired,
+            address: data.address
+        };
+
         if (selectedEmployee) {
-            updateEmployee({ payload: data, id: selectedEmployee.id }, {
+            updateEmployee({ payload: payload, id: selectedEmployee.id }, {
                 onSuccess: () => setEmployeeModalOpen(false)
             });
         } else {
-            createEmployee(data, {
+            createEmployee(payload, {
                 onSuccess: () => setEmployeeModalOpen(false)
             });
         }
@@ -145,44 +160,46 @@ function EmployeeManagement({
 
     return (
         <div className="space-y-6 md:space-y-8 animate-fade-in pb-20 md:pb-12 max-w-[1600px] mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-border/40 pb-6">
+            {/* Page Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-border/40 pb-6">
                 <div>
-                    <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">Staff Control</h1>
-                    <p className="text-muted-foreground mt-1 text-sm font-medium">Manage internal accounts, security policies, and organizational structure.</p>
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Personnel & Access</h1>
+                    <p className="text-muted-foreground mt-1 text-sm font-medium">Govern internal staff, security roles, and organizational structure.</p>
                 </div>
             </div>
 
-            {/* Navigation Tabs */}
-            <div className="overflow-x-auto pb-2 -mx-2 px-2 no-scrollbar">
-                <div className="flex p-1 bg-muted/20 backdrop-blur-md border border-border/40 rounded-2xl w-fit min-w-full md:min-w-0">
-                    <button
-                        onClick={() => { setActiveTab('employees'); setSearchQuery(''); }}
-                        className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-500 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'employees'
-                            ? 'bg-card text-lapis shadow-xl ring-1 ring-border/10'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                            }`}
-                    >
-                        <Users className="w-4 h-4" /> Personnel
-                    </button>
-                    <button
-                        onClick={() => { setActiveTab('roles'); setSearchQuery(''); }}
-                        className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-500 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'roles'
-                            ? 'bg-card text-lapis shadow-xl ring-1 ring-border/10'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                            }`}
-                    >
-                        <Shield className="w-4 h-4" /> Role Matrix
-                    </button>
-                    <button
-                        onClick={() => { setActiveTab('departments'); setSearchQuery(''); }}
-                        className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-500 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'departments'
-                            ? 'bg-card text-lapis shadow-xl ring-1 ring-border/10'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
-                            }`}
-                    >
-                        <Building className="w-4 h-4" /> Departments
-                    </button>
-                </div>
+            {/* Modern Unified Tabs - Matching Locations/Amenities style */}
+            <div className="flex p-1 bg-muted/30 border border-border/40 rounded-xl w-fit overflow-x-auto no-scrollbar">
+                <button
+                    onClick={() => { setActiveTab('employees'); setSearchQuery(''); }}
+                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === 'employees'
+                        ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                        }`}
+                >
+                    <Users className="w-4 h-4" />
+                    Staff Directory
+                </button>
+                <button
+                    onClick={() => { setActiveTab('roles'); setSearchQuery(''); }}
+                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === 'roles'
+                        ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                        }`}
+                >
+                    <Shield className="w-4 h-4" />
+                    Security Roles
+                </button>
+                <button
+                    onClick={() => { setActiveTab('departments'); setSearchQuery(''); }}
+                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === 'departments'
+                        ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                        }`}
+                >
+                    <Building className="w-4 h-4" />
+                    Operational Units
+                </button>
             </div>
 
             <div className="animate-slide-up">

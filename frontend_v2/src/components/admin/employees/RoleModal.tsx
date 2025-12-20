@@ -37,10 +37,6 @@ const RoleModal: React.FC<RoleModalProps> = ({
             name: formData.get('name'),
             description: formData.get('description'),
             permission_codenames: selectedPermissionCodenames
-            // Note: Backend endpoint wrapper might need to handle this if it expects IDs. 
-            // If it expects IDs, we're in trouble without fetching all permissions first.
-            // Assumption: we will send codenames and the backend wrapper or API handles it, 
-            // OR we're just building the UI as requested.
         };
 
         onSubmit(payload);

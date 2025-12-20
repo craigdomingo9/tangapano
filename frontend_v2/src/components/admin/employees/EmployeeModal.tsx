@@ -29,21 +29,18 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
-        const payload = {
-            user: {
-                first_name: formData.get('first_name'),
-                last_name: formData.get('last_name'),
-                email: formData.get('email'),
-                username: formData.get('email')?.toString().split('@')[0], // Simple username generation
-            },
+        const flatPayload = {
+            first_name: formData.get('first_name'),
+            last_name: formData.get('last_name'),
+            email: formData.get('email'),
             department_id: formData.get('department_id'),
             role_id: formData.get('role_id'),
             phone_number: formData.get('phone_number'),
             date_hired: formData.get('date_hired'),
-            address: formData.get('address') // Added address as it was in the table view
+            address: formData.get('address')
         };
 
-        onSubmit(payload);
+        onSubmit(flatPayload);
     };
 
     return (
@@ -51,7 +48,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
             isOpen={isOpen}
             onClose={onClose}
             title={employee ? 'Update Personnel Profile' : 'Register New Personnel'}
-            containerClassName="max-w-2xl"
+            containerClassName="max-w-2xl max-h-[85vh] overflow-y-auto"
             footer={
                 <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
                     <button type="button" onClick={onClose} className="px-6 py-3 md:py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all">Cancel</button>

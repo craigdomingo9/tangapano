@@ -3,5 +3,8 @@ from .registration_serializer import UserRegistrationSerializer
 from .landlord_serializer import LandlordSerializer
 from .agent_serializer import AgentSerializer
 from .agent_write_serializer import AgentWriteSerializer
-from .employee_serializers import DepartmentSerializer, RoleSerializer, EmployeeSerializer
+from .department_serializer import DepartmentSerializer
+from .role_serializer import RoleSerializer, PermissionSerializer
+from .employee_serializer import EmployeeSerializer
+from .simple_user_serializer import SimpleUserSerializer
 
