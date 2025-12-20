@@ -9,6 +9,10 @@ import {
   ShieldCheck,
   User,
 } from "lucide-react";
+import Image from "next/image";
+import myImageLoader from "@/lib/images/image-loader";
+import { getShimmerUrl } from "@/lib/images/shimmer";
+import { warningToast } from "@/lib/toast";
 
 interface HeaderProfileProps {
   landlord: Landlord;
@@ -73,9 +77,18 @@ function HeaderProfile({
             </div>
             <div className="flex gap-2">
               <button
-                onClick={handleLoginAsUser}
-                disabled={isImpersonating || !hasChangeLandlordPermission}
-                className="px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg text-sm font-bold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                onClick={() => {
+                  if (!hasChangeLandlordPermission) {
+                    warningToast("You don't have permission to login as this user");
+                    return;
+                  }
+                  if (isImpersonating) return;
+                  handleLoginAsUser();
+                }}
+                className={`px-3 py-1.5 bg-primary/10 text-primary border border-primary/20 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${isImpersonating || !hasChangeLandlordPermission
+                  ? "opacity-70 cursor-not-allowed"
+                  : "cursor-pointer hover:bg-primary/20"
+                  }`}
               >
                 {isImpersonating ? (
                   <span className="w-3.5 h-3.5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
@@ -85,9 +98,17 @@ function HeaderProfile({
                 {isImpersonating ? "Switching..." : "Login as User"}
               </button>
               <button
-                onClick={() => setIsSuspendModalOpen(true)}
-                disabled={!hasChangeLandlordPermission}
-                className="px-3 py-1.5 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-lg text-sm font-bold transition-all disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                onClick={() => {
+                  if (!hasChangeLandlordPermission) {
+                    warningToast("You don't have permission to suspend landlords");
+                    return;
+                  }
+                  setIsSuspendModalOpen(true);
+                }}
+                className={`px-3 py-1.5 bg-destructive/10 text-destructive border border-destructive/20 rounded-lg text-sm font-bold transition-all ${hasChangeLandlordPermission
+                  ? "cursor-pointer hover:bg-destructive hover:text-white"
+                  : "opacity-70 cursor-not-allowed"
+                  }`}
               >
                 Suspend
               </button>

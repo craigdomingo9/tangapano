@@ -1,5 +1,6 @@
 import React from "react";
-import { Plus, Shield } from "lucide-react";
+import { Edit, Shield } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 import Pagination from "../common-components/Pagination";
 
 interface RolesTabProps {
@@ -27,11 +28,19 @@ const RolesTab: React.FC<RolesTabProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 space-y-6">
                 <button
-                    onClick={onCreate}
-                    disabled={!hasAddRolePermission}
-                    className="cursor-pointer w-full h-14 bg-lapis text-white rounded-2xl font-bold text-sm shadow-xl shadow-lapis/20 hover:bg-lapis/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    onClick={() => {
+                        if (!hasAddRolePermission) {
+                            warningToast("You don't have permission to create security roles");
+                            return;
+                        }
+                        onCreate();
+                    }}
+                    className={`w-full py-3 bg-lapis/10 text-lapis border border-lapis/20 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${hasAddRolePermission
+                        ? "cursor-pointer hover:bg-lapis/20"
+                        : "opacity-70 cursor-not-allowed"
+                        }`}
                 >
-                    <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> Create Security Role
+                    <Shield className="w-4 h-4" /> Create Security Role
                 </button>
 
                 <div className="bg-card/30 backdrop-blur-xl border border-border/40 rounded-[2rem] overflow-hidden divide-y divide-border/30 shadow-xl">
@@ -39,15 +48,27 @@ const RolesTab: React.FC<RolesTabProps> = ({
                         <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-70">Role Directory</h3>
                     </div>
                     {roles.map((role) => (
-                        <button
+                        <div
                             key={role.id}
-                            onClick={() => onEdit(role)}
-                            disabled={!hasChangeRolePermission}
-                            className="cursor-pointer w-full p-6 flex flex-col items-start hover:bg-lapis/[0.03] active:bg-lapis/[0.08] transition-all group text-left disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full p-6 flex flex-col items-start transition-all text-left"
                         >
                             <div className="flex items-center justify-between w-full mb-2">
-                                <span className="font-bold font-bold group-hover:text-lapis transition-colors text-lg tracking-tight">{role.name}</span>
-                                <Shield className="w-5 h-5 text-lapis opacity-20 group-hover:opacity-100 transition-all" />
+                                <span className="font-bold font-bold text-lg tracking-tight">{role.name}</span>
+                                <button
+                                    onClick={() => {
+                                        if (!hasChangeRolePermission) {
+                                            warningToast("You don't have permission to edit roles");
+                                            return;
+                                        }
+                                        onEdit(role);
+                                    }}
+                                    className={`px-3 py-1.5 bg-lapis/5 text-lapis border border-lapis/20 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${hasChangeRolePermission
+                                        ? "cursor-pointer hover:bg-lapis/10"
+                                        : "opacity-70 cursor-not-allowed"
+                                        }`}
+                                >
+                                    <Edit className="w-3 h-3" /> Edit
+                                </button>
                             </div>
                             <p className="text-xs text-muted-foreground font-medium leading-relaxed opacity-80">{role.description}</p>
                             <div className="mt-5 flex items-center gap-2">
@@ -55,7 +76,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
                                     {role.permissions.length} Active Policies
                                 </span>
                             </div>
-                        </button>
+                        </div>
                     ))}
                 </div>
 

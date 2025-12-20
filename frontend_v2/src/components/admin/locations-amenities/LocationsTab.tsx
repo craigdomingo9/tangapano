@@ -1,6 +1,7 @@
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { Edit2, GraduationCap, LayoutGrid, MapPin, Plus } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 import { useMemo } from "react";
 
 interface LocationsTabProps {
@@ -50,28 +51,52 @@ function LocationsTab({
         </div>
         <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap justify-center h-20 sm:h-10">
           <button
-            onClick={() => setAddCityOpen(true)}
-            disabled={!hasAddCityPermission}
-            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+            onClick={() => {
+              if (!hasAddCityPermission) {
+                warningToast("You don't have permission to add cities");
+                return;
+              }
+              setAddCityOpen(true);
+            }}
+            className={`flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddCityPermission
+              ? "cursor-pointer hover:bg-muted/80"
+              : "opacity-70 cursor-not-allowed"
+              }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             City
           </button>
           <button
-            onClick={() => setAddNeighborhoodOpen("")}
-            disabled={!hasAddNeighborhoodPermission}
-            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+            onClick={() => {
+              if (!hasAddNeighborhoodPermission) {
+                warningToast("You don't have permission to add neighborhoods");
+                return;
+              }
+              setAddNeighborhoodOpen("");
+            }}
+            className={`flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddNeighborhoodPermission
+              ? "cursor-pointer hover:bg-muted/80"
+              : "opacity-70 cursor-not-allowed"
+              }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
             Neighborhood
           </button>
           <button
-            onClick={() => setAddCampusOpen(true)}
-            disabled={!hasAddCampusPermission}
-            className="flex items-center gap-2 px-4 py-2 bg-lapis text-lapis-foreground rounded-lg text-xs font-bold hover:bg-lapis/90 transition-all shadow-lg shadow-lapis/20 flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+            onClick={() => {
+              if (!hasAddCampusPermission) {
+                warningToast("You don't have permission to add campuses");
+                return;
+              }
+              setAddCampusOpen(true);
+            }}
+            className={`flex items-center gap-2 px-4 py-2 bg-lapis/10 text-lapis border border-lapis/20 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddCampusPermission
+              ? "cursor-pointer hover:bg-lapis/20"
+              : "opacity-70 cursor-not-allowed"
+              }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
-            Add Campus
+            Campus
           </button>
         </div>
       </div>
@@ -118,12 +143,20 @@ function LocationsTab({
                       </div>
                     </div>
                     <button
-                      onClick={() => setEditCampusOpen(campus)}
-                      disabled={!hasChangeCampusPermission}
-                      className="p-2 text-muted-foreground hover:text-lapis hover:bg-lapis/10 rounded-lg transition-colors sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                      onClick={() => {
+                        if (!hasChangeCampusPermission) {
+                          warningToast("You don't have permission to edit campuses");
+                          return;
+                        }
+                        setEditCampusOpen(campus);
+                      }}
+                      className={`p-2 rounded-lg border border-border/40 transition-all ${hasChangeCampusPermission
+                          ? "cursor-pointer hover:bg-muted/50 hover:border-lapis/30"
+                          : "opacity-70 cursor-not-allowed"
+                        }`}
                       title="Edit Campus"
                     >
-                      <Edit2 className="w-4 h-4" />
+                      <Edit2 className="w-4 h-4 text-muted-foreground" />
                     </button>
                   </div>
 

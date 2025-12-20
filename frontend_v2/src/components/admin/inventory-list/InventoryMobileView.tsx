@@ -10,18 +10,21 @@ import {
   MessageCircle,
   Unlock,
 } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 import Image from "next/image";
 
 interface InventoryMobileViewProps {
   data: Inventory[];
   user: User;
   openLockModal: (inv: Inventory) => void;
+  handleLockToggle: (listingId: string, isLocked: boolean) => void;
 }
 
 function InventoryMobileView({
   data,
   user,
   openLockModal,
+  handleLockToggle,
 }: InventoryMobileViewProps) {
   // SAFETY CHECK: Ensure data is actually an array before trying to access .length
   const hasData = Array.isArray(data) && data.length > 0;
@@ -80,11 +83,17 @@ function InventoryMobileView({
                     </div>
                     <span
                       className={`inline-flex items-center px-1.5 py-0.5 rounded text-xxs font-bold uppercase tracking-wide border ${!listing.is_locked
-                          ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
-                          : "bg-destructive/10 text-destructive border-destructive/20"
+                        ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                        : "bg-destructive/10 text-destructive border-destructive/20"
                         }`}
                     >
-                      {listing.is_locked ? "Locked" : "Active"}
+                      {listing.is_locked ? (
+                        <>
+                          <Lock className="w-3 h-3 mr-1" /> Locked
+                        </>
+                      ) : (
+                        "Active"
+                      )}
                     </span>
                   </div>
 
@@ -121,12 +130,23 @@ function InventoryMobileView({
 
               <div className="flex gap-3">
                 <button
-                  // SAFETY CHECK: Ensure function exists before calling
-                  onClick={() => openLockModal && openLockModal(listing)}
-                  disabled={!hasChangeListingPermission}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-bold transition-colors border cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed ${listing.is_locked
+                  onClick={() => {
+                    if (!hasChangeListingPermission) {
+                      warningToast(
+                        listing.is_locked
+                          ? "You don't have permission to unlock listings"
+                          : "You don't have permission to lock listings"
+                      );
+                      return;
+                    }
+                    openLockModal && openLockModal(listing);
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-bold transition-colors border ${listing.is_locked
                       ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
                       : "bg-muted/30 text-muted-foreground border-border/40"
+                    } ${hasChangeListingPermission
+                      ? "cursor-pointer"
+                      : "opacity-70 cursor-not-allowed"
                     }`}
                 >
                   {listing.is_locked ? (

@@ -3,6 +3,7 @@ import myImageLoader from "@/lib/images/image-loader";
 import { getShimmerUrl } from "@/lib/images/shimmer";
 import { Building, Eye, Lock, MapPin, Unlock, User } from "lucide-react";
 import Image from "next/image";
+import { warningToast } from "@/lib/toast";
 
 interface InventoryHeroProps {
   listing: Inventory;
@@ -50,8 +51,8 @@ function InventoryHero({
               <div className="flex items-center gap-2 mb-2">
                 <span
                   className={`px-2 py-1 backdrop-blur-md text-xxs font-bold rounded uppercase tracking-wider border ${!listing?.is_locked
-                      ? "bg-emerald-500/20 text-emerald-100 border-emerald-500/30"
-                      : "bg-red-500/20 text-red-100 border-red-500/30"
+                    ? "bg-emerald-500/20 text-emerald-100 border-emerald-500/30"
+                    : "bg-red-500/20 text-red-100 border-red-500/30"
                     }`}
                 >
                   {listing?.is_locked ? "Locked" : "Active"}
@@ -81,17 +82,33 @@ function InventoryHero({
             </button>
             {listing.is_locked ? (
               <button
-                onClick={() => setIsLockModalOpen(true)}
-                disabled={!hasChangeListingPermission}
-                className="w-full py-3 bg-emerald-500/10 text-emerald-500 border-emerald-500/20 border rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                onClick={() => {
+                  if (!hasChangeListingPermission) {
+                    warningToast("You don't have permission to unlock listings");
+                    return;
+                  }
+                  setIsLockModalOpen(true);
+                }}
+                className={`w-full py-3 bg-emerald-500/10 text-emerald-500 border-emerald-500/20 border rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${hasChangeListingPermission
+                    ? "cursor-pointer hover:bg-emerald-500/20"
+                    : "opacity-70 cursor-not-allowed"
+                  }`}
               >
                 <Unlock className="w-4 h-4" /> Unlock Listing
               </button>
             ) : (
               <button
-                onClick={() => setIsLockModalOpen(true)}
-                disabled={!hasChangeListingPermission}
-                className="w-full py-3 bg-destructive/10 hover:bg-destructive text-destructive hover:text-white border border-destructive/20 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                onClick={() => {
+                  if (!hasChangeListingPermission) {
+                    warningToast("You don't have permission to lock listings");
+                    return;
+                  }
+                  setIsLockModalOpen(true);
+                }}
+                className={`w-full py-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${hasChangeListingPermission
+                    ? "cursor-pointer hover:bg-destructive hover:text-white"
+                    : "opacity-70 cursor-not-allowed"
+                  }`}
               >
                 <Lock className="w-4 h-4" /> Lock Listing
               </button>

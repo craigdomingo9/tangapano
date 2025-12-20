@@ -1,5 +1,6 @@
 import React from "react";
-import { Plus, Edit, Building } from "lucide-react";
+import { Building, Building2, Edit, Users } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 import Pagination from "../common-components/Pagination";
 
 interface DepartmentsTabProps {
@@ -31,11 +32,19 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                     <p className="text-xs font-bold text-muted-foreground opacity-70">Governing organizational hierarchy</p>
                 </div>
                 <button
-                    onClick={onCreate}
-                    disabled={!hasAddDepartmentPermission}
-                    className="cursor-pointer w-full md:w-auto flex text-white items-center justify-center gap-2 h-12 px-8 bg-lapis backdrop-blur-md border border-border/40 hover:bg-lapis/90 active:scale-95 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                    onClick={() => {
+                        if (!hasAddDepartmentPermission) {
+                            warningToast("You don't have permission to create departments");
+                            return;
+                        }
+                        onCreate();
+                    }}
+                    className={`bg - lapis text - white px - 4 py - 2 rounded - lg text - sm font - bold shadow - lg shadow - lapis / 20 transition - all flex items - center gap - 2 ${hasAddDepartmentPermission
+                            ? "cursor-pointer hover:bg-lapis/90"
+                            : "opacity-70 cursor-not-allowed"
+                        } `}
                 >
-                    <Plus className="w-4 h-4" /> New Dept
+                    <Building2 className="w-4 h-4" /> New Dept
                 </button>
             </div>
 
@@ -48,11 +57,20 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                             </div>
                             <div className="flex gap-2">
                                 <button
-                                    onClick={() => onEdit(dept)}
-                                    disabled={!hasChangeDepartmentPermission}
-                                    className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis transition-all active:scale-90 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    onClick={() => {
+                                        if (!hasChangeDepartmentPermission) {
+                                            warningToast("You don't have permission to edit departments");
+                                            return;
+                                        }
+                                        onEdit(dept);
+                                    }}
+                                    className={`p - 2 rounded - lg border border - border / 40 transition - all ${hasChangeDepartmentPermission
+                                            ? "cursor-pointer hover:bg-muted/50 hover:border-lapis/30"
+                                            : "opacity-70 cursor-not-allowed"
+                                        } `}
+                                    title="Edit Department"
                                 >
-                                    <Edit className="w-4 h-4" />
+                                    <Edit className="w-4 h-4 text-muted-foreground" />
                                 </button>
                             </div>
                         </div>

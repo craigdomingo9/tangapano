@@ -11,6 +11,7 @@ import {
   MessageCircle,
   Unlock,
 } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 import Image from "next/image";
 
 interface InventoryDesktopViewProps {
@@ -31,6 +32,20 @@ function InventoryDesktopView({
   const hasChangeListingPermission = user?.employee_profile?.role?.permissions?.some(
     (permission) => permission.codename === "change_listing"
   ) ?? false;
+
+  // Placeholder for the actual lock/unlock logic
+  // This function would typically call an API to update the listing's lock status
+  const handleLockToggle = (listingId: number, isLocked: boolean) => {
+    // In a real application, this would trigger an API call
+    // For now, we'll just log it or call the existing openLockModal
+    console.log(`Attempting to ${isLocked ? 'unlock' : 'lock'} listing ${listingId}`);
+    // Assuming openLockModal can handle the actual state change or API call
+    // You might need to pass the full listing object here if openLockModal expects it
+    const listingToToggle = data.find(inv => inv.id === listingId);
+    if (listingToToggle) {
+      openLockModal(listingToToggle);
+    }
+  };
 
   return (
     <div className="hidden md:block bg-card/40 backdrop-blur-xl border border-border/40 rounded-2xl shadow-xl overflow-hidden">
@@ -145,8 +160,8 @@ function InventoryDesktopView({
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded text-xxs font-bold uppercase tracking-wide border ${!listing.is_locked
-                            ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
-                            : "bg-destructive/10 text-destructive border-destructive/20"
+                          ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                          : "bg-destructive/10 text-destructive border-destructive/20"
                           }`}
                       >
                         {!listing.is_locked ? (
@@ -160,20 +175,25 @@ function InventoryDesktopView({
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          // SAFETY CHECK: Ensure function exists
-                          onClick={() =>
-                            openLockModal && openLockModal(listing)
-                          }
-                          disabled={!hasChangeListingPermission}
-                          className={`p-1.5 rounded-lg transition-colors border cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed ${listing.is_locked
+                          onClick={() => {
+                            if (!hasChangeListingPermission) {
+                              warningToast(
+                                listing.is_locked
+                                  ? "You don't have permission to unlock listings"
+                                  : "You don't have permission to lock listings"
+                              );
+                              return;
+                            }
+                            openLockModal && openLockModal(listing);
+                          }}
+                          className={`p-1.5 rounded-lg transition-colors border ${listing.is_locked
                               ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20"
                               : "bg-muted/30 text-muted-foreground border-border/40 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/20"
+                            } ${hasChangeListingPermission
+                              ? "cursor-pointer"
+                              : "opacity-70 cursor-not-allowed"
                             }`}
-                          title={
-                            listing.is_locked
-                              ? "Unlock Listing"
-                              : "Lock Listing"
-                          }
+                          title={listing.is_locked ? "Unlock Listing" : "Lock Listing"}
                         >
                           {listing.is_locked ? (
                             <Unlock className="w-4 h-4" />

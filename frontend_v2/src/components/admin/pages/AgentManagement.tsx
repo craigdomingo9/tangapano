@@ -1,6 +1,6 @@
 import useAgents from "@/hooks/admin/use-agents";
 import { AdminPanelComponentProps } from "@/lib/types/admin";
-import { Plus, Search } from "lucide-react";
+import { Search, UserPlus } from "lucide-react";
 import { useState } from "react";
 import AgentsDisplay, { AdminAgent } from "../agents/AgentsDisplay";
 import createEntityStore from "@/lib/stores/entityStore";
@@ -10,6 +10,7 @@ import { getAcronym } from "@/lib/utils";
 import Modal from "../common-components/Modal";
 import AgentEditorForm from "../agents/AgentEditorForm";
 import { useCampuses } from "@/hooks/use-reference-data";
+import { warningToast } from "@/lib/toast";
 
 interface ModalState {
   mode: "add" | "edit";
@@ -167,11 +168,19 @@ function AgentManagement({
               />
             </div>
             <button
-              onClick={onAddAgentClick}
-              disabled={!hasAddAgentPermission}
-              className="bg-lapis cursor-pointer hover:bg-lapis/90 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+              onClick={() => {
+                if (!hasAddAgentPermission) {
+                  warningToast("You don't have permission to add agents");
+                  return;
+                }
+                onAddAgentClick();
+              }}
+              className={`bg-lapis text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center ${hasAddAgentPermission
+                  ? "cursor-pointer hover:bg-lapis/90"
+                  : "opacity-70 cursor-not-allowed"
+                }`}
             >
-              <Plus className="w-4 h-4" /> Add New Agent
+              <UserPlus className="w-4 h-4" /> Add New Agent
             </button>
           </div>
         </div>

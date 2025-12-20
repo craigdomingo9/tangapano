@@ -1,4 +1,5 @@
-import { Edit, Map } from "lucide-react";
+import { Edit, Mail, Map, MapPin, Phone, User } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 
 export interface AdminAgent {
   id: number;
@@ -71,9 +72,17 @@ function AgentsDisplay({
             </div>
 
             <button
-              onClick={() => handleEditClick(agent)}
-              disabled={!hasChangeAgentPermission}
-              className="w-full mt-auto py-2 bg-lapis/10 hover:bg-lapis/20 hover:text-lapis rounded-lg text-xs font-bold cursor-pointer transition-all border border-border/40 hover:border-lapis/20 flex items-center justify-center gap-2 h-10 disabled:opacity-70 disabled:cursor-not-allowed"
+              onClick={() => {
+                if (!hasChangeAgentPermission) {
+                  warningToast("You don't have permission to manage agent profiles");
+                  return;
+                }
+                handleEditClick(agent);
+              }}
+              className={`w-full py-2 bg-lapis/10 text-lapis border border-lapis/20 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${hasChangeAgentPermission
+                  ? "cursor-pointer hover:bg-lapis/20"
+                  : "opacity-70 cursor-not-allowed"
+                }`}
             >
               <Edit className="w-3 h-3" /> Manage Profile
             </button>

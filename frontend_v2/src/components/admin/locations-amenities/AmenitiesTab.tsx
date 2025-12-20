@@ -1,14 +1,15 @@
 import { ErrorPage } from "@/components/partner/dashboard/overview/ErrorPage";
 import LoadingScreen from "@/components/student/interest/states/LoadingScreen";
 import { CheckCircle2, Plus, Tag } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 
 interface AmenitiesTabProps {
   amenityCategories: AmenityCategory[] | undefined;
   isLoading: boolean;
   isError: boolean;
-  setAddAmenity: (amenity: boolean) => void;
+  setAddAmenity: (amenity: { isOpen: boolean; category_id: string }) => void;
   setAddCategoryOpen: (amenity: boolean) => void;
-  setEditAmenity: (amenity: Amenity) => void;
+  setEditAmenity: (amenity: { isOpen: boolean; amenity: Amenity }) => void;
   hasAddAmenityCategoryPermission: boolean;
   hasAddAmenityPermission: boolean;
   hasChangeAmenityPermission: boolean;
@@ -48,20 +49,36 @@ function AmenitiesTab({
         </div>
         <div className="flex gap-3 w-full sm:w-auto flex-wrap sm:flex-nowrap sm:h-10">
           <button
-            onClick={() => setAddCategoryOpen(true)}
-            disabled={!hasAddAmenityCategoryPermission}
-            className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold hover:bg-muted/80 transition-all shadow-sm flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+            onClick={() => {
+              if (!hasAddAmenityCategoryPermission) {
+                warningToast("You don't have permission to add amenity categories");
+                return;
+              }
+              setAddCategoryOpen(true);
+            }}
+            className={`flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddAmenityCategoryPermission
+                ? "cursor-pointer hover:bg-muted/80"
+                : "opacity-70 cursor-not-allowed"
+              }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
-            Add Category
+            Category
           </button>
           <button
-            onClick={() => setAddAmenity(true)}
-            disabled={!hasAddAmenityPermission}
-            className="flex items-center gap-2 px-4 py-2 bg-lapis text-lapis-foreground rounded-lg text-xs font-bold hover:bg-lapis/90 transition-all shadow-lg shadow-lapis/20 flex-1 sm:flex-none justify-center group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+            onClick={() => {
+              if (!hasAddAmenityPermission) {
+                warningToast("You don't have permission to add amenities");
+                return;
+              }
+              setAddAmenity({ isOpen: true, category_id: "" });
+            }}
+            className={`flex items-center gap-2 px-4 py-2 bg-lapis/10 text-lapis border border-lapis/20 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddAmenityPermission
+                ? "cursor-pointer hover:bg-lapis/20"
+                : "opacity-70 cursor-not-allowed"
+              }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
-            Add Amenity
+            Amenity
           </button>
         </div>
       </div>
@@ -79,19 +96,23 @@ function AmenitiesTab({
             <div className="flex flex-wrap gap-2.5">
               {category?.amenities?.map((amenity, i) => (
                 <div
-                  key={i}
-                  className="group relative"
-                  onClick={() => hasChangeAmenityPermission && setEditAmenity(amenity)}
-                >
-                  <div className={`flex items-center text-muted-foreground gap-2 px-3 py-1.5 bg-muted/40 border border-border/40 rounded-lg shadow-sm transition-all duration-300 ${hasChangeAmenityPermission
+                  key={amenity.id}
+                  onClick={() => {
+                    if (!hasChangeAmenityPermission) {
+                      warningToast("You don't have permission to edit amenities");
+                      return;
+                    }
+                    setEditAmenity({ isOpen: true, amenity });
+                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 bg-card/60 border border-border/40 rounded-lg text-xs font-bold transition-all ${hasChangeAmenityPermission
                       ? "cursor-pointer hover:border-lapis/50 hover:text-lapis"
                       : "opacity-70 cursor-not-allowed"
-                    }`}>
-                    <Tag className="w-3.5 h-3.5 opacity-70" />
-                    <span className="text-xs font-bold">
-                      {amenity.display_name}
-                    </span>
-                  </div>
+                    }`}
+                >
+                  <Tag className="w-3.5 h-3.5 opacity-70" />
+                  <span className="text-xs font-bold">
+                    {amenity.display_name}
+                  </span>
                 </div>
               ))}
             </div>

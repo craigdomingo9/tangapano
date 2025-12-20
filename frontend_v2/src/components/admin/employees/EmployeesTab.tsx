@@ -1,5 +1,6 @@
 import React from "react";
 import { UserPlus, Search, Building, Calendar, Mail, Phone, MapPin, Edit, Shield } from "lucide-react";
+import { warningToast } from "@/lib/toast";
 import Pagination from "../common-components/Pagination";
 
 interface EmployeesTabProps {
@@ -41,11 +42,19 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                     />
                 </div>
                 <button
-                    onClick={onCreate}
-                    disabled={!hasAddEmployeePermission}
-                    className="cursor-pointer flex items-center gap-2 px-6 h-11 bg-lapis text-lapis-foreground rounded-xl text-sm font-bold hover:bg-lapis/90 active:scale-[0.98] transition-all shadow-lg shadow-lapis/20 w-full sm:w-auto justify-center group disabled:opacity-70 disabled:cursor-not-allowed"
+                    onClick={() => {
+                        if (!hasAddEmployeePermission) {
+                            warningToast("You don't have permission to register personnel");
+                            return;
+                        }
+                        onCreate();
+                    }}
+                    className={`bg - lapis text - lapis - foreground px - 6 h - 11 rounded - xl text - sm font - bold shadow - lg shadow - lapis / 20 transition - all flex items - center gap - 2 w - full sm: w - auto justify - center ${hasAddEmployeePermission
+                            ? "cursor-pointer hover:bg-lapis/90 active:scale-[0.98]"
+                            : "opacity-70 cursor-not-allowed"
+                        } `}
                 >
-                    <UserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" /> Register Personnel
+                    <UserPlus className="w-4 h-4" /> Register Personnel
                 </button>
             </div>
 
@@ -64,11 +73,20 @@ const EmployeesTab: React.FC<EmployeesTabProps> = ({
                                 </div>
                             </div>
                             <button
-                                onClick={() => onEdit(emp)}
-                                disabled={!hasChangeEmployeePermission}
-                                className="cursor-pointer p-3 bg-background/50 border border-border/40 rounded-2xl text-muted-foreground hover:text-lapis active:scale-90 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                                onClick={() => {
+                                    if (!hasChangeEmployeePermission) {
+                                        warningToast("You don't have permission to edit employees");
+                                        return;
+                                    }
+                                    onEdit(emp);
+                                }}
+                                className={`p - 3 bg - background / 50 border border - border / 40 rounded - 2xl transition - all ${hasChangeEmployeePermission
+                                        ? "cursor-pointer hover:text-lapis active:scale-90"
+                                        : "opacity-70 cursor-not-allowed"
+                                    } `}
+                                title="Edit Employee"
                             >
-                                <Edit className="w-4 h-4" />
+                                <Edit className="w-4 h-4 text-muted-foreground" />
                             </button>
                         </div>
 
