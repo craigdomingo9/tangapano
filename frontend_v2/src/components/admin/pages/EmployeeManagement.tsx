@@ -164,15 +164,15 @@ function EmployeeManagement({
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-border/40 pb-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-foreground">Personnel & Access</h1>
-                    <p className="text-muted-foreground mt-1 text-sm font-medium">Govern internal staff, security roles, and organizational structure.</p>
+                    <p className="text-muted-foreground text-sm font-medium">Govern internal staff, security roles, and organizational structure.</p>
                 </div>
             </div>
 
             {/* Modern Unified Tabs - Matching Locations/Amenities style */}
-            <div className="flex p-1 bg-muted/30 border border-border/40 rounded-xl w-fit overflow-x-auto no-scrollbar">
+            <div className="flex p-1 bg-muted/30 border border-border/40 rounded-xl w-full sm:w-fit overflow-x-auto">
                 <button
                     onClick={() => { setActiveTab('employees'); setSearchQuery(''); }}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === 'employees'
+                    className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'employees'
                         ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                         }`}
@@ -182,7 +182,7 @@ function EmployeeManagement({
                 </button>
                 <button
                     onClick={() => { setActiveTab('roles'); setSearchQuery(''); }}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === 'roles'
+                    className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'roles'
                         ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                         }`}
@@ -192,7 +192,7 @@ function EmployeeManagement({
                 </button>
                 <button
                     onClick={() => { setActiveTab('departments'); setSearchQuery(''); }}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === 'departments'
+                    className={`flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap ${activeTab === 'departments'
                         ? 'bg-card text-lapis shadow-sm ring-1 ring-border/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
                         }`}

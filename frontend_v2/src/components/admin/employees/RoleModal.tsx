@@ -55,7 +55,7 @@ const RoleModal: React.FC<RoleModalProps> = ({
             isOpen={isOpen}
             onClose={onClose}
             title={role ? 'Refine Security Policy' : 'Engine: New Security Role'}
-            containerClassName="max-w-5xl"
+            containerClassName="max-w-5xl max-h-[85vh] overflow-y-auto"
             footer={
                 <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
                     <button type="button" onClick={onClose} className="px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all">Abort</button>
@@ -74,7 +74,7 @@ const RoleModal: React.FC<RoleModalProps> = ({
                 <div className="md:col-span-1 space-y-6">
                     <div className="space-y-2">
                         <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Policy Identifier</label>
-                        <input name="name" type="text" defaultValue={role?.name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" placeholder="Role Label" />
+                        <input name="name" type="text" defaultValue={role?.name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground font-semibold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" placeholder="Role Label" />
                     </div>
                     <div className="space-y-2">
                         <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Policy Scope</label>
@@ -100,7 +100,7 @@ const RoleModal: React.FC<RoleModalProps> = ({
                     </div>
                     <div className="flex items-center gap-2 p-3 bg-lapis/5 border border-lapis/10 rounded-xl mt-2">
                         <Shield className="w-4 h-4 text-lapis animate-pulse" />
-                        <p className="text-[10px] text-lapis/80 font-bold uppercase tracking-wider">Policies propagate across distributed infrastructure in real-time.</p>
+                        <p className="text-[10px] text-lapis/80 font-semibold uppercase tracking-wider">Policies propagate across distributed infrastructure in real-time.</p>
                     </div>
                 </div>
             </form>

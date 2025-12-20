@@ -32,7 +32,8 @@ const DepartmentModal: React.FC<DepartmentModalProps> = ({
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            title={department ? 'Refine Departmental Logic' : 'Establish New Department'}
+            title={department ? 'Refine Operational Unit' : 'Initialize Unit'}
+            containerClassName="max-w-2xl max-h-[85vh] overflow-y-auto"
             footer={
                 <div className="grid grid-cols-2 gap-4 w-full sm:w-auto">
                     <button type="button" onClick={onClose} className="px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all">Cancel</button>
@@ -54,7 +55,7 @@ const DepartmentModal: React.FC<DepartmentModalProps> = ({
                 </div>
                 <div className="space-y-2">
                     <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Operational Scope</label>
-                    <textarea name="description" defaultValue={department?.description || ''} className="w-full h-40 bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all resize-none leading-relaxed" placeholder="Detailed unit responsibilities..." />
+                    <textarea name="description" defaultValue={department?.description || ''} className="w-full h-40 bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground font-semibold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all resize-none leading-relaxed" placeholder="Detailed unit responsibilities..." />
                 </div>
             </form>
         </Modal>

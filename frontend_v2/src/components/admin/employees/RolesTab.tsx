@@ -68,7 +68,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
                         <Shield className="w-12 h-12 text-lapis opacity-20 animate-pulse" />
                     </div>
                     <h3 className="text-2xl font-black text-foreground tracking-tight opacity-40">Role Matrix Engine</h3>
-                    <p className="text-sm max-w-sm mt-3 font-bold text-muted-foreground opacity-30 leading-relaxed">Select a security role from the sidebar to inspect or modify access parameters across the platform infrastructure.</p>
+                    <p className="text-sm max-w-sm mt-3 font-semibold text-muted-foreground opacity-30 leading-relaxed">Select a security role from the sidebar to inspect or modify access parameters across the platform infrastructure.</p>
                 </div>
             </div>
         </div>
