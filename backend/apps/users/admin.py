@@ -17,6 +17,8 @@ class AgentAdmin(admin.ModelAdmin):
     list_display = ('user', 'agency_name', 'phone_number')
     search_fields = ('user__username', 'agency_name')
 
+from notifications.utils.action_utils import log_and_notify_notable_action
+
 # 3. Landlord Admin (HEAVILY MODIFIED)
 @admin.register(Landlord)
 class LandlordAdmin(admin.ModelAdmin):
@@ -38,12 +40,33 @@ class LandlordAdmin(admin.ModelAdmin):
     # --- ADMIN ACTIONS ---
     def mark_as_verified(self, request, queryset):
         rows_updated = queryset.update(is_verified=True)
+        
+        # Log and Notify
+        usernames = ", ".join(queryset.values_list('user__username', flat=True))
+        log_and_notify_notable_action(
+            action_type='landlord_verified',
+            description=f"Admin {request.user.username} verified {rows_updated} landlords: {usernames}",
+            actor=request.user,
+            metadata={'rows_updated': rows_updated, 'usernames': list(queryset.values_list('user__username', flat=True))}
+        )
+        
         self.message_user(request, f"{rows_updated} landlords successfully verified.")
     mark_as_verified.short_description = "Mark selected landlords as Verified"
 
     def mark_as_unverified(self, request, queryset):
         rows_updated = queryset.update(is_verified=False)
+        
+        # Log and Notify
+        usernames = ", ".join(queryset.values_list('user__username', flat=True))
+        log_and_notify_notable_action(
+            action_type='landlord_unverified',
+            description=f"Admin {request.user.username} unverified {rows_updated} landlords: {usernames}",
+            actor=request.user,
+            metadata={'rows_updated': rows_updated, 'usernames': list(queryset.values_list('user__username', flat=True))}
+        )
+        
         self.message_user(request, f"{rows_updated} landlords marked unverified.")
+
 
 from users.models import Department, Role, Employee
 

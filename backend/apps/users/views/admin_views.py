@@ -8,6 +8,9 @@ from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
 
 
+from notifications.utils.action_utils import log_and_notify_notable_action
+
+
 class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Admin-only viewset to list and manage landlords.
@@ -31,7 +34,15 @@ class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
         landlord.is_verified = True
         landlord.save()
 
-        # 2. Send Notification
+        # 2. Log and Notify (Executive/Admin)
+        log_and_notify_notable_action(
+            action_type='landlord_verified',
+            description=f"Admin {request.user.username} verified landlord {landlord.user.username}",
+            actor=request.user,
+            metadata={'landlord_id': landlord.id, 'username': landlord.user.username}
+        )
+
+        # 3. Send Notification (To Landlord)
         Notification.objects.create(
             recipient=landlord.user,
             title="Account Verified!",
@@ -49,6 +60,14 @@ class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
         landlord.is_verified = False
         landlord.save()
 
+        # Log and Notify (Executive/Admin)
+        log_and_notify_notable_action(
+            action_type='landlord_unverified',
+            description=f"Admin {request.user.username} suspended/unverified landlord {landlord.user.username}",
+            actor=request.user,
+            metadata={'landlord_id': landlord.id, 'username': landlord.user.username}
+        )
+
         Notification.objects.create(
             recipient=landlord.user,
             title="Account Suspension",
@@ -58,6 +77,7 @@ class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         return Response({'status': 'suspended'}, status=status.HTTP_200_OK)
+
 
 class AdminAgentViewSet(viewsets.ModelViewSet):
     """

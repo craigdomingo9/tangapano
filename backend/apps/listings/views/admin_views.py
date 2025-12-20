@@ -6,6 +6,7 @@ from listings.models import Listing
 from listings.serializers import ListingAdminSerializer
 from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
+from notifications.utils.action_utils import log_and_notify_notable_action
 from listings.filters import ListingAdminFilter
 
 
@@ -36,6 +37,14 @@ class AdminListingViewSet(viewsets.ReadOnlyModelViewSet):
         # Note: django-elasticsearch-dsl signals will automatically 
         # update the index to reflect 'is_locked=True'.
 
+        # Log and Notify (Executive/Admin)
+        log_and_notify_notable_action(
+            action_type='listing_locked',
+            description=f"Admin {request.user.username} locked listing '{listing.title}'",
+            actor=request.user,
+            metadata={'listing_id': listing.id, 'title': listing.title}
+        )
+
         # Notify Landlord
         Notification.objects.create(
             recipient=listing.landlord.user,
@@ -53,6 +62,14 @@ class AdminListingViewSet(viewsets.ReadOnlyModelViewSet):
         listing = self.get_object()
         listing.is_locked = False
         listing.save()
+
+        # Log and Notify (Executive/Admin)
+        log_and_notify_notable_action(
+            action_type='listing_unlocked',
+            description=f"Admin {request.user.username} unlocked listing '{listing.title}'",
+            actor=request.user,
+            metadata={'listing_id': listing.id, 'title': listing.title}
+        )
 
         Notification.objects.create(
             recipient=listing.landlord.user,

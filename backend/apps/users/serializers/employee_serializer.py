@@ -4,6 +4,8 @@ from users.models import Employee, Department, Role
 from .simple_user_serializer import SimpleUserSerializer
 from .department_serializer import DepartmentSerializer
 from .role_serializer import RoleSerializer
+from notifications.utils.action_utils import log_and_notify_notable_action
+
 
 User = get_user_model()
 
@@ -52,6 +54,15 @@ class EmployeeSerializer(serializers.ModelSerializer):
         user.save()
 
         employee = Employee.objects.create(user=user, **validated_data)
+
+        # Log and Notify
+        log_and_notify_notable_action(
+            action_type='employee_created',
+            description=f"New employee created: {employee.user.get_full_name()} as {employee.role.name if employee.role else 'no role'}",
+            actor=self.context['request'].user if 'request' in self.context else None,
+            metadata={'employee_id': employee.id, 'user_id': user.id}
+        )
+
         return employee
 
     def update(self, instance, validated_data):
@@ -75,4 +86,24 @@ class EmployeeSerializer(serializers.ModelSerializer):
                 user.save()
 
         # Update employee fields
-        return super().update(instance, validated_data)
+        old_role = instance.role
+        old_dept = instance.department
+        
+        employee = super().update(instance, validated_data)
+        
+        # Check for notable changes (Role or Department)
+        changes = []
+        if old_role != employee.role:
+            changes.append(f"role changed from {old_role.name if old_role else 'None'} to {employee.role.name if employee.role else 'None'}")
+        if old_dept != employee.department:
+            changes.append(f"department changed from {old_dept.name if old_dept else 'None'} to {employee.department.name if employee.department else 'None'}")
+            
+        if changes:
+            log_and_notify_notable_action(
+                action_type='employee_updated',
+                description=f"Employee {employee.user.get_full_name()} updated: {', '.join(changes)}",
+                actor=self.context['request'].user if 'request' in self.context else None,
+                metadata={'employee_id': employee.id, 'changes': changes}
+            )
+
+        return employee

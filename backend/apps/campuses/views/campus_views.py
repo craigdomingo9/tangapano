@@ -7,9 +7,11 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from campuses.filters import CampusFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from notifications.utils.action_utils import log_and_notify_notable_action
 
 
 class CampusViewSet(viewsets.ModelViewSet):
+
     """
     A viewset for viewing and editing campus instances.
     """
@@ -40,6 +42,25 @@ class CampusViewSet(viewsets.ModelViewSet):
         return Campus.objects.select_related('agent', 'city').prefetch_related(
             'neighborhoods', 'campus_listings'
         ).all()
+
+    def perform_create(self, serializer):
+        campus = serializer.save()
+        log_and_notify_notable_action(
+            action_type='campus_created',
+            description=f"Admin {self.request.user.username} created campus '{campus.name}'",
+            actor=self.request.user,
+            metadata={'campus_id': campus.id, 'name': campus.name}
+        )
+
+    def perform_update(self, serializer):
+        campus = serializer.save()
+        log_and_notify_notable_action(
+            action_type='campus_updated',
+            description=f"Admin {self.request.user.username} updated campus '{campus.name}'",
+            actor=self.request.user,
+            metadata={'campus_id': campus.id, 'name': campus.name}
+        )
+
 
     @method_decorator(cache_page(settings.CACHE_TTL, key_prefix='campus_list'))
     def list(self, request, *args, **kwargs):

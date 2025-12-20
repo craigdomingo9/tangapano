@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from users.models import Landlord, Agent
 
+from notifications.utils.action_utils import log_and_notify_notable_action
+
 User = get_user_model()
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -59,5 +61,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                     phone_number=profile_data.get('phone_number'),
                     agency_name=profile_data.get('agency_name')
                 )
+            
+            # 3. Log and Notify
+            log_and_notify_notable_action(
+                action_type='user_registered',
+                description=f"New user registered: {user.username} ({user.get_role_display()})",
+                actor=user,
+                metadata={'user_id': user.id, 'role': user.role}
+            )
 
         return user
+
