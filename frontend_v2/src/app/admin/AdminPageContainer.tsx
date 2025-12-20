@@ -32,10 +32,12 @@ function AdminPageContainer({ serverData }: { serverData: AdminPanelContext }) {
   const { entities, setEntities } = useSidebar();
   async function onLogout() {
     await logoutAction();
-    successToast("Logged out successfully. Until next time ᕙ(▀̿̿ĺ̯̿̿▀̿ ̿) ᕗ");
+    successToast("Logged out successfully. Until next time ᕙ(▀̿̿ĺ̯̿̿▀̿ ̿)ᕗ");
   }
 
-  // console.log(serverData);
+  const isExecutive = serverData?.user?.employee_profile?.role?.name?.includes("Executive");
+  // console.log(serverData, isExecutive);
+
 
   function setMobileOpen(open: boolean) {
     setEntities({
@@ -61,6 +63,7 @@ function AdminPageContainer({ serverData }: { serverData: AdminPanelContext }) {
         mobileOpen={entities.mobileOpen}
         collapsed={entities.collapsed}
         setMobileOpen={setMobileOpen}
+        isExecutive={isExecutive}
       />
       <main
         id="main-content"

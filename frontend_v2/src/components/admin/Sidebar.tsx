@@ -25,6 +25,7 @@ interface SidebarProps {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
   onLogout?: () => void;
+  isExecutive?: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -32,6 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   mobileOpen,
   setMobileOpen,
   onLogout,
+  isExecutive
 }) => {
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || "";
@@ -58,7 +60,6 @@ const Sidebar: React.FC<SidebarProps> = ({
       items: [
         { label: "Landlords", icon: Users, page: "landlords" },
         { label: "Agents", icon: UserCheck, page: "agents" },
-        { label: "Employees", icon: Users, page: "employees" },
       ],
     },
     {
@@ -76,6 +77,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       ],
     },
   ];
+
+  if (isExecutive) {
+    navItems[1].items.push({ label: "Employees", icon: Users, page: "employees" });
+  }
 
   const mobileClasses = mobileOpen
     ? "fixed inset-y-0 left-0 w-72 z-50 transform transition-transform duration-300 translate-x-0 shadow-2xl bg-card"
@@ -152,8 +157,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                     >
                       <item.icon
                         className={`w-4 h-4 shrink-0 transition-colors relative z-10 ${active
-                            ? "text-primary-foreground dark:text-white/90"
-                            : "text-muted-foreground group-hover:text-foreground"
+                          ? "text-primary-foreground dark:text-white/90"
+                          : "text-muted-foreground group-hover:text-foreground"
                           }`}
                       />
                       {(!collapsed || mobileOpen) && (
