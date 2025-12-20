@@ -32,7 +32,6 @@ function LandlordDetail({
   const [isSuspendModalOpen, setIsSuspendModalOpen] = useState(false);
   const { push } = useRouterPush<AdminPanelParams>();
   const router = useRouter();
-  //   console.log(listings, landlord);
 
   async function handleSuspend() {
     if (!landlordId) return errorToast("There was an unexpected error.");

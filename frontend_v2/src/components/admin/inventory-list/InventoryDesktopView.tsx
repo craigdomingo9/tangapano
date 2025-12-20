@@ -25,7 +25,6 @@ function InventoryDesktopView({
   user,
   openLockModal,
 }: InventoryDesktopViewProps) {
-  // SAFETY CHECK: Ensure data is an array
   const hasData = Array.isArray(data) && data.length > 0;
 
   // Check if user has permission to change listing
@@ -33,19 +32,6 @@ function InventoryDesktopView({
     (permission) => permission.codename === "change_listing"
   ) ?? false;
 
-  // Placeholder for the actual lock/unlock logic
-  // This function would typically call an API to update the listing's lock status
-  const handleLockToggle = (listingId: number, isLocked: boolean) => {
-    // In a real application, this would trigger an API call
-    // For now, we'll just log it or call the existing openLockModal
-    console.log(`Attempting to ${isLocked ? 'unlock' : 'lock'} listing ${listingId}`);
-    // Assuming openLockModal can handle the actual state change or API call
-    // You might need to pass the full listing object here if openLockModal expects it
-    const listingToToggle = data.find(inv => inv.id === listingId);
-    if (listingToToggle) {
-      openLockModal(listingToToggle);
-    }
-  };
 
   return (
     <div className="hidden md:block bg-card/40 backdrop-blur-xl border border-border/40 rounded-2xl shadow-xl overflow-hidden">
@@ -68,10 +54,8 @@ function InventoryDesktopView({
           <tbody className="divide-y divide-border/40">
             {hasData ? (
               data.map((listing) => {
-                // SAFETY CHECK: Skip malformed items
                 if (!listing) return null;
 
-                // MATH SAFETY: extract variables to prevent division by zero or undefined access
                 const filled = listing.vacancy_stats?.filled ?? 0;
                 const total = listing.vacancy_stats?.total || 1; // Default to 1 to avoid /0
                 const occupancyPercentage = (filled / total) * 100;
@@ -133,7 +117,6 @@ function InventoryDesktopView({
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
                           <Eye className="w-3.5 h-3.5 text-slate-500" />{" "}
-                          {/* SAFETY CHECK: Optional chaining for stats */}
                           {(listing.stats?.total_views ?? 0).toLocaleString()}
                         </div>
                         <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
@@ -187,8 +170,8 @@ function InventoryDesktopView({
                             openLockModal && openLockModal(listing);
                           }}
                           className={`p-1.5 rounded-lg transition-colors border ${listing.is_locked
-                              ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20"
-                              : "bg-muted/30 text-muted-foreground border-border/40 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/20"
+                            ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/20"
+                            : "bg-muted/30 text-muted-foreground border-border/40 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/20"
                             } ${hasChangeListingPermission
                               ? "cursor-pointer"
                               : "opacity-70 cursor-not-allowed"
@@ -201,7 +184,6 @@ function InventoryDesktopView({
                             <Lock className="w-4 h-4" />
                           )}
                         </button>
-                        {/* SAFETY CHECK: Ensure ID exists */}
                         {listing.id && (
                           <RouterLink
                             to={{

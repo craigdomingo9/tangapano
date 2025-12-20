@@ -8,7 +8,6 @@ interface InventoryStatsProps {
 }
 
 function InventoryStats({ listing }: InventoryStatsProps) {
-  // Safely extract stats with fallback values
   const totalViews = listing?.stats?.total_views?.toString() ?? "0";
   const totalInquiries = listing?.stats?.total_inquiries?.toString() ?? "0";
   const totalBeds = listing?.vacancy_stats?.total ?? 0;

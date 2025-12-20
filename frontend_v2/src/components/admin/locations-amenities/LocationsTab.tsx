@@ -31,14 +31,12 @@ function LocationsTab({
   hasAddCampusPermission,
   hasChangeCampusPermission,
 }: LocationsTabProps) {
-  // Guards
   if (isLoading) return <LoadingScreen />;
   if (isError) return <ErrorPage type="500" />;
   if (!locations && !isLoading) return null;
 
   return (
     <div className="space-y-8">
-      {/* Action Bar */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-card/40 backdrop-blur-xl border border-border/40 p-4 rounded-2xl shadow-sm">
         <div>
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
@@ -103,7 +101,6 @@ function LocationsTab({
       <div className="space-y-10">
         {locations.map((location) => (
           <div key={location.id} className="space-y-5">
-            {/* City Header */}
             <div className="flex items-center gap-3 pb-3 border-b border-border/40">
               <div className="p-2 rounded-lg bg-lapis/10 text-lapis border border-lapis/10">
                 <MapPin className="w-5 h-5" />
@@ -118,14 +115,12 @@ function LocationsTab({
               </div>
             </div>
 
-            {/* Campus Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {location.campuses.map((campus) => (
                 <div
                   key={campus.id}
                   className="group relative bg-card/60 backdrop-blur-md border border-border/40 rounded-2xl p-6 hover:bg-card/80 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                 >
-                  {/* Decorative Gradient Line */}
                   <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-lapis/0 via-lapis/50 to-lapis/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                   <div className="flex justify-between items-start mb-5">
@@ -151,8 +146,8 @@ function LocationsTab({
                         setEditCampusOpen(campus);
                       }}
                       className={`p-2 rounded-lg border border-border/40 transition-all ${hasChangeCampusPermission
-                          ? "cursor-pointer hover:bg-muted/50 hover:border-lapis/30"
-                          : "opacity-70 cursor-not-allowed"
+                        ? "cursor-pointer hover:bg-muted/50 hover:border-lapis/30"
+                        : "opacity-70 cursor-not-allowed"
                         }`}
                       title="Edit Campus"
                     >

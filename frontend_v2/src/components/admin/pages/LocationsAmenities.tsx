@@ -52,7 +52,6 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
     (permission) => permission.codename === "change_amenity"
   ) ?? false;
 
-  // --- 1. Data Hooks ---
 
   const {
     amenityCategories,
@@ -79,12 +78,10 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
   const { addCampus, isAddingCampus, editCampus, isEditingCampus } =
     useCampusesAdmin(accessToken);
 
-  // --- 2. UI State ---
   const [activeTab, setActiveTab] = useState<"locations" | "amenities">(
     "locations"
   );
 
-  // --- 3. Modal State Management ---
 
   // -- Location: City --
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
@@ -115,7 +112,6 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
   const [amenityFormData, setAmenityFormData] = useState<Partial<Amenity>>({});
   const [isEditingAmenityMode, setIsEditingAmenityMode] = useState(false);
 
-  // --- 4. Handlers ---
 
   // City Handlers
   const handleSaveCity = (data: { name: string }) => {
@@ -178,10 +174,10 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
     setIsAmenityModalOpen(true);
   };
 
-  const handleOpenEditAmenity = (amenity: Amenity) => {
-    setAmenityFormData(amenity);
+  const handleOpenEditAmenity = (params: { isOpen: boolean; amenity: Amenity }) => {
+    setAmenityFormData(params.amenity);
     setIsEditingAmenityMode(true);
-    setIsAmenityModalOpen(true);
+    setIsAmenityModalOpen(params.isOpen);
   };
 
   const handleSaveAmenity = (data: any) => {
@@ -203,7 +199,6 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
   return (
     <>
       <div className="space-y-8 animate-fade-in pb-12">
-        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-border/40 pb-6">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground">
@@ -215,13 +210,11 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
           </div>
         </div>
 
-        {/* Tabs */}
         <LATabs
           activeTab={activeTab}
           setActiveTab={(tab) => setActiveTab(tab)}
         />
 
-        {/* Content */}
         <div className="min-h-[400px] animate-slide-up">
           {activeTab === "locations" ? (
             <LocationsTab
@@ -243,7 +236,7 @@ function LocationsAmenities({ serverData }: AdminPanelComponentProps) {
               isLoading={amenityCategoriesIsLoading}
               isError={amenityCategoriesIsError}
               setAddCategoryOpen={() => setIsCategoryModalOpen(true)}
-              setAddAmenity={handleOpenAddAmenity}
+              setAddAmenity={() => handleOpenAddAmenity()}
               setEditAmenity={handleOpenEditAmenity}
               hasAddAmenityCategoryPermission={hasAddAmenityCategoryPermission}
               hasAddAmenityPermission={hasAddAmenityPermission}

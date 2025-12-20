@@ -63,7 +63,6 @@ function ListingDetail({
         >
           <ArrowLeft className="w-4 h-4" /> Back to Inventory
         </RouterLink>
-        {/* Hero Section */}
         <InventoryHero
           listing={invDetail!!}
           user={user}

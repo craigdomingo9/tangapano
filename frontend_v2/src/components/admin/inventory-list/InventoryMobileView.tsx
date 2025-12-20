@@ -17,16 +17,13 @@ interface InventoryMobileViewProps {
   data: Inventory[];
   user: User;
   openLockModal: (inv: Inventory) => void;
-  handleLockToggle: (listingId: string, isLocked: boolean) => void;
 }
 
 function InventoryMobileView({
   data,
   user,
   openLockModal,
-  handleLockToggle,
 }: InventoryMobileViewProps) {
-  // SAFETY CHECK: Ensure data is actually an array before trying to access .length
   const hasData = Array.isArray(data) && data.length > 0;
 
   // Check if user has permission to change listing
@@ -38,12 +35,10 @@ function InventoryMobileView({
     <div className="md:hidden flex flex-col gap-4">
       {hasData ? (
         data.map((listing) => {
-          // SAFETY CHECK: Skip this specific item if it is null/undefined
           if (!listing) return null;
 
           return (
             <div
-              // SAFETY CHECK: Fallback for ID if missing
               key={listing.id || Math.random()}
               className="p-5 bg-card/40 backdrop-blur-md border border-border/40 rounded-2xl shadow-lg relative"
             >
@@ -111,7 +106,6 @@ function InventoryMobileView({
                   </span>
                   <div className="flex items-center gap-1 text-sm font-bold text-foreground mt-1">
                     <MessageCircle className="w-3.5 h-3.5 text-emerald-500" />{" "}
-                    {/* SAFETY CHECK: Optional chaining for stats */}
                     {listing.stats?.total_inquiries ?? 0}
                   </div>
                 </div>
@@ -121,7 +115,6 @@ function InventoryMobileView({
                   </span>
                   <div className="flex items-center gap-1 text-sm font-bold text-foreground mt-1">
                     <Bed className="w-3.5 h-3.5 text-lapis" />
-                    {/* SAFETY CHECK: Optional chaining for vacancy_stats */}
                     {listing.vacancy_stats?.filled ?? 0}/
                     {listing.vacancy_stats?.total ?? 0}
                   </div>
@@ -142,8 +135,8 @@ function InventoryMobileView({
                     openLockModal && openLockModal(listing);
                   }}
                   className={`flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-bold transition-colors border ${listing.is_locked
-                      ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
-                      : "bg-muted/30 text-muted-foreground border-border/40"
+                    ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                    : "bg-muted/30 text-muted-foreground border-border/40"
                     } ${hasChangeListingPermission
                       ? "cursor-pointer"
                       : "opacity-70 cursor-not-allowed"
@@ -159,7 +152,6 @@ function InventoryMobileView({
                     </>
                   )}
                 </button>
-                {/* SAFETY CHECK: Ensure ID exists for routing */}
                 {listing.id && (
                   <RouterLink
                     to={{ page: "listings", listingId: listing.id.toString() }}

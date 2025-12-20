@@ -30,7 +30,6 @@ function AmenitiesTab({
   hasAddAmenityPermission,
   hasChangeAmenityPermission,
 }: AmenitiesTabProps) {
-  // Guards
   if (isLoading) return <LoadingScreen />;
   if (isError) return <ErrorPage type="500" />;
   if (!amenityCategories && !isLoading) return null;
@@ -57,8 +56,8 @@ function AmenitiesTab({
               setAddCategoryOpen(true);
             }}
             className={`flex items-center gap-2 px-4 py-2 bg-muted/50 text-foreground border border-border/40 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddAmenityCategoryPermission
-                ? "cursor-pointer hover:bg-muted/80"
-                : "opacity-70 cursor-not-allowed"
+              ? "cursor-pointer hover:bg-muted/80"
+              : "opacity-70 cursor-not-allowed"
               }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
@@ -73,8 +72,8 @@ function AmenitiesTab({
               setAddAmenity({ isOpen: true, category_id: "" });
             }}
             className={`flex items-center gap-2 px-4 py-2 bg-lapis/10 text-lapis border border-lapis/20 rounded-lg text-xs font-bold transition-all shadow-sm flex-1 sm:flex-none justify-center group ${hasAddAmenityPermission
-                ? "cursor-pointer hover:bg-lapis/20"
-                : "opacity-70 cursor-not-allowed"
+              ? "cursor-pointer hover:bg-lapis/20"
+              : "opacity-70 cursor-not-allowed"
               }`}
           >
             <Plus className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />{" "}
@@ -83,7 +82,6 @@ function AmenitiesTab({
         </div>
       </div>
 
-      {/* Categorized Layout */}
       <div className="grid md:grid-cols-2 gap-6">
         {amenityCategories?.map((category) => (
           <div
@@ -105,8 +103,8 @@ function AmenitiesTab({
                     setEditAmenity({ isOpen: true, amenity });
                   }}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 bg-card/60 border border-border/40 rounded-lg text-xs font-bold transition-all ${hasChangeAmenityPermission
-                      ? "cursor-pointer hover:border-lapis/50 hover:text-lapis"
-                      : "opacity-70 cursor-not-allowed"
+                    ? "cursor-pointer hover:border-lapis/50 hover:text-lapis"
+                    : "opacity-70 cursor-not-allowed"
                     }`}
                 >
                   <Tag className="w-3.5 h-3.5 opacity-70" />

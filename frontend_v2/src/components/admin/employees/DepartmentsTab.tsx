@@ -39,10 +39,10 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                         }
                         onCreate();
                     }}
-                    className={`bg - lapis text - white px - 4 py - 2 rounded - lg text - sm font - bold shadow - lg shadow - lapis / 20 transition - all flex items - center gap - 2 ${hasAddDepartmentPermission
-                            ? "cursor-pointer hover:bg-lapis/90"
-                            : "opacity-70 cursor-not-allowed"
-                        } `}
+                    className={`bg-lapis text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 ${hasAddDepartmentPermission
+                        ? "cursor-pointer hover:bg-lapis/90"
+                        : "opacity-70 cursor-not-allowed"
+                        }`}
                 >
                     <Building2 className="w-4 h-4" /> New Dept
                 </button>
@@ -50,8 +50,8 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {departments.map((dept) => (
-                    <div key={dept.id} className="bg-card/30 backdrop-blur-2xl border border-border/40 rounded-[2.5rem] p-7 shadow-xl hover:shadow-2xl hover:shadow-lapis/5 hover:-translate-y-1 transition-all group flex flex-col relative overflow-hidden">
-                        <div className="flex justify-between items-start mb-6">
+                    <div key={dept.id} className="bg-card/30 backdrop-blur-xl border border-border/40 rounded-4xl overflow-hidden divide-y divide-border/30 shadow-xl hover:shadow-2xl hover:shadow-lapis/5 hover:-translate-y-1 transition-all group flex flex-col relative">
+                        <div className="flex justify-between items-start p-7 pb-0">
                             <div className="p-4 bg-lapis/10 rounded-3xl text-lapis border border-lapis/10 shadow-inner group-hover:bg-lapis group-hover:text-lapis-foreground transition-all duration-500">
                                 <Building className="w-7 h-7" />
                             </div>
@@ -64,22 +64,23 @@ const DepartmentsTab: React.FC<DepartmentsTabProps> = ({
                                         }
                                         onEdit(dept);
                                     }}
-                                    className={`p - 2 rounded - lg border border - border / 40 transition - all ${hasChangeDepartmentPermission
-                                            ? "cursor-pointer hover:bg-muted/50 hover:border-lapis/30"
-                                            : "opacity-70 cursor-not-allowed"
-                                        } `}
+                                    className={`p-2 rounded-lg border border-border/40 transition-all ${hasChangeDepartmentPermission
+                                        ? "cursor-pointer hover:bg-muted/50 hover:border-lapis/30"
+                                        : "opacity-70 cursor-not-allowed"
+                                        }`}
                                     title="Edit Department"
                                 >
                                     <Edit className="w-4 h-4 text-muted-foreground" />
                                 </button>
                             </div>
                         </div>
-                        <h4 className="font-bold text-xl mb-3 tracking-tight">{dept.name}</h4>
-                        <p className="text-sm text-muted-foreground font-bold leading-relaxed opacity-80 flex-1">{dept.description || 'No specific scope defined.'}</p>
+                        <div className="p-7 pt-4 flex-1">
+                            <h4 className="font-bold text-xl mb-3 tracking-tight">{dept.name}</h4>
+                            <p className="text-sm text-muted-foreground font-bold leading-relaxed opacity-80 flex-1">{dept.description || 'No specific scope defined.'}</p>
+                        </div>
 
-                        <div className="mt-8 pt-6 border-t border-border/40 flex items-center justify-between">
+                        <div className="p-7 flex items-center justify-between">
                             <div className="flex -space-x-3">
-                                {/* Placeholder for user avatars if we had them related to dept */}
                                 {[1, 2, 3].map(i => (
                                     <div key={i} className="w-9 h-9 rounded-2xl border-2 border-card bg-muted/60 backdrop-blur-sm flex items-center justify-center text-[10px] font-bold text-lapis shadow-sm">
                                         U{i}

@@ -43,7 +43,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
                     <Shield className="w-4 h-4" /> Create Security Role
                 </button>
 
-                <div className="bg-card/30 backdrop-blur-xl border border-border/40 rounded-[2rem] overflow-hidden divide-y divide-border/30 shadow-xl">
+                <div className="bg-card/30 backdrop-blur-xl border border-border/40 rounded-4xl overflow-hidden divide-y divide-border/30 shadow-xl">
                     <div className="p-5 bg-muted/20 border-b border-border/40">
                         <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-70">Role Directory</h3>
                     </div>
@@ -53,7 +53,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
                             className="w-full p-6 flex flex-col items-start transition-all text-left"
                         >
                             <div className="flex items-center justify-between w-full mb-2">
-                                <span className="font-bold font-bold text-lg tracking-tight">{role.name}</span>
+                                <span className="font-bold text-lg tracking-tight">{role.name}</span>
                                 <button
                                     onClick={() => {
                                         if (!hasChangeRolePermission) {
@@ -90,7 +90,7 @@ const RolesTab: React.FC<RolesTabProps> = ({
             </div>
 
             <div className="hidden lg:block lg:col-span-2">
-                <div className="bg-card/20 backdrop-blur-3xl border-2 border-dashed border-border/40 rounded-[3rem] p-12 h-full flex flex-col items-center justify-center text-center">
+                <div className="bg-card/20 backdrop-blur-3xl border-2 border-dashed border-border/40 rounded-4xl p-12 h-full flex flex-col items-center justify-center text-center">
                     <div className="w-24 h-24 rounded-full bg-lapis/5 border border-lapis/10 flex items-center justify-center mb-6">
                         <Shield className="w-12 h-12 text-lapis opacity-20 animate-pulse" />
                     </div>

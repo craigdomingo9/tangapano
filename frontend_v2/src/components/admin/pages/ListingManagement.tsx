@@ -29,7 +29,6 @@ function ListingManagement({
     isUnlockingListing,
   } = useInventory(accessToken);
 
-  // Filter Logic
   const lowerQuery = searchQuery?.toLowerCase() || "";
   const filteredListings = (inventory || [])?.filter((inv) => {
     if (!inv) return false;
@@ -41,7 +40,6 @@ function ListingManagement({
     );
   });
 
-  // Pagination Logic
   const totalItems = filteredListings.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const paginatedListings = filteredListings.slice(
@@ -57,14 +55,14 @@ function ListingManagement({
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    setCurrentPage(1); // Reset to first page on search
+    setCurrentPage(1);
   };
 
   async function handleSave() {
     if (openLockModal?.is_locked)
       await unlockListing(openLockModal.id.toString());
     if (!openLockModal?.is_locked)
-      await lockListing(openLockModal!!.id.toString());
+      await lockListing(openLockModal!.id.toString());
     setOpenLockModal(null);
   }
 
@@ -120,7 +118,7 @@ function ListingManagement({
       <ListingLockModal
         isLoading={isLockingListing || isUnlockingListing}
         isOpen={!!openLockModal}
-        listing={openLockModal!!}
+        listing={openLockModal!}
         onClose={() => setOpenLockModal(null)}
         onSave={handleSave}
       />

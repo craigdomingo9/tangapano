@@ -19,7 +19,6 @@ interface ModalState {
   selectedAgent: AdminAgent | null;
 }
 
-// 1. Refined Initial State: Provide complete, safe defaults
 const initialModalState: ModalState = {
   isOpen: false,
   mode: "add",
@@ -40,7 +39,6 @@ const initialAgentFormData: AgentFormData = {
   agent_fee: "",
 };
 
-// Use the complete initial state in the store creator
 const useModalState = createEntityStore<ModalState>(initialModalState);
 const useAgentFormData = createEntityStore<AgentFormData>(initialAgentFormData);
 
@@ -53,7 +51,6 @@ function AgentManagement({
     useAgents(accessToken);
   const { agents, agentsIsLoading, agentsIsError } = useAgents(accessToken);
 
-  // Use a more descriptive name like modalState for entities
   const { entities: modalState, setEntities: setModalState } = useModalState();
   const { entities: formData, setEntities: setFormData } = useAgentFormData();
   const { isOpen, mode, selectedAgent } = modalState;
@@ -67,14 +64,10 @@ function AgentManagement({
     (permission) => permission.codename === "change_agent"
   ) ?? false;
 
-  // 2. Dedicated Setter Functions (better type safety and readability)
-
-  /** Closes the modal and resets the state to the initial default */
   function onModalClose() {
     setModalState(initialModalState); // Resets everything safely
   }
 
-  /** Opens the modal in 'add' mode */
   function onAddAgentClick() {
     setModalState({
       isOpen: true,
@@ -84,7 +77,6 @@ function AgentManagement({
     setFormData(initialAgentFormData);
   }
 
-  /** Opens the modal in 'edit' mode for a specific agent */
   function onEditAgentClick(agent: AdminAgent) {
     setModalState({
       isOpen: true,
@@ -99,26 +91,16 @@ function AgentManagement({
     });
   }
 
-  // --- Filter Logic ---
-  // 1. OPTIMIZATION: Normalize the query ONCE outside the loop.
-  // We also default to "" to prevent crashing if searchQuery is null/undefined.
   const lowerQuery = searchQuery?.toLowerCase() || "";
 
   const filteredAgents = agents?.filter((agent: AdminAgent) => {
-    // 2. SAFETY: Fail fast if the agent object itself is null/undefined
     if (!agent) return false;
 
-    // 3. READABILITY & SAFETY:
-    // Coalesce (??) null values to empty strings "" so .includes() always runs on a valid string.
-    // This avoids "undefined" floating around in your boolean logic.
     const name = agent.full_name?.toLowerCase() ?? "";
     const campus = agent.campus_name?.toLowerCase() ?? "";
 
-    // Note: We keep your getAcronym logic, assuming it returns a string.
-    // If getAcronym can return null, add ?? "" there too.
     const acronym = getAcronym(agent.campus_name || "").toLowerCase();
 
-    // 4. LOGIC: Return the boolean result directly.
     return (
       name.includes(lowerQuery) ||
       campus.includes(lowerQuery) ||
@@ -176,8 +158,8 @@ function AgentManagement({
                 onAddAgentClick();
               }}
               className={`bg-lapis text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center ${hasAddAgentPermission
-                  ? "cursor-pointer hover:bg-lapis/90"
-                  : "opacity-70 cursor-not-allowed"
+                ? "cursor-pointer hover:bg-lapis/90"
+                : "opacity-70 cursor-not-allowed"
                 }`}
             >
               <UserPlus className="w-4 h-4" /> Add New Agent

@@ -21,7 +21,6 @@ const ITEMS_PER_PAGE = 6;
 function EmployeeManagement({
     serverData: { accessToken, user },
 }: AdminPanelComponentProps) {
-    // Permission checks
     const hasAddEmployeePermission = user?.employee_profile?.role?.permissions?.some(
         (permission) => permission.codename === "add_employee"
     ) ?? false;
@@ -49,7 +48,6 @@ function EmployeeManagement({
     const [activeTab, setActiveTab] = useState<'employees' | 'roles' | 'departments'>('employees');
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Hooks
     const {
         employees,
         employeesIsLoading,
@@ -80,26 +78,21 @@ function EmployeeManagement({
         isUpdatingDepartment
     } = useDepartments(accessToken);
 
-    // Loading & Error States
     const isLoading = employeesIsLoading || rolesIsLoading || departmentsIsLoading;
     const isError = employeesIsError || rolesIsError || departmentsIsError;
 
-    // Pagination State
     const [empPage, setEmpPage] = useState(1);
     const [rolePage, setRolePage] = useState(1);
     const [deptPage, setDeptPage] = useState(1);
 
-    // Modal State
     const [employeeModalOpen, setEmployeeModalOpen] = useState(false);
     const [roleModalOpen, setRoleModalOpen] = useState(false);
     const [deptModalOpen, setDeptModalOpen] = useState(false);
 
-    // Selection State
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
     const [selectedRole, setSelectedRole] = useState<Role | null>(null);
     const [selectedDept, setSelectedDept] = useState<Department | null>(null);
 
-    // Filter Logic
     const filteredEmployees = employees?.filter(emp =>
         (emp.user.first_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         (emp.user.last_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -115,7 +108,6 @@ function EmployeeManagement({
         (dept.name || '').toLowerCase().includes(searchQuery.toLowerCase())
     ) || [];
 
-    // Pagination Helpers
     const paginate = (items: any[], page: number) => {
         return items.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
     };
@@ -128,15 +120,13 @@ function EmployeeManagement({
     const totalRolePages = Math.ceil(filteredRoles.length / ITEMS_PER_PAGE);
     const totalDeptPages = Math.ceil(filteredDepts.length / ITEMS_PER_PAGE);
 
-    // Actions
     const handleEmployeeSubmit = (data: any) => {
-        // Construct payload with nested user object
         const payload = {
             user: {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 email: data.email,
-                username: data.email?.split('@')[0] || data.username // Fallback username generation if not provided
+                username: data.email?.split('@')[0] || data.username
             },
             department_id: data.department_id,
             role_id: data.role_id,
@@ -185,7 +175,6 @@ function EmployeeManagement({
 
     return (
         <div className="space-y-6 md:space-y-8 animate-fade-in pb-20 md:pb-12 max-w-[1600px] mx-auto">
-            {/* Page Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-border/40 pb-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-foreground">Personnel & Access</h1>
@@ -193,7 +182,6 @@ function EmployeeManagement({
                 </div>
             </div>
 
-            {/* Modern Unified Tabs - Matching Locations/Amenities style */}
             <div className="flex p-1 bg-muted/30 border border-border/40 rounded-xl w-full sm:w-fit overflow-x-auto">
                 <button
                     onClick={() => { setActiveTab('employees'); setSearchQuery(''); }}
@@ -270,7 +258,6 @@ function EmployeeManagement({
                 )}
             </div>
 
-            {/* Modals */}
             <EmployeeModal
                 isOpen={employeeModalOpen}
                 onClose={() => setEmployeeModalOpen(false)}
