@@ -27,33 +27,27 @@ class EmployeeSerializer(serializers.ModelSerializer):
         username = value.get('username')
         email = value.get('email')
         
-        user_qs = User.objects.all()
-        # If updating, exclude the current employee's user from the check
-        if self.instance and self.instance.user:
-            user_qs = user_qs.exclude(pk=self.instance.user.pk)
-        
-        if username and user_qs.filter(username=username).exists():
-            raise serializers.ValidationError({"username": "A user with this username already exists."})
+        current_user = self.instance.user if self.instance else None
+
+        if username:
+            # If new user OR (updating and username changed)
+            if not current_user or current_user.username != username:
+                if User.objects.filter(username=username).exists():
+                    raise serializers.ValidationError({"username": "A user with this username already exists."})
             
-        if email and user_qs.filter(email=email).exists():
-            raise serializers.ValidationError({"email": "A user with this email already exists."})
+        if email:
+            # If new user OR (updating and email changed)
+            if not current_user or current_user.email != email:
+                if User.objects.filter(email=email).exists():
+                    raise serializers.ValidationError({"email": "A user with this email already exists."})
             
         return value
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        password = user_data.pop('password', None)
         
-        # Generate dynamic password based on first_name
-        first_name = user_data.get('first_name', 'Employee')
-        import random
-        import string
-        
-        base = first_name.capitalize()
-        digits = ''.join(random.choices(string.digits, k=4))
-        specials = ''.join(random.choices("!@#$%^&*", k=2))
-        generated_password = f"{base}{digits}{specials}"
-        
-        user = User.objects.create_user(password=generated_password, **user_data)
+        user = User.objects.create_user(password=password, is_staff=True, **user_data)
         user.role = 'employee'
         user.save()
 
@@ -66,6 +60,12 @@ class EmployeeSerializer(serializers.ModelSerializer):
         if user_data:
             user = instance.user
             user_has_changes = False
+            
+            password = user_data.pop('password', None)
+            if password:
+                user.set_password(password)
+                user_has_changes = True
+
             for attr, value in user_data.items():
                 if getattr(user, attr) != value:
                     setattr(user, attr, value)

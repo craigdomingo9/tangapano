@@ -101,3 +101,75 @@ class EmployeeAPITest(TestCase):
         
         employee.refresh_from_db()
         self.assertEqual(employee.address, "Main Campus, Gweru")
+
+    def test_create_employee_with_password(self):
+        url = reverse('employee-list')
+        data = {
+            "user": {
+                "first_name": "Jane",
+                "last_name": "Smith",
+                "email": "jane@example.com",
+                "username": "janesmith",
+                "password": "CustomPassword123!"
+            },
+            "department_id": self.department.id,
+            "role_id": self.role.id,
+            "date_hired": "2025-12-20"
+        }
+        
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        user = User.objects.get(username="janesmith")
+        self.assertTrue(user.check_password("CustomPassword123!"))
+
+    def test_update_employee_password(self):
+        # Create initial employee
+        emp_user = User.objects.create_user(username='update_pass_user', email='upass@example.com', password='InitialPassword123!', role='employee')
+        employee = Employee.objects.create(user=emp_user, department=self.department, role=self.role)
+        
+        url = reverse('employee-detail', args=[employee.id])
+        data = {
+            "user": {
+                "first_name": "Update",
+                "last_name": "Pass",
+                "email": "upass@example.com",
+                "username": "update_pass_user",
+                "password": "NewSecurePassword456!"
+            },
+            "department_id": self.department.id,
+            "role_id": self.role.id,
+            "date_hired": "2025-12-20"
+        }
+        
+        response = self.client.put(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        emp_user.refresh_from_db()
+        self.assertTrue(emp_user.check_password("NewSecurePassword456!"))
+
+    def test_update_employee_repro_400(self):
+        # Create initial employee with reasonable data
+        emp_user = User.objects.create_user(username='otheruser', email='other@example.org', password='password123', role='employee')
+        employee = Employee.objects.create(user=emp_user, department=self.department, role=self.role)
+        
+        # Payload provided by user (modified to use existing IDs)
+        url = reverse('employee-detail', args=[employee.id])
+        data = {
+            "user": {
+                "first_name": "Katherine",
+                "last_name": "Perez",
+                "email": "pprince@example.org",
+                "username": "pprince",
+                "password": "connected2005"
+            },
+            "department_id": str(self.department.id),
+            "role_id": str(self.role.id),
+            "phone_number": "",
+            "date_hired": "2021-11-04",
+            "address": ""
+        }
+        
+        response = self.client.put(url, data, format='json')
+        # If this fails with 400, response.data will tell us why
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)

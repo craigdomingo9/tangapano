@@ -126,7 +126,8 @@ function EmployeeManagement({
                 first_name: data.first_name,
                 last_name: data.last_name,
                 email: data.email,
-                username: data.email?.split('@')[0] || data.username
+                username: data.email?.split('@')[0] || data.username,
+                ...(data.password && { password: data.password })
             },
             department_id: data.department_id,
             role_id: data.role_id,

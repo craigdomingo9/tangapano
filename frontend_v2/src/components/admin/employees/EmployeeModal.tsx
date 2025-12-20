@@ -33,6 +33,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
             first_name: formData.get('first_name'),
             last_name: formData.get('last_name'),
             email: formData.get('email'),
+            password: formData.get('password'),
             department_id: formData.get('department_id'),
             role_id: formData.get('role_id'),
             phone_number: formData.get('phone_number'),
@@ -74,9 +75,23 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                         <input name="last_name" type="text" defaultValue={employee?.user.last_name} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
                     </div>
                 </div>
-                <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Enterprise Email</label>
-                    <input name="email" type="email" defaultValue={employee?.user.email} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Enterprise Email</label>
+                        <input name="email" type="email" defaultValue={employee?.user.email} required className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                    </div>
+                    {!employee && (
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Secure Password</label>
+                            <input name="password" type="password" required={!employee} className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                        </div>
+                    )}
+                    {employee && (
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Reset Password (Optional)</label>
+                            <input name="password" type="password" placeholder="Leave blank to keep current" className="w-full bg-muted/20 border border-border/60 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-lapis/40 transition-all" />
+                        </div>
+                    )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="space-y-2">
