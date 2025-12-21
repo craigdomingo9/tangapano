@@ -12,12 +12,19 @@ interface ImageCardProps {
   onLabelChange: (id: string, label: string) => void;
 }
 
-const ROOM_TYPES = [
+const CAPTION_OPTIONS = [
   "Bedroom",
   "Living Room",
   "Kitchen",
   "Dining Room",
   "Bathroom",
+  "Study Area",
+  "Lounge",
+  "Game Room",
+  "Front View",
+  "Backyard",
+  "Parking Area",
+  "Outdoor Area",
 ];
 
 function ImageCard({
@@ -149,7 +156,7 @@ function ImageCard({
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
             title="Change label"
           >
-            {ROOM_TYPES.map((type) => (
+            {CAPTION_OPTIONS.map((type) => (
               <option key={type} value={type} className="text-slate-900">
                 {type}
               </option>
