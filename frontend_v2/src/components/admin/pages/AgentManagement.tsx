@@ -56,13 +56,15 @@ function AgentManagement({
   const { isOpen, mode, selectedAgent } = modalState;
 
   // Check permissions
-  const hasAddAgentPermission = user?.employee_profile?.role?.permissions?.some(
-    (permission) => permission.codename === "add_agent"
-  ) ?? false;
+  const hasAddAgentPermission =
+    user?.employee_profile?.role?.permissions?.some(
+      (permission) => permission.codename === "add_agent"
+    ) ?? false;
 
-  const hasChangeAgentPermission = user?.employee_profile?.role?.permissions?.some(
-    (permission) => permission.codename === "change_agent"
-  ) ?? false;
+  const hasChangeAgentPermission =
+    user?.employee_profile?.role?.permissions?.some(
+      (permission) => permission.codename === "change_agent"
+    ) ?? false;
 
   function onModalClose() {
     setModalState(initialModalState); // Resets everything safely
@@ -93,20 +95,26 @@ function AgentManagement({
 
   const lowerQuery = searchQuery?.toLowerCase() || "";
 
-  const filteredAgents = agents?.filter((agent: AdminAgent) => {
-    if (!agent) return false;
+  const filteredAgents: AdminAgent[] = Array.from(
+    new Set(
+      agents
+        ?.filter((agent: AdminAgent) => {
+          if (!agent) return false;
 
-    const name = agent.full_name?.toLowerCase() ?? "";
-    const campus = agent.campus_name?.toLowerCase() ?? "";
+          const name = agent.full_name?.toLowerCase() ?? "";
+          const campus = agent.campus_name?.toLowerCase() ?? "";
 
-    const acronym = getAcronym(agent.campus_name || "").toLowerCase();
+          const acronym = getAcronym(agent.campus_name || "").toLowerCase();
 
-    return (
-      name.includes(lowerQuery) ||
-      campus.includes(lowerQuery) ||
-      acronym.includes(lowerQuery)
-    );
-  });
+          return (
+            name.includes(lowerQuery) ||
+            campus.includes(lowerQuery) ||
+            acronym.includes(lowerQuery)
+          );
+        })
+        .map((agent: AdminAgent) => agent)
+    )
+  );
   // --- End Filter Logic ---
 
   function updateFormField(key: keyof AgentFormData, value: any) {
@@ -157,10 +165,11 @@ function AgentManagement({
                 }
                 onAddAgentClick();
               }}
-              className={`bg-lapis text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center ${hasAddAgentPermission
-                ? "cursor-pointer hover:bg-lapis/90"
-                : "opacity-70 cursor-not-allowed"
-                }`}
+              className={`bg-lapis text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-lapis/20 transition-all flex items-center gap-2 w-full md:w-auto justify-center ${
+                hasAddAgentPermission
+                  ? "cursor-pointer hover:bg-lapis/90"
+                  : "opacity-70 cursor-not-allowed"
+              }`}
             >
               <UserPlus className="w-4 h-4" /> Add New Agent
             </button>
