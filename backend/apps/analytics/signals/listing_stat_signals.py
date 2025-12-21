@@ -12,6 +12,8 @@ def increment_inquiry_stat(sender, instance, created, **kwargs):
     the total_inquiries counter on the ListingStat model.
     """
     if created:
+        # NOTE: Staff exclusion for inquiries is currently disabled because the user
+        # field was removed from the Interest model.
         try:
             # Traverse: Interest -> Room -> Listing
             listing = instance.room.listing

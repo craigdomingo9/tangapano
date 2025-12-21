@@ -67,6 +67,11 @@ class UserEngagementMiddleware:
             today = timezone.now().date()
             session_key = request.session.session_key
             user = request.user if request.user.is_authenticated else None
+            
+            # EXCLUDE STAFF
+            if user and user.is_staff:
+                return
+
             ip_address = self.get_client_ip(request)
             # Limit UA string size for DB safety
             user_agent_db = user_agent[:200] 
