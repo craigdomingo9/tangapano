@@ -43,7 +43,7 @@ DOCKER_BUILDKIT=1 docker compose -f docker-compose.prod.yml build backend fronte
 # 5. START DATA LAYER (The Vault)
 # We prioritize the data layer to ensure DBs are up before the app tries to connect
 log "🗄️  Ensuring Data Layer (DB, Redis, Elastic) is up..."
-docker compose -f docker-compose.prod.yml up -d db redis pgbouncer
+docker compose -f docker-compose.prod.yml up -d db redis pgbouncer elasticsearch
 
 # Wait a moment for Postgres/Elastic to initialize if they were restarted
 sleep 10
