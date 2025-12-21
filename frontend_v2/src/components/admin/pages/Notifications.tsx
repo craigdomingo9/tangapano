@@ -23,11 +23,12 @@ function Notifications({
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "2-digit",
+    return new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "numeric",
-    });
+      hour: "numeric",
+      hour12: true,
+    }).format(date);
   };
 
   const getNotificationTypeStyles = (type: string) => {
