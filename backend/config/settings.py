@@ -147,7 +147,7 @@ if not DEBUG:
         'rooms': '300/day',
         'inquiries': '100/hour',
         'user_lookup': '35/hour',
-        'anon': '50/hour',  # Global anonymous throttle
+        'anon': '100/hour',  # Global anonymous throttle
         'user': '1000/hour',  # Global authenticated throttle
     }
 else:
