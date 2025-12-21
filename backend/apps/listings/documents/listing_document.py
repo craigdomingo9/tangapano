@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-from listings.models import Listing, Room, ListingLocation
+from listings.models import Listing, Room, ListingLocation, ListingImage
 
 @registry.register_document
 class ListingDocument(Document):
@@ -83,7 +83,7 @@ class ListingDocument(Document):
 
     class Django:
         model = Listing
-        related_models = [Room, ListingLocation]
+        related_models = [Room, ListingLocation, ListingImage]
 
     def get_queryset(self):
         # Massive Optimization: Fetch everything needed for indexing in 1 go
@@ -108,6 +108,8 @@ class ListingDocument(Document):
         if isinstance(related_instance, Room):
             return related_instance.listing
         if isinstance(related_instance, ListingLocation):
+            return related_instance.listing
+        if isinstance(related_instance, ListingImage):
             return related_instance.listing
         return None
 
