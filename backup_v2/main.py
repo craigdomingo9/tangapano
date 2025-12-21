@@ -45,7 +45,7 @@ def main():
         'interval', 
         hours=pg_interval,
         id='postgres_job',
-        name='Postgres S3 Backup',
+        name='Postgres Mega Backup',
         next_run_time=datetime.now(),
         coalesce=True,
         max_instances=1
@@ -53,7 +53,7 @@ def main():
 
     # --- JOB 2: Image Archival (Bulk Data) ---
     # Run less frequently (e.g., Every 12 hours)
-    img_interval = int(os.getenv("SCHEDULE_IMG_HOURS", 12))
+    img_interval = int(os.getenv("SCHEDULE_IMG_HOURS", 4))
     scheduler.add_job(
         img_system.run_cycle, 
         'interval', 
