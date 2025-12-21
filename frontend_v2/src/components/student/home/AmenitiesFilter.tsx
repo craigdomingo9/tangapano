@@ -65,7 +65,7 @@ function AmenitiesFilter({ updateFilter }: AmenitiesFilterProps) {
           <Badge
             variant="outline"
             onClick={() => setShowAllAmenities(!showAllAmenities)}
-            className="px-4 py-2 rounded-full text-[0.75rem] font-semibold text-slate-500 dark:text-slate-400 border-dashed border-slate-300 dark:border-slate-600 hover:border-lapis hover:text-lapis dark:hover:text-sky-400 transition-all cursor-pointer bg-transparent"
+            className="px-4 py-2 rounded-full text-[0.75rem] font-semibold text-lapis border-dashed border-lapis dark:border-lapis hover:border-lapis hover:text-lapis/80 dark:hover:text-sky-400 transition-all cursor-pointer bg-transparent"
           >
             {showAllAmenities ? "Show Less" : "+ More"}
           </Badge>
