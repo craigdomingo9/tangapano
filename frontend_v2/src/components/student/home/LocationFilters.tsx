@@ -14,7 +14,9 @@ type LocationFiltersProps = {
 };
 
 function LocationFilters({ updateFilter }: LocationFiltersProps) {
-  const { data, isSuccess, isLoading, isError } = useCampuses();
+  const { data, isSuccess, isLoading, isError } = useCampuses({
+    has_listings: true,
+  });
   const campuses: Campus[] = data || [];
 
   const {

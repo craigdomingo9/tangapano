@@ -19,11 +19,10 @@ export function useAmenities({
 
 // 2. Hook for Campuses
 export function useCampuses({
-  has_listings = true,
+  has_listings,
 }: {
   has_listings?: boolean;
 } = {}) {
-  // <--- FIX: Added " = {}" here to allow calling without args
   return useQuery({
     queryKey: ["campuses_cache", { has_listings }],
     queryFn: () => fetchCampuses({ params: { has_listings } }),
