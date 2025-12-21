@@ -17,6 +17,7 @@ class ListingDocument(Document):
     title = fields.TextField()
     description = fields.TextField()
     distance_from_campus = fields.DoubleField()
+    apply_agent_fee = fields.BooleanField()
     is_active = fields.BooleanField()
     is_locked = fields.BooleanField()
     created_at = fields.DateField()
