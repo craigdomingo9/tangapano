@@ -27,7 +27,6 @@ def log_and_notify_notable_action(action_type, description, actor=None, metadata
     recipients = User.objects.filter(
         Q(role='admin') | 
         Q(is_superuser=True) | 
-        Q(is_staff=True) |
         Q(role='employee', employee_profile__role__name__icontains='Executive')
     ).distinct()
 
