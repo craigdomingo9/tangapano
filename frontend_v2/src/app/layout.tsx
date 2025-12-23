@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import { GlobalLoader } from "@/components/ui/GlobalLoader";
+import Script from "next/script";
 
 // 2. Configure the local font
 const inter = localFont({
@@ -75,6 +76,19 @@ export default function RootLayout({
         name="google-site-verification"
         content="CodVIAK6BTqMp4Ci0MV3ZuqoN2eP0TVjgkLUpEaq5zI"
       />
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-XJR9FXC581"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-XJR9FXC581');
+        `}
+      </Script>
       <body
         className={`${inter.variable} font-sans antialiased`}
         suppressHydrationWarning
