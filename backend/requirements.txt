@@ -8,6 +8,7 @@ psycopg2-binary==2.9.10
 gunicorn==23.0.0
 python-dotenv
 django-filter==25.1
+weasyprint==67.0
 tqdm
 django-extensions
 Werkzeug

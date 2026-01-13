@@ -1,1 +1,2 @@
 from .interest_views import InterestsViewSet
+from .receipt_views import generate_receipt_pdf

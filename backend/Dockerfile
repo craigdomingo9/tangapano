@@ -8,6 +8,9 @@ ENV PYTHONUNBUFFERED=1
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     dos2unix \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libharfbuzz-subset0 \
     netcat-openbsd \
     curl \
     && rm -rf /var/lib/apt/lists/*
