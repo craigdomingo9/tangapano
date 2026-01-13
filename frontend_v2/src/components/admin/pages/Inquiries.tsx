@@ -13,7 +13,9 @@ import { errorToast } from "@/lib/toast";
 
 const ITEMS_PER_PAGE = 8;
 
-function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
+function Inquiries({
+  serverData: { accessToken, user },
+}: AdminPanelComponentProps) {
   const { inquiries, inquiriesIsLoading, inquiriesIsError } =
     useInquiriesAdmin(accessToken);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +40,10 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
     );
 
   function generateReceipt(inquiry: Inquiry) {
+    if (!hasGenerateReceiptPermission) {
+      errorToast("You do not have permission to generate receipts.");
+      return;
+    }
     // Placeholder function for generating receipt
     // console.log(`Generating receipt for inquiry ID: ${inquiry.id}`);
 
@@ -64,6 +70,11 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
         console.error("Failed to download receipt:", error);
       });
   }
+
+  const hasGenerateReceiptPermission =
+    user?.employee_profile?.role?.permissions?.some(
+      (permission) => permission.codename === "change_interest"
+    ) ?? false;
 
   // Pagination Logic
   const totalItems = filteredInquiries?.length || 0;
@@ -117,6 +128,7 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
         inquiries={paginatedData!!}
         openDetailModal={setIsDetailModalOpen}
         generateReceipt={generateReceipt}
+        hasGenerateReceiptPermission={hasGenerateReceiptPermission}
       />
       <Pagination
         currentPage={currentPage}

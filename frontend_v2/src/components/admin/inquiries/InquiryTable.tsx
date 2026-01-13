@@ -7,12 +7,14 @@ interface InquiryTableProps {
   inquiries: Inquiry[];
   openDetailModal: (inquiry: Inquiry) => void;
   generateReceipt: (inquiry: Inquiry) => void;
+  hasGenerateReceiptPermission: boolean;
 }
 
 function InquiryTable({
   inquiries,
   openDetailModal,
   generateReceipt,
+  hasGenerateReceiptPermission,
 }: InquiryTableProps) {
   const getUrgencyBadge = (timeline: string) => {
     switch (timeline) {
@@ -135,6 +137,12 @@ function InquiryTable({
                           className="bg-lapis hover:bg-lapis/70 text-white hover:text-white/70 z-100"
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (!hasGenerateReceiptPermission) {
+                              alert(
+                                "You do not have permission to generate receipts."
+                              );
+                              return;
+                            }
                             generateReceipt(inquiry);
                           }}
                         >

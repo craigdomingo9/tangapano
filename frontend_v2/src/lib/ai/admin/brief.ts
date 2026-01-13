@@ -1,30 +1,36 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { streamText } from "ai";
-
-const API_KEY_REF =
-  "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";
-
+// First API call with reasoning
 export const getBriefAdmin = async (metrics: any) => {
-  const openrouter = createOpenRouter({
-    apiKey: API_KEY_REF,
+  let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer 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`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "xiaomi/mimo-v2-flash:free",
+      messages: [
+        {
+          role: "user",
+          content: `
+            You are an expert data analyst for a student housing platform.
+            We connect students with off-campus accommodation.
+            Analyze the following dashboard metrics and provide a concise, 2-sentence executive summary and 1 strategic recommendation.
+            
+            Metrics:
+            ${JSON.stringify(metrics, null, 2)}
+            
+            Output format:
+            Summary: [Your summary]
+            Start a New Paragraph. Skip 2 lines
+            Action: [Your recommendation]`,
+        },
+      ],
+      reasoning: { enabled: false },
+    }),
   });
+  // Extract the assistant message with reasoning_details and save it to the response variable
+  const result = await response.json();
+  response = result.choices[0].message.content;
 
-  const response = streamText({
-    model: openrouter("openai/gpt-oss-20b:free"),
-    prompt: `
-      You are an expert data analyst for a student housing platform.
-      We connect students with off-campus accommodation.
-      Analyze the following dashboard metrics and provide a concise, 2-sentence executive summary and 1 strategic recommendation.
-      
-      Metrics:
-      ${JSON.stringify(metrics, null, 2)}
-      
-      Output format:
-      Summary: [Your summary]
-      Start a New Paragraph. Skip 2 lines
-      Action: [Your recommendation]`,
-  });
-
-  await response.consumeStream();
-  return response.text;
+  return response;
 };
