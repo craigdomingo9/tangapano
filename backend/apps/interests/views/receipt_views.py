@@ -15,7 +15,7 @@ def generate_receipt_pdf(request, pk):
     
     # robustly handle related fields if they might be missing
     property_name = getattr(room.listing, 'title', "Student Housing") # Adjust 'property_name' to your actual Room model field
-    campus_name = getattr(room.campus, 'name', "Harare Campus") if hasattr(room, 'campus') else "Harare"
+    campus_name = getattr(room.listing.campus, 'name', "Harare Campus") if hasattr(room.listing, 'campus') else "Harare"
     neighborhood_name = getattr(room.listing.neighborhood, 'name', "Downtown") if hasattr(room.listing.neighborhood, 'name') else "Downtown"
     room_price = getattr(room, 'rent_per_month', 0.00) # Adjust 'price' to your actual Room model field
     city_name = getattr(room.listing.neighborhood.city, 'name', "Harare") if hasattr(room.listing.neighborhood, 'city') else "Harare"
