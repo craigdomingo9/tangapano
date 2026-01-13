@@ -30,7 +30,8 @@ export const getBriefAdmin = async (metrics: any) => {
   });
   // Extract the assistant message with reasoning_details and save it to the response variable
   const result = await response.json();
-  response = result.choices[0].message.content;
+  const responseContent = result.choices[0].message
+    .contentresponseContent as string;
 
-  return response;
+  return responseContent;
 };
