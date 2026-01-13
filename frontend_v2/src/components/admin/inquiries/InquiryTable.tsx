@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { RouterLink } from "@/routing/RouterLink";
 import { CheckCircle2, Clock, DollarSign, Hash, User } from "lucide-react";
 import React from "react";
@@ -5,9 +6,14 @@ import React from "react";
 interface InquiryTableProps {
   inquiries: Inquiry[];
   openDetailModal: (inquiry: Inquiry) => void;
+  generateReceipt: (inquiry: Inquiry) => void;
 }
 
-function InquiryTable({ inquiries, openDetailModal }: InquiryTableProps) {
+function InquiryTable({
+  inquiries,
+  openDetailModal,
+  generateReceipt,
+}: InquiryTableProps) {
   const getUrgencyBadge = (timeline: string) => {
     switch (timeline) {
       case "immediately":
@@ -76,7 +82,7 @@ function InquiryTable({ inquiries, openDetailModal }: InquiryTableProps) {
                   Payment Method
                 </th>
                 <th className="px-6 py-4 font-bold tracking-wider text-right">
-                  Status
+                  Receipt
                 </th>
               </tr>
             </thead>
@@ -125,20 +131,15 @@ function InquiryTable({ inquiries, openDetailModal }: InquiryTableProps) {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                            inquiry.contacted_agent.id
-                              ? "bg-muted/30 text-muted-foreground border border-border/40 hover:bg-muted/50"
-                              : "bg-lapis text-lapis-foreground shadow-lg shadow-lapis/20 hover:bg-lapis/90"
-                          }`}
+                        <Button
+                          className="bg-lapis hover:bg-lapis/70 text-white hover:text-white/70 z-100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            generateReceipt(inquiry);
+                          }}
                         >
-                          {inquiry.contacted_agent.id
-                            ? "Contacted"
-                            : "Mark Contacted"}
-                          {inquiry.contacted_agent.id && (
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                          )}
-                        </button>
+                          Get Receipt
+                        </Button>
                       </div>
                     </td>
                   </tr>

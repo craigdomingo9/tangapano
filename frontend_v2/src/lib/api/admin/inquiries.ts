@@ -25,3 +25,16 @@ export async function updateInquiry(
   );
   return data;
 }
+
+export async function generateInquiryReceipt(
+  accessToken: string,
+  inquiryId: string
+) {
+  const { data } = await axiosInstance.get(`/interests/receipt/${inquiryId}/`, {
+    headers: {
+      Authorization: `Token ${accessToken}`,
+    },
+    responseType: "blob",
+  });
+  return data;
+}

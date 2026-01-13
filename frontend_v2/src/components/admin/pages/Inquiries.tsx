@@ -8,6 +8,8 @@ import KPICards from "../inquiries/KPICards";
 import InquiryTable from "../inquiries/InquiryTable";
 import Pagination from "../common-components/Pagination";
 import InquiryDetailsModal from "../inquiries/InquiryDetailsModal";
+import { generateInquiryReceipt } from "@/lib/api/admin/inquiries";
+import { errorToast } from "@/lib/toast";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -34,6 +36,34 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
       (a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
+
+  function generateReceipt(inquiry: Inquiry) {
+    // Placeholder function for generating receipt
+    // console.log(`Generating receipt for inquiry ID: ${inquiry.id}`);
+
+    generateInquiryReceipt(accessToken, inquiry.id)
+      .then((blobData) => {
+        // Create a Blob from the response data
+        // Note: Since we used responseType: 'blob', 'blobData' is already a Blob object.
+        const blob = new Blob([blobData], { type: "application/pdf" });
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        // Clean filename using the student ID
+        a.download = `Receipt_${inquiry.student_id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+
+        // Cleanup
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        errorToast("Failed to download receipt. Please try again.");
+        console.error("Failed to download receipt:", error);
+      });
+  }
 
   // Pagination Logic
   const totalItems = filteredInquiries?.length || 0;
@@ -86,6 +116,7 @@ function Inquiries({ serverData: { accessToken } }: AdminPanelComponentProps) {
       <InquiryTable
         inquiries={paginatedData!!}
         openDetailModal={setIsDetailModalOpen}
+        generateReceipt={generateReceipt}
       />
       <Pagination
         currentPage={currentPage}
