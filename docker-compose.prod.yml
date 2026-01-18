@@ -41,7 +41,8 @@ services:
       - data_net
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    read_only: true
+    #read_only: true
+    user: root
     tmpfs:
       - /tmp:rw,noexec,nosuid # Writable temp, but cannot execute scripts in it
       - /run
