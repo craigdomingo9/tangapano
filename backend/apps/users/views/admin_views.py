@@ -1,14 +1,17 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Count, F
+from django.contrib.auth import get_user_model
 from users.models import Landlord, Agent
-from users.serializers import LandlordSerializer, AgentSerializer, AgentWriteSerializer
+from users.serializers import LandlordSerializer, AgentSerializer, AgentWriteSerializer, ChangePasswordSerializer
 from users.permissions.admin_permissions import IsSuperAdmin
 from notifications.models import Notification
 
 
 from notifications.utils.action_utils import log_and_notify_notable_action
+
+User = get_user_model()
 
 
 class AdminLandlordViewSet(viewsets.ReadOnlyModelViewSet):
@@ -106,4 +109,48 @@ class AdminAgentViewSet(viewsets.ModelViewSet):
         # 2. Creating the Agent.
         # 3. Setting the reverse Campus relationship.
         serializer.save()
+
+
+class AdminChangePasswordView(generics.CreateAPIView):
+    """
+    Admin/Staff-only endpoint to change a user's password by username.
+    
+    POST /api/users/admin/change-password/
+    Request body:
+    {
+        "username": "john_doe",
+        "new_password": "new_secure_password_123"
+    }
+    """
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsSuperAdmin]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        
+        serializer.is_valid(raise_exception=True)
+
+        username = serializer.validated_data['username']
+        new_password = serializer.validated_data['new_password']
+
+        # Get the user and update their password
+        user = User.objects.get(username=username)
+        user.set_password(new_password)
+        user.save()
+
+        # Log the action
+        log_and_notify_notable_action(
+            action_type='user_password_changed',
+            description=f"Admin {request.user.username} changed password for user {username}",
+            actor=request.user,
+            metadata={'target_username': username, 'target_user_id': user.id}
+        )
+
+        return Response(
+            {
+                'status': 'password changed successfully',
+                'username': username
+            },
+            status=status.HTTP_200_OK
+        )
         

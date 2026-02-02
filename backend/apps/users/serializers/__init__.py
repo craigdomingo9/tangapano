@@ -7,4 +7,5 @@ from .department_serializer import DepartmentSerializer
 from .role_serializer import RoleSerializer, PermissionSerializer
 from .employee_serializer import EmployeeSerializer
 from .simple_user_serializer import SimpleUserSerializer
+from .change_password_serializer import ChangePasswordSerializer
 

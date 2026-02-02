@@ -13,6 +13,8 @@ import { errorToast, successToast } from "@/lib/toast";
 import { useRouterPush } from "@/hooks/use-router-push";
 import { useRouter } from "next/navigation";
 import { loginAsUser } from "@/actions/admin/auth";
+import ChangePasswordModal from "../landlord-detail/ChangePasswordModal";
+import useAuthAdmin from "@/hooks/admin/use-auth";
 
 function LandlordDetail({
   serverData: { accessToken, user },
@@ -28,10 +30,15 @@ function LandlordDetail({
     isSuspendingLandlord,
     suspendLandlord,
   } = useListingsAdmin(accessToken, landlordId!!);
+
   const [isPending, startTransition] = useTransition();
   const [isSuspendModalOpen, setIsSuspendModalOpen] = useState(false);
   const { push } = useRouterPush<AdminPanelParams>();
   const router = useRouter();
+
+  // Auth & Password Management
+  const { isChangingPassword, changePassword } = useAuthAdmin(accessToken);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   async function handleSuspend() {
     if (!landlordId) return errorToast("There was an unexpected error.");
@@ -49,8 +56,9 @@ function LandlordDetail({
         if (!success) throw Error;
 
         successToast(
-          `You are now logged in ${landlord.full_name ? `as ${landlord.full_name}` : ""
-          } for the next hour.`
+          `You are now logged in ${
+            landlord.full_name ? `as ${landlord.full_name}` : ""
+          } for the next hour.`,
         );
         router.push("/partner/dashboard");
       } catch {
@@ -58,6 +66,23 @@ function LandlordDetail({
         errorToast(errorMessage);
       }
     });
+  }
+
+  async function handlePasswordChange(data: { password: string }) {
+    if (!landlord?.username) {
+      errorToast("Landlord user account not found.");
+      return;
+    }
+
+    try {
+      await changePassword({
+        username: landlord?.username,
+        new_password: data.password,
+      });
+      setIsPasswordModalOpen(false);
+    } catch (err) {
+      errorToast("Failed to update password. Please try again.");
+    }
   }
 
   if (landlordIsError) return <ErrorPage type="404" />;
@@ -74,14 +99,19 @@ function LandlordDetail({
           <ArrowLeft className="w-4 h-4" /> Back to Directory
         </RouterLink>
 
+        {/* Profile Header */}
         <HeaderProfile
           landlord={landlord!!}
           user={user}
-          setIsSuspendModalOpen={(val: boolean) => setIsSuspendModalOpen(val)}
+          setIsSuspendModalOpen={setIsSuspendModalOpen}
           handleLoginAsUser={handleLoginAsUser}
           isImpersonating={isPending}
+          // Assuming HeaderProfile accepts this prop to trigger the modal
+          // If not, you may need to update HeaderProfile or place a button elsewhere
+          setIsPasswordModalOpen={setIsPasswordModalOpen}
         />
-        {/* Portfolio Section (Focus of the page) */}
+
+        {/* Portfolio Section */}
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-foreground px-1">
             Portfolio Inventory
@@ -100,12 +130,21 @@ function LandlordDetail({
           />
         </div>
       </div>
+
+      {/* Modals */}
       <SuspendLandlordModal
         isOpen={isSuspendModalOpen}
         onClose={() => setIsSuspendModalOpen(false)}
         isSuspending={isSuspendingLandlord}
         onConfirm={handleSuspend}
         landlordName={landlord?.full_name}
+      />
+
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        onSave={handlePasswordChange}
+        isExecuting={isChangingPassword}
       />
     </>
   );
