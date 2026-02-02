@@ -115,7 +115,7 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
               "w-full px-4 mt-2 py-3.5 text-sm rounded-lg border dark:border-slate-700 dark:bg-app-input dark:text-white dark:focus:ring-blue-400 focus:ring-1 outline-none text-slate-900 placeholder:text-slate-400 bg-slate-50/30 transition-colors",
               errors.fullName && touched.fullName
                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                : "border-slate-300 focus:border-lapis focus:ring-lapis"
+                : "border-slate-300 focus:border-lapis focus:ring-lapis",
             )}
           />
           {errors.fullName && touched.fullName && (
@@ -138,12 +138,12 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
             onChange={(e) => handleStudentIdChange(e.target.value)}
             onBlur={handleStudentIdBlur}
             placeholder="e.g. R247636N"
-            maxLength={8}
+            maxLength={12}
             className={cn(
               "w-full px-4 mt-2 py-3.5 text-sm rounded-lg border dark:border-slate-700 dark:bg-app-input dark:text-white dark:focus:ring-blue-400 focus:ring-1 outline-none text-slate-900 placeholder:text-slate-400 bg-slate-50/30 transition-colors uppercase",
               errors.studentId && touched.studentId
                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                : "border-slate-300 focus:border-lapis focus:ring-lapis"
+                : "border-slate-300 focus:border-lapis focus:ring-lapis",
             )}
           />
           {errors.studentId && touched.studentId ? (
@@ -174,7 +174,7 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
               "w-full px-4 mt-2 py-3.5 text-sm rounded-lg border dark:border-slate-700 dark:bg-app-input dark:text-white dark:focus:ring-blue-400 focus:ring-1 outline-none text-slate-900 placeholder:text-slate-400 bg-slate-50/30 transition-colors",
               errors.whatsappNumber && touched.whatsappNumber
                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                : "border-slate-300 focus:border-lapis focus:ring-lapis"
+                : "border-slate-300 focus:border-lapis focus:ring-lapis",
             )}
           />
           {errors.whatsappNumber && touched.whatsappNumber ? (
