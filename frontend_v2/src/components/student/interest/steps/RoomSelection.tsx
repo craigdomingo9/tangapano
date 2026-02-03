@@ -3,13 +3,48 @@ import {
   useExpressInterestStore,
 } from "@/lib/stores/expressInterestStore";
 import { cn } from "@/lib/utils";
-import { Banknote, Bed, Check, Sparkles } from "lucide-react";
+import { Banknote, Bed, Check, Sparkles, User } from "lucide-react";
 import { useEffect } from "react";
 
 interface RoomSelectionProps {
   listing: Listing;
   updateStore: (key: keyof ExpressInterestState, value: any) => void;
 }
+
+const renderGenderBadge = (gender: Room["gender_preference"]) => {
+  switch (gender) {
+    case "male":
+      return (
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-sm animate-in fade-in zoom-in duration-300">
+          <User className="w-3.5 h-3.5" />
+          <span className="text-xxs font-bold uppercase tracking-wider">
+            Male Only
+          </span>
+        </div>
+      );
+    case "female":
+      return (
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 shadow-sm animate-in fade-in zoom-in duration-300">
+          <User className="w-3.5 h-3.5" />
+          <span className="text-xxs font-bold uppercase tracking-wider">
+            Female Only
+          </span>
+        </div>
+      );
+    default:
+      return (
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-sm animate-in fade-in zoom-in duration-300">
+          <div className="flex -space-x-1.5">
+            <User className="w-3.5 h-3.5" />
+            <User className="w-3.5 h-3.5" />
+          </div>
+          <span className="text-xxs font-bold uppercase tracking-wider">
+            Male / Female
+          </span>
+        </div>
+      );
+  }
+};
 
 function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
   const {
@@ -24,7 +59,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
       return;
 
     const firstVacantRoom = listing.rooms?.find(
-      (room) => room.current_occupants < room.max_occupants
+      (room) => room.current_occupants < room.max_occupants,
     );
 
     updateStore("selectedRoom", firstVacantRoom);
@@ -84,19 +119,22 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
                   >
                     ${parseInt(room.rent_per_month).toFixed(2)}/month
                   </p>
-                  <div className="pt-2">
+                  <div className="pt-2 flex items-center gap-3">
                     <span
                       className={`
-                                    inline-flex items-center px-3 py-1.5 rounded-full text-xxs font-bold shadow-sm transition-transform group-hover:scale-105
-                                    ${
-                                      isFull
-                                        ? "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
-                                        : "bg-white text-slate-900"
-                                    }
-                                `}
+                        inline-flex items-center px-3 py-1.5 rounded-full text-xxs font-bold shadow-sm transition-transform group-hover:scale-105
+                        ${
+                          isFull
+                            ? "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
+                            : "bg-white text-slate-900"
+                        }
+                    `}
                     >
                       {spotsOpen}/{room.max_occupants} spots open
                     </span>
+                    <div className="shrink-0 pt-1">
+                      {renderGenderBadge(room.gender_preference)}
+                    </div>
                   </div>
                 </div>
 
@@ -121,7 +159,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
             "mt-4 rounded-xl border-2 p-4 flex items-center justify-between shadow-sm transition-all animate-in fade-in slide-in-from-bottom-2",
             listing.apply_agent_fee
               ? "border-amber-100 bg-amber-50/50 dark:bg-amber-900/20 dark:border-amber-800"
-              : "border-emerald-100 bg-emerald-50/50 dark:bg-emerald-900/20 dark:border-emerald-800"
+              : "border-emerald-100 bg-emerald-50/50 dark:bg-emerald-900/20 dark:border-emerald-800",
           )}
         >
           <div className="flex items-center gap-3">
@@ -130,7 +168,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
                 "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
                 listing.apply_agent_fee
                   ? "bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400"
-                  : "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400"
+                  : "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400",
               )}
             >
               {listing.apply_agent_fee ? (
@@ -145,7 +183,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
                   "font-bold text-[0.825rem] sm:text-sm",
                   listing.apply_agent_fee
                     ? "text-amber-900 dark:text-amber-200"
-                    : "text-emerald-900 dark:text-emerald-200"
+                    : "text-emerald-900 dark:text-emerald-200",
                 )}
               >
                 {listing.apply_agent_fee
@@ -165,7 +203,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
                 "text-lg font-extrabold",
                 listing.apply_agent_fee
                   ? "text-amber-600 dark:text-amber-400"
-                  : "text-emerald-600 dark:text-emerald-400"
+                  : "text-emerald-600 dark:text-emerald-400",
               )}
             >
               {listing.apply_agent_fee ? `$${selectedRoom.agent_fee}` : "FREE"}
