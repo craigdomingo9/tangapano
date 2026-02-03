@@ -20,6 +20,7 @@ export interface ExpressInterestOptions {
   };
   applicant: {
     name: string;
+    gender: string;
     studentId: string;
     program: string;
     year: string;
@@ -112,7 +113,7 @@ export class WhatsAppService {
 
       return F.combine(
         `Hi! I found ${F.bold(
-          listing.title
+          listing.title,
         )} on TangaPano and would love to learn more.`,
         F.lineBreaks(2),
 
@@ -127,6 +128,8 @@ export class WhatsAppService {
         `👤 ${F.bold("About Me")}`,
         F.lineBreak(),
         `• Name: ${applicant.name}`,
+        F.lineBreak(),
+        `• Gender: ${applicant.gender}`,
         F.lineBreak(),
         `• Student ID: ${applicant.studentId}`,
         F.lineBreak(),
@@ -149,7 +152,7 @@ export class WhatsAppService {
         `• Neighborhood: ${listing.neighborhood}`,
         F.lineBreaks(2),
 
-        `I'm looking forward to hearing from you!`
+        `I'm looking forward to hearing from you!`,
       );
     },
   };

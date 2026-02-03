@@ -30,6 +30,7 @@ function Completion({
     entities: {
       selectedRoom,
       fullName,
+      gender,
       studentId,
       program,
       yearOfStudy,
@@ -57,6 +58,7 @@ function Completion({
       },
       applicant: {
         name: fullName,
+        gender: gender?.toUpperCase() ?? "Not specified",
         studentId: studentId,
         program: program,
         year: yearOfStudy,
@@ -151,7 +153,7 @@ function Completion({
               "font-bold",
               listing.apply_agent_fee
                 ? "text-amber-600 dark:text-amber-400"
-                : "text-emerald-600 dark:text-emerald-400"
+                : "text-emerald-600 dark:text-emerald-400",
             )}
           >
             {selectedRoom?.agent_fee
@@ -176,6 +178,14 @@ function Completion({
               </span>
               <span className="text-sm text-gray-600 dark:text-gray-400 col-span-2 text-right">
                 {fullName}
+              </span>
+            </div>
+            <div className="grid grid-cols-3 p-3 gap-2">
+              <span className="text-xsm font-medium text-gray-700 dark:text-white text-left">
+                Gender:
+              </span>
+              <span className="text-sm text-gray-600 dark:text-gray-400 col-span-2 text-right">
+                {gender?.toUpperCase() ?? "Not specified"}
               </span>
             </div>
             <div className="grid grid-cols-3 p-3 gap-2">
