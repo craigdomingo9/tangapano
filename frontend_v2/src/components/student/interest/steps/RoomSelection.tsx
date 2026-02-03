@@ -122,7 +122,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
                   <div className="pt-2 flex items-center gap-3">
                     <span
                       className={`
-                        inline-flex items-center px-3 py-1.5 rounded-full text-xxs font-bold shadow-sm transition-transform group-hover:scale-105
+                        inline-flex truncate items-center px-3 py-1.5 rounded-full text-xxs font-bold shadow-sm transition-transform group-hover:scale-105
                         ${
                           isFull
                             ? "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700"
