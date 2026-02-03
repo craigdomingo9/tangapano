@@ -6,6 +6,7 @@ export interface ExpressInterestState {
   depositReadiness: "ready_now" | "within_24h" | "need_time";
   paymentMethod: "cash" | "mobile" | "bank_transfer";
   fullName: string;
+  gender: Room["gender_preference"] | null;
   studentId: string;
   whatsappNumber: string;
   program: string;
@@ -19,6 +20,7 @@ const ExpressInterestInitialState: ExpressInterestState = {
   depositReadiness: "ready_now",
   paymentMethod: "mobile",
   fullName: "",
+  gender: null,
   studentId: "",
   whatsappNumber: "",
   program: "",
@@ -30,5 +32,5 @@ export const useExpressInterestStore = createEntityStore<ExpressInterestState>(
   ExpressInterestInitialState,
   {
     name: "express-interest",
-  }
+  },
 );

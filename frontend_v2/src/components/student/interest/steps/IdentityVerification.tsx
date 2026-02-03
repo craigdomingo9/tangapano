@@ -3,7 +3,7 @@ import {
   useExpressInterestStore,
 } from "@/lib/stores/expressInterestStore";
 import { Check, AlertCircle, ClipboardList } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { validation } from "@/lib/student-utils/validation";
 
@@ -13,7 +13,7 @@ interface IdentityVerificationProps {
 
 function IdentityVerification({ updateStore }: IdentityVerificationProps) {
   const {
-    entities: { whatsappNumber, fullName, studentId },
+    entities: { whatsappNumber, selectedRoom, gender, fullName, studentId },
   } = useExpressInterestStore();
 
   const [errors, setErrors] = useState<{
@@ -31,6 +31,10 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
     studentId: false,
     fullName: false,
   });
+
+  useEffect(() => {
+    updateStore("gender", null);
+  }, []);
 
   const handleWhatsAppChange = (value: string) => {
     const formatted = validation.whatsappNumber.format(value);
@@ -84,6 +88,20 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
     }
   };
 
+  const handleGenderChange = (value: Room["gender_preference"]) => {
+    if (
+      selectedRoom?.gender_preference &&
+      value !== selectedRoom.gender_preference &&
+      selectedRoom.gender_preference !== "any"
+    ) {
+      alert(
+        `The selected room is for ${selectedRoom.gender_preference} students. Please choose a compatible gender or select a different room.`,
+      );
+      return;
+    }
+    updateStore("gender", value);
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
       <div className="flex items-center gap-3 mb-6">
@@ -126,10 +144,36 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
           )}
         </div>
 
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-slate-700 dark:text-slate-300">
+            5. Gender
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
+            {["Male", "Female"].map((g) => (
+              <button
+                key={g}
+                onClick={() =>
+                  handleGenderChange(
+                    g.toLowerCase() as Room["gender_preference"],
+                  )
+                }
+                className={cn(
+                  "py-3 cursor-pointer px-2 rounded-lg border text-sm font-semibold transition-all text-center",
+                  gender === g.toLowerCase()
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 shadow-sm"
+                    : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800",
+                )}
+              >
+                {g}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Student ID */}
         <div className="space-y-2">
           <label className="text-sm font-bold text-slate-700 dark:text-slate-200">
-            5. Student ID Number
+            6. Student ID Number
           </label>
           <input
             type="text"
@@ -161,7 +205,7 @@ function IdentityVerification({ updateStore }: IdentityVerificationProps) {
         {/* WhatsApp Number */}
         <div className="space-y-2">
           <label className="text-sm font-bold text-slate-700 dark:text-slate-200">
-            6. WhatsApp Number
+            7. WhatsApp Number
           </label>
           <input
             type="tel"

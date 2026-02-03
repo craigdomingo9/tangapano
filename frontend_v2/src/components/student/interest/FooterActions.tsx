@@ -19,6 +19,7 @@ function FooterActions({
   const {
     entities: {
       fullName,
+      gender,
       studentId,
       whatsappNumber,
       moveInTimeline,
@@ -55,12 +56,12 @@ function FooterActions({
               (currentStep === 1 &&
                 (!selectedRoom ||
                   !listing.rooms.find(
-                    (room) => room.id === selectedRoom?.id
+                    (room) => room.id === selectedRoom?.id,
                   ))) ||
               (currentStep === 2 &&
                 (!moveInTimeline || !depositReadiness || !paymentMethod)) ||
               (currentStep === 3 &&
-                (!fullName || !studentId || !whatsappNumber)) ||
+                (!fullName || !studentId || !gender || !whatsappNumber)) ||
               (currentStep === 4 && (!program || !yearOfStudy))
             }
           >
