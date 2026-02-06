@@ -12,7 +12,7 @@ export async function getInquiries(accessToken: string) {
 export async function updateInquiry(
   accessToken: string,
   inquiryId: string,
-  payload: Interest
+  payload: Interest,
 ) {
   const { data } = await axiosInstance.put<Interest>(
     `/interests/inquiries/${inquiryId}/`,
@@ -21,18 +21,24 @@ export async function updateInquiry(
       headers: {
         Authorization: `Token ${accessToken}`,
       },
-    }
+    },
   );
   return data;
 }
 
 export async function generateInquiryReceipt(
   accessToken: string,
-  inquiryId: string
+  inquiryId: string,
+  deposit_fee: number = 0,
+  close_room: boolean = false,
 ) {
   const { data } = await axiosInstance.get(`/interests/receipt/${inquiryId}/`, {
     headers: {
       Authorization: `Token ${accessToken}`,
+    },
+    params: {
+      deposit_fee,
+      close_room,
     },
     responseType: "blob",
   });

@@ -4,10 +4,15 @@ from django.http import HttpResponse
 from django.utils import timezone
 from weasyprint import HTML
 from interests.models import Interest
+from listings.models import Room
 
 def generate_receipt_pdf(request, pk):
     # 1. Fetch the object
     interest = get_object_or_404(Interest, pk=pk)
+    
+    # Extract the deposit fee
+    deposit_fee = request.GET.get("deposit_fee", 0)
+    close_room = bool(request.GET.get("close_room", False) == "true")
     
     # 2. Extract Related Data (Assumed Structure based on your Interest model)
     # We assume interest.room has a .price and potentially a .property relation
@@ -44,6 +49,12 @@ def generate_receipt_pdf(request, pk):
                 "amount": float(room_price)
             },
             {
+                "desc": "Deposit Fee",
+                "type": "One-time Fee",
+                "type_color": "yellow",
+                "amount": float(deposit_fee)
+            },
+            {
                 "desc": "Reservation / Agent Fee",
                 "type": "One-time Fee",
                 "type_color": "gray",
@@ -53,7 +64,7 @@ def generate_receipt_pdf(request, pk):
     }
 
     # Calculate Total
-    total_amount = sum(item['amount'] for item in receipt_data['line_items'])
+    total_amount = float(room.agent_fee) + float(room_price)
 
     # 4. Define HTML Template (The Modern Design)
     html_template = f"""
@@ -109,11 +120,13 @@ def generate_receipt_pdf(request, pk):
                 font-size: 11px; 
                 font-weight: 600; 
                 display: flex; /* Ensures content centers perfectly */
+                flex-wrap: nowrap;
                 justify-content: center;
                 align-items: center;
                 width: fit-content; /* Prevents it from stretching to full width */
             }}
             .badge-purple {{ background-color: #e0e7ff; color: #4338ca; }}
+            .badge-yellow {{ background-color: #fef3c7; color: #b45309; }}
             .badge-gray {{ background-color: #f3f4f6; color: #4b5563; }}
 
             .total-row td {{ background-color: #0f172a; color: white; padding: 25px; }}
@@ -129,7 +142,7 @@ def generate_receipt_pdf(request, pk):
                 </div>
                 <div class="brand-title">
                     <h1>{receipt_data['property']['name']} <span class="text-purple">{receipt_data['property']['highlight']}</span></h1>
-                    <p>📍 {receipt_data['property']['location']}</p>
+                    <p>{receipt_data['property']['location']}</p>
                 </div>
             </div>
             <div class="receipt-meta">
@@ -179,8 +192,8 @@ def generate_receipt_pdf(request, pk):
                 <thead>
                     <tr>
                         <th width="50%">ITEM DESCRIPTION</th>
-                        <th width="25%">UNIT TYPE</th>
-                        <th width="25%" style="text-align: right;">AMOUNT</th>
+                        <th width="35%">UNIT TYPE</th>
+                        <th width="15%" style="text-align: right;">AMOUNT</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,4 +227,14 @@ def generate_receipt_pdf(request, pk):
     filename = f"Receipt_{interest.student_id}.pdf"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
+    # Optionally close the room if the flag is set
+    if close_room:
+        _ = close_room_after_receipt(request, pk)
+    
     return response
+
+def close_room_after_receipt(request, pk):
+    interest = get_object_or_404(Interest, pk=pk)
+    interest.room.current_occupants += 1
+    interest.room.save()
+    return HttpResponse(status=200)

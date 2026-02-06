@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { RouterLink } from "@/routing/RouterLink";
 import { CheckCircle2, Clock, DollarSign, Hash, User } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { GenerateReceiptModal } from "./GenerateReceiptModal"; // Import the new component
 
 interface InquiryTableProps {
   inquiries: Inquiry[];
   openDetailModal: (inquiry: Inquiry) => void;
-  generateReceipt: (inquiry: Inquiry) => void;
+  // Updated signature to handle the new data points, strictly optional depending on your API
+  generateReceipt: (
+    inquiry: Inquiry,
+    fee?: number,
+    closeRoom?: boolean,
+  ) => void;
   hasGenerateReceiptPermission: boolean;
 }
 
@@ -16,6 +22,9 @@ function InquiryTable({
   generateReceipt,
   hasGenerateReceiptPermission,
 }: InquiryTableProps) {
+  // Instead of just a boolean, we store the specific inquiry involved
+  const [receiptInquiry, setReceiptInquiry] = useState<Inquiry | null>(null);
+
   const getUrgencyBadge = (timeline: string) => {
     switch (timeline) {
       case "immediately":
@@ -61,6 +70,28 @@ function InquiryTable({
         );
     }
   };
+
+  // Opens the modal
+  const onOpenReceiptModal = (e: React.MouseEvent, inquiry: Inquiry) => {
+    e.stopPropagation();
+    if (!hasGenerateReceiptPermission) {
+      alert("You do not have permission to generate receipts.");
+      return;
+    }
+    setReceiptInquiry(inquiry);
+  };
+
+  // Handles the data coming back from the modal
+  const handleConfirmReceipt = (
+    inquiry: Inquiry,
+    fee: number,
+    closeRoom: boolean,
+  ) => {
+    // console.log("Generating receipt:", { id: inquiry.id, fee, closeRoom });
+    generateReceipt(inquiry, fee, closeRoom);
+    setReceiptInquiry(null);
+  };
+
   return (
     <>
       <h4 className="text-sm text-muted-foreground mb-4">
@@ -135,16 +166,7 @@ function InquiryTable({
                       <div className="flex items-center justify-end gap-2">
                         <Button
                           className="bg-lapis hover:bg-lapis/70 text-white hover:text-white/70 z-100"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (!hasGenerateReceiptPermission) {
-                              alert(
-                                "You do not have permission to generate receipts."
-                              );
-                              return;
-                            }
-                            generateReceipt(inquiry);
-                          }}
+                          onClick={(e) => onOpenReceiptModal(e, inquiry)}
                         >
                           Get Receipt
                         </Button>
@@ -166,6 +188,14 @@ function InquiryTable({
           </table>
         </div>
       </div>
+
+      {/* The Extracted Modal Component */}
+      <GenerateReceiptModal
+        isOpen={!!receiptInquiry}
+        inquiry={receiptInquiry}
+        onClose={() => setReceiptInquiry(null)}
+        onConfirm={handleConfirmReceipt}
+      />
     </>
   );
 }

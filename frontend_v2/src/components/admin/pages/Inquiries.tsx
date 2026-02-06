@@ -21,7 +21,7 @@ function Inquiries({
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDetailModalOpen, setIsDetailModalOpen] = useState<Inquiry | null>(
-    null
+    null,
   );
 
   // Filter Logic
@@ -36,10 +36,14 @@ function Inquiries({
     })
     .sort(
       (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
     );
 
-  function generateReceipt(inquiry: Inquiry) {
+  function generateReceipt(
+    inquiry: Inquiry,
+    deposit_fee: number = 0,
+    close_room: boolean = false,
+  ) {
     if (!hasGenerateReceiptPermission) {
       errorToast("You do not have permission to generate receipts.");
       return;
@@ -47,7 +51,7 @@ function Inquiries({
     // Placeholder function for generating receipt
     // console.log(`Generating receipt for inquiry ID: ${inquiry.id}`);
 
-    generateInquiryReceipt(accessToken, inquiry.id)
+    generateInquiryReceipt(accessToken, inquiry.id, deposit_fee, close_room)
       .then((blobData) => {
         // Create a Blob from the response data
         // Note: Since we used responseType: 'blob', 'blobData' is already a Blob object.
@@ -73,7 +77,7 @@ function Inquiries({
 
   const hasGenerateReceiptPermission =
     user?.employee_profile?.role?.permissions?.some(
-      (permission) => permission.codename === "change_interest"
+      (permission) => permission.codename === "change_interest",
     ) ?? false;
 
   // Pagination Logic
@@ -81,7 +85,7 @@ function Inquiries({
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const paginatedData = filteredInquiries?.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handlePageChange = (page: number) => {
