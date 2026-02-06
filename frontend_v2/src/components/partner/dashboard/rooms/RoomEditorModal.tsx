@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Info, Minus, Plus, X } from "lucide-react";
+import { Edit, Edit2, Edit3, Info, Minus, Plus, X } from "lucide-react";
 import { useEditingRoom } from "../pages/RoomManagement";
 import { infoToast } from "@/lib/toast";
 import {
@@ -8,6 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 interface RoomEditorModalProps {
   onClose: () => void;
@@ -17,6 +19,11 @@ interface RoomEditorModalProps {
 function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
   const { entities: room, setEntities: setEditingRoom } = useEditingRoom();
   const isAnyDisabled = room.current_occupants > 0;
+  const isEditMode = Boolean(room.id);
+  const [editTitleMode, setEditTitleMode] = useState(isEditMode);
+
+  const roomTitle = room.room_name ?? `Room ${room.room_number ?? ""}`.trim();
+  console.log(room);
 
   const updateField = (field: keyof Room, value: any) => {
     // RULE: Cannot set gender to 'any' if room is occupied
@@ -93,13 +100,29 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
           <X className="w-5 h-5" />
         </button>
 
-        <div className="pt-8 pb-4 px-6 text-center border-b border-slate-100 dark:border-slate-800">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            {room.id ? "Edit" : "Add"} Room
-          </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-xsm ">
-            {room.id ? "Update" : "Add"} room details and occupancy.
-          </p>
+        <div className="pt-8 pb-4 px-6 text-center border-b border-slate-100 dark:border-slate-800 cursor-pointer">
+          {editTitleMode ? (
+            <div>
+              <Input
+                value={room.room_name ?? "Room " + room.room_number}
+                onChange={(e) => updateField("room_name", e.target.value)}
+                className="w-4/5 text-center border-transparent outline-transparent focus:ring-0 focus:border-lapis dark:focus:border-sky-500 text-lg font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+                placeholder="Room 4 / A1"
+              />
+            </div>
+          ) : (
+            <div onClick={() => setEditTitleMode(true)}>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                {room.id ? "Edit" : "Add"}{" "}
+                <span className="underline underline-offset-4 decoration-slate-400 dark:decoration-slate-600">
+                  {roomTitle} <Edit3 className="w-4 h-4 inline ml-1" />
+                </span>
+              </h2>
+              <p className="text-slate-500 dark:text-slate-400 text-xsm ">
+                {room.id ? "Update" : "Add"} room details and occupancy.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="p-6 space-y-6">
@@ -139,7 +162,7 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
                   "flex items-center justify-center gap-2 px-3 py-3 rounded-lg border cursor-pointer transition-all",
                   room.gender_preference === "male"
                     ? "border-lapis dark:border-sky-500 bg-lapis/5 dark:bg-sky-500/10 text-lapis dark:text-sky-400 ring-1 ring-lapis dark:ring-sky-500"
-                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300"
+                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300",
                 )}
               >
                 <input
@@ -156,7 +179,7 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
                   "flex items-center justify-center gap-2 px-3 py-3 rounded-lg border cursor-pointer transition-all",
                   room.gender_preference === "female"
                     ? "border-lapis dark:border-sky-500 bg-lapis/5 dark:bg-sky-500/10 text-lapis dark:text-sky-400 ring-1 ring-lapis dark:ring-sky-500"
-                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300"
+                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300",
                 )}
               >
                 <input
@@ -178,7 +201,7 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
                     <div
                       className={cn(
                         "h-full",
-                        isAnyDisabled && "cursor-not-allowed"
+                        isAnyDisabled && "cursor-not-allowed",
                       )}
                     >
                       <label
@@ -195,7 +218,7 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
                           // If DISABLED: reduce opacity and KILL pointer events on the label
                           // This forces the click to pass through to the wrapper div (Trigger)
                           isAnyDisabled &&
-                            "opacity-50 bg-slate-50 dark:bg-slate-800 pointer-events-none"
+                            "opacity-50 bg-slate-50 dark:bg-slate-800 pointer-events-none",
                         )}
                       >
                         <input
@@ -217,7 +240,7 @@ function RoomEditorModal({ onClose, onSave }: RoomEditorModalProps) {
                   {isAnyDisabled && (
                     <TooltipContent
                       side="top"
-                      className="max-w-[200px] text-center bg-slate-900 text-white border-slate-800"
+                      className="max-w-50 text-center bg-slate-900 text-white border-slate-800"
                     >
                       <p>
                         Room must be empty to set gender preference to 'Any'.

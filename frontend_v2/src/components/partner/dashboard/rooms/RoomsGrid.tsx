@@ -22,7 +22,7 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
 
   const paginatedRooms = rooms.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const changePage = (newPage: number) => {
@@ -45,6 +45,8 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
       gender_preference: "any",
       rent_per_month: "100",
       listing: parseInt(listing.id),
+      room_name: null,
+      room_number: rooms.length + 1,
     } as Room;
     setEditingRoom(newRoom);
     setIsModalOpen(true);
@@ -58,6 +60,8 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
       rent_per_month: room.rent_per_month,
       listing: parseInt(listing.id),
       id: room.id,
+      room_name: room.room_name,
+      room_number: room.room_number,
     } as Room);
     setIsModalOpen(true);
   };
@@ -71,7 +75,7 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
     <>
       <div
         key={currentPage}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[400px] content-start animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-100 content-start animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both"
       >
         {paginatedRooms.map((room) => {
           const isFull = room.current_occupants >= room.max_occupants;
@@ -81,6 +85,7 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
             male: "Male Only",
             female: "Female Only",
           };
+          const roomTitle = room.room_name || `Room ${room.room_number}`;
 
           return (
             <div
@@ -95,8 +100,8 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
                   isFull
                     ? "bg-emerald-500"
                     : isRevenueGenerating
-                    ? "bg-emerald-500"
-                    : "bg-amber-400"
+                      ? "bg-emerald-500"
+                      : "bg-amber-400",
                 )}
               />
 
@@ -104,7 +109,7 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className="text-base font-bold text-slate-800 dark:text-white">
-                      Room {room.room_number}
+                      {roomTitle}
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
                       {genderMapping[room.gender_preference]}
@@ -115,7 +120,7 @@ function RoomsGrid({ listing, setIsModalOpen }: RoomsGridProps) {
                       "px-2.5 py-0.5 rounded-full text-[0.62rem] sm:text-xs font-bold uppercase tracking-wide border",
                       isFull
                         ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-800"
-                        : "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-800"
+                        : "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-800",
                     )}
                   >
                     {isFull ? "Occupied" : "Available"}

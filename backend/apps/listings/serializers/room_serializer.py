@@ -7,7 +7,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ['id', 'listing', 'current_occupants', 'agent_fee', 'is_full', 'max_occupants', 'rent_per_month', 'gender_preference', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'listing', 'room_name', 'current_occupants', 'agent_fee', 'is_full', 'max_occupants', 'rent_per_month', 'gender_preference', 'is_active', 'created_at', 'updated_at']
 
     def get_is_full(self, obj):
         return obj.is_full
