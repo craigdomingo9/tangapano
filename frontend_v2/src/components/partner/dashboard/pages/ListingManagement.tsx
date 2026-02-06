@@ -32,7 +32,7 @@ const INITIAL_STATE: ListingFormState = {
   campus: "",
   neighborhood: "",
   distance_from_campus: 0,
-  apply_agent_fee: false,
+  apply_agent_fee: true,
   location: {
     latitude: null,
     longitude: null,
@@ -56,7 +56,7 @@ function ListingManagement({ params, serverData }: PartnerComponentProps) {
   // Fetch Listing (only if editing)
   const { listing, listingIsLoading } = useListingsPartner(
     accessToken,
-    listingId
+    listingId,
   );
 
   // Local Form Store
