@@ -14,6 +14,7 @@ class Room(models.Model):
     current_occupants = models.PositiveIntegerField(default=0)
     rent_per_month = models.DecimalField(max_digits=10, decimal_places=2)
     gender_preference = models.CharField(max_length=50, choices=GENDER_CHOICES)
+    room_name = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
