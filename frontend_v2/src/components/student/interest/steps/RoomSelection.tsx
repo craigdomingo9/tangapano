@@ -76,6 +76,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
 
       <div className="flex-1 space-y-4">
         {listing.rooms.map((room) => {
+          const roomTitle = room.room_name ?? `Room ${room.room_number}`;
           const spotsOpen = room.max_occupants - room.current_occupants;
           const isFull =
             room.current_occupants >= room.max_occupants || spotsOpen === 0;
@@ -108,7 +109,7 @@ function RoomSelection({ listing, updateStore }: RoomSelectionProps) {
                         : "text-slate-900 dark:text-slate-200"
                     }`}
                   >
-                    Room {room.room_number}
+                    {roomTitle}
                   </h3>
                   <p
                     className={`text-xsm font-medium ${
