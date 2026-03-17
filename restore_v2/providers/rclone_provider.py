@@ -6,8 +6,15 @@ logger = logging.getLogger("RcloneProvider")
 
 class RcloneProvider:
     def __init__(self, email, password):
-        self.email = email
-        self.password = password
+        # Aggressively strip whitespace, newlines, and literal quote marks
+        self.email = email.strip().strip("'").strip('"')
+        self.password = password.strip().strip("'").strip('"')
+        self.config_path = "/tmp/rclone.conf"
+
+        # Let's log the exact length of the password so we know if hidden characters are sneaking in
+        logger.debug(f"Email length: {len(self.email)}")
+        logger.debug(f"Password length: {len(self.password)}")
+        
         self.config_path = "/tmp/rclone.conf"
 
     def connect(self):
