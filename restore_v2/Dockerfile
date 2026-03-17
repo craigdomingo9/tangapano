@@ -4,11 +4,10 @@ FROM python:3.10-alpine
 WORKDIR /app
 
 # Install system dependencies
-# Added the Alpine Edge community repo specifically to pull megatools
-RUN apk add --no-cache postgresql-client && \
-    apk add --no-cache megatools \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+# Rclone is native to Alpine!
+RUN apk add --no-cache \
+    postgresql-client \
+    rclone
 
 # Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -27,4 +26,3 @@ USER appuser
 
 # Execute the restore service
 ENTRYPOINT ["python", "main.py"]
-
