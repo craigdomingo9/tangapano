@@ -361,8 +361,9 @@ services:
       "com.tangapano.service": "cert-renewer"
     # 🔒 TITANIUM SECURITY
     logging: *default-logging
-    security_opt:
-      - no-new-privileges:true
+    #security_opt:
+    #  - no-new-privileges:true
+    user: root
     networks:
       - internet_net
     deploy:
