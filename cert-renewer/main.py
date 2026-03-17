@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 import subprocess
 import time
 import os
@@ -66,8 +67,9 @@ if __name__ == "__main__":
         run_renewal_check,
         'interval',
         hours=RENEWAL_INTERVAL_HOURS,
-        jitter=3600 # Add 1 hour of jitter to avoid "thundering herd"
-    )
+        jitter=3600, # Add 1 hour of jitter to avoid "thundering herd"
+        next_run_time=datetime.now()
+)
     
     log.info(f"Scheduled renewal check to run every {RENEWAL_INTERVAL_HOURS} hours.")
     
