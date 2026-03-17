@@ -8,32 +8,35 @@ class MegatoolsProvider:
     def __init__(self, email, password):
         self.email = email
         self.password = password
+        self.config_path = "/tmp/.megarc"
 
     def _create_megarc(self):
-        """Creates the ~/.megarc file required by megatools for authentication."""
+        """Creates the config file required by megatools."""
+        # Using a direct path in /tmp avoids Docker $HOME resolution issues
         rc_content = f"[Login]\nUsername = {self.email}\nPassword = {self.password}\n"
-        rc_path = os.path.expanduser("~/.megarc")
         
-        with open(rc_path, 'w') as rc_file:
+        with open(self.config_path, 'w') as rc_file:
             rc_file.write(rc_content)
         
-        os.chmod(rc_path, 0o600)
+        os.chmod(self.config_path, 0o600)
 
     def connect(self):
         logger.info("Configuring megatools credentials...")
         self._create_megarc()
         
         try:
-            # Test connection by listing the root directory
+            # Explicitly pass the --config path
+            # Capturing stderr so we can see the exact error if MEGA rejects us
             subprocess.run(
-                ['megatools', 'ls', '/Root'], 
+                ['megatools', 'ls', '--config', self.config_path, '/Root'], 
                 check=True, 
-                stdout=subprocess.DEVNULL, 
-                stderr=subprocess.DEVNULL
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE,
+                text=True
             )
             logger.info("Connected to MEGA via megatools.")
-        except subprocess.CalledProcessError:
-            raise ConnectionError("Failed to authenticate with megatools. Check credentials.")
+        except subprocess.CalledProcessError as e:
+            raise ConnectionError(f"Failed to authenticate with megatools. MEGA says: {e.stderr.strip()}")
 
     def download_backup(self, remote_folder, mode, specific_filename, staging_dir) -> str:
         """
@@ -46,11 +49,11 @@ class MegatoolsProvider:
         # 1. Get file list
         try:
             result = subprocess.run(
-                ['megatools', 'ls', remote_path], 
+                ['megatools', 'ls', '--config', self.config_path, remote_path], 
                 capture_output=True, text=True, check=True
             )
         except subprocess.CalledProcessError as e:
-            raise FileNotFoundError(f"Failed to access remote folder '{remote_path}'. Error: {e}")
+            raise FileNotFoundError(f"Failed to access remote folder '{remote_path}'. Error: {e.stderr.strip()}")
 
         # `megatools ls` returns full paths (e.g., /Root/Backups/file.zip)
         candidates = [
@@ -70,9 +73,7 @@ class MegatoolsProvider:
                 raise FileNotFoundError(f"File '{specific_filename}' not found in '{remote_folder}'.")
             target_remote_file = expected_path
         else:
-            # LATEST mode: 
-            # Because backup files have chronological timestamps in their names, 
-            # an alphabetical reverse sort puts the newest file at index 0.
+            # Alphabetical reverse sort puts the newest date at index 0
             candidates.sort(reverse=True)
             target_remote_file = candidates[0]
 
@@ -85,8 +86,10 @@ class MegatoolsProvider:
             logger.info(f"Downloading {os.path.basename(target_remote_file)}...")
             
             subprocess.run(
-                ['megatools', 'dl', '--path', staging_dir, target_remote_file], 
-                check=True
+                ['megatools', 'dl', '--config', self.config_path, '--path', staging_dir, target_remote_file], 
+                check=True,
+                capture_output=True,
+                text=True
             )
             
             output_path = os.path.join(staging_dir, os.path.basename(target_remote_file))
@@ -95,5 +98,5 @@ class MegatoolsProvider:
             return output_path
             
         except subprocess.CalledProcessError as e:
-            logger.error(f"Download failed: {e}")
+            logger.error(f"Download failed: {e.stderr.strip()}")
             raise
