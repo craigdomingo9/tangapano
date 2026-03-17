@@ -4,9 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 RUN apk add --no-cache postgresql17-client && \
-    apk add --no-cache megatools \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+    apk add --no-cache rclone
 
 WORKDIR /app
 

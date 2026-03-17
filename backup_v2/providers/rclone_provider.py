@@ -102,3 +102,29 @@ class RcloneProvider:
         except subprocess.CalledProcessError as e:
             logger.error(f"Download failed: {e.stderr.strip()}")
             raise
+    
+    def upload_backup(self, local_file_path, remote_folder):
+        """
+        Uploads a local file to the specified remote MEGA folder.
+        rclone automatically creates the remote directory if it doesn't exist.
+        """
+        folder_path = remote_folder.strip('/')
+        filename = os.path.basename(local_file_path)
+        
+        # Construct the target path. 
+        # e.g., mega_remote:/backups/images/my_backup.zip
+        target_remote_file = f"mega_remote:/{folder_path}/{filename}"
+        
+        logger.info(f"Uploading '{filename}' to remote folder '{folder_path}'...")
+        
+        try:
+            # 'copyto' explicitly copies a single file to a specific destination
+            subprocess.run(
+                ['rclone', '--config', self.config_path, 'copyto', local_file_path, target_remote_file],
+                check=True, capture_output=True, text=True
+            )
+            logger.info(f"✅ Successfully uploaded {filename} to MEGA.")
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Upload failed: {e.stderr.strip()}")
+            raise
+    
