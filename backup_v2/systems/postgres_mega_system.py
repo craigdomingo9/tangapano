@@ -9,7 +9,8 @@ class PostgresMegaSystem(IBackupSystem):
         """
         self.system_name = "Postgres Mega System"
         self.source = PostgresProvider()
-        self.dest = MEGAProvider()
+        # self.dest = MEGAProvider()
+        self.dest = MegatoolsProvider()
         self.folder_name = os.getenv("MEGA_DB_FOLDER", "db-daily_v2-backups-test")
         
     def run_cycle(self):

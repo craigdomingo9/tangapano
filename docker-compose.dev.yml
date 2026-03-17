@@ -92,7 +92,7 @@ services:
       - MEGA_PASSWORD=${MEGA_PASSWORD}
       - STAGING_DIR=/tmp/restore_staging
       - RESTORE_DESTINATION=/app/media # Used only for MEDIA restores
-      - RESTORE_TYPE=${RESTORE_TYPE:-SQL}  # IMAGES or SQL
+      - RESTORE_TYPE=${RESTORE_TYPE:-SQL} # IMAGES or SQL
       - RESTORE_MODE=${RESTORE_MODE:-LATEST} # LATEST or TIMESTAMP
       - REMOTE_FOLDER=TangaPanoPostgresDailyBackups # TangaPanoImagesWeeklyBackups | TangaPanoPostgresDailyBackups
     depends_on:

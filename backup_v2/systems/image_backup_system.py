@@ -13,7 +13,8 @@ class ImageBackupSystem(IBackupSystem):
         self.source = DirectoryProvider(path=source_path, output_path=output_path)
         
         # 2. Initialize Destination (MEGA Cloud)
-        self.dest = MEGAProvider()
+        # self.dest = MEGAProvider()
+        self.dest = MegatoolsProvider()
 
         # 3. Configuration Flags
         self.nuclear_mode = os.getenv("NUCLEAR_INIT", "false").lower() == "true"
