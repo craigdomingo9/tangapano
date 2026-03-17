@@ -11,15 +11,14 @@ class RcloneProvider:
         self.password = password.strip().strip("'").strip('"')
         self.config_path = "/tmp/rclone.conf"
 
-        # Let's log the exact length of the password so we know if hidden characters are sneaking in
-        logger.debug(f"Email length: {len(self.email)}")
-        logger.debug(f"Password length: {len(self.password)}")
-        
-        self.config_path = "/tmp/rclone.conf"
-
     def connect(self):
         logger.info("Configuring rclone credentials via config file...")
         try:
+            
+            # Let's log the exact length of the password so we know if hidden characters are sneaking in
+            logger.debug(f"Email length: {len(self.email)}")
+            logger.debug(f"Password length: {len(self.password)}")
+            
             # Replicate the successful shell command behavior
             # Use --config to point to a writable location for our non-root appuser
             subprocess.run(
