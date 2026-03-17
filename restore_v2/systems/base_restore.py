@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 import logging
 from config import Config
 from providers.mega_provider import MegaProvider
+from providers.megatools_provider import MegatoolsProvider
 from utils import file_ops
 
 logger = logging.getLogger("RestoreSystem")
@@ -10,7 +11,8 @@ logger = logging.getLogger("RestoreSystem")
 class BaseRestoreSystem(ABC):
     def __init__(self):
         self.config = Config
-        self.provider = MegaProvider(Config.MEGA_EMAIL, Config.MEGA_PASSWORD)
+        self.provider = MegatoolsProvider(Config.MEGA_EMAIL, Config.MEGA_PASSWORD)
+        # self.provider = MegaProvider(Config.MEGA_EMAIL, Config.MEGA_PASSWORD)
 
     def run_lifecycle(self):
         """The standard restoration procedure."""

@@ -1,8 +1,6 @@
 pytest
 apscheduler==3.10.4
 python-dotenv==1.0.0
-mega.py==1.0.8
-mega-lite==2.0.0
 pytest
 pytest-mock
 freezegun

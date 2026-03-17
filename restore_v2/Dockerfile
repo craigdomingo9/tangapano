@@ -4,8 +4,9 @@ FROM python:3.10-alpine
 WORKDIR /app
 
 # Install system dependencies
-RUN apk add --no-cache \
-    postgresql-client
+# Added the Alpine Edge community repo specifically to pull megatools
+RUN apk add --no-cache postgresql-client && \
+    apk add --no-cache megatools --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 # Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
