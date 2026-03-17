@@ -363,7 +363,11 @@ services:
     logging: *default-logging
     #security_opt:
     #  - no-new-privileges:true
+    #user: root
+    read_only: false
     user: root
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
     networks:
       - internet_net
     deploy:
