@@ -8,42 +8,40 @@ class RcloneProvider:
     def __init__(self, email, password):
         self.email = email
         self.password = password
-        # We will store our dynamic rclone config in this environment dictionary
-        self._rclone_env = os.environ.copy()
+        self.config_path = "/tmp/rclone.conf"
 
     def connect(self):
-        logger.info("Configuring rclone credentials...")
+        logger.info("Configuring rclone credentials via config file...")
         try:
-            # 1. Obscure the password
-            result = subprocess.run(
-                ['rclone', 'obscure', self.password],
-                capture_output=True, text=True, check=True
-            )
-            obscured_password = result.stdout.strip()
-            
-            # 2. Inject credentials into the environment variables
-            # This creates a temporary, memory-only rclone remote named "mega_remote"
-            self._rclone_env['RCLONE_CONFIG_MEGA_REMOTE_TYPE'] = 'mega'
-            self._rclone_env['RCLONE_CONFIG_MEGA_REMOTE_USER'] = self.email
-            self._rclone_env['RCLONE_CONFIG_MEGA_REMOTE_PASS'] = obscured_password
-            
-            # 3. Test connection by listing the root using our temporary remote
+            # Replicate the successful shell command behavior
+            # Use --config to point to a writable location for our non-root appuser
             subprocess.run(
-                ['rclone', 'lsf', 'mega_remote:/'], 
-                env=self._rclone_env,
+                [
+                    'rclone', '--config', self.config_path,
+                    'config', 'create', 'mega_remote', 'mega',
+                    'user', self.email,
+                    'pass', self.password
+                ],
                 check=True, capture_output=True, text=True
+            )
+            
+            logger.info("Authenticating with MEGA (this can take 1-2 minutes for the cryptographic handshake)...")
+            
+            # Test connection using the newly created config
+            # Removing capture_output so rclone can print its progress directly to your terminal
+            subprocess.run(
+                ['rclone', '--config', self.config_path, 'about', 'mega_remote:', '-v'], 
+                check=True
             )
             logger.info("Connected to MEGA via rclone.")
         except subprocess.CalledProcessError as e:
-            error_msg = e.stderr.strip() if e.stderr else "Unknown error"
-            raise ConnectionError(f"Failed to authenticate with rclone. MEGA says: {error_msg}")
+            raise ConnectionError("Failed to authenticate with rclone. Check the logs above.")
 
     def download_backup(self, remote_folder, mode, specific_filename, staging_dir) -> str:
         """
         Finds and downloads the target file.
         Returns: Path to the downloaded local file.
         """
-        # Strip leading slashes to prevent double slashes in paths
         folder_path = remote_folder.strip('/')
         target_remote_dir = f"mega_remote:/{folder_path}"
         
@@ -52,8 +50,7 @@ class RcloneProvider:
         # 1. Get file list
         try:
             result = subprocess.run(
-                ['rclone', 'lsf', target_remote_dir], 
-                env=self._rclone_env,
+                ['rclone', '--config', self.config_path, 'lsf', target_remote_dir], 
                 capture_output=True, text=True, check=True
             )
         except subprocess.CalledProcessError as e:
@@ -90,8 +87,7 @@ class RcloneProvider:
             logger.info(f"Downloading {target_filename} via rclone...")
             
             subprocess.run(
-                ['rclone', 'copyto', source_file, output_path], 
-                env=self._rclone_env,
+                ['rclone', '--config', self.config_path, 'copyto', source_file, output_path], 
                 check=True, capture_output=True, text=True
             )
             
