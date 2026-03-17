@@ -15,9 +15,8 @@ class RcloneProvider:
         logger.info("Configuring rclone credentials via config file...")
         try:
             
-            # Let's log the exact length of the password so we know if hidden characters are sneaking in
-            logger.info(f"Email: {self.email}")
-            logger.info(f"Password: {self.password}")
+            # logger.info(f"Email: {self.email}")
+            # logger.info(f"Password: {self.password}")
             
             # Replicate the successful shell command behavior
             # Use --config to point to a writable location for our non-root appuser
