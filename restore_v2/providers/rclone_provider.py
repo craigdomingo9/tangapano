@@ -16,8 +16,8 @@ class RcloneProvider:
         try:
             
             # Let's log the exact length of the password so we know if hidden characters are sneaking in
-            logger.debug(f"Email length: {len(self.email)}")
-            logger.debug(f"Password length: {len(self.password)}")
+            logger.info(f"Email length: {len(self.email)}")
+            logger.info(f"Password length: {len(self.password)}")
             
             # Replicate the successful shell command behavior
             # Use --config to point to a writable location for our non-root appuser
