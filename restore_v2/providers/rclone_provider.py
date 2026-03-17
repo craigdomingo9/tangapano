@@ -8,22 +8,29 @@ class RcloneProvider:
     def __init__(self, email, password):
         self.email = email
         self.password = password
-        self._obscured_password = None
+        # We will store our dynamic rclone config in this environment dictionary
+        self._rclone_env = os.environ.copy()
 
     def connect(self):
         logger.info("Configuring rclone credentials...")
         try:
-            # Rclone requires the password to be obscured before making connections
+            # 1. Obscure the password
             result = subprocess.run(
                 ['rclone', 'obscure', self.password],
                 capture_output=True, text=True, check=True
             )
-            self._obscured_password = result.stdout.strip()
+            obscured_password = result.stdout.strip()
             
-            # Test connection by listing the root directory using a dynamic remote
-            remote = f":mega,user='{self.email}',pass='{self._obscured_password}':"
+            # 2. Inject credentials into the environment variables
+            # This creates a temporary, memory-only rclone remote named "mega_remote"
+            self._rclone_env['RCLONE_CONFIG_MEGA_REMOTE_TYPE'] = 'mega'
+            self._rclone_env['RCLONE_CONFIG_MEGA_REMOTE_USER'] = self.email
+            self._rclone_env['RCLONE_CONFIG_MEGA_REMOTE_PASS'] = obscured_password
+            
+            # 3. Test connection by listing the root using our temporary remote
             subprocess.run(
-                ['rclone', 'lsf', f"{remote}/"], 
+                ['rclone', 'lsf', 'mega_remote:/'], 
+                env=self._rclone_env,
                 check=True, capture_output=True, text=True
             )
             logger.info("Connected to MEGA via rclone.")
@@ -36,18 +43,17 @@ class RcloneProvider:
         Finds and downloads the target file.
         Returns: Path to the downloaded local file.
         """
-        remote_base = f":mega,user='{self.email}',pass='{self._obscured_password}':"
-        
-        # Strip leading slashes to prevent double slashes in rclone paths
+        # Strip leading slashes to prevent double slashes in paths
         folder_path = remote_folder.strip('/')
-        target_remote_dir = f"{remote_base}/{folder_path}"
+        target_remote_dir = f"mega_remote:/{folder_path}"
         
         logger.info(f"Scanning remote folder: '{folder_path}'...")
         
-        # 1. Get file list using 'lsf' (returns just the filenames, one per line)
+        # 1. Get file list
         try:
             result = subprocess.run(
                 ['rclone', 'lsf', target_remote_dir], 
+                env=self._rclone_env,
                 capture_output=True, text=True, check=True
             )
         except subprocess.CalledProcessError as e:
@@ -83,9 +89,9 @@ class RcloneProvider:
         try:
             logger.info(f"Downloading {target_filename} via rclone...")
             
-            # 'copyto' allows us to specify the exact destination file path
             subprocess.run(
                 ['rclone', 'copyto', source_file, output_path], 
+                env=self._rclone_env,
                 check=True, capture_output=True, text=True
             )
             
